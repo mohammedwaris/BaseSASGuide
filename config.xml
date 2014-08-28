@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.jlojic.basesasguide" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Base SAS Exam Guide</name>
+    <description>
+        A Practical guide for Base SAS certification.
+    </description>
+    <author email="jlojic.apps@gmail.com" href="http://www.jlojic.com">
+        JLojic Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+	
+	<platform name="android">
+	              <icon src="res/android/icons/icon36x36.png" density="ldpi" />
+	              <icon src="res/android/icons/icon48x48.png" density="mdpi" />
+	              <icon src="res/android/icons/icon72x72.png" density="hdpi" />
+	              <icon src="res/android/icons/icon96x96.png" density="xhdpi" />
+				  <icon src="res/android/icons/icon144x144.png" density="xxhdpi" />
+	</platform>
+	
+	<icon src="icon.png"/>
+	
+</widget>
