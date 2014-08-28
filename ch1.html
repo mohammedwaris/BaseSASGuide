@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<style>
+ 
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .topic{
+        text-decoration: underline;
+        color: blue;
+     }
+     .subtopic{
+        color: red;
+     }
+     .underline{ text-decoration: underline;}
+</style>
+
+
+</head>
+<body>
+
+
+<div id="content">
+
+
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+  <p>To program effectively using SAS, you need to understand basic concepts about <b>SAS programs</b>
+     and the <b>SAS files</b> that they process. in particular, you need to be familiar with <b>SAS data sets</b>.
+  </p>
+  
+  <p>
+     In this chapter, you'll examine a simple SAS program and see how it works. You'll see how SAS 
+     data sets are stored temporily or permanently in <b>SAS libraries</b>. You'll also learn details about 
+     SAS data sets, which are files that contain data that is logically arranged in a form that SAS can 
+     understand.
+  </p>
+
+  <img src="images/ch1_image1.png"/>
+ 
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+  <p>In this chapter, you will learn about</p>
+  <ul>
+    <li>the structure and components of SAS programs</li>
+    <li>the steps involved in processing SAS programs</li>
+    <li>SAS libraries and the types of SAS files that they contain</li>
+    <li>temporary and permanent SAS libraries</li>
+    <li>the structure and components of SAS data sets</li>
+  </ul>
+
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">SAS Programs</h2>
+  <p>
+     You can use SAS programs to access, manage, analyze, or present your data. Let's begin by
+     looking at a simple SAS program.
+
+     <pre>
+     data clinic.admit2;
+       set clinic.admit;
+     run;
+     proc print data = clinic.admit2;
+     run;</pre>
+     
+     This program creates a new SAS data set  from an existing SAS data set and then print a listing 
+     of the new data set. A SAS data set is a data file that is formatted in a way that SAS can understand.
+  </p>
+
+  <p>Let's see how this program works.</p>
+  
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Components of SAS Programs</h3>
+  <p>our sample SAS program contains two steps: a <b>DATA step</b> and a <b>PROC step</b>.</p>
+  <pre>
+    data clinic.admit2;
+      set clinic.admit;
+    run;
+    proc print data = clinic.admit2;
+    run;</pre>
+  <p>These two types of steps, alone or combined, form most SAS programs.</p>
+  <table>
+    <tr>
+       <td><img src="images/ch1_image2.png" /></td>
+       <td>A SAS program can consist of a DATA step</td>
+    </tr> 
+    <tr>
+       <td><img src="images/ch1_image3.png" /></td> 
+       <td>or a PROC step</td> 
+    </tr>
+    <tr>
+       <td><img src="images/ch1_image2.png" /></td> 
+       <td>or any combination of DATA and PROC steps</td> 
+    </tr>
+    <tr>
+      <td><img src="images/ch1_image3.png" /></td>
+    </tr>
+    <tr>
+      <td><img src="images/ch1_image3.png" /></td>
+    </tr>
+  </table>
+
+  <p>
+     <b>DATA steps</b> typically create or modify SAS data sets. They can also be used to produce custom 
+        designed reports. For example, you can use DATA steps to
+  </p>
+  <ul>
+    <li>put your data into a SAS data set</li>
+    <li>compute values</li>
+    <li>check for and correct errors in your data</li>
+    <li>produce new SAS data sets by subsetting, merging and updating existing data sets</li>
+  </ul>
+
+  <p>
+     <b>PROC(procedure) steps</b> are pre-written routines that enable you to analyze and process the 
+     data in a SAS data set and to present the data in the form of a report. PROC steps sometimes 
+     create new SAS data sets that contain the results of the procedure. PROC steps can list, sort, 
+     and summarize data. For example, you can use PROC steps to 
+  </p>
+  <ul>
+    <li>create a report that lists the data</li>
+    <li>produce descriptive statistics</li>
+    <li>create a summary report</li>
+    <li>produce plots and charts</li>
+  </ul>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Characteristics of SAS Programs</h3>
+  <p>
+    Next let's look at the individual statement in our sample program. SAS programs consists of <b>SAS statements</b>.
+    A SAS statement has two important characteristics:  
+  </p>
+  <ul>
+    <li>It usually begins with a SAS <b>keyword</b></li>
+    <li>It always ends with a <b>semicolon</b></li>
+  </ul>
+
+  <p>
+    As you've seen, a DATA step begins with a DATA statement, which begins with the keyword 
+    DATA. A PROC step begins with a PROC statement, which begins with the keywod PROC. Our 
+    sample program contains <b>(1)</b> a DATA statement, <b>(2)</b> a SET statement, 
+    <b>(3)</b> a RUN statement, <b>(4)</b> a PROC PRINT statement and <b>(5)</b> another RUN statement.
+  </p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Statements</th>
+      <th class="color-red">Sample Program Code</th>
+    <tr>
+    <tr>
+      <td><b>(1)</b> a DATA statement</td>
+      <td><pre>data clinic.admit2;</pre></td>
+    </tr>
+    <tr>
+      <td><b>(2)</b> a SET statement</td>
+      <td><pre>   set clinic.admit;</pre></td>
+    </tr>
+    <tr>
+      <td><b>(3)</b> a RUN statement</td>
+      <td><pre>run;</pre></td>
+    </tr>
+    <tr>
+      <td><b>(4)</b> a PROC PRINT statement</td>
+      <td><pre>proc print data = clinic.admit2;</pre></td>
+    </tr>
+    <tr>
+      <td><b>(5)</b> another RUN statement</td>
+      <td><pre>run;</pre></td>
+    </tr>
+  </table>
+  
+  <!-- Topic 2 Subtopic 3 -->
+  <h3 class="subtopic" id="topic2_subtopic3">Layout for SAS Programs</h3>
+  <p>SAS statements are in free format. This means that</p>
+  <ul>
+    <li>they can begin and end anywhere on a line</li>
+    <li>one statment can continue over several lines</li>
+    <li>several statements can be on a line</li>
+  </ul>
+
+  <p>
+     Blanks or special characters separate "words" in a SAS statement.
+     <br/>
+     <table>
+        <tr>
+          <td class="color-blue">Note</td>
+          <td>You can specify SAS statements in uppercase or lowercase. in most situations, text that is enclosed in quotation marks is case sensitive</td>
+        </tr>
+     </table>
+     <br/>
+     You've examined the genral structure of our sample program. But what happens when you run the program ?
+  </p>
+
+
+  <!-- Topic 2 Subtopic 4 -->
+  <h3 class="subtopic" id="topic2_subtopic4">Processing SAS programs</h3>
+  <p>
+    When you submit a SAS program, SAS begins reading the statements and checking them for errors.
+    <br/><br/>
+    DATA and PROC statements signal the begining of a new step. When SAS encounters a subsequent DATA, 
+    PROC or RUN statement(for DATA steps and most procedures) or a QUIT statement(for some procedures), 
+    SAS stops reading statements and executes the previous step in the program. In our sample program, 
+    each step ends with a RUN statement.
+  </p>
+  <pre>
+     data clinic.admit2;
+        set clinic.admit;
+     run;
+     proc print data = clinic.admit2;
+     run;
+  </pre>
+  <table>
+    <tr>
+      <td class="color-blue">Note</td>
+      <td>The begining of a new step(DATA or PROC) implies the end of the previous step. Though the RUN statement is not always required between steps in a SAS programs, using it can make the SAS program easier to read and debug, and it makes the SAS log easier to read.</td>
+    </tr>
+  </table>
+
+  <!-- Page 10 -->
+  
+  <!-- Topic 2 Subtopic 5 -->
+  <h3 class="subtopic" id="topic2_subtopic5">Log Messages</h3>
+  <p> 
+    Each time a step is executed, SAS generates a log of the processing activities and the results of 
+    the processing. The SAS log collects message about the processing of SAS programs and about any errors that occur.
+    <br/><br/>
+    When SAS processes our sample program, you see the log messages shown below. Notice that you get separate sets of messages for each step in the program.
+  </p>
+
+  <p class="color-red">SAS Log  </p>
+
+  <pre>
+  1   data clinic.admit2;
+  2      set clinic.admit;
+  3   run;
+
+  NOTE: The data set CLINIC.ADMIT2 has 
+        21 observations and 9 variables.
+  NOTE: The DATA statement used 1.03 seconds
+
+  4   proc print data = clinic.admit2;
+  5   run;
+
+  NOTE: The PROCEDURE PRINT used 0.2 seconds.
+  </pre>
+
+  <!-- Topic 2 Subtopic 6 -->
+  <h3 class="subtopic" id="topic2_subtopic6">Results of Processing</h3>
+  <p>Suppose you submit the sample program below.</p>
+  <pre>
+  data clinic.admit2;
+     set clinic.admit;
+  run;
+  proc print data = clinic.admit2;
+  run;
+  </pre>
+
+  <p>When the program is processed, it</p>
+  <ul>
+    <li>creates the SAS data set <b>Clinic.Admit2</b> in the DATA step. The DATA step produces messages in the SAS log, but it does not create a report or other output.</li>
+    <li>creates the following HTML report of the SAS data set Clinic.Admit2:</li>
+  </ul>
+  <table border="1">
+     <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">ID</th>
+       <th class="color-red">name</th>
+       <th class="color-red">Sex</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Date</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight Actlevel</th>
+       <th class="color-red">Fee</th>
+     </tr>
+     <tr>
+       <td>1</td>
+       <td>2458</td>
+       <td>murray, W</td>
+       <td>M</td>
+       <td>27</td>
+       <td>1</td>
+       <td>72</td>
+       <td>168 HIGH</td>
+       <td>85.20</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>2462</td>
+        <td>Almers, C</td>
+        <td>F</td>
+        <td>34</td>
+        <td>3</td>
+        <td>66</td>
+        <td>152 HIGH</td>
+        <td>124.80</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>2501</td>
+        <td>Bonaventure, T</td>
+        <td>F</td>
+        <td>31</td>
+        <td>17</td>
+        <td>61</td>
+        <td>123 LOW</td>
+        <td>149.75</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>2523</td>
+        <td>Johnson, R</td>
+        <td>F</td>
+        <td>43</td>
+        <td>31</td>
+        <td>63</td>
+        <td>137 MOD</td>
+        <td>149.75</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>2539</td>
+        <td>LaMance, K</td>
+        <td>M</td>
+        <td>51</td>
+        <td>4</td>
+        <td>71</td>
+        <td>158 LOW</td>
+        <td>124.80</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>2544</td>
+        <td>Jones, M</td>
+        <td>2M</td>
+        <td>29</td>
+        <td>6</td>
+        <td>76</td>
+        <td>193 HIGH</td>
+        <td>124.80</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>2552</td>
+        <td>Reberson, P</td>
+        <td>F</td>
+        <td>32</td>
+        <td>9</td>
+        <td>67</td>
+        <td>151 MOD</td>
+        <td>149.75</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>2555</td>
+        <td>king, E</td>
+        <td>M</td>
+        <td>35</td>
+        <td>13</td>
+        <td>70</td>
+        <td>173 MOD</td>
+        <td>149.75</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>2563</td>
+        <td>Pitts, D</td>
+        <td>M</td>
+        <td>34</td>
+        <td>22</td>
+        <td>73</td>
+        <td>154 LOW</td>
+        <td>124.80</td>
+     </tr>
+     <tr>
+        <td>10</td>
+        <td>2568</td>
+        <td>Eberhardt, S</td>
+        <td>F</td>
+        <td>49</td>
+        <td>27</td>
+        <td>64</td>
+        <td>172 LOW</td>
+        <td>124.80</td>
+     </tr>
+
+  </table>
+
+  <!-- Page 12 -->
+  <p>You've seen the results of submitting our sample program. For other SAS programs, the results of processing might vary:</p>
+  <ul>
+    <li>
+        SAS programs often invoke procedures that create output in the form of a report, as is the case with the TABULATE procedure.
+        <pre>
+  proc tabulate data = clinic.admit;
+  class sex;
+  var height weight;
+  table sex*(height weight), mean;
+  run;
+        </pre>
+        <table border="1">
+           <tr>
+             <th>&nbsp;</th>
+             <th>&nbsp;</th>
+             <th class="color-red">Mean</th>
+           </tr>
+           <tr>
+             <th>Sex</th>
+             <th colspan="2">&nbsp;</th>
+           </tr>
+           <tr>
+              <th rowspan="2">F</th>
+              <th>Height</th>
+              <td>64.82</td>
+           </tr>
+           <tr>
+              <th>Weight</th>
+              <td>141.73</td>
+           </tr>
+           <tr>
+              <th rowspan="2">M</th>
+              <th>Height</th>
+              <td>72.00</td>
+           </tr>
+           <tr>
+              <th>Weight</th>
+              <td>172.80</td>
+           </tr>
+        </table>
+    </li>
+    <li>
+      Other SAS programs perform tasks such as sorting and managing data, which have no visible results except for <b>messages in the log</b>. (All SAS programs produe log messages, but some SAS programs produce only log messages)
+      <pre>
+  proc copy in = clinic out = work;
+  select admit;
+  run;
+      </pre>       
+    </li>
+  </ul>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  6   proc copy in = clinic out = work;
+  7   select admit;
+  8   run;
+
+  NOTE: Copying CLINIC.ADMIT to WORK.ADMIT (memtype=DATA).
+  NOTE: There were 21 observations read from the data set
+        CLINIC.ADMIT.
+  NOTE: The data set WORK.ADMIT has 21 observations and 9
+        variables.
+  NOTE: PROCEDURE COPY used (TOTAL process time):
+        real time   0.13 seconds
+        cpu time    0.08 seconds
+  </pre>
+
+  <table>
+    <tr>
+      <td class="color-blue">Note</td>
+      <td>You can turn off log messages by using system options, which you can learn about in chapter, <b>Refrencing Files and Setting Options</b></td>
+    </tr>
+  </table>
+
+  <!-- Page 13 -->
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">SAS Libraries</h2>
+  <p>You've learned about SAS programs and SAS data sets. Now let's look at SAS libraries to see how SAS data sets and other SAS files are organized and stored.</p>
+
+  <!-- Topic 3 Subtopic 1-->
+  <h3 class="subtopic" id="topic3_subtopic1">How SAS Files are Stored</h3>
+  <p>
+     Every SAS file is stored in a <strong>SAS library</strong>, which is a collection of SAS files. 
+     A SAS data library is the highest level of organization for information within SAS.
+     <br/><br/>
+     SAS libraries have different implementations depending on your operating environment, but a
+     library usually corresponds to the level of organization that your host operating system uses to
+     access and store files. In some operating environments, a library is a physical collection of files.
+     In others, the files are only logically related.
+     <br/><br/>
+     For example, in the Windows and UNIX environments, a library is typically a group of SAS files in
+     the same folder or directory.
+  </p>
+  <img src="images/ch1_image4.png" style="max-width:100%;"/>
+  
+  <p>
+    The table below summarizes the implementation of SAS libraries in various operating environments.
+  </p>
+  <table border="1">
+     <tr>
+        <th class="color-red">Environment</th>
+        <th class="color-red">Library</th>
+     </tr>
+     <tr>
+       <td>
+          <strong>Windows, UNIX OpenVMS</strong>(directory based-systems)
+       </td>
+       <td>
+           a group of SAS files that are stored in the same directory. Other
+           files can be stored in the directory, but only the files that have
+           SAS file extensions are recognized as part of the SAS library.
+           (Refer to the online documentation for more information.) 
+       </td>
+     </tr>
+     <tr>
+        <td><strong>CMS</strong></td>
+        <td>a group of SAS files that have the same file type.</td>
+     </tr>
+     <tr>
+        <td><strong>z/OS</strong></td>
+        <td>a specially formatted host data set in which only SAS files are stored.</td>
+     </tr>
+  </table>
+
+  <!-- Page 14 -->
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Storing Files Temporarily or Permanently</h3>
+
+  <p>Depending on the library name that you use when you create a file, you can store SAS files
+     temporarily or permanently.
+  </p>
+  <img src="images/ch1_image5.png" style="max-width:100%;"/>
+  <p>
+     Temporary SAS libraries last only for the current SAS session.
+     <br/><br/>
+     <strong>Storing files temporarily:</strong>
+     <br/><br/>
+     If you don't specify a library name when you create a file (or if you specify the library name
+     <strong>Work</strong>), the file is stored in the temporary SAS data library. When you end the session, the
+     temporary library and all of its files are deleted.
+  </p>
+  <img src="images/ch1_image6.png" style="max-width:100%;"/>
+  <p>Permanent SAS libraries are available to you during subsequent SAS sessions.
+     <br/><br/>
+     <strong>Storing files permanently:</strong>
+     <br/><br/>
+     To store files permanently in a SAS data library, you specify a library name other than the default
+     library name <strong>Work</strong>.
+     <br/><br/>
+     For example, by specifying the library name Clinic when you create a file, you specify that the file
+     is to be stored in a permanent SAS data library until you delete it.
+  </p>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can learn how to set up permanent SAS libraries in Chapter,
+          <strong>Referencing Files and Setting Options</strong>
+      </td>
+    </tr>
+  </table>
+
+  
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Refrencing SAS Files</h2>
+
+  <!-- Topic 4 Subtopic 1-->
+  <h3 class="subtopic" id="topic4_subtopic1">Two-Level Names</h3>
+  <p>
+    To reference a permanent SAS data set in your SAS programs, you use a <strong>two-level name</strong>:
+    <br/><br/>
+    <strong>libref.filename</strong>
+    <br/><br/>
+    In the two-level name, <strong>libref</strong> is the name of the SAS data library that contains the file, and
+    <strong>filename</strong> is the name of the file itself. A period separates the libref and filename.
+  </p>
+
+  <!-- Page 15 -->
+  <img src="images/ch1_image7.png" style="max-width:100%;"/>
+  <p>For example, in our sample program, <strong>Clinic.Admit</strong> is the two-level name for the 
+     SAS data set <strong>Admit</strong>, which is stored in the library named <strong>Clinic</strong>.
+  </p>
+  <img src="images/ch1_image8.png" style="max-width:100%;"/>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Referencing Temporary SAS Files</h3>
+  <p>To reference temporary SAS files, you can specify the default libref <strong>Work</strong>, a 
+     period, and the filename. For example, the two-level name <strong>Work.Test</strong> references 
+     the SAS data set named <strong>Test</strong> that is stored in the temporary SAS library <strong>Work</strong>.
+  </p>
+  <img src="images/ch1_image9.png" style="max-width:100%;"/>
+  <p>Alternatively, you can use a <strong>one-level name</strong> (the filename only) to reference a file in a temporary
+     SAS library. When you specify a one-level name, the default libref <strong>Work</strong> is assumed. For
+     example, the one-level name <strong>Test</strong> also references the SAS data set named <strong>Test</strong> that is stored in
+     the temporary SAS library <strong>Work</strong>.
+  </p>
+  <img src="images/ch1_image10.png" style="max-width:100%;"/>
+  <table>
+    <tr>
+      <th class="color-blue">Info</th>
+      <td>If the USER library is assigned, SAS uses the <strong>User</strong> library rather than the 
+          <strong>Work</strong> library for one-level names. <strong>User</strong> is a permanent library.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 4 Subtopic 3 -->
+  <h3 class="subtopic" id="topic4_subtopic3">Referencing Permanent SAS Files</h3>
+  <p>You can see that <strong>Clinic.Admit</strong> and <strong>Clinic.Admit2</strong> are permanent SAS data sets because the
+     library name is <strong>Clinic</strong>, not <strong>Work</strong>.
+  </p>
+
+  <!-- Page 16 -->
+
+  <img src="images/ch1_image11.png" style="max-width:100%;"/>
+  <br/>
+  <p>
+     So referencing a SAS file in any library <strong>except Work</strong> indicates that the SAS file is stored
+     permanently. For example, when our sample program creates <strong>Clinic.Admit2</strong>, it stores the new
+     <strong>Admit2</strong> data set permanently in the SAS library <strong>Clinic</strong>.
+  </p>
+
+  <!-- Topic 4 Subtopic 4 -->
+  <h3 class="subtopic" id="topic4_subtopic4">Rules for SAS Names</h3>
+  <p>SAS data set names</p>
+  <ul>
+    <li>can be 1 to 32 characters long</li>
+    <li>must begin with a letter (A-Z, either uppercase or lowercase) or an underscore (_)</li>
+    <li>can continue with any combination of numbers, letters, or underscores.</li>
+  </ul>
+
+  <p>These are examples of valid data set names:</p>
+  <ul>
+    <li><strong>Payroll</strong></li>
+    <li><strong>LABDATA1995_1997</strong></li>
+    <li><strong>_EstimatedTaxPayments3</strong></li>
+  </ul>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">SAS Data Sets</h2>
+
+  <p>So far, you've seen the components and characteristics of SAS programs, including how they
+     reference SAS data sets. Data sets are one type of SAS file. There are other types of SAS files
+     (such as catalogs), but this chapter focuses on SAS data sets. For many procedures and for
+     some DATA step statements, data must be in the form of a SAS data set to be processed. Now
+     let's take a closer look at SAS data sets.
+  </p>
+  
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Overview of Data Sets</h3>
+  <p>As you saw in our sample program, for many of the data processing tasks that you perform with
+  </p>
+  <ul>
+    <li>access data in the form of a SAS data set</li>
+    <li>analyze, manage, or present the data</li>
+  </ul>
+  <p>
+    Conceptually, a SAS data set is a file that consists of two parts: a <strong>descriptor portion</strong> and a <strong>data
+    portion</strong>. Sometimes a SAS data set also points to one or more indexes, which enable SAS to
+    locate records in the data set more efficiently. (The data sets that you see in this chapter do not
+    contain indexes.)
+  </p>
+  <img src="images/ch1_image12.png" style="max-width:100%;"/>
+
+  <!-- Page 17 -->
+  
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Descriptor Portion</h3>
+  
+  <p>The descriptor portion of a SAS data set contains information about the data set, including</p>
+  <ul>
+    <li>the name of the data set</li>
+    <li>the date and time that the data set was created</li>
+    <li>the number of observations</li>
+    <li>the number of variables</li>
+  </ul>
+  <p>Let's look at another SAS data set. The table below lists part of the descriptor portion of the data
+     set <strong>Clinic.Insure</strong>, which contains insurance information for patients who are admitted to a
+     wellness clinic. (It's a good idea to give your data set a name that is descriptive of the contents.)
+  </p>
+  <pre>
+  Data Set Name:      CLINIC.INSURE
+  Member Type:        DATA
+  Engine:             V8
+  Created:            10:05 Tuesday, March 30, 1999
+  Observations:       21
+  Variables:          7
+  Indexes:            0
+  Observation Length: 64
+  </pre>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Data Portion</h3>
+
+  <p>The data portion of a SAS data set is a collection of data values that are arranged in a
+     rectangular table. In the example below, the name Jones is a data value, the weight 158.3 is a
+     data value, and so on.
+  </p>
+  <img src="images/ch1_image13.png" style="max-width:100%;"/>
+
+  <!-- Topic 5 Subtopic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">Observations (Rows)</h3>
+
+  <p><strong>Rows</strong> (called <strong>observations</strong>) in the data set are collections of data values that usually relate to a
+     single object. The values Jones, M, 48, and 128.6 constitute a single observation in the data set
+     shown below.
+  </p>
+
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Variable Attributes</h2>
+  <p>
+      In addition to general information about the data set, the descriptor portion contains information
+     about the attributes of each variable in the data set. The attribute information includes the
+     variable's name, type, length, format, informat, and label.
+     <br/><br/>
+     When you write SAS programs, it's important to understand the attributes of the variables that
+     you use. For example, you might need to combine SAS data sets that contain same-named
+     variables. In this case, the variables must be the same type (character or numeric).
+     <br/><br/>
+     The following is a partial listing of the attribute information in the descriptor portion of the SAS
+     data set <strong>Clinic.Insure</strong>. Let's look at the <strong>name</strong>, <strong>type</strong>, and <strong>length</strong> variable attributes. You'll learn
+     about the format, informat, and label attributes later in this chapter.
+  </p>
+  <pre>
+  Variable Type Length Format    Informat Label
+
+  Policy   Num  8                         Policy Number
+  Total    Num  8      DOLLAR8.2 COMMA10. Total Balance
+  Name     Char 20                        Patient Name
+  </pre>
+
+  <!-- Page 18 -->
+
+  <!-- Topic 6 Subtopic 1-->
+  <h3 class="subtopic" id="topic6_subtopic1">Name</h3>
+  <p>Each variable has a name that conforms to SAS naming conventions. Variable names follow
+     exactly the same rules as SAS data set names. Like data set names, variable names
+  </p>
+  <ul>
+    <li>can be 1 to 32 characters long</li>
+    <li>must begin with a letter (A-Z, either uppercase or lowercase) or an underscore (_)</li>
+    <li>can continue with any combination of numbers, letters, or underscores</li>
+  </ul>
+  <img src="images/ch1_image14.png" style="max-width:100%;"/>
+
+  <!-- Topic 6 Subtopic 2-->
+  <h3 class="subtopic" id="topic6_subtopic2">Type</h3>
+  <p>A variable's type is either <strong>character</strong> or <strong>numeric</strong>.</p>
+  <ul>
+    <li>Character variables, such as Name (shown below), can contain <strong>any values</strong></li>
+    <li>Numeric variables, such as Policy and Total (shown below), can contain <strong>only
+        numeric values</strong> (the digits 0 through 9, +, -, ., and E for scientific notation).
+    </li>
+  </ul>
+  <img src="images/ch1_image15.png" style="max-width:100%;"/>
+
+  <p>A variable's type determines how missing values for a variable are displayed. In the following
+     data set, Name and Sex are character variables, and Age and Weight are numeric variables.
+  </p>
+  <ul>
+    <li>For character variables such as Name, a <strong>blank</strong> represents a missing value</li>
+    <li>For numeric variables such as Age, a <strong>period</strong> represents a missing value</li>
+  </ul>
+  <table border="1">
+    <tr>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>Weight</th>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>M</td>
+      <td>48</td>
+      <td>128.6</td>
+    </tr>
+    <tr>
+      <td>Laverne</td>
+      <td>M</td>
+      <td>58</td>
+      <td>158.3</td>
+    </tr>
+    <tr>
+      <td>Jaffe</td>
+      <td>F</td>
+      <td>.</td>
+      <td>115.5</td>
+    </tr>
+    <tr>
+      <td>Wilson</td>
+      <td>M</td>
+      <td>28</td>
+      <td>170.1</td>
+    </tr>
+  </table>
+
+  <!-- Page 19 -->
+
+
+  <!-- Topic 6 Subtopic 3-->
+  <h3 class="subtopic" id="topic6_subtopic3">Length</h3>
+  <p>A variable's <strong>length</strong> (the number of bytes used to store it) is related to its type.</p>
+  <ul>
+    <li>Character variables can be up to <strong>32,767 bytes</strong> long. In the example below, Name has a
+        length of 20 characters and uses 20 bytes of storage
+    </li>
+    <li>All numeric variables have a default length of <strong>8</strong>. Numeric values (no matter how many
+        digits they contain) are stored as floating-point numbers in 8 bytes of storage, unless you
+        specify a different length
+    </li>
+  </ul>
+  <img src="images/ch1_image16.png" style="max-width:100%;"/>
+  <p>
+     You've seen that each SAS variable has a name, type, and length. In addition, you can define
+     <strong>format</strong>, <strong>informat</strong>, and <strong>label</strong> attributes for variables. Let's look briefly at these optional
+     attributes- you'll learn more about them in later chapters as you need to use them.
+  </p>
+
+  <!-- Topic 6 Subtopic 4-->
+  <h3 class="subtopic" id="topic6_subtopic4">Format</h3>
+  <p>Formats are variable attributes that affect the way data values are written. SAS software offers a
+     variety of character, numeric, and date and time formats. You can also create and store your own
+     formats. To write values out using a particular form, you select the appropriate format.
+  </p>
+  <img src="images/ch1_image17.png" style="max-width:100%;"/>
+  <p>For example, to display the value 1234 as $1234.00 in a report, you can use the DOLLAR8.2
+     format, as shown for Total below.
+  </p>
+  <img src="images/ch1_image18.png" style="max-width:100%;"/>
+  <p>Usually you have to specify the maximum width (<strong>w</strong>) of the value to be written. Depending on the
+     particular format, you might also need to specify the number of decimal places (d) to be written.
+     For example, to display the value 5678 as 5,678.00 in a report, you can use the COMMA8.2
+     format, which specifies a width of 8 including 2 decimal places.
+  </p>
+
+  <!-- Page 20 -->
+
+  <!-- Topic 6 Subtopic 5-->
+  <h3 class="subtopic" id="topic6_subtopic5">Informat</h3>
+
+  <p>Whereas <strong>formats</strong> write values <strong>out</strong> by using some particular form, <strong>informats</strong> read data values in
+     certain forms <strong>into</strong> standard SAS values. Informats determine how data values are read into a
+     SAS data set. You <strong>must</strong> use informats to read numeric values that contain letters or other special
+     characters.
+  </p>
+  <img src="images/ch1_image19.png" style="max-width:100%;"/>
+  <p>For example, the numeric value $1,234.00 contains two special characters, a dollar sign ($) and a
+     comma (,). You can use an informat to read the value while removing the dollar sign and comma,
+     and then store the resulting value as a standard numeric value. For Total below, the
+     COMMA10. informat is specified.
+  </p>
+  <img src="images/ch1_image20.png" style="max-width:100%;"/>
+
+  <!-- Topic 6 Subtopic 6-->
+  <h3 class="subtopic" id="topic6_subtopic6">Label</h3>
+
+  <p>A variable can have a <strong>label</strong>, which consists of descriptive text up to 256 characters long. By
+     default, many reports identify variables by their names. You might want to display more
+     descriptive information about the variable by assigning a label to the variable.
+     <br/><br/>
+     For example, you can label Policy as <strong>Policy Number</strong>, Total as <strong>Total Balance</strong>, and Name as
+     <strong>Patient Name</strong> to display these labels in reports.
+  </p>
+  <img src="images/ch1_image21.png" style="max-width:100%;"/>
+  <p>You might even want to use labels to shorten long variable names in your reports. Assigning
+     labels to variables is discussed in Chapter, Creating List Reports.
+  </p>
+
+  <!-- Page 21 -->
+
+  <img src="images/ch1_image22.png" style="max-width:100%;"/>
+  <p>This data set has four observations, each containing information about an individual. A SAS data
+     set can store any number of observations.     
+  </p>
+  
+  <!-- Topic 6 Subtopic 7 -->
+  <h3 class="subtopic" id="topic6_subtopic7">Variables (Columns)</h3>
+
+  <p><strong>Columns</strong> (called <strong>variables</strong>) in the data set are collections of values that describe a particular
+     characteristic. The values Jones, Laverne, Jaffe, and Wilson constitute the variable Name in the
+     data set shown below.
+  </p>
+  <img src="images/ch1_image23.png" style="max-width:100%;"/>
+  <p>
+    This data set contains four variables for each observation: Name, Sex, Age, and Weight. A
+    SAS data set can store thousands of variables.
+  </p>
+
+  <!-- Topic 6 Subtopic 8 -->
+  <h3 class="subtopic" id="topic6_subtopic8">Missing Values</h3>
+
+  <p>The rectangular arrangement of rows and columns in a SAS data set implies that every variable
+     must exist for each observation. If a data value is unknown for a particular observation, a missing
+     value is recorded in the SAS data set.</p>
+  <img src="images/ch1_image24.png" style="max-width:100%;"/>
+
+  <!-- Page 22 -->
+
+  <!-- Topic 7 -->  
+  <h2 class="topic" id="topic7">Summary</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+
+  <h4>Components of SAS Programs</h4>
+  <p><strong>SAS programs</strong> consist of two types of steps: DATA steps and PROC (procedure) steps. These
+     two steps, alone or combined, form most SAS programs. A SAS program can consist of a DATA
+     step, a PROC step, or any combination of DATA and PROC steps. <strong>DATA steps</strong> typically create
+     or modify SAS data sets, but they can also be used to produce custom-designed reports. <strong>PROC
+     steps</strong> are pre- written routines that enable you to analyze and process the data in a SAS data set
+     and to present the data in the form of a report. PROC steps sometimes create new SAS data sets
+     that contain the results of the procedure.
+  </p>
+
+  <h4>Characteristics of SAS Programs</h4>
+  <p>SAS programs consist of <strong>SAS statements</strong>. A SAS statement usually begins with a SAS keyword
+     and always ends with a semicolon. A DATA step begins with the keyword DATA. A PROC step
+     begins with the keyword PROC. SAS statements are in free format, so they can begin and end
+     anywhere on a line. One statement can continue over several lines, and several statements can
+     be on a line. Blanks or special characters separate "words" in a SAS statement.
+  </p>
+
+  <h4>Processing SAS Programs</h4>
+  <p>When you submit a SAS program, SAS reads SAS statements and checks them for errors. When
+     it encounters a subsequent DATA, PROC, RUN, or QUIT statement, SAS executes the previous
+     step in the program.
+     <br/><br/>
+     Each time a step is executed, SAS generates a log of the processing activities and the results of
+     the processing. The SAS log collects messages about the processing of SAS programs and
+     about any errors that occur.
+     <br/><br/>
+     The results of processing can vary. Some SAS programs open an interactive window or invoke
+     procedures that create output in the form of a report. Other SAS programs perform tasks such as
+     sorting and managing data, which have no visible results other than messages in the log.
+  </p>
+
+  <h4>SAS Libraries</h4>
+  <p>Every SAS file is stored in a <strong>SAS library</strong>, which is a collection of SAS files such as SAS data sets
+     and catalogs. In some operating environments, a SAS library is a physical collection of files. In
+     others, the files are only logically related. In the Windows and UNIX environments, a SAS library
+     is typically a group of SAS files in the same folder or directory.
+     <br/><br/>
+     Depending on the libref you use, you can store SAS files in temporary SAS libraries or in
+     permanent SAS libraries.
+  </p>
+  <ul>
+    <li>Temporary SAS files that are created during the session are held in a special workspace
+        that is assigned the default libref <strong>Work</strong>. If you don't specify a libref when you create a file (or
+        if you specify <strong>Work</strong>), then the file is stored in the temporary SAS library. When you end the
+        session, the temporary library is deleted
+    </li>
+    <li>To store a file permanently in a SAS library, you assign it a libref other than the default
+        <strong>Work</strong>. For example, by assigning the libref <strong>Clinic</strong> to a SAS library, you specify that files
+        within the library are to be stored until you delete them
+    </li>
+  </ul>
+
+  <!-- Page 23 -->
+
+  <h4>Referencing SAS Files</h4>
+  <p>To reference a SAS file, you use a two-level name, <strong>libref.filename</strong>. In the two-level name, <strong>libref</strong>
+     is the name for the SAS library that contains the file, and filename is the name of the file itself. A
+     period separates the libref and filename.
+     <br/><br/>
+     To reference temporary SAS files, you specify the default libref <strong>Work</strong>, a period, and the filename.
+     Alternatively, you can simply use a one-level name (the filename only) to reference a file in a
+     temporary SAS library. Referencing a SAS file in any library <strong>except Work</strong> indicates that the SAS
+     file is stored permanently.
+     <br/><br/>
+     SAS data set names can be 1 to 32 characters long, must begin with a letter (A-Z, either
+     uppercase or lowercase) or an underscore (_), and can continue with any combination of
+     numbers, letters, or underscores.
+  </p>
+
+  <h4>Overview of SAS Data Sets</h4>
+  <p>For many of the data processing tasks that you perform with SAS, you access data in the form of
+     a <strong>SAS data set</strong> and use SAS programs to analyze, manage, or present the data. Conceptually, a
+     SAS data set is a file that consists of two parts: a descriptor portion and a data portion. Some
+     SAS data sets also contain one or more indexes, which enable SAS to locate records in the data
+     set more efficiently.
+     <br/><br/>
+     The <strong>descriptor portion</strong> of a SAS data set contains information about the data set.
+     <br/><br/>
+     The <strong>data portion</strong> of a SAS data set is a collection of data values that are arranged in a
+     rectangular table. <strong>Observations</strong> in the data set correspond to rows or data lines in a raw data file
+     or in an external database. An observation is the information about each object in a SAS data set.
+     <strong>Variables</strong> in the data set correspond to columns in a raw data file or in an external database. A
+     variable is the set of data values that describe a particular characteristic. If a data value is
+     unknown for a particular observation, a missing value is recorded in the SAS data set.
+  </p>
+
+  <h4>Variable Attributes</h4>
+  <p>In addition to general information about the data set, the descriptor portion contains attribute
+     information for each variable in the data set. The attribute information includes the variable's
+     name, length, and type. A variable's type determines how missing values for a variable are
+     displayed by SAS. For character variables, a <strong>blank</strong> represents a missing value. For numeric
+     variables, a <strong>period</strong> represents a missing value.
+  </p>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
+  <ul>
+    <li>Before referencing SAS files, you must assign a name (libref, or library reference) to the
+        library in which the files are stored (or specify that SAS is to assign the name automatically)
+    </li>
+    <li>You can store SAS files either temporarily or permanently</li>
+    <li>Variable names follow the same rules as SAS data set names. However, your site might
+        choose to restrict variable names to those valid in SAS Version 6, to uppercase variable
+        names automatically, or to remove all restrictions on variable names
+    </li>
+  </ul>
+
+<div> <!-- end of content -->
+
+
+</body>
+</html>

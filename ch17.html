@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1-->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>Raw data can be organized in several ways.</p>
+  <p>This external file contains data that is arranged in columns or fixed fields. You can specify a
+     beginning and ending column for each field. However, this file contains nonstandard data,
+     because one of the variable's values includes a special character, the dollar sign ($).
+  </p>
+  <img src="images/ch17_image1.png" class="diagram" />
+  <br/><br/>
+  <p>This external file contains no special characters, but its data is free format, meaning that it is not
+     arranged in columns. Notice that the values for a particular field do not begin and end in the same
+     columns.
+  </p>
+  <img src="images/ch17_image2.png" class="diagram" />
+  <p>How your data is organized and what type of data you have determine which input style you
+     should use to read the data. SAS provides three primary input styles- column input, formatted
+     input, and list input. This chapter teaches you how to use <strong>column input</strong> and <strong>formatted input</strong> to
+     read standard and nonstandard data that is arranged in fixed fields.
+  </p>
+
+  <!-- Topic 1 Subtopic 2-->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>distinguish between standard and nonstandard numeric data</li>
+    <li>read standard fixed-field data</li>
+    <li>read nonstandard fixed-field data</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Review of Column Input</h2>
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Introduction</h3>
+
+  <p>In the Chapter, <strong>Creating SAS Data Sets from Raw Data</strong>, you learned how to use column input to
+     read raw data that is stored in an external file.
+  </p>
+  <p>You can use column input to read the values for <i>Item, IDnum, InStock</i>, and <i>BackOrd</i> from
+     the raw data file that is referenced by the fileref <strong>Invent</strong>.
+  </p>
+  <pre>
+  input Item $ 1-13 IDnum $ 15-19 InStock 21-22
+        BackOrd 24-25;</pre>
+
+  <img src="images/ch17_image3.png" class="diagram" />
+  <p>Notice that the INPUT statement lists the variables with their corresponding column locations in
+     order from left to right. However, one of the features of column input is the ability to read fields in
+     any order.
+  </p>
+  <p>For example, you could have read the values for <i>InStock</i> and <i>BackOrd</i> before the values for
+     <i>Item</i> and <i>IDnum</i>.
+  </p>
+  <pre>
+  input InStock 21-22 BackOrd 24-25 Item $ 1-13
+        IDnum $ 15-19;</pre>
+
+  <p>When you print a report that is based on this data set, by default, the variables will be listed in the
+     order in which they were created.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>20</td>
+      <td>BIRD FEEDER</td>
+      <td>LG088</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>12</td>
+      <td>GLASS MUGS</td>
+      <td>SB082</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>6</td>
+      <td>GLASS TRAY</td>
+      <td>BQ049</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>20</td>
+      <td>PADDED HANGRS</td>
+      <td>MN256</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>0</td>
+      <td>JEWELRY BOX</td>
+      <td>AJ498</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>12</td>
+      <td>RED APRON</td>
+      <td>AQ072</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>0</td>
+      <td>CRYSTAL VASE</td>
+      <td>AQ672</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>0</td>
+      <td>PICNIC BASKET</td>
+      <td>LS930</td>
+    </tr>
+  </table>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Column Input Features</h3>
+
+  <p>Column input has several features that make it useful for reading raw data.</p>
+  <ul>
+    <li>It can be used to read character variable values that contain embedded blanks</li>
+    <li>input Name $ 1-25; 
+        <br/>
+        <img src="images/ch17_image4.png" class="diagram" />
+    </li>
+    <li>No placeholder is required for missing data. A blank field is read as missing and does not
+        cause other fields to be read incorrectly.
+    </li>
+    <li>input Item $ 1-13 IDnum $ 15-19
+        Instock 21-22 Backord 24-25;
+        <br/>
+        <img src="images/ch17_image5.png" class="diagram" />
+    </li>
+    <li>Fields or parts of fields can be re-read</li>
+    <li>input Item $ 1-13 IDnum $ 15-19 Supplier $ 15-16
+              InStock 21-22 BackOrd 24-25;
+        <br/>
+        <img src="images/ch17_image6.png" class="diagram" />
+    </li>
+    <li>Fields do not have to be separated by blanks or other delimiters</li>
+    <li>input Item $ 1-13 IDnum $ 14-18 InStock 19-20 <br/>
+              BackOrd 21-22;
+        <br/>
+        <img src="images/ch17_image7.png" class="diagram" />
+    </li>
+  </ul>
+
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Identifying Standard and Nonstandard Numeric Data</h2>
+  
+  <!-- Topic 3  Subtopic 1-->
+  <h3 class="subtopic" id="topic3_subtopic1">Standard Numeric Data</h3>
+  
+  <p>Standard numeric data values can contain only</p>
+  <ul>
+    <li>numbers</li>
+    <li>decimal points</li>
+    <li>numbers in scientific, or E, notation (23E4)</li>
+    <li>minus signs and plus signs</li>
+  </ul>
+
+  <p>Some examples of standard numeric data are <i>15, -15, 15.4, +.05, 1.54E3, and -1.54E-3</i>.</p>
+
+  <!-- Topic 3  Subtopic 2-->
+  <h3 class="subtopic" id="topic3_subtopic2">Nonstandard Numeric Data</h3>
+  <p>Nonstandard numeric data includes</p>
+  <ul>
+    <li>values that contain special characters, such as percent signs (%), dollar signs ($), and
+        commas (,)
+    </li>
+    <li>date and time values</li>
+    <li>data in fraction, integer binary, real binary, and hexadecimal forms</li>
+  </ul>
+  <p>The external file that is referenced by the fileref <strong>Empdata</strong> contains the personnel information for
+     the technical writing department of a small computer manufacturer. The fields contain values for
+     each employee's last name, first name, job title, and annual salary.
+  </p>
+  <img src="images/ch17_image8.png" class="diagram" />
+  <p>Notice that the values for <i>Salary</i> contain commas. So, the values for <i>Salary</i> are considered to
+     be nonstandard numeric values.
+  </p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Choosing an Input Style</h2>  
+
+  <p>Nonstandard data values require an input style that has more flexibility than column input.</p>
+  <p>You can use <strong>formatted input</strong>, which combines the features of column input with the ability to
+     read both standard and nonstandard data.
+  </p>
+  <img src="images/ch17_image9.png" class="diagram" />
+  <p>Whenever you encounter raw data that is organized into fixed fields, you can use</p>
+  <ul>
+    <li>column input to read standard data only</li>
+    <li>formatted input to read both standard and nonstandard data</li>
+  </ul>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Using Formatted Input</h2>  
+  
+  <!-- Topic 5 Subtpic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">General Form of the INPUT Statement Using Formatted Input</h3>
+  <p>Formatted input is a very powerful method for reading both standard and nonstandard data in
+     fixed fields.
+  </p>
+  <hr/>
+  <p><strong>General form, INPUT statement using formatted input:</strong></p>
+  <p><strong>INPUT</strong> &lt;pointer-control7gt; variable informat.;</p>
+  <p>where</p>
+  <ul>
+    <li><i>pointer-control</i> positions the input pointer on a specified column</li>
+    <li><i>variable</i> is the name of the variable that is being created</li>
+    <li><i>informat</i> is the special instruction that specifies how SAS reads raw data</li>
+  </ul>
+  <hr/>
+
+  <p>In this chapter, you will learn to work with two <strong>column pointer controls</strong>.</p>
+  <ul>
+    <li>The @n moves the input pointer to a specific column number</li>
+    <li>The +n moves the input pointer forward to a column number that is relative to the current
+        position
+    </li>
+  </ul>
+ 
+  <p>Let's first take a look at the @n column pointer control.</p>
+
+  <!-- Topic 5 Subtpic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Using the @n Column Pointer Control</h3>
+
+  <p>The @n is an absolute pointer control that moves the input pointer to a specific column number.</p>
+  <p>The @ moves the pointer to column n, which is the first column of the field that is being read.</p>
+  <hr/>
+  <p><strong>General form, INPUT statement using formatted input and the @n pointer control</strong>:</p>
+  <p><strong>INPUT</strong> @n variable informat.;</p>
+  <ul>
+    <li><i>variable</i> is the name of the variable that is being created</li>
+    <li><i>informat</i> is the special instruction that specifies how SAS reads raw data</li>
+  </ul>
+  <hr/>
+
+  <p>Let's use the @n pointer control to locate variable values in the external file Empdata. As you
+     can see, the values for LastName begin in column 1. We could start with the @1 pointer control.
+  </p>
+  <pre>input @1 LastName $7.</pre>
+  <p>However, the default column pointer location is column 1, so you do not need to use a column
+     pointer control to read the first field.
+  </p>
+  <pre>input LastName $7.</pre>
+  <img src="images/ch17_image10.png" class="diagram" />
+  <p>Next, the values for FirstName begin in column 9. To point to column 9, use an @ sign and the
+     column number in the INPUT statement:
+  </p>
+  <pre>input LastName $7. @9 FirstName $5.</pre>
+  <img src="images/ch17_image11.png" class="diagram" />
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The $7. and $5. informats are explained later in this chapter.</td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 Subtpic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Reading Columns in Any Order</h3>
+
+  <p>Column pointer controls are very useful. For example, you can use the @n to move a pointer
+     forward or backward when reading a record.
+  </p>
+  <p>In this INPUT statement, the value for <i>FirstName</i> is read first, starting in column 9.</p>
+  <pre>input @9 FirstName $5.</pre>
+  <img src="images/ch17_image12.png" class="diagram" />  
+  <p>Now let's read the values for <i>LastName</i>, which begin in the first column. Here you must use the
+     @n pointer control to move the pointer back to column 1.
+  </p>
+  <pre>input @9 FirstName $5. @1 LastName $7.</pre>
+  <img src="images/ch17_image13.png" class="diagram" />  
+
+  <p>The rest of the INPUT statement specifies the column locations of the raw data value for
+     <i>JobTitle</i> and <i>Salary</i>.
+  </p>
+  <pre>
+  input @9 FirstName $5. @1 LastName $7. @15 JobTitle 3.
+        @19 Salary comma9.;</pre>
+  <img src="images/ch17_image14.png" class="diagram" />  
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The $5., $7., 3., and comma9. informats are explained later in this chapter</td>
+    </tr>
+  </table>
+
+ 
+  <!-- Topic 5 Subtpic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">The +n Pointer Control</h3>
+  <p>The +n pointer control moves the input pointer forward to a column number that is relative to the
+     current position. The + moves the pointer forward n columns.
+  </p>
+  <hr/>
+  <p><strong>General form, INPUT statement using formatted input and the +n pointer control:</strong></p>
+  <p><strong>INPUT</strong> +n variable informat.;</p>
+  <ul>
+    <li><i>variable</i> is the name of the variable that is being created</li>
+    <li><i>informat</i> is the special instruction that specifies how SAS reads raw data</li>
+  </ul>
+  <hr/>
+
+  <p>In order to count correctly, it is important to understand where the column pointer control is
+     located after each data value is read. Let's look at an example.
+  </p>
+  <p>Suppose you want to read the data from Empdata in the following order: <i>LastName,
+     FirstName, Salary, JobTitle</i>. Like the @n pointer control, the default column location for
+     the +n pointer control is column 1. Because the values for LastName begin in column 1, a
+     column pointer control is not needed.
+  </p>
+  <pre>input LastName $7.</pre>
+  <img src="images/ch17_image15.png" class="diagram" />
+  <p>With formatted input, the column pointer control moves to the first column following the field that
+     was just read. In this example, after <i>LastName</i> is read, the pointer moves to column 8.
+  </p>
+  <img src="images/ch17_image16.png" class="diagram" />
+
+  <p>To start reading <i>FirstName</i>, which begins in column 9, you move the column pointer control
+     ahead 1 column with +1.
+  </p>
+  <pre>input LastName $7. +1 FirstName $5.</pre>
+  <img src="images/ch17_image17.png" class="diagram" />
+
+  <p>After reading <i>FirstName</i>, the column pointer moves to column 14. Now you want to skip over
+     the values for <i>JobTitle</i> and read the values for <i>Salary</i>, which begin in column 19. Move the
+     column pointer ahead 5 columns from column 14.
+  </p>
+  <pre>input LastName $7. +1 FirstName $5. +5 Salary comma9.</pre>
+  <img src="images/ch17_image18.png" class="diagram" />
+
+  <p>The last field to be read contains the values for JobTitle. You can use the @n column pointer
+     control to return to column 15.
+  </p>
+  <pre>
+  input LastName $7. +1 FirstName $5. +5 Salary comma9.
+        @15 JobTitle 3.;</pre>
+  <img src="images/ch17_image19.png" class="diagram" />
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The $7., $5., comma9., and 3. informats are explained later in this chapter</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can use the notation +(-n) to move the +n pointer control backward</td>
+    </tr>
+  </table>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Using Informats</h2>
+  
+  <p>Remember that the general form of the INPUT statement for formatted input is</p>
+  <hr/>
+  <p><strong>INPUT</strong> <pointer-control> variable informat.;</p>
+  <hr/>
+  <p>An informat is an instruction that tells SAS how to read raw data. SAS provides many informats
+     for reading standard and nonstandard data values. Here is a small sample.
+  </p>
+  <table border="1">
+    <tr>
+      <td>PERCENTw.d</td>
+      <td>DATEw.</td>
+      <td>NENGOw.</td>
+    </tr>
+    <tr>
+      <td>$BINARYw.</td>
+      <td>DATETIMEw.</td>
+      <td>PDw.d</td>
+    </tr>
+    <tr>
+      <td>$VARYINGw.</td>
+      <td>HEXw.</td>
+      <td>PERCENTw.</td>
+    </tr>
+    <tr>
+      <td>$w.</td>
+      <td>JULIANw.</td>
+      <td>TIMEw.</td>
+    </tr>
+    <tr>
+      <td>COMMAw.d</td>
+      <td>MMDDYYw.</td>
+      <td>w.d</td>
+    </tr>
+  </table>
+  <br/><br/>
+  <p>Note that</p>
+  <ul>
+    <li>each informat contains a w value to indicate the width of the raw data field</li>
+    <li>each informat also contains a period, which is a required delimiter</li>
+    <li>for some informats, the optional d value specifies the number of implied decimal places</li>
+    <li>informats for reading character data always begin with a dollar sign ($)</li>
+  </ul>
+
+  <!-- Topic 6 Subtopic 1-->
+  <h3 class="subtopic" id="topic6_subtopic1">Reading Character Values</h3>
+
+  <p>The $w. informat enables you to read character data. The w represents the field width of the data
+     value (the total number of columns that contain the raw data field).
+  </p>
+  <p>In the example below, the $ indicates that FirstName is a character variable, the 5 indicates a
+     field width of five columns, and a period ends the informat.
+  </p>
+  <pre>input @9 FirstName $5.;</pre>
+  <img src="images/ch17_image20.png" class="diagram" />  
+
+  <!-- Topic 6 Subtopic 2-->
+  <h3 class="subtopic" id="topic6_subtopic2">Reading Standard Numeric Data</h3>
+
+  <p>The informat for reading standard numeric data is the w.d informat.</p>
+  <p>The w specifies the field width of the raw data value, the period serves as a delimiter, and the d
+     optionally specifies the number of implied decimal places for the value. The w.d informat ignores
+     any specified d value if the data already contains a decimal point.
+  </p>
+  <p>For example, the raw data value that is shown below contains 6 digits (4 are decimals) and 1
+     decimal point. Therefore, the w. informat requires a field width of only 7 to correctly read the raw
+     data value.
+  </p>
+  <table border="1">
+    <tr>
+       <th class="color-red">Raw Data Value</th>
+       <th class="color-red">w. Informat</th>
+       <th class="color-red">Variable Value</th>
+    </tr>
+    <tr>
+       <td colspan="3" style="text-align:center">34.0008 -> 7.-> 34.0008</td>
+    </tr>
+  </table>
+  <p>In the example that is shown below, the values for <i>JobTitle</i> in columns 15-17 contain only
+     numbers. Remember that standard numeric data values can contain only numbers, decimal
+     points, scientific notation, and plus and minus signs.
+  </p>
+
+  <p>A d value is not necessary to read the values for JobTitle. Simply move the column pointer
+     control forward 7 spaces to column 15, name the variable, and specify a field width of 3.
+  </p>
+  <pre>input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.;</pre>
+  <img src="images/ch17_image21.png" class="diagram" />    
+  <table border="0">
+    <tr>
+       <th class="color-red">Warning</th>
+       <td>Remember to specify the period in the informat name. For example, if you
+           omit the period in the following INPUT statement, SAS assigns a length of
+           3 to JobTitle instead of reading JobTitle with the 3. informat.
+           <pre>input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3;</pre>
+       </td>
+    </tr> 
+  </table>
+
+  <!-- Topic 6 Subtopic 3-->
+  <h3 class="subtopic" id="topic6_subtopic3">Reading Nonstandard Numeric Data</h3>
+
+  <p>The COMMAw.d informat is used to read numeric values and to remove embedded</p>
+  <ul>
+     <li>blanks</li>
+     <li>commas</li>
+     <li>dashes</li>
+     <li>dollar signs</li>
+     <li>percent signs</li>
+     <li>right parentheses</li>
+     <li>left parentheses, which are converted to minus signs</li>
+  </ul>
+
+  <p>The COMMAw.d informat has three parts:</p>
+  <hr/>
+    <table>
+       <tr>
+         <td>1.</td>
+         <td>the informat name</td>
+         <th>COMMA</th>
+       </tr> 
+       <tr>
+         <td>2.</td>
+         <td>a value that specifies the width of the field to be read (including dollar
+             signs, decimal places, or other special characters), followed by a period
+         </td>
+         <th>w.</th>
+       </tr> 
+       <tr>
+         <td>3</td>
+         <td>an optional value that specifies the number of implied decimal places for
+             a value (not necessary if the value already contains decimal places)
+         </td>
+         <th>d</th>
+       </tr> 
+    </table>
+  <hr/>
+  
+  <p>In the example below, the values for <i>Salary</i> contain commas, which means that they are
+     nonstandard numeric values.
+  </p>
+  <p>The values for <i>Salary</i> begin in column 19, so use the @n or +n pointer control to point to
+     column 19, and then name the variable.
+  </p>
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+     @19 Salary</pre>
+  <img src="images/ch17_image22.png" class="diagram" /> 
+
+  <p>Now add the COMMAw.d informat and specify the field width. The values end in column 27, so
+     the field width is 9 columns. Add a RUN statement to complete the DATA step.
+  </p>
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+           @19 Salary comma9.;
+  run;</pre>
+  <img src="images/ch17_image23.png" class="diagram" />   
+
+  <p>If you use PROC PRINT to display the data set, the commas are removed from the values for
+     <i>Salary</i> in the resulting output.
+  </p>
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+           @19 Salary comma9.;
+  run;
+  proc print data=perm.empinfo;
+  run;</pre>
+ 
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>DONNY</td>
+      <td>EVANS</td>
+      <td>112</td>
+      <td>29996.63</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>ALISA</td>
+      <td>HELMS</td>
+      <td>105</td>
+      <td>18567.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>JOHN</td>
+      <td>HIGGINS</td>
+      <td>111</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>AMY</td>
+      <td>LARSON</td>
+      <td>113</td>
+      <td>32696.78</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>MARY</td>
+      <td>MOORE</td>
+      <td>112</td>
+      <td>28945.89</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>JASON</td>
+      <td>POWELL</td>
+      <td>103</td>
+      <td>35099.50</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>JUDY</td>
+      <td>RILEY</td>
+      <td>111</td>
+      <td>25309.00</td>
+    </tr>
+  </table>
+
+  <p>Thus, the COMMAw.d informat does more than simply read the raw data values. It removes
+     special characters such as commas from numeric data and stores only numeric values in a SAS
+     data set.
+  </p>
+
+  <!-- Topic 6 Subtopic 4-->
+  <h3 class="subtopic" id="topic6_subtopic4">DATA Step Processing of Informats</h3>  
+
+  <p>Let's place our INPUT statement in a DATA step and submit it for processing. Remember that
+     after the DATA step is submitted, it is compiled and then executed.
+  </p>   
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+           @19 Salary comma9.;
+  run;</pre>
+
+  <p>During the compile phase, the character variables in the program data vector are defined with the
+     exact length that is specified by the informat. But notice that the lengths that are defined for
+     <i>JobTitle</i> and <i>Salary</i> in the program data vector are different from the lengths that are
+     specified by their informats.
+  </p>
+  <img src="images/ch17_image24.png" class="diagram" />   
+
+  <p>Remember, by default, SAS stores numeric values (no matter how many digits the value
+     contains) as floating-point numbers in 8 bytes of storage. The length of a stored numeric variable
+     is not affected by an informat's width nor by other column specifications in an INPUT statement.
+  </p>
+  <p>However, it is still necessary to specify the actual width of a raw data field in an INPUT statement.
+     Otherwise, if you specify a default field width of 8 for all numeric values, you'll get inappropriate
+     variable values when the program executes.
+  </p>
+  <p>In the following example, the values for JobTitle would contain embedded blanks, thus
+     creating invalid numeric values.
+  </p>
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7.
+           +7 JobTitle 8. @19 Salary comma8.;
+  run;</pre>  
+  <img src="images/ch17_image25.png" class="diagram" /> 
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Remember that the w value of the informat represents the width of the field in
+          the raw data file. The values for JobTitle only have a width of 3 in the raw
+          data file. However, because they are numeric values, SAS stores them with a
+          default length of 8.
+      </td>
+    </tr>
+  </table>  
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Record Formats</h2>
+  <p>The record format of an external file might affect how data is read with column input and
+     formatted input. A record format specifies how records are organized in a file.
+  </p>
+  <p>In some operating environments, external files can have different types of record formats. Two
+     common record formats are fixed-length records and variable-length records.
+  </p>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Fixed-Length Records</h3>
+
+  <p>External files that have a fixed-length record format have an end-of-record marker after a
+     predetermined number of columns. A typical record length is 80 columns.
+  </p>
+  <img src="images/ch17_image26.png" class="diagram" /> 
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Variable-Length Records</h3>
+
+  <p>Files that have a variable-length record format have an end-of-record marker after the last field in
+     each record.
+  </p>
+  <p>As you can see, the length of each record varies.</p>
+  <img src="images/ch17_image27.png" class="diagram" /> 
+
+  <h4>Reading Variable-Length Records</h4>
+  <p>When you are working with variable-length records that contain fixed-field data, you might have
+     values that are shorter than others or that are missing. This can cause problems when you try to
+     read the raw data into your SAS data set.
+  </p>
+  <p>For example, notice that the following INPUT statement specifies a field width of 8 columns for
+     <i>Receipts</i>. In the third record, the input pointer encounters an end-of-record marker before the
+     8th column.
+  </p>
+  <pre>input Dept $ 1-11 @13 Receipts comma8.;</pre>
+  <table>
+    <tr>
+      <th class="color-blue"></th>
+      <td>The asterisk symbolizes the end-of-record marker and is not part of the data</td>
+    </tr>
+  </table>
+  <img src="images/ch17_image28.png" class="diagram" /> 
+  <p>The input pointer moves down to the next record in an attempt to find a value for <i>Receipts</i>.
+     However, <i>GRILL</i> is a character value, and Receipts is a numeric variable. Thus, an invalid
+     data error occurs, and <i>Receipts</i> is set to missing.
+  </p>
+  <img src="images/ch17_image29.png" class="diagram" /> 
+
+  <h4>The PAD Option</h4>
+  <p>When you use column input or formatted input to read fixed-field data in variable-length records,
+     you can avoid problems by using the PAD option in the INFILE statement.The PAD option pads
+     each record with blanks so that all data lines have the same length.
+  </p>
+  <pre>infile receipts pad;</pre>
+  <img src="images/ch17_image30.png" class="diagram" /> 
+  <p>The examples in this chapter have not required the PAD option. However, when you use column
+     input or formatted input to read fixed-field data in variable-length records, remember to determine
+     whether or not you need to use the PAD option.
+  </p>
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>The PAD option is useful only when missing data occurs at the end of a
+          record and when SAS encounters an end-of-record marker before the last
+          field is completely read.
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <p>The default value of the maximum record length is determined by your operating environment. If
+     you get unexpected results when reading many variables, you might need to change the
+     maximum record length by specifying the <strong>LRECL=option</strong> in the INFILE statement. For more
+     information about the LRECL= option, see the SAS documentation for your operating
+     environment.
+  </p>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Summary</h2>
+
+  <!-- Topic 8 Subtopic 1-->
+  <h3 class="subtopic" id="topic8_subtopic1">Text Summary</h3>
+
+  <h4>Review of Column Input</h4>
+  <p>When data is arranged in columns or fixed fields, you can use column input to read them. With
+     column input, the beginning and ending column are specified for each field. Character variables
+     are identified by a dollar ($) sign.
+  </p>
+  <p>Column input has several features:</p>
+  <ul>
+    <li>Fields can be read in any order</li>
+    <li>It can be used to read character variables that contain embedded blanks</li>
+    <li>No placeholder is required for missing data. A blank field is read as missing and does not
+        cause other fields to be read incorrectly
+    </li>
+    <li>Fields or parts of fields can be re-read</li>
+    <li>Fields do not have to be separated by blanks or other delimiters</li>
+    <li>It can be used to read standard character and numeric data</li>
+  </ul>
+
+  <h4>Identifying Nonstandard Numeric Data</h4>
+  <p><strong>Standard numeric data</strong> values are values that contain only numbers, scientific notation, decimal
+     points, and plus and minus signs. When numeric data contains characters such as commas or
+     dollar signs, the data is considered to be nonstandard.
+  </p>
+  <p><strong>Nonstandard numeric data</strong> includes</p>
+  <ul>
+    <li>values that contain special characters, such as percent signs, dollar signs, and commas</li>
+    <li>date and time values</li>
+    <li>data in fraction, integer binary, real binary, and hexadecimal forms</li>
+  </ul>
+
+  <h4>Choosing an Input Style</h4>
+  <p>SAS provides two input styles for reading data in fixed fields- <strong>column input</strong> and <strong>formatted
+     input</strong>. You can use
+  </p>
+  <ul>
+    <li>column input to read standard data only</li>
+    <li>formatted input to read both standard and nonstandard data</li>
+  </ul>
+
+  <h4>Using Formatted Input</h4>
+  <p>Formatted input uses column pointer controls to position the input pointer on a specified column.
+     A column pointer control is optional when the first variable is in the first column.
+  </p>
+  <p>The @n is an absolute pointer control that moves the input pointer to a specific column number.
+     You can read columns in any order with the @n column pointer control.
+  </p>
+  <p>The +n is a relative pointer control that moves the input pointer forward to a column number that
+     is relative to the current position. The +n pointer control cannot move backward. However, you
+     can use the notation +(-n) to move the pointer control backward.
+  </p>
+
+  <h4>Using Informats</h4>
+  <p>An informat tells SAS how to read raw data. There are informats for reading standard and
+     nonstandard character values and for reading standard and nonstandard numeric data values.
+  </p>
+  <p>Informats always contain a w value to indicate the width of the raw data field. A period (.) ends
+     the informat or separates the w value from the optional d value, which specifies the number of
+     implied decimal places.
+  </p>
+
+  <h4>Record Formats</h4>
+  <p>A record format specifies how records are organized in a file. Some operating environments have
+     different types of record formats; the two most common are <strong>fixed-length records</strong> and <strong>variablelength
+     records</strong>.
+  </p>
+  <p>When you read variable-length records that contain fixed-field data into a SAS data set, there
+     might be values that are shorter than others or that are missing. The <strong>PAD option</strong> pads each
+     record with blanks so that all data lines have the same length.
+  </p>
+
+  <!-- Topic 8 Subtopic 2-->
+  <h3 class="subtopic" id="topic8_subtopic2">Points to Remember</h3>  
+  <ul>
+    <li>When you use column input or formatted input, the input pointer stops on the column
+        following the last column that was read
+    </li>
+    <li>When you use informats, you do not need to specify a d value if the data values already
+        contain decimal places
+    </li>
+    <li>Column input can be used to read standard character or standard numeric data only</li>
+    <li>Formatted input can be used to read both standard and nonstandard data</li>
+    <li>When reading variable-length records that contain fixed-field data, you can avoid
+        problems by using the PAD option in the INFILE statement
+    </li>
+  </ul>
+
+
+
+</div> <!-- end of div content -->
+
+</body>
+</html>

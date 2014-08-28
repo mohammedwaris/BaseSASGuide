@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+  <h1 class="topic" id="topic1">Overview</h1>  
+  <h4 class="subtopic" id="topic1_subtopic1">Introduction</h4>
+  <p>SAS provides many informats for reading raw data values in various forms. In Chapter,
+     <strong>Reading Raw Data in Fixed Fields</strong>, you learned how to use informats to read standard and
+     nonstandard data. In this chapter, you learn how to use a special category of SAS informats
+     called <strong>date</strong> and <strong>time informats</strong>. These informats enable you to read a variety of common date
+     and time expressions. After you read date and time values, you can also perform calculations
+     with them.
+  </p>
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+     Days=dateout-datein+1;
+     RoomCharge=days*roomrate;
+     Total=roomcharge+equipcost;
+  run;</pre>
+
+  <img src="images/ch19_image1.png" class="diagram"/>
+  
+  <h4 class="subtopic" id="topic1_subtopic2">Objectives</h4>
+  <p>In this chapter, you learn how</p>
+  <ul>
+    <li>SAS stores date and time values</li>
+    <li>to use SAS informats to read common date and time expressions</li>
+    <li>to handle two-digit date values</li>
+    <li>to calculate time intervals by subtracting two dates</li>
+    <li>to multiply a time interval by a rate</li>
+    <li>to display various date and time values</li>
+  </ul>
+
+  <h1 class="topic" id="topic2">How SAS Stores Date Values</h1>
+  <p>Before you read date or time values into a SAS data set or use those values in calculations, you
+     should understand how SAS stores date and time values.
+  </p>
+  <p>When you use a SAS informat to read a date, SAS converts it to a numeric date value. A SAS
+     date value is the number of days from January 1, 1960, to the given date.
+  </p>
+  <img src="images/ch19_image2.png" class="diagram"/>
+  <p>Here are some examples of how the appropriate SAS informat can convert different expressions
+     for the date January 2, 2000, to a single SAS date value:
+  </p>
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Date Expression</th>
+       <th class="color-red">SAS Date Informat</th>
+       <th class="color-red">SAS Date Value</th>
+    </tr>
+    <tr>
+       <td>02Jan00</td>
+       <td>DATEw.</td>
+       <td>14611</td>
+    </tr>
+    <tr>
+       <td>01-02-2000</td>
+       <td>MMDDYYw.</td>
+       <td>14611</td>
+    </tr>
+    <tr>
+       <td>02/01/00</td>
+       <td>DDMMYYw.</td>
+       <td>14611</td>
+    </tr>
+    <tr>
+       <td>2000/01/02</td>
+       <td>YYMMDDw.</td>
+       <td>14611</td>
+    </tr>
+  </table>
+  <br/>
+  <p>Storing dates and times as numeric values enables you to use dates and times in calculations in
+     much the same way as you would use any other number.
+  </p>
+
+  <h1 class="topic" id="topic3">How SAS Stores Time Values</h1>
+  <p>SAS stores <strong>time values</strong> similar to the way it stores date values. A SAS time value is stored as
+     the number of seconds since midnight.
+  </p>
+  <img src="images/ch19_image3.png" class="diagram"/>
+  <p>A SAS <strong>datetime</strong> is a special value that combines both date and time information. A SAS datetime
+     value is stored as the number of seconds between midnight on January 1, 1960, and a given date
+     and time.
+  </p>
+  <img src="images/ch19_image4.png" class="diagram"/>
+
+  <h1 class="topic" id="topic4">Reading Date and Time Informats</h1>
+  <h4 class="subtopic" id="topic4_subtopic1">Overview</h4>
+  <p>You use SAS date and time <strong>informats</strong> to read date and time expressions and convert them to
+     SAS date and time values. Like other SAS informats, date and time informats are composed of
+  </p>
+  <ul>
+    <li>an informat name</li>
+    <li>a field width</li>
+    <li>a period delimiter</li>
+  </ul>
+
+  <p>SAS informat names indicate the form of date expression that can be read using that particular
+     informat. Here are some examples of common date and time informats:
+  </p>
+  <ul>
+    <li>DATEw.</li>
+    <li>DATETIMEw.</li>
+    <li>MMDDYYw.</li>
+    <li>TIMEw.</li>
+  </ul>
+  <p>As you know, there are several ways to write a particular date. For example, all the following
+     expressions represent the date October 15, 1999. Each of these common date expressions can
+     be read using the appropriate SAS date informat.
+  </p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Date Expression</th>
+      <th class="color-red">SAS Date Informat</th>
+    </tr>
+    <tr>
+      <td>10/15/99</td>
+      <td>MMDDYYw.</td>
+    </tr>
+    <tr>
+      <td>15Oct99</td>
+      <td>DATEw.</td>
+    </tr>
+    <tr>
+      <td>10-15-99</td>
+      <td>MMDDYYw.</td>
+    </tr>
+    <tr>
+      <td>99/10/15</td>
+      <td>YYMMDDw.</td>
+    </tr>
+  </table>
+  
+  <!-- Page 504 -->
+
+  <h4 class="subtopic" id="topic4_subtopic2">Specifying Informats</h4>
+  <p>Using the INPUT statement with an informat after a variable name is the simplest way to read
+     date and time values into a variable.
+  </p>
+  <hr/>
+  <p><strong>General form, INPUT statement with an informat:</strong></p>
+  <p><strong>INPUT</strong> &lt;pointer-control&gt; variable informat.;</p>
+  <p>where</p>
+  <ul>
+    <li><i>pointer-control</i> gives the absolute or relative position of the pointer</li>
+    <li><i>variable</i> is the name of the variable that is being read</li>
+    <li><i>informat.</i> is any valid SAS informat. Note that the informat includes a final period</li>
+  </ul>
+  <hr/>
+  
+  <p>For example, the following INPUT statement uses two informats:</p>
+  <pre>input @15 Style $3. @21 Price 5.2;</pre>
+  <p>The $w. character informat ($3.) reads values, starting at column 15 of the raw data, into the
+     variable <i>Style</i>. The <i>w.d</i> numeric informat (5.2) reads values, starting at column 21, into the
+     variable <i>Price</i>.
+  </p>
+  <p>Now let’s look at some specific informats that you can use.</p>
+  
+  <!-- Topic 4 Subtopic 3 -->
+  <h4 class="subtopic" id="topic4_subtopic3">MMDDYYw. Informat</h4>
+  <p>You can tell by its name that the informat MMDDYYw. reads date values in the form 10/15/99.</p>
+  <hr/>
+  <p><strong>General form, values that are read with the MMDDYYw. informat:</strong></p>
+  <p><i>mmddyy</i> or <i>mmddyyyy</i> where</p>
+  <ul>
+    <li><i>mm</i> is an integer between 01 and 12, representing the month</li>
+    <li><i>dd</i> is an integer between 01 and 31, representing the day</li>
+    <li><i>yy</i> or <i>yyyy</i> is an integer that represents the year</li>
+  </ul>
+  <hr/>
+
+  <p></p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Date Expression</th>
+      <th class="color-red">SAS Date Informat</th>
+    </tr>
+    <tr>
+      <td>101599</td>
+      <th>MMDDYY6.</th>
+    </tr>
+    <tr>
+      <td>10/15/99</td>
+      <th>MMDDYY8.</th>
+    </tr>
+    <tr>
+      <td>10 15 99</td>
+      <th>MMDDYY8.</th>
+    </tr>
+    <tr>
+      <td>10-15-1999</td>
+      <th>MMDDYY10.</th>
+    </tr>
+  </table>
+
+  <!-- Page 505 -->
+
+  <!-- Topic 4 Subtopic 4 -->
+  <h4 class="subtopic" id="topic4_subtopic4">DATEw. Informat</h4>
+  <p>The DATEw. informat reads date values in the form 30May2000.</p>
+  <hr/>
+  <p><strong>General form, values that are read with the DATEw. informat:</strong></p>
+  <p><i>ddmmmyy or ddmmmyyyy</i></p>
+  <p>where</p>
+  <ul>
+    <li><i>dd</i> is an integer from 01 to 31, representing the day</li>
+    <li><i>mmm</i> is the first three letters of the month’s name</li>
+    <li><i>yy</i> or <i>yyyy</i> is an integer that represents the year</li>
+  </ul>
+  <hr/>
+
+  <p></p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Date Expression</th>
+      <th class="color-red">SAS Date Informat</th>
+    </tr>
+    <tr>
+      <td>30May00</td>
+      <th>DATE7.</th>
+    </tr>
+    <tr>
+      <td>30May2000</td>
+      <th>DATE9.</th>
+    </tr>
+    <tr>
+      <td>30-May-2000</td>
+      <th>DATE11.</th>
+    </tr>
+  </table>
+
+  <h4 class="subtopic" id="topic4_subtopic5">TIMEw. Informat</h4>
+  <p>The TIMEw. informat reads values in the form <i>hh:mm:ss.ss</i>.</p>
+  <hr/>
+  <p><strong>General form, values that are read with the TIMEw. informat:</strong></p>
+  <p>hh:mm:ss.ss</p>
+  <p>where</p>
+  <ul>
+     <li><i>hh</i> is an integer from 00 to 23, representing the hour</li>
+     <li><i>mm</i> is an integer from 00 to 59, representing the minute</li>
+     <li><i>ss.ss</i> is an optional field that represents seconds and hundredths of seconds</li>
+  </ul>
+  <hr/>
+
+  <p></p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Time Expression</th>
+      <th class="color-red">SAS Time Informat</th>
+    </tr>
+    <tr>
+      <td>17:00:01.34</td>
+      <th>TIME11.</th>
+    </tr>
+    <tr>
+      <td>17:00</td>
+      <th>TIME5.</th>
+    </tr>
+    <tr>
+      <td>2:34</td>
+      <th>TIME5.</th>
+    </tr>
+  </table>
+  <br/>
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Notice the last example. The field is only 4 columns
+          wide, but a w value of 5 is specified. Five is the
+          minimum acceptable field width for the TIMEw.
+          informat. If you specify a w value less than 5, you'll
+          <strong>receive the following error message in the SAS log</strong>:
+          <p><span class="color-red">SAS Log</span><br/>
+          ERROR 29 - 85: Width specified for <br/>
+          informat <br/>
+          TIME is invalid.</p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Page 506 -->
+
+  <h4 class="subtopic" id="topic4_subtopic6">DATETIMEw. Informat</h4>
+  <p>The DATETIMEw. informat reads expressions that are composed of two parts, a date value and a
+     time value, in the form: <i>ddmmmyy hh:mm:ss.ss</i>.
+  </p>
+  <hr/>
+  <p><strong>General form, values that are read with the DATETIMEw. informat:</strong></p>
+  <p><i>ddmmmyy hh:mm:ss.ss</i></p>
+  <p>where</p>
+  <ul>
+    <li><i>ddmmmyy</i> is the date value, the same form as for the DATEw. informat</li>
+    <li>the time value must be in the form <i>hh:mm:ss.ss</i></li>
+    <li><i>hh</i> is an integer from 00 to 23, representing the hour</li>
+    <li><i>mm</i> is an integer from 00 to 59, representing the minute</li>
+    <li><i>ss.ss</i> is an optional field that represents seconds and hundredths of seconds</li>
+    <li>the date value and time value are separated by a blank or other delimiter</li>
+  </ul>
+  <hr/>
+
+  <p>If you do not enter a value for <i>ss.ss</i>, a value of zero is assumed.</p>
+  <p>Here are some examples of the DATETIMEw. informat. Note that in the time value, you must use
+     delimiters to separate the values for hour, minutes, and seconds.
+  </p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Date and Time Expression</th>
+      <th class="color-red">SAS Datetime Informat</th>
+    </tr>
+    <tr>
+      <td>30May2000:10:03:17.2</td>
+      <td>DATETIME20.</td>
+    </tr>
+    <tr>
+      <td>30May00 10:03:17.2</td>
+      <td>DATETIME18.</td>
+    </tr>
+    <tr>
+      <td>30May2000/10:03</td>
+      <td>DATETIME15.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 Subtopic 7 -->
+  <h4 class="subtopic" id="topic4_subtopic7">YEARCUTOFF= SAS System Option</h4>
+  <p>Recall from Chapter, <strong>Referencing Files and Setting Options</strong>, that the value of the
+     YEARCUTOFF= system option affects only <strong>two-digit year values</strong>. A date value that contains a
+     four-digit year value will be interpreted correctly even if it does not fall within the 100-year span
+     set by the YEARCUTOFF= system option
+  </p>
+  <table border="1">
+    <tr>
+       <th class="color-red">Date Expression</th>
+       <th class="color-red">SAS Date Informat</th>
+       <th class="color-red">Interpreted As</th>
+    </tr>
+    <tr>
+      <td>06Oct59</td>
+      <td>date7.</td>
+      <td>06Oct1959</td>
+    </tr>
+    <tr>
+      <td>17Mar1783</td>
+      <td>date9.</td>
+      <td>17Mar1783</td>
+    </tr>
+  </table>
+  <br/>
+  <p>However, if you specify an inappropriate field width, you will receive incorrect results. Notice that
+     the date expression in the table below contains a four-digit year value. The informat specifies a <strong>w</strong>
+     value that is too small to read the entire value, so the last two digits of the year are truncated.
+  </p>
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Date Expression</th>
+       <th class="color-red">SAS Date Informat</th>
+       <th class="color-red">Interpreted As</th>
+    </tr>
+    <tr>
+      <td>17Mar1783</td>
+      <td>date7.</td>
+      <td>17Mar1917</td>
+    </tr>
+  </table>
+  <br/>
+  <p>Another problem arises if you use the wrong informat to read a date or time expression. The SAS
+     log displays an invalid data message, and the variable’s values are set to missing.
+  </p>
+  <img src="images/ch19_image5.png" class="diagram"/>
+  <br/><br/>
+  <p class="color-red">SAS Log</p>
+  <hr/>
+  3 input birthday date8.;<br/>
+  4 run;<br/>
+  NOTE: Invalid data for BIRTHDAY in line 3 1-8.<br/>
+  RULE: ----+----1----+----3----+----4----+----5<br/>
+  3 03/23/98<br/>
+  BIRTHDAY=. _ERROR_=1 _N_=1<br/>
+  <hr/>
+
+  <p>When you work with date and time values,</p>
+  <ul>
+    <li>check the default value of the YEARCUTOFF= system option, and change it if necessary.
+        The default YEARCUTOFF= value is 1920. Recall that you can use the OPTIONS
+        procedure to display the current setting of system options
+    </li>
+    <li>specify the proper informat for reading a date value</li>
+    <li>specify the correct field width so that the entire date value is read</li>
+    <table>
+      <tr>
+         <th class="color-blue">Note</th>
+         <td>Later in this chapter, you’ll learn how to work with data values that contain
+             delimiters
+         </td>
+      </tr>
+    </table>
+  </ul>
+
+  <h1 class="topic" id="topic5">Using Dates and Times in Calculations</h1>
+  <h4 class="subtopic" id="topic5_subtopic1">Introduction</h4>
+  <p>In this chapter so far, you’ve learned how date and time informats read common date and time
+     expressions in specific forms. Now you will see how converting date and time expressions to
+     numeric SAS date values can be useful, particularly for determining time intervals or performing
+     calculations.
+  </p>
+  <p>Suppose you work in the billing department of a small community hospital. It’s your job to create a
+     SAS data set from the raw data file that is referenced by the fileref <strong>Aprdata</strong>. A portion of the raw
+     data file below shows data values that represent each patient's
+  </p>
+  <ul>
+    <li>last name</li>
+    <li>date checked in</li>
+    <li>date checked out</li>
+    <li>daily room rate</li>
+    <li>equipment cost</li>
+  </ul>
+  <img src="images/ch19_image6.png" class="diagram"/>
+
+  <h3>Example</h3>
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>The following example is shown with the YEARCUTOFF= system option.
+          When you work with two-digit year data, remember to check the default
+          value of the YEARCUTOFF= option, and change it if necessary
+      </td>
+    </tr>
+  </table>
+
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8.</pre>
+
+  <p>Notice that the values in the second and third fields are in the form mmddyy. To complete the
+     INPUT statement, add instructions to read the values for RoomRate (third field) and EquipCost
+     (fourth field), and add a semicolon.
+  </p>
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+           mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;</pre>
+
+  <p>Now that the INPUT statement is complete, calculate how many days each patient was
+     hospitalized. Because <i>DateIn</i> and <i>DateOut</i> are numeric variables, you can simply subtract to
+     find the difference. But because the dates should be inclusive (patients are charged for both the
+     first and last days), you must add 1 to the difference. Call this new variable <i>Days</i>.
+  </p>
+
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+           mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+     Days=dateout-datein+1;</pre>
+
+  <p>You can calculate a total room charge by multiplying the variable values for <i>Days</i> and <i>RoomRate</i>.</p>
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+           mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+     Days=dateout-datein+1;
+     RoomCharge=days*roomrate;</pre>
+
+  <p>Calculating the total cost for each patient is easy. Create a variable named <i>Total</i> whose value is
+     the sum of <i>RoomCharge</i> and <i>EquipCost</i>. Then add a PROC PRINT step and a RUN statement
+     to view the new data.
+  </p>
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+           mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+     Days=dateout-datein+1;
+     RoomCharge=days*roomrate;
+     Total=roomcharge+equipcost;
+  run;
+  proc print data=perm.aprbills;
+  run;</pre>
+
+  <table>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">DateIn</th>
+      <th class="color-red">DateOut</th>
+      <th class="color-red">RoomRate</th>
+      <th class="color-red">EquipCost</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">RoomCharge</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Akron</td>
+      <td>14339</td>
+      <td>14343</td>
+      <td>175</td>
+      <td>298.45</td>
+      <td>5</td>
+      <td>875</td>
+      <td>1173.45</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Brown</td>
+      <td>14346</td>
+      <td>14365</td>
+      <td>125</td>
+      <td>326.78</td>
+      <td>20</td>
+      <td>2500</td>
+      <td>2826.78</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Carnes</td>
+      <td>14361</td>
+      <td>14363</td>
+      <td>125</td>
+      <td>174.24</td>
+      <td>3</td>
+      <td>375</td>
+      <td>549.24</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Denison</td>
+      <td>14345</td>
+      <td>14346</td>
+      <td>175</td>
+      <td>87.41</td>
+      <td>2</td>
+      <td>350</td>
+      <td>437.41</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Fields</td>
+      <td>14349</td>
+      <td>14356</td>
+      <td>175</td>
+      <td>378.96</td>
+      <td>8</td>
+      <td>1400</td>
+      <td>1778.96</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jamison</td>
+      <td>14350</td>
+      <td>14357</td>
+      <td>125</td>
+      <td>346.28</td>
+      <td>8</td>
+      <td>1000</td>
+      <td>1346.28</td>
+    </tr>
+  </table>
+
+  <p>If the values for <i>DateIn</i> and <i>DateOut</i> look odd to you, remember that these are SAS date
+     values. Applying a format such as MMDDYY8. displays them as they appeared in <strong>Aprdata</strong>. You’ll
+     work with some other date and time formats later in this chapter.
+  </p>
+  <p>Follow the execution of the program that you’ve written. When the DATA step executes, the
+     values for <i>DateIn</i> and <i>DateOut</i> are converted to SAS date values.
+  </p>
+  <pre>
+  options yearcutoff=1920;
+  data perm.aprbills;
+     infile aprdata;
+     input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+           mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+     Days=dateout-datein+1;
+     RoomCharge=days*roomrate;
+     Total=roomcharge+equipcost;
+     run;</pre>
+     <img src="images/ch19_image7.png" class="diagram" />
+     <br/>
+     <img src="images/ch19_image8.png" class="diagram" />
+
+     <p>After the rest of the INPUT statement executes, the value for Days is created by subtracting the
+        SAS date value for <i>DateIn</i> from the value for <i>DateOut</i> and then adding 1.
+     </p>
+     <pre>
+     options yearcutoff=1920;
+     data perm.aprbills;
+        infile aprdata;
+        input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+              mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+        Days=dateout-datein+1;
+        RoomCharge=days*roomrate;
+        Total=roomcharge+equipcost;
+     run;</pre>
+     <img src="images/ch19_image9.png" class="diagram" />
+     <p>The value for <i>RoomCharge</i> is calculated next. <i>RoomCharge</i> is the product of <i>Days</i> and
+        <i>RoomRate</i>.
+     </p>
+     <pre>
+     options yearcutoff=1920;
+     data perm.aprbills;
+        infile aprdata;
+        input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+              mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+        Days=dateout-datein+1;
+        RoomCharge=days*roomrate;
+        Total=roomcharge+equipcost;
+     run;</pre>
+     <img src="images/ch19_image10.png" class="diagram" />
+     <br/>
+     <img src="images/ch19_image11.png" class="diagram" />
+
+     <p>The value for <i>Total</i> is the final calculation. <i>Total</i> is the sum of EquipCost and RoomCharge.</p>
+     <pre>
+     options yearcutoff=1920;
+     data perm.aprbills;
+        infile aprdata;
+        input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+              mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+        Days=dateout-datein+1;
+        RoomCharge=days*roomrate;
+        Total=roomcharge+equipcost;
+     run;</pre>
+     <img src="images/ch19_image12.png" class="diagram" />
+     <br/>
+     <img src="images/ch19_image13.png" class="diagram" />
+
+     <!-- Topic 6 -->
+     <h1 class="topic" id="topic6">Using Date and Time Formats</h1>
+   
+     <!-- Topic 6 Subtopic 1 -->
+     <h4 class="subtopic" id="topic6_subtopic1">The WEEKDATEw. Format</h4>
+     <p>You can use the WEEKDATEw. format to write these values out in a format that displays the day
+        of the week, month, day, and year.</p>
+     <hr/>
+     <p><strong>General form, WEEKDATEw. format:</strong></p>
+     <p><strong>WEEKDATEw.</strong></p>
+     <p>The WEEKDATEw. format writes date values in the form <i>day-of-week, month-name dd, yy</i> (or
+        <i>yyyy</i>).</p>
+     <p>where</p>
+     <ul>
+         <li><i>dd</i> is an integer between 01 and 31, representing the day</li>
+         <li><i>yy</i> or <i>yyyy</i> is an integer that represents the year</li>
+     </ul>
+     <table>
+        <tr>
+           <th class="color-blue">Note</th>
+           <td>If the w value is too small to write the complete day of the week and month,
+               SAS abbreviates as needed</td>
+        </tr>
+     </table>
+     <hr/>
+
+     <pre>
+     proc print data=perm.aprbills;
+     format datein dateout weekdate17.;
+     run;</pre>
+
+
+     <table border="1">
+        <tr>
+          <th class="color-red">Obs</th>
+          <th class="color-red">LastName</th>
+          <th class="color-red">DateIn</th>
+          <th class="color-red">DateOut</th>
+          <th class="color-red">RoomRate</th>
+          <th class="color-red">EquipCost</th>
+          <th class="color-red">Days</th>
+          <th class="color-red">RoomCharge</th>
+          <th class="color-red">Total</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Akron</td>
+          <td class="back-color-grey">Mon, Apr 5, 1999</td>
+          <td class="back-color-grey">Fri, Apr 9, 1999</td>
+          <td>175</td>
+          <td>298.45</td>
+          <td>5</td>
+          <td>875</td>
+          <td>1173.45</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Brown</td>
+          <td class="back-color-grey">Mon, Apr 12, 1999</td>
+          <td class="back-color-grey">Sat, May 1, 1999</td>
+          <td>125</td>
+          <td>326.78</td>
+          <td>20</td>
+          <td>2500</td>
+          <td>2826.78</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Carnes</td>
+          <td class="back-color-grey">Tue, Apr 27, 1999</td>
+          <td class="back-color-grey">Thu, Apr 29, 1999</td>
+          <td>125</td>
+          <td>174.24</td>
+          <td>3</td>
+          <td>375</td>
+          <td>549.24</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Denison</td>
+          <td class="back-color-grey">Sun, Apr 11, 1999</td>
+          <td class="back-color-grey">Mon, Apr 12, 1999</td>
+          <td>175</td>
+          <td>87.41</td>
+          <td>2</td>
+          <td>350</td>
+          <td>437.41</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Fields</td>
+          <td class="back-color-grey">Thu, Apr 15, 1999</td>
+          <td class="back-color-grey">Thu, Apr 22, 1999</td>
+          <td>175</td>
+          <td>378.96</td>
+          <td>8</td>
+          <td>1400</td>
+          <td>1778.96</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Jamison</td>
+          <td class="back-color-grey">Fri, Apr 16, 1999</td>
+          <td class="back-color-grey">Fri, Apr 23, 1999</td>
+          <td>125</td>
+          <td>346.28</td>
+          <td>8</td>
+          <td>1000</td>
+          <td>1346.28</td>
+        </tr>
+     </table>
+
+     <p>You can vary the results by changing the w value in the format.</p>
+     <table border="1">
+       <tr>
+         <th class="color-red">FORMAT Statement</th>
+         <th class="color-red">Result</th>
+       </tr>
+       <tr>
+          <td>format datein weekdate3.;</td>
+          <td>Mon</td>
+       </tr>
+       <tr>
+          <td>format datein weekdate6.;</td>
+          <td>Monday</td>
+       </tr>
+       <tr>
+          <td>format datein weekdate17.;</td>
+          <td>Monday, Apr 5, 99</td>
+       </tr>
+       <tr>
+          <td>format datein weekdate21.;</td>
+          <td>Monday, April 5, 1999</td>
+       </tr>
+     </table>
+     <br/><br/>
+     <!-- Topic 6 Subtopic 2 -->
+     <h4 class="subtopic" id="topic6_subtopic2">The WORDDATEw. Format</h4>
+     <p>The WORDDATEw. format is similar to the WEEKDATEw. format, but it does not display the day
+        of the week or the two-digit year values.
+     </p>
+     <hr/>
+     <p><strong>General form, WORDDATEw. format:</strong></p>
+     <p><strong>WORDDATEw.</strong></p>
+     <p>The WORDDATEw. format writes date values in the form <i>month-name dd, yyyy</i>.</p>
+     <p>where</p>
+     <ul>
+       <li><i>dd</i> is an integer between 01 and 31, representing the day</li>
+       <li><i>yyyy</i> is an integer that represents the yea</li>
+     </ul>
+     <table>
+       <tr>
+         <th class="color-blue">Note</th>
+         <td>If the w value is too small to write the complete month, SAS abbreviates as
+             needed
+         </td>
+       </tr>
+     </table>
+     <hr/>
+     <pre>
+     proc print data=perm.aprbills;
+     format datein dateout worddate12.;
+     run;</pre>
+
+     <table border="1">
+        <tr>
+          <th class="color-red">Obs</th>
+          <th class="color-red">LastName</th>
+          <th class="color-red">DateIn</th>
+          <th class="color-red">DateOut</th>
+          <th class="color-red">RoomRate</th>
+          <th class="color-red">EquipCost</th>
+          <th class="color-red">Days</th>
+          <th class="color-red">RoomCharge</th>
+          <th class="color-red">Total</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Akron</td>
+          <td class="back-color-grey">Apr 5, 1999</td>
+          <td class="back-color-grey">Apr 9, 1999</td>
+          <td>175</td>
+          <td>298.45</td>
+          <td>5</td>
+          <td>875</td>
+          <td>1173.45</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Brown</td>
+          <td class="back-color-grey">Apr 12, 1999</td>
+          <td class="back-color-grey">May 1, 1999</td>
+          <td>125</td>
+          <td>326.78</td>
+          <td>20</td>
+          <td>2500</td>
+          <td>2826.78</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Carnes</td>
+          <td class="back-color-grey">Apr 27, 1999</td>
+          <td class="back-color-grey">Apr 29, 1999</td>
+          <td>125</td>
+          <td>174.24</td>
+          <td>3</td>
+          <td>375</td>
+          <td>549.24</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Denison</td>
+          <td class="back-color-grey">Apr 11, 1999</td>
+          <td class="back-color-grey">Apr 12, 1999</td>
+          <td>175</td>
+          <td>87.41</td>
+          <td>2</td>
+          <td>350</td>
+          <td>437.41</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Fields</td>
+          <td class="back-color-grey">Apr 15, 1999</td>
+          <td class="back-color-grey">Apr 22, 1999</td>
+          <td>175</td>
+          <td>378.96</td>
+          <td>8</td>
+          <td>1400</td>
+          <td>1778.96</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Jamison</td>
+          <td class="back-color-grey">Apr 16, 1999</td>
+          <td class="back-color-grey">Apr 23, 1999</td>
+          <td>125</td>
+          <td>346.28</td>
+          <td>8</td>
+          <td>1000</td>
+          <td>1346.28</td>
+        </tr>
+     </table>
+     <br/>
+     <p></p>
+     <table border="1">
+       <tr>
+         <th class="color-red">FORMAT Statement</th>
+         <th class="color-red">Result</th>
+       </tr>
+       <tr>
+         <td>format datein worddate3.;</td>
+         <td>Apr</td>
+       </tr>
+       <tr>
+         <td>format datein worddate5.;</td>
+         <td>April</td>
+       </tr>
+       <tr>
+         <td>format datein worddate14.;</td>
+         <td>April 15, 1999</td>
+       </tr>
+     </table>
+
+     <br/>
+     <p>Remember that you can permanently assign a format to variable values by including a FORMAT
+        statement in the DATA step.
+     </p>
+     <pre>
+     options yearcutoff=1920;
+     data work.aprbills;
+        infile aprdata;
+        input LastName $8. @10 DateIn mmddyy8. +1 DateOut
+              mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
+        Days=dateout-datein+1;
+        RoomCharge=days*roomrate;
+        Total=roomcharge+equipcost;
+        format datein dateout worddate12.;
+     run;
+     proc print data=work.aprbills;
+     run;</pre>
+
+     <!-- Topic 7 -->
+     <h1 class="topic" id="topic7">Summary</h1>
+     <!-- Topic 7 Subtopic 1 -->
+     <h4 class="subtopic" id="topic7_subtopic1">Text Summary</h4>
+
+     <h4>How SAS Stores Date and Time Values</h4>
+     <p>SAS stores date values as numeric <strong>SAS date values</strong>, which are the number of days from
+        January 1, 1960. <strong>SAS time values</strong> are the number of seconds since midnight.
+     </p>
+
+     <h4>Reading Dates and Times with Informats</h4>
+     <p>Use SAS informats to read date and time expressions and convert them to SAS date and time
+        values.
+     </p>
+     <ul>
+       <li><strong>MMDDYYw.</strong> reads dates such as 053090, 05/30/90, or 05 30 1990</li>
+       <li><strong>DATEw.</strong> reads dates such as 30May1990, 30May90, or 30-May-1990</li>
+       <li><strong>TIMEw.</strong> reads times such as 17:00, 17:00:01.34, or 2:34</li>
+       <li><strong>DATETIMEw.</strong> reads dates and times such as 30May1990:10:03:17.2, 30May90
+           10:03:17.2, or 30May1990/10:03
+       </li>
+     </ul>
+     <p>Two-digit year values require special consideration. When a two-digit year value is read, SAS
+        defaults to a year within a 100-year span that is determined by the <strong>YEARCUTOFF</strong>= system
+        option. The default value of YEARCUTOFF= is 1920. You can check or reset the value of this
+        option in your SAS session to use a different 100-year span for date informats.
+     </p>
+
+     <h4>Using Dates and Times in Calculations</h4> 
+     <p>Date and time values can be used in calculations like other numeric values. In addition to tracking
+        time intervals, SAS date and time values can be used with SAS functions and with complex
+        calculations.
+     </p>
+
+
+     <h4>Using Date and Time Formats</h4> 
+     <p>SAS provides many specialized date and time formats that enable you to specify how date and
+        time values are displayed and stored. You can use the <strong>WEEKDATEw.</strong> format to write date values
+        in the form day-of-week, month-name dd, yy (or yyyy). You can use the <strong>WORDDATEw.</strong> format to
+        write date values in the form month-name dd, yyyy.
+     </p>
+
+     <!-- Topic 7 Subtopic 2 -->
+     <h4 class="subtopic" id="topic7_subtopic2">Points to Remember</h4>
+     <ul>
+       <li>SAS makes adjustments for leap years, but not for leap seconds or daylight saving time</li>
+       <li>The minimum acceptable field width for the TIMEw. informat is 5. If you specify a w value
+           less than 5, you'll receive an error message in the SAS log
+       </li>
+       <li>The default value of the YEARCUTOFF= option is 1920. When you work with two-digit
+           year data, remember to check the default value of the YEARCUTOFF= option, and change it
+           if necessary
+       </li>
+       <li>The value of the YEARCUTOFF= system option does not affect four-digit year values.
+           Four-digit values are always read correctly
+       </li>
+       <li>Be sure to specify the proper informat for reading a date value, and specify the correct
+           field width so that the entire value is read
+       </li>
+       <li>If SAS date values appear in your program output, use a date format to display them in
+           legible form
+       </li>
+     </ul>
+
+
+
+
+
+
+
+
+
+
+
+</div> <!-- end of div content -->
+
+</body>
+</html>

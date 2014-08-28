@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.3.min.css">
+<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.css">
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/jquery.mobile-1.4.3.min.js"></script>
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+</style>
+
+</head>
+<body>
+
+<div data-role="page">
+  <div data-role="header">
+     <h1>Base SAS Exam Guide</h1>
+      <a href="index.html" class="ui-btn-right">Index</a>
+      <div data-role="navbar">
+         <p style="text-align:center;color:green;font-weight:normal">(Creating Multiple Observations from a Single Record)</p>
+      </div>
+  </div>
+  <div data-role="content">
+
+  <!-- Page 535 -->
+
+  <h3 class="color-blue">Overview</h3>
+  <h3 class="color-red">Introduction</h3>
+
+  <p>Sometimes raw data files contain data for several observations in one record. Data is stored in
+     this manner to reduce the size of the entire data file.
+  </p>
+
+  <p>Each record can contain</p>
+  <ul>
+    <li>
+        <strong>repeating blocks</strong> of data that represent separate observations
+        <br/>
+        <img src="images/ch21_image1.png" style="max-width:100%"/>
+    </li>
+    <li>
+        an ID field followed by an equal number of repeating fields that represent separate
+        observations<br/>
+        <img src="images/ch21_image2.png" style="max-width:100%"/>
+    </li>
+    <li>
+        an ID field followed by a varying number of repeating fields that represent separate
+        observations<br/>
+        <img src="images/ch21_image3.png" style="max-width:100%"/>
+    </li>
+  </ul>
+  <p>This chapter shows you several ways of creating multiple observations from a single record.</p>
+
+  <h3 class="color-red">Objectives</h3>
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>create multiple observations from a single record that contains repeating blocks of data</li>
+    <li>create multiple observations from a single record that contains one ID field followed by
+        the same number of repeating fields</li>
+    <li>create multiple observations from a single record that contains one ID field followed by a
+        varying number of repeating fields</li>
+  </ul>
+
+  <p>Additionally, you learn to</p>
+  <ul>
+    <li>hold the current record across iterations of the DATA step</li>
+    <li>hold the current record for the next INPUT statement</li>
+    <li>execute SAS statements based on a variable’s value</li>
+    <li>explicitly write an observation to a data set</li>
+    <li>execute SAS statements while a condition is true</li>
+  </ul>
+
+  <h3 class="color-red">Reading Repeating Blocks of Data</h3>
+  <p>Each record in the file Tempdata contains three blocks of data. Each block contains a date
+     followed by the day’s high temperature in a small city that is located in the southern United
+     States.
+  </p>
+
+  <!-- Page 537 -->
+
+  <img src="images/ch21_image4.png" style="max-width:100%"/>
+  <p>You could write a DATA step that reads each record and creates three different Date and Temp
+     variables.
+  </p>  
+
+  <strong>SAS Data Set</strong>
+  <table border="1">
+     <tr>
+        <th>Date1</th>
+        <th>Temp1</th>
+        <th>Date2</th>
+        <th>Temp2</th>
+        <th>Date3</th>
+        <th>Temp3</th>
+     </tr>
+     <tr> 
+        <td>11048</td>
+        <td>68</td>
+        <td>11049</td>
+        <td>67</td>
+        <td>11050</td>
+        <td>70</td>
+     </tr>
+  </table>
+
+  <p>
+     But if you create a separate observation for each block of data in a record, you can later use
+     several statistical procedures to analyze the data for each day.
+  </p>
+
+  <strong>SAS Dataset</strong>
+  <table border="1">
+    <tr>
+       <th>Date</th>
+       <th>HighTemp</th>
+    </tr>
+    <tr>
+      <td>11048</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>11049</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>11050</td>
+      <td>70</td>
+    </tr>
+  </table>
+
+  <h3 class="color-red">Holding the Current Record with a Line-Hold Specifier</h3>
+  <p>As you begin to write the INPUT statement, you need to hold the current record until each block
+     of data has been read and written to the data set as an observation. This is easily accomplished
+     by using a line-hold specifier in the INPUT statement.
+  </p>
+  <p>SAS provides two line-hold specifiers</p>
+  <ul>
+     <li>The trailing at sign (@) holds the input record for the execution of the next INPUT
+         statement
+     </li>
+     <li>The double trailing at sign (@@) holds the input record for the execution of the next
+         INPUT statement, even across iterations of the DATA step
+     </li>
+  </ul>
+
+  <p>
+      The term trailing indicates that the @ or @@ must be the last item that is specified in the INPUT
+      statement. Here is an example:
+  </p>
+
+  <strong>input Name $20. @; or input Name $20. @@;</strong>
+  <br/><br/>
+  <p>This chapter teaches you how the trailing @@ can be used to hold a record across multiple
+     iterations of the DATA step.
+  </p>
+
+  <!-- Page 538 -->
+
+  <h3 class="color-red">Using the Double Trailing At Sign (@) to Hold the Current Record</h3>
+  <p>Typically, each time a DATA step executes, the INPUT statement reads a new record. But when
+     you use the trailing @@, the INPUT statement holds the current record and reads the next value.
+  </p>
+  <img src="images/ch21_image5.png" style="max-width:100%"/>
+  <p>The double trailing at sign (@@)</p>
+  <ul>
+    <li>works like the trailing @ except it also holds the data line in the input buffer across
+        multiple executions of the DATA step
+    </li>
+    <li>typically is used to read multiple SAS observations from a single data line</li>
+    <li>should not be used with the @ pointer control, with column input, nor with the
+        MISSOVER option
+    </li>
+  </ul>
+
+  <p>A record that is being held by the double trailing at sign (@@) is not released until one of the
+     following events occurs:
+  </p>
+
+  <ul>
+    <li>the input pointer moves past the end of the record. Then the input pointer moves down to
+        the next record<br/>
+        <img src="images/ch21_image6.png" style="max-width:100%"/>
+    </li>
+    <li>an INPUT statement that has no line-hold specifier executes</li>
+    <li><strong>input ID $ @@;</strong></li>
+    <li>.</li>
+    <li>.</li>
+    <li>input Department 5.;</li>
+  </ul>
+
+  <p>
+     This example requires only one INPUT statement to read the values for <i>Date</i> and <i>HighTemp</i>, but
+     the INPUT statement must execute three times for each record.
+     <br/><br/>
+     The INPUT statement reads a block of values for Date and HighTemp, and then holds the
+     current record by using the trailing @@. The values in the program data vector are written to the
+     data set as an observation, and control returns to the top of the DATA step.
+  </p>
+  <pre>
+  data perm.april90;
+     infile tempdata;
+     input Date : date. HighTemp @@;
+  <img src="images/ch21_image7.png" style="max-width:100%"/>
+  </pre>
+
+  <p>
+     In the next iteration, the INPUT statement reads the next block of values for Date and HighTemp
+     from the same record.
+  </p>
+
+  <!-- Page 539 -->
+
+  <img src="images/ch21_image8.png" style="max-width:100%"/>
+  <h3 class="color-red">Completing the DATA Step</h3>
+  <p>You can add a FORMAT statement to the DATA step to display the date or time values with a
+     format that you specify in the data set. In the FORMAT statement below, the DATEw. format is
+     used to display the values for Date in the form <strong>ddmmmyyyy</strong>.
+  </p>
+  
+  <pre>
+  data perm.april90;
+     infile tempdata;
+     input Date : date. HighTemp @@;
+     format date date9.;
+  run;
+  </pre>
+  <img src="images/ch21_image9.png" style="max-width:100%"/>
+
+  <h3 class="color-red">DATA Step Processing of Repeating Blocks of Data</h3>
+  <p>Here is the complete DATA step.</p>
+  <pre>
+  data perm.april90;
+     infile tempdata;
+     input Date : date. HighTemp @@;
+     format date date9.;
+  run;
+  </pre>
+  <h4>Example</h4>
+  <p>As the execution phase begins, the input pointer rests on column 1 of record 1.</p>
+  <img src="images/ch21_image10.png" style="max-width:100%"/>
+ 
+  <p>During the first iteration of the DATA step, the first block of values for Date and HighTemp are
+     read and stored in the program data vector.
+  </p>
+  <img src="images/ch21_image11.png" style="max-width:100%"/>
+
+  <p>The first observation is written to the data set, control returns to the top of the DATA step, and
+     values are reset to missing.
+  </p>
+  <img src="images/ch21_image12.png" style="max-width:100%"/>
+
+  <p>During the second iteration, the @@ prevents the input pointer from moving down to column 1 of
+the next record.</p>
+  <img src="images/ch21_image13.png" style="max-width:100%"/>
+
+  <p>The INPUT statement reads the second block of values for Date and HighTemp in the first
+     record.
+  </p>
+  <img src="images/ch21_image14.png" style="max-width:100%"/>
+
+  <p>The second observation is written to the data set, and control returns to the top of the DATA step.</p>
+  <img src="images/ch21_image15.png" style="max-width:100%"/>
+  <img src="images/ch21_image16.png" style="max-width:100%"/>
+
+  <p>During the third iteration, the last block of values is read and written to the data set as the third
+     observation. Control returns to the top of the DATA step, and values are reset to missing.
+  </p>
+  <img src="images/ch21_image17.png" style="max-width:100%"/>
+
+  <p>During the fourth iteration, the first block of values in the second record is read and written as the
+     fourth observation. Control returns to the top of the DATA step, and values are reset to missing.
+  </p>
+  <img src="images/ch21_image18.png" style="max-width:100%"/>
+
+  <p>The execution phase continues until the last block of data is read.</p>
+  <img src="images/ch21_image19.png" style="max-width:100%"/>
+
+  <p>You can display the data set with the PRINT procedure.</p>
+  <pre>
+  proc print data=perm.april90;
+  run;
+  </pre>
+
+  <!-- Page 544 -->
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">HighTemp</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>01APR1990</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>02APR1990</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>03APR1990</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>04APR1990</td>
+      <td>74</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>05APR1990</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>06APR1990</td>
+      <td>73</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>07APR1990</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>08APR1990</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>09APR1990</td>
+      <td>76</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>10APR1990</td>
+      <td>78</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>11APR1990</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>12APR1990</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>13APR1990</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>14APR1990</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>15APR1990</td>
+      <td>74</td>
+    </tr>
+  </table>
+
+  <h3 class="color-blue">Reading the Same Number of Repeating Fields</h3>
+  <p>
+     So far you have created multiple observations from a single record by executing the DATA step
+     once for each block of data in a record.
+     <br/><br/>
+     Now look at another file that is organized differently.
+     <br/><br/>
+     Each record in the file Data97 contains a sales representative's ID number, followed by four
+     repeating fields that represent his or her quarterly sales totals for 1997.
+     <br/><br/>
+     You want to pair each sales representative's ID number with one quarterly sales total to produce
+     a single observation. That way, four observations can be derived from one record.
+  </p>
+  <img src="images/ch21_image20.png" style="max-width:100%"/>  
+  <br/><br/>
+  
+  <!-- Page 545 -->
+
+  <img src="images/ch21_image21.png" style="max-width:100%"/>  
+  <p>To accomplish this, you must execute the DATA step once for each record, repetitively reading
+     and writing values in one iteration.
+  </p>
+  <p>This means that a DATA step must</p>
+  <ul>
+    <li>read the value for ID and hold the current record</li>
+    <li>create a new variable named Quarter to identify the fiscal quarter for each sales figure</li>
+    <li>read a new value for Sales and write the values to the data set as an observation</li>
+    <li>continue reading a new value for Sales and writing values to the data set three more times</li>
+  </ul>
+
+
+  <h3 class="color-red">Using the Single Trailing At Sign (@) to Hold the Current Record</h3>
+  <p>First, you need to read the value for ID and hold the record so that subsequent values for Sales
+     can be read.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $
+  <img src="images/ch21_image22.png" style="max-width:100%"/>  
+  </pre>
+
+  <p>You are already familiar with the double trailing @@, which holds the current record across
+     multiple iterations of the DATA step.</p> 
+  
+  <p>However, in this case, you want to hold the record with the trailing @ line-hold specifier so that a
+     second INPUT statement can read the values for Sales within the same iteration of the DATA
+     step. Like the double trailing @@, the single trailing @
+  </p>
+
+  <ul>
+    <li>enables the next INPUT statement to read from the same record</li>
+    <li>releases the current record when a subsequent INPUT statement executes without a linehold specifier</li>
+  </ul>
+
+  <p>It's easy to distinguish between the trailing @@ and the trailing @ by remembering that</p>
+  <ul>
+    <li>easy to distinguish between the trailing @@ and the trailing @ by remembering that
+        the double trailing at sign (@@) holds a record across multiple iterations of the DATA
+        step until the end of the record is reached
+    </li>
+    <li>the single trailing at sign (@) releases a record when control returns to the top of the
+        DATA step
+    </li>
+  </ul>
+
+  <p>In this example, the first INPUT statement reads the value for ID and uses the trailing @ to hold
+     the current record for the next INPUT statement in the DATA step.
+  </p>
+
+  <!-- Page 546 -->
+
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $ @;
+     input Sales : comma. @;
+     output;
+  <img src="images/ch21_image23.png" style="max-width:100%"/>  
+  </pre>
+
+  <p>The second INPUT statement reads a value for Sales and holds the record. The COMMAw.d
+     informat in the INPUT statement reads the numeric value for Sales and removes the embedded
+     commas. An OUTPUT statement writes the observation to the SAS data set, and the DATA step
+     continues processing.
+  </p>
+  <table>
+     <tr>
+       <th class="color-blue">Note</th>
+       <td>Notice that the <strong>COMMAw.d</strong> informat does <strong>not</strong> specify a w value. Remember
+           that list input reads values until the next blank is detected. The default length
+           of numeric variables is 8 bytes, so you don’t need to specify a w value to
+           determine the length of a numeric variable.
+       </td>
+     </tr>
+  </table>
+
+  <p>When all of the repeating fields have been read and sent to output, control returns to the top of
+     the DATA step, and the record is released.
+  </p>
+  <img src="images/ch21_image24.png" style="max-width:100%"/>  
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $ @;
+     input Sales : comma. @;
+     output;
+     input Sales : comma. @;
+     output;
+     input Sales : comma. @;
+     output;
+     input Sales : comma. @;
+     output;
+  run;
+  </pre>
+
+  <h3 class="color-red">More Efficient Programming</h3>
+  <p>Each record contains four different values for the variable Sales, so the INPUT statement must
+     execute four times. Rather than writing four INPUT statements, you can execute one INPUT
+     statement repeatedly in an iterative DO loop.
+  </p>
+  <p>Each time the loop executes, you need to write the values for ID, Quarter, and Sales as an
+     observation to the data set. This is easily accomplished by using the OUTPUT statement.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $ @;
+     do Quarter=1 to 4;
+        input Sales : comma. @;
+        output;
+     end;
+  run;
+  </pre>
+
+  <!-- Page 547 -->
+  
+  <p>By default, every DATA step contains an implicit OUTPUT statement at the end of the step.
+     Placing an explicit OUTPUT statement in a DATA step overrides the automatic output, and SAS
+     adds an observation to a data set only when the explicit OUTPUT statement is executed.
+  </p>
+
+  <h3 class="color-red">Processing a DATA Step That Contains an Iterative DO Loop</h3>
+  <p>Now that the program is complete, let’s see how SAS processes a DATA step that contains an
+     iterative DO loop.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $ @;
+     do Quarter=1 to 4;
+        input Sales : comma. @;
+        output;
+     end;
+  run;
+  </pre>
+
+  <p>During the first iteration, the value for ID is read and Quarter is initialized to 1, so the loop
+     begins to execute.
+  </p>
+  <img src="images/ch21_image25.png" style="max-width:100%"/>  
+
+  <p>The INPUT statement reads the first repeating field and assigns the value to Sales in the
+     program data vector. The @ holds the current record.
+  </p>
+  <img src="images/ch21_image26.png" style="max-width:100%"/>  
+
+  <p>The OUTPUT statement writes the values in the program data vector to the data set as the first
+     observation.
+  </p>
+  <img src="images/ch21_image27.png" style="max-width:100%"/>  
+ 
+  <p>The END statement indicates the bottom of the loop, but control returns to the DO statement, not
+     to the top of the DATA step. Now the value of Quarter is incremented to 2.
+  </p>
+  <img src="images/ch21_image28.png" style="max-width:100%"/>  
+
+  <p>The INPUT statement executes again, reading the second repeating field and storing the value
+     for Sales in the program data vector.
+  </p>
+  <img src="images/ch21_image29.png" style="max-width:100%"/>  
+
+  <p>The OUTPUT statement writes the values in the program data vector as the second observation.</p>
+  <img src="images/ch21_image30.png" style="max-width:100%"/>  
+
+  <p>The loop continues executing while the value for Quarter is 3, then 4. In the process, the third
+     and fourth observations are created.
+  </p>
+  <img src="images/ch21_image31.png" style="max-width:100%"/>  
+
+  <p>After the fourth observation is created, Quarter is incremented to 5 at the bottom of the DO loop
+     and control returns to the top of the loop. The loop does not execute again because the value of
+     Quarter is now greater than 4.
+  </p>
+  <p>The RUN statement executes. Control returns to the top of the DATA step, and the input pointer
+     moves to column 1 of the next record. The variable values in the program data vector are reset to
+     missing. Notice that SAS is reading the second record from the original file but has created four
+     observations in the new SAS data set.
+  </p>
+  <img src="images/ch21_image32.png" style="max-width:100%"/>  
+
+  <p>When the execution phase is complete, you can display the data set with the PRINT procedure.</p>
+
+  <pre>
+  proc print data=perm.sales97;
+  run;
+  </pre>
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">ID</th>
+       <th class="color-red">Quarter</th>
+       <th class="color-red">Sales</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>0734</td>
+       <td>1</td>
+       <td>1323.34</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>0734</td>
+       <td>2</td>
+       <td>2472.85</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>0734</td>
+       <td>3</td>
+       <td>3276.65</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>0734</td>
+       <td>4</td>
+       <td>5345.52</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>0943</td>
+       <td>1</td>
+       <td>1908.34</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>0943</td>
+       <td>2</td>
+       <td>2560.38</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>0943</td>
+       <td>3</td>
+       <td>3472.09</td>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td>0943</td>
+       <td>4</td>
+       <td>5290.86</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td>1009</td>
+       <td>1</td>
+       <td>2934.12</td>
+    </tr>
+    <tr>
+       <td>10</td>
+       <td>1009</td>
+       <td>2</td>
+       <td>3308.41</td>
+    </tr>
+    <tr>
+       <td>11</td>
+       <td>1009</td>
+       <td>3</td>
+       <td>4176.18</td>
+    </tr>
+    <tr>
+       <td>12</td>
+       <td>1009</td>
+       <td>4</td>
+       <td>75.81.81</td>
+    </tr>
+  </table>
+
+  <!-- Page 550 -->
+
+  <h3 class="color-blue">Reading a Varying Number of Repeating Fields</h3>
+  <p>So far each record in the file Data97 has contained the same number of repeating fields.</p>
+  <img src="images/ch21_image33.png" style="max-width:100%"/>  
+
+  <p>But suppose some of the employees quit after the first quarter. Records that contain information
+     for those employees might not contain sales totals for the second, third, or fourth quarter. These
+     records contain a varying number of repeating fields.
+  </p>
+  <img src="images/ch21_image34.png" style="max-width:100%"/>  
+
+  <p>The DATA step that you just wrote won’t work with a varying number of repeating fields because
+     now the value of Quarter is not constant for every record.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97;
+     input ID $ @;
+     do Quarter=1 to 4;
+        input Sales : comma. @;
+        output;
+     end;
+  run;
+  </pre>
+
+  <h3 class="color-red">Using the MISSOVER Option</h3>
+  <p>
+     You can adapt the DATA step to accommodate a varying number of values for <i>Sales</i>.
+     <br/><br/>
+     Like the previous example with the same number of repeating fields, your DATA step must read
+     the same record more than once. However, you need to prevent the input pointer from moving to
+     the next record when there are missing values for <i>Sales</i>.
+     <br/><br/>
+     You can use the MISSOVER option in an INFILE statement to prevent SAS from reading the next
+     record when missing values are encountered at the end of a record. Essentially, records that
+     have a varying number of repeating fields are records that contain missing values, so you need to
+     specify the MISSOVER option here as well.
+  </p>
+
+  <!-- Page 551 -->
+
+  <p>Because there is at least one value for the repeating field, Sales, in each record, the first INPUT
+     statement reads both the value for ID and the first value for Sales in the first record. The trailing
+     @ holds the record so that any subsequent repeating fields can be read.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97 missover;
+     input ID $ Sales : comma. @;
+  <img src="images/ch21_image35.png" style="max-width:100%"/>    
+  </pre>
+  
+  <table>
+     <tr>
+       <th class="color-blue">Note</th>
+       <td>
+           SAS provides several options to control reading past the end of a line. You’ve
+           seen the MISSOVER option for setting remaining INPUT statement variables
+           to missing values if the pointer reaches the end of a record. You can also use
+           other options such as the <strong>TRUNCOVER option</strong>, which reads column or
+           formatted input when the last variable that is read by the INPUT statement
+           contains varying-length data. The TRUNCOVER option assigns the contents
+           of the input buffer to a variable when the field is shorter than expected.
+           <br/><br/>
+           Other related options include FLOWOVER (the default), STOPOVER, and
+           SCANOVER.
+       </td>
+     </tr>
+  </table>
+ 
+
+  <h3 class="color-red">Executing SAS Statements While a Condition Is True</h3>
+  <p>Now consider how many times to read each record. Earlier, you created an index variable named
+     <i>Quarter</i> whose value ranged from 1 to 4 because there were four repeating fields.
+     Now you want to read the record only while a value for Sales exists. Use a DO WHILE
+     statement instead of the iterative DO statement, enclosing the expression in parentheses. In the
+     example below, the DO WHILE statement executes while the value of Sales is not equal to a
+     missing value (which is represented by a period).
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97 missover;
+     input ID $ Sales : comma. @;
+     do while (sales ne .);
+  </pre>
+
+  <h3 class="color-red">Creating a Counter Variable</h3>
+  <p>Because the DO WHILE statement does not create an index variable, you can create your own
+     "counter" variable. You can then use a Sum statement to increment the value of the counter
+     variable each time the DO WHILE loop executes.
+     <br/>,br/>
+     In the example below, the assignment statement that precedes the loop creates the counter
+     variable Quarter and assigns it an initial value of zero. Each time the DO WHILE loop executes,
+     the Sum statement increments the value of Quarter by one.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97 missover;
+     input ID $ Sales : comma. @;
+     Quarter=0;
+     do while (sales ne .);
+       quarter+1;
+  </pre>
+
+  <!-- page 552 -->
+
+  <h3 class="color-red">Completing the DO WHILE Loop</h3>
+  <p>Now look at the other statements that should be executed in the DO WHILE loop. First, you need
+     an OUTPUT statement to write the current observation to the data set. Then, another INPUT
+     statement reads the next value for Sales and holds the record. You complete the DO WHILE
+     loop with an END statement.
+  </p>
+  <pre>
+  data perm.sales97;
+     infile data97 missover;
+     input ID $ Sales : comma. @;
+     Quarter=0;
+     do while (sales ne .);
+        quarter+1;
+        output;
+        input sales : comma. @;
+     end;
+  run;
+  </pre>
+
+  <h3 class="color-red">Processing a DATA Step That Has a Varying Number of Repeating Fields</h3>
+  <p>Here is the new version of the DATA step.</p>
+  <pre>
+  data perm.sales97;
+     infile data97 missover;
+     input ID $ Sales : comma. @;
+     Quarter=0;
+     do while (sales ne .);
+        quarter+1;
+        output;
+        input sales : comma. @;
+     end;
+  run;
+  </pre>
+  <p>During the first iteration of the DATA step, values for <i>ID</i> and <i>Sales</i> are read. <i>Quarter</i> is
+     initialized to zero.
+  </p>
+
+  <!-- Page 553 -->
+
+  <img src="images/ch21_image36.png" style="max-width:100%"/>
+
+  <p>The DO WHILE statement checks to see if Sales has a value at the top of the loop. Because it
+     does have a value, the other statements in the DO loop execute.
+  </p>    
+  <img src="images/ch21_image37.png" style="max-width:100%"/>
+
+  <p>The INPUT statement reads the next value for Sales, the end of the loop is reached, and control
+     returns to the DO WHILE statement.
+  </p>    
+  <img src="images/ch21_image38.png" style="max-width:100%"/>
+
+  <p>The condition is checked at the top of the loop and Sales still has a value, so the loop executes
+     again.
+  </p>    
+  <img src="images/ch21_image39.png" style="max-width:100%"/>
+
+  <p><i>Quarter</i> is incremented to 2, and the values in the program data vector are written as the
+     second observation.</p>    
+  <img src="images/ch21_image40.png" style="max-width:100%"/>
+
+  <p>The MISSOVER option prevents the input pointer from moving to the next record in search of
+     another value for Sales. At this point, Sales has no value.
+  </p>
+  <img src="images/ch21_image41.png" style="max-width:100%"/>
+
+  <p>Because the condition is now false, the statements in the loop are not executed.</p>
+  <img src="images/ch21_image42.png" style="max-width:100%"/>
+
+  <p>Instead, control returns to the top of the DATA step, the values in the program data vector are
+     reset to missing, and the input pointer moves to column 1 of the next record. The DATA step
+     continues executing until all the values for Sales are read.
+  </p>
+  <img src="images/ch21_image43.png" style="max-width:100%"/>
+
+
+  <p>PROC PRINT output for the data set shows a varying number of observations for each employee.</p>
+  <pre>
+  proc print data=perm.sales97;
+  run;
+  </pre>
+
+  <!-- page 555 -->
+
+  <table border="1">
+     <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">ID</th>
+       <th class="color-red">Sales</th>
+       <th class="color-red">Quarter</th>
+     </tr>
+     <tr>
+       <td>1</td>
+       <td>1824</td>
+       <td>1323.34</td>
+       <td>1</td>
+     </tr>
+     <tr>
+       <td>2</td>
+       <td>1824</td>
+       <td>2472.85</td>
+       <td>2</td>
+     </tr>
+     <tr>
+       <td>3</td>
+       <td>1943</td>
+       <td>2199.23</td>
+       <td>1</td>
+     </tr>
+     <tr>
+       <td>4</td>
+       <td>2046</td>
+       <td>3598.48</td>
+       <td>1</td>
+     </tr>
+     <tr>
+       <td>5</td>
+       <td>2046</td>
+       <td>4697.98</td>
+       <td>2</td>
+     </tr>
+     <tr>
+       <td>6</td>
+       <td>2046</td>
+       <td>4598.45</td>
+       <td>3</td>
+     </tr>
+     <tr>
+       <td>7</td>
+       <td>2063</td>
+       <td>4963.87</td>
+       <td>1</td>
+     </tr>
+     <tr>
+       <td>8</td>
+       <td>2063</td>
+       <td>3434.42</td>
+       <td>2</td>
+     </tr>
+     <tr>
+       <td>9</td>
+       <td>2063</td>
+       <td>2241.64</td>
+       <td>3</td>
+     </tr>
+     <tr>
+       <td>10</td>
+       <td>2063</td>
+       <td>2759.11</td>
+       <td>4</td>
+     </tr>
+  </table>
+
+  <h3 class="color-blue">Summary</h3>
+  <h3 class="color-red">Text Summary</h3>
+
+  <h3>File Formats</h3>
+  <p>One raw data record can contain enough information to produce several observations. Data is
+     stored in this manner in order to reduce the size of the entire file. The data can be organized into
+  </p>
+  <ul>
+     <li>repeating blocks of data</li>
+     <li>an ID field followed by the same number of repeating fields</li>
+     <li>an ID field followed by a varying number of repeating fields</li>
+  </ul>
+
+  <h3>Reading Repeating Blocks of Data</h3>
+  <p>To create multiple observations from a record that contains repeating blocks of data, the DATA
+     step needs to hold the current record until each block of data has been read and written to the
+     data set as an observation. The DATA step should include statements that
+  </p>
+  <ul>
+     <li>read the first block of values and hold the current record with the double trailing at sign
+        (@@) line-hold specifier
+     </li>
+     <li>optionally add a FORMAT statement to display date or time values with a specified
+         format
+     </li>
+     <li>write the first block of values as an observation</li>
+     <li>execute the DATA step until all repeating blocks have been read</li>
+  </ul>
+
+  <h3>Reading the Same Number of Repeating Fields</h3>
+  <p>To create multiple observations from a record that contains an ID field and the same number of
+     repeating fields, you must execute the DATA step once for each record, repetitively reading and
+     writing values in one iteration. The DATA step should include statements that
+  </p>
+  <ul>
+     <li>read the ID field and hold the current record with the single trailing at sign (@) line-hold
+         specifier
+     </li>
+     <li>
+         execute SAS statements using an iterative DO loop. The iterative DO loop repetitively
+         processes statements that
+         <ul>
+             <li>read the next value of the repeating field and hold the record with the @ linehold
+                 specifier
+             <li>
+             <li>explicitly write an observation to the data set by using an OUTPUT statement<li>
+         </ul>
+     </li>
+     <li>complete the iterative DO loop with an END statement</li>
+  </ul>
+
+  <h3>Reading a Varying Number of Repeating Fields</h3>
+  <p>To create multiple observations from a record that contains an ID field and a varying number of
+     repeating fields, you must execute the DATA step once for each record, repetitively reading and
+     writing values in one iteration while the value of the repeating field exists. The DATA step should
+     include statements that
+  </p>
+  <ul>
+     <li>prevent SAS from reading the next record if missing values were encountered in the
+         current record by using the <strong>MISSOVER option</strong></li>
+     <li>read the ID field and the first repeating field, and then hold the record with the single
+         trailing at sign (@) line-hold specifier</li>
+     <li>optionally create a counter variable</li>
+     <li>
+         execute SAS statements while a condition is true, using a DO WHILE loop. A DO WHILE
+         loop repetitively processes statements that
+         <ul>
+            <li>optionally increment the value of the counter variable by using a Sum statement</li>
+            <li>explicitly add an observation to the data set by using an OUTPUT statement</li>
+            <li>read the next value of the repeating field and hold the record with the single
+                trailing at sign (@) line-hold specifier
+            </li>
+         </ul>
+     </li>
+     <li>complete the DO WHILE loop with an END statement</li>
+  </ul>
+
+  <h3 class="color-red">Points to Remember</h3>
+  <ul>
+     <li>The double trailing at sign (@@) holds a record across multiple iterations of the DATA
+         step until the end of the record is reached
+     </li>
+     <li>The single trailing at sign (@) releases a record when control returns to the top of the
+         DATA step
+     </li>
+     <li>Use an END statement to complete DO loops and DO WHILE loops</li>
+  </ul>
+
+<div> <!-- end of content -->
+<div> <!-- end of page -->
+
+</body>
+</html>

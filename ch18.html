@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>As you learned in the Chapter, <strong>Reading Raw Data in Fixed Fields</strong>, raw data can be organized in
+     several ways.
+  </p>
+  <p>This external file contains data that is arranged in columns, or fixed fields. You can specify a
+     beginning and ending column for each field.
+  </p>
+  <img src="images/ch18_image1.png" class="diagram" />
+  <p>By contrast, the following external file contains data that is free format, meaning data that is not
+     arranged in columns. Notice that the values for a particular field do not begin and end in the same
+     columns.
+  </p>
+  <img src="images/ch18_image2.png" class="diagram" />
+  <p>In the previous chapter, you learned that how your data is organized determines which input style
+     you should use to read the data. SAS provides three primary input styles: column, formatted, and
+     list input. Previously, you learned how to use column input and formatted input. This chapter
+     teaches you how to use list input to read free-format data that is not arranged in fixed fields.
+  </p>
+
+  
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+  
+  <p>In this chapter, you learn to use the INPUT statement with list input to read</p>
+  <ul>
+    <li>free-format data (data that is not organized in fixed fields)</li>
+    <li>free-format data that is separated by nonblank delimiters, such as commas</li>
+    <li>free-format data that contains missing values</li>
+    <li>character values that exceed eight characters</li>
+    <li>nonstandard free-format data</li>
+    <li>character values that contain embedded blanks</li>
+  </ul>
+
+  <p>In addition, you learn how to mix column, formatted, and list input styles in a single INPUT
+     statement.
+  </p>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Reading Free-Format Data</h2>
+  <p>You have already worked with raw data that is in fixed fields. In doing so, you used column input
+     to read standard data values in fixed fields. You have also used formatted input to read both
+     standard and nonstandard data in fixed fields.
+  </p>
+  <p>Suppose you have raw data that is free format; that is, it is not arranged in fixed fields. The fields
+     are often separated by blanks or by some other delimiter, such as the pound sign (#) shown
+     below. In this case, column input and formatted input that you might have used before to read
+     standard and nonstandard data in fixed fields will not enable you to read all of the values in the
+     raw data file.
+  </p>
+  <img src="images/ch18_image3.png" class="diagram" />
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Using List Input</h2>
+  <p>List input is a powerful tool for reading both standard and nonstandard free-format data.</p>
+  <hr/>
+  <p><strong>General form, INPUT statement using list input:</strong></p>
+  <p><strong>INPUT</strong> variable <strong>&lt;$&gt;</strong>;</p>
+  <p>where</p>
+  <ul>
+    <li>variable specifies the variable whose value the INPUT statement is to read</li>
+    <li>$ specifies that the variable is a character variable</li>
+  </ul>
+  <hr/>
+
+  <p>Suppose you have an external data file like the one that follows. The file, which is referenced by
+     the fileref Credit, contains the results of a survey on the use of credit cards by males and females
+     in the 18-39 age range.
+  </p>
+  <img src="images/ch18_image4.png" class="diagram"/>
+  <p>You need to read the data values for</p>
+  <ul>
+    <li>gender</li>
+    <li>age</li>
+    <li>number of bank credit cards</li>
+    <li>bank card use per month</li>
+    <li>number of department store credit cards</li>
+    <li>department store card use per month</li>
+  </ul>
+  <p>List input might be the easiest input style to use because, as shown in the INPUT statement
+     below, you simply list the variable names in the same order as the corresponding raw data fields.
+     Remember to distinguish character variables from numeric variables.
+  </p>
+  <pre>
+  input Gender $ Age Bankcard FreqBank Deptcard
+        FreqDept;</pre>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Processing List Input</h3>
+  <p></p>
+  <pre>
+  data perm.survey;
+     infile credit;
+     input Gender $ Age Bankcard FreqBank Deptcard
+           FreqDept;
+  run;</pre>
+  <img src="images/ch18_image5.png" class="diagram"/>  
+
+  <p>SAS reads the first field until it encounters a blank space. The blank space indicates the end of
+     the field, and the data value is assigned to the program data vector for the first variable in the
+     INPUT statement.
+  </p>
+  <img src="images/ch18_image6.png" class="diagram"/>    
+  <p>Next, SAS scans the record until the next nonblank space is found, and the second value is read
+     until another blank is encountered. Then the value is assigned to its corresponding variable in the
+     program data vector.
+  </p>
+  <img src="images/ch18_image7.png" class="diagram"/>  
+  <p>This process of scanning ahead to the next nonblank column, reading the data value until a blank
+     is encountered, and assigning the value to a variable in the program data vector continues until
+     all the fields have been read and values have been assigned to variables in the program data
+     vector.
+  </p>  
+  <img src="images/ch18_image8.png" class="diagram"/>  
+  <p>When the DATA step has finished executing, you can display the data set with the PRINT
+     procedure. The code below produces the output that follows.
+  </p>
+  <pre>
+  proc print data=perm.survey;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="7">(Partial Output)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>MALE</td>
+      <td>27</td>
+      <td>1</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>FEMALE</td>
+      <td>29</td>
+      <td>3</td>
+      <td>14</td>
+      <td>5</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>FEMALE</td>
+      <td>34</td>
+      <td>2</td>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>MALE</td>
+      <td>35</td>
+      <td>2</td>
+      <td>12</td>
+      <td>4</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>FEMALE</td>
+      <td>36</td>
+      <td>4</td>
+      <td>16</td>
+      <td>3</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>MALE</td>
+      <td>21</td>
+      <td>1</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>MALE</td>
+      <td>25</td>
+      <td>2</td>
+      <td>9</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+  </table>
+
+  <br/>
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Working with Delimiters</h3>
+  <p>Most free-format data fields are clearly separated by blanks and are easy to imagine as variables
+     and observations. But fields can also be separated by other delimiters, such as commas, as
+     shown below.
+  </p>
+  <img src="images/ch18_image9.png" class="diagram"/>  
+  <p>When characters other than blanks are used to separate the data values, you can tell SAS which
+     field delimiter to use. Use the <strong>DLM</strong>= option in the <strong>INFILE statement</strong> to specify a delimiter other
+     than a blank (the default).
+  </p>
+  <hr/> 
+  <p><strong>General form, DLM= option:</strong></p>
+  <p><strong>DLM</strong>=delimiter(s)</p>
+  <p>where delimiter(s) specifies a delimiter for list input in either of the following forms:</p>
+  <ul>
+    <li>'list-of-delimiting-characters' specifies one or more characters (up to 200) to read as
+         delimiters. The list of characters must be enclosed in quotation marks
+    </li>
+    <li>character-variable specifies a character variable whose value becomes the delimiter</li>
+  </ul>
+
+  <h3>Example</h3>
+  <p>The following program creates the output shown below.</p>
+  <pre>
+  data perm.survey;
+     infile credit dlm=',';
+     input Gender $ Age Bankcard FreqBank
+     Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;</pre>
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>MALE</td>
+       <td>27</td>
+       <td>1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>29</td>
+       <td>3</td>
+       <td>14</td>
+       <td>5</td>
+       <td>10</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>3</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>MALE</td>
+       <td>21</td>
+       <td>1</td>
+       <td>5</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>MALE</td>
+       <td>25</td>
+       <td>2</td>
+       <td>9</td>
+       <td>2</td>
+       <td>1</td>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td>FEMALE</td>
+       <td>21</td>
+       <td>1</td>
+       <td>4</td>
+       <td>2</td>
+       <td>6</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td>MALE</td>
+       <td>38</td>
+       <td>3</td>
+       <td>11</td>
+       <td>4</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>10</td>
+       <td>FEMALE</td>
+       <td>30</td>
+       <td>3</td>
+       <td>5</td>
+       <td>1</td>
+       <td>0</td>
+    </tr>
+  </table>
+  <br/>
+  <table>
+    <tr>
+       <th class="color-red">Warning</th>
+       <td>The field delimiter must not be a character that occurs in a data
+           value. For example, this raw data file contains values for
+           <i>LastName</i> and <i>Salary</i>. Notice that the values for <i>Salary</i>
+           contain commas.
+       </td>
+    </tr>
+  </table>
+  <img src="images/ch18_image10.png" class="diagram"/>  
+  <p></p>
+  <img src="images/ch18_image11.png" class="diagram"/>  
+  <table border="1">
+     <tr>
+        <th class="color-red" colspan="3">SAS Data Set</th>
+     </tr>
+     <tr>
+        <th class="color-red">Obs</th>
+        <th class="color-red">LastName</th>
+        <th class="color-red">Salary</th>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>BROWN</td>
+        <td>24</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>JOHNSON</td>
+        <td>25</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>McABE</td>
+        <td>21</td>
+     </tr>
+  </table>
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>Later in this chapter, you'll learn how to work with data values that contain
+           delimiters.
+       </td>
+    </tr>
+  </table>
+
+
+  <!-- Topic 3 Subtopic 3 -->
+  <h3 class="subtopic" id="topic3_subtopic3">Reading a Range of Variables</h3>
+  <p>When the variable values in the raw data file are sequential and are separated by a blank (or by
+     another delimiter), you can specify a range of variables in the INPUT statement. This is especially
+     useful if your data contains similar variables, such as the answers to a questionnaire.
+  </p>
+  <p>For example, the following INPUT statement creates five new numeric variables and assigns
+     them the names Ques1, Ques2, Ques3, and so on. You can also specify a range in the VAR
+     statement in the PROC PRINT step to list a range of specific variables.
+  </p>
+  <img src="images/ch18_image12.png" class="diagram"/>  
+  <pre>
+  data survey.phone;
+     infile survey;
+     input IDnum $ Ques1-Ques5;
+  run;
+  proc print data=survey.phone;
+  var ques1-ques3;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Ques1</th>
+       <th class="color-red">Ques2</th>
+       <th class="color-red">Ques3</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>23</td>
+      <td>94</td>
+      <td>56</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>26</td>
+      <td>55</td>
+      <td>49</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>99</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>71</td>
+      <td>33</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>88</td>
+      <td>49</td>
+      <td>29</td>
+    </tr>
+  </table>
+
+  <p>If you are specifying a range of character variables, both the variable list and the $ sign must be
+     enclosed in parentheses.
+  </p>
+  <pre>
+  data survey.stores;
+     infile stordata;
+     input Age (Store1-Store3) ($);
+  run;
+  proc print data=survey.stores;</pre>
+
+  <table>
+    <tr>
+       <th class="color-red">Warning</th>
+       <td>You can also specify a range of variables using formatted input. If you
+           specify a range of variables using formatted input, both the variable list
+           and the format must be enclosed in parentheses, regardless of the
+           variable's type.
+       </td>
+    </tr>
+  </table>
+
+  <pre>
+  data test.scores;
+     infile group3;
+     input Age (Score1-Score4) (6.);
+  run;</pre>
+
+  <!-- Topic 3 Subtopic 4 -->
+  <h3 class="subtopic" id="topic3_subtopic4">Limitations of List Input</h3>
+  <p>In its default form, list input places several limitations on the types of data that can be read:</p>
+  <ul>
+    <li>Although the width of a field can be greater than eight columns, both character and
+        numeric variables have a default length of 8. Character values that are longer than eight
+        characters will be truncated
+    </li>
+    <li>Data must be in standard numeric or character format</li>
+    <li>Character values cannot contain embedded delimiters</li>
+    <li>Missing numeric and character values must be represented by a period or some other
+        character
+    </li>
+  </ul>
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>There are ways to work around these limitations using modified list input,
+           which will be discussed later in this chapter
+       </td>
+    </tr>
+  </table>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Reading Missing values</h2>
+
+  <!-- Topic 4 Subtopic 1-->
+  <h3 class="subtopic" id="topic4_subtopic1">Reading Missing Values at the End of a Record</h3>
+  <p>Suppose the third person represented in the raw data file below did not answer the questions
+     about how many department store credit cards she has and how often she uses them.
+  </p>
+  <img src="images/ch18_image13.png" class="diagram"/>
+  <p>Because the missing values occur at the end of the record, you can use the MISSOVER option in
+     the INFILE statement to read the missing values at the end of the record. The MISSOVER option
+     prevents SAS from going to another record if, when using list input, it does not find values in the
+     current line for all the INPUT statement variables. At the end of the current record, values that are
+     expected but not found are set to missing.
+  </p>
+  <p>For the raw data file shown above, the MISSOVER option prevents the fields in the fourth record
+     from being read as values for <i>Deptcard</i> and <i>FreqDept</i> in the third observation. Note that
+     <i>Deptcard</i> and <i>FreqDept</i> are set to missing.
+  </p>
+
+  <pre>
+  data perm.survey;
+     infile credit missover;
+     input Gender $ Age Bankcard FreqBank
+           Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>MALE</td>
+       <td>27</td>
+       <td>1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>29</td>
+       <td>3</td>
+       <td>14</td>
+       <td>5</td>
+       <td>10</td>
+    </tr>
+    <tr  class="back-color-grey">
+       <td>3</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>.</td>
+       <td>.</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>MALE</td>
+       <td>21</td>
+       <td>1</td>
+       <td>5</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+       <th class="color-red">Warning</th>
+       <td>The MISSOVER option works only for missing values that occur
+           at the end of the record
+       </td>
+    </tr>
+  </table>
+
+  <!-- Topic 4 Subtopic 2 -->
+
+  <h3 class="subtopic" id="topic4_subtopic2">Reading Missing Values at the Beginning or Middle of a Record</h3>
+  <p>Remember that the MISSOVER option works only for missing values that occur at the end of the
+     record. A different method is required when you are using list input to read raw data that contains
+     missing values at the beginning or middle of a record. Let's look at what happens when a missing
+     value occurs at the beginning or middle of a record.
+  </p>
+  <p>Suppose the value for Age is missing in the first record.</p>
+  <img src="images/ch18_image14.png" class="diagram"/>
+  <p>When the program below executes, each field in the raw data file is read one by one. The INPUT
+     statement tells SAS to read six data values from each record. However, the first record contains
+     only five values.
+  </p>
+  <pre>
+  data perm.survey;
+     infile credit dlm=',';
+     input Gender $ Age Bankcard FreqBank
+           Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;</pre>
+  <p>The two commas in the first record are interpreted as one delimiter. The incorrect value (1) is
+     read for <i>Age</i>. The program continues to read subsequent incorrect values for <i>Bankcard</i> (8),
+     <i>FreqBank</i> (0), and <i>Deptcard</i> (0). The program then attempts to read the character filed
+     FEMALE, at the beginning of the second record, as the value for the numeric variable <i>FreqDept</i>.
+     This causes the value of <i>FreqDept</i> in the first observation to be interpreted as missing. The
+     input pointer then moves down to the third record to begin reading values for the second
+     observation. Therefore, the first observation in the data set contains incorrect values and values
+     from the second in the raw data file are not included.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>MALE</td>
+       <td class="back-color-grey">1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+       <td class="back-color-grey">.</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>3</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+  </table>
+
+  <h3>The DSD Option</h3>
+  <p>You can use the DSD option in the INFILE statement to correctly read the raw data. The DSD
+     option changes how SAS treats delimiters when list input is used. Specifically, the DSD option
+  </p>
+  <ul>
+    <li>sets the default delimiter to a comma</li>
+    <li>treats two consecutive delimiters as a missing value</li>
+    <li>removes quotation marks from values</li>
+  </ul>
+  <p>When the following program reads the raw data file, the DSD option sets the default delimiter to a
+     comma and treats the two consecutive delimiters as a missing value. Therefore, the data is read
+     correctly.
+  </p>
+  <pre>
+  data perm.survey;
+     infile credit dsd;
+     input Gender $ Age Bankcard FreqBank
+           Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;</pre>
+  <img src="images/ch18_image15.png" class="diagram"/>
+  <br/><br/>
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>MALE</td>
+       <td class="back-color-grey">.</td>
+       <td>1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>29</td>
+       <td>3</td>
+       <td>14</td>
+       <td>5</td>
+       <td>10</td>
+    </tr>    
+    <tr>
+       <td>3</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>3</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+  </table>
+
+  <h3>The DLM= Option</h3>
+  <p>If the data uses multiple delimiters or a single delimiter other than a comma, then simply specify
+     the delimiter value(s) with the DLM= option. In the following example, an asterisk (*) is used as a
+     delimiter. However, the data is still read correctly because of the DSD option.
+  </p>
+  <pre>
+  data perm.survey;
+     infile credit dsd dlm='*';
+     input Gender $ Age Bankcard FreqBank
+     Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;
+  </pre>
+  <img src="images/ch18_image16.png" class="diagram"/>
+  <br/><br/>
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>MALE</td>
+       <td class="back-color-grey">.</td>
+       <td>1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>29</td>
+       <td>3</td>
+       <td>14</td>
+       <td>5</td>
+       <td>10</td>
+    </tr>    
+    <tr>
+       <td>3</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>3</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+  </table>
+ 
+  <p>The DSD option can also be used to read raw data when there is a missing value at the
+     beginning of a record, as long as a delimiter precedes the first value in the record.
+  </p>
+  <pre>
+  data perm.survey;
+     infile credit dsd;
+     input Gender $ Age Bankcard FreqBank
+           Deptcard FreqDept;
+  run;
+  proc print data=perm.survey;
+  run;</pre>
+  <img src="images/ch18_image17.png" class="diagram"/>
+  <br/><br/>
+ <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Gender</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Bankcard</th>
+      <th class="color-red">FreqBank</th>
+      <th class="color-red">Deptcard</th>
+      <th class="color-red">FreqDept</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td class="back-color-grey">MALE</td>
+       <td>27</td>
+       <td>1</td>
+       <td>8</td>
+       <td>0</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>FEMALE</td>
+       <td>29</td>
+       <td>3</td>
+       <td>14</td>
+       <td>5</td>
+       <td>10</td>
+    </tr>    
+    <tr>
+       <td>3</td>
+       <td>FEMALE</td>
+       <td>34</td>
+       <td>2</td>
+       <td>10</td>
+       <td>3</td>
+       <td>3</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>MALE</td>
+       <td>35</td>
+       <td>2</td>
+       <td>12</td>
+       <td>4</td>
+       <td>8</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>FEMALE</td>
+       <td>36</td>
+       <td>4</td>
+       <td>16</td>
+       <td>3</td>
+       <td>7</td>
+    </tr>
+  </table>
+  <br/>
+  <p>You can also use the DSD and DLM= options to read fields that are delimited by blanks.</p>
+  <pre>
+  data perm.survey;
+     infile credit dsd dlm=' ';
+     input Gender $ Age Bankcard FreqBank
+           Deptcard FreqDept;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Later in this chapter, you'll learn how to use the DSD option to remove
+          quotation marks from values in raw data
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Specifying the Length of Character Values</h2>
+  <p>Remember that when you use list input to read raw data, character values are assigned a default
+     length of 8. Let's look at what happens when list input is used to read character variables whose
+     values are longer than 8.
+  </p>
+  <p>The raw data file that is referenced by the fileref Citydata contains 1970 and 1980 population
+     figures for several large U.S. cities. Notice that some city names are rather long.
+  </p>
+  <img src="images/ch18_image18.png" class="diagram"/>
+  <p>The longer character values are truncated when they are written to the program data vector.</p>
+  <img src="images/ch18_image19.png" class="diagram"/>
+  <p>PROC PRINT output shows the truncated values for <i>City</i>.</p>
+  <pre>
+  data perm.growth;
+     infile citydata;
+     input City $ Pop70 Pop80;
+  run;
+  proc print data=perm.growth;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">City</th>
+      <th class="color-red">Pop70</th>
+      <th class="color-red">Pop80</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td class="back-color-grey">ANCHORAG</td>
+      <td>480181</td>
+      <td>174431</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>ATLANTA</td>
+      <td>495039</td>
+      <td>425022</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>BOSTON</td>
+      <td>641071</td>
+      <td>562994</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="back-color-grey">CHARLOTT</td>
+      <td>241420</td>
+      <td>314447</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>CHICAGO</td>
+      <td>3369357</td>
+      <td>3005072</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>DALLAS</td>
+      <td>844401</td>
+      <td>904078</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>DENVER</td>
+      <td>514678</td>
+      <td>492365</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>DETROIT</td>
+      <td>1514063</td>
+      <td>1203339</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>MIAMI</td>
+      <td>334859</td>
+      <td>346865</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td class="back-color-grey">PHILADEL</td>
+      <td>1949996</td>
+      <td>1688210</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td class="back-color-grey">SACRAMEN</td>
+      <td>257105</td>
+      <td>275741</td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">The LENGTH Statement</h3>
+  <p>Remember, variable attributes are defined when the variable is first encountered in the DATA
+     step. In the program below, the LENGTH statement precedes the INPUT statement and defines
+     both the length and type of the variable <i>City</i>. A length of 12 has been assigned to accommodate
+     PHILADELPHIA, which is the longest value for <i>City</i>.
+  </p>
+  <pre>
+  data perm.growth;
+     infile citydata;
+     length City $ 12;
+     input city $ Pop70 Pop80;
+  run;
+  proc print data=perm.growth;
+  run;</pre>
+  <img src="images/ch18_image20.png" class="diagram"/>
+  <br/>
+  <p>Using this method, you do not need to specify <i>City</i>'s type in the INPUT statement. However,
+     leaving the $ in the INPUT statement will not produce an error. Your output should now display
+     the complete values for <i>City</i>.
+  </p>
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">City</th>
+       <th class="color-red">Pop70</th>
+       <th class="color-red">Pop80</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td class="back-color-grey">ANCHORAGE</td>
+       <td>48081</td>
+       <td>174431</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td class="back-color-grey">ATLANTA</td>
+       <td>495039</td>
+       <td>425022</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td class="back-color-grey">BOSTON</td>
+       <td>641071</td>
+       <td>562994</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td class="back-color-grey">CHARLOTTE</td>
+       <td>241420</td>
+       <td>314447</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td class="back-color-grey">CHICAGO</td>
+       <td>3369357</td>
+       <td>3005072</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td class="back-color-grey">DALLAS</td>
+       <td>844401</td>
+       <td>904078</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td class="back-color-grey">DENVER</td>
+       <td>514678</td>
+       <td>492365</td>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td class="back-color-grey">DETROIT</td>
+       <td>1514063</td>
+       <td>1203339</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td class="back-color-grey">MIAMI</td>
+       <td>334859</td>
+       <td>346865</td>
+    </tr>
+    <tr>
+       <td>10</td>
+       <td class="back-color-grey">PHILADELPHIA</td>
+       <td>1949996</td>
+       <td>1688210</td>
+    </tr>
+    <tr>
+       <td>11</td>
+       <td class="back-color-grey">SACRAMENTO</td>
+       <td>257105</td>
+       <td>275741</td>
+    </tr>
+  </table>
+  <br/>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Because variable attributes are defined when the variable is first
+          encountered in the DATA step, a variable that is defined in aLENGTH statement (if it precedes an INPUT statement) will
+          appear first in the data set, regardless of the order of the
+          variables in the INPUT statement
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Modifying List Input</h2>
+  <p>You can make list input more versatile by using modified list input. There are two modifiers that
+     can be used with list input.
+  </p>
+  <ul>
+    <li>The ampersand (&) modifier is used to read character values that contain embedded
+        blanks.
+    </li>
+    <li>The colon (:) modifier is used to read nonstandard data values and character values that
+        are longer than eight characters, but which contain no embedded blanks.
+    </li>
+  </ul>
+  <p>You can use modified list input to read the file shown below. This file contains the names of the
+     10 largest U.S. cities ranked in order based on their 1986 estimated population figures.
+  </p>
+  <p>Notice that some of the values for city names contain embedded blanks. Also, note that the
+     values representing the population of each city are nonstandard numeric values (they contain
+     commas).
+  </p>
+  <img src="images/ch18_image21.png" class="diagram"/>
+  <br/><br/>
+  <p>In the following sections you will learn how to use the ampersand (&) modifier to read the values
+     for city (City). Then you will learn how the colon (:) modifier can be used to read the
+     nonstandard numeric values that represent population (Pop86).
+  </p>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Reading Values That Contain Embedded Blanks</h3>
+  <p>The ampersand (&) modifier enables you to read character values that contain single embedded
+     blanks. The & indicates that a character value that is being read with list input might contain one
+     or more single embedded blanks. The value is read until <strong>two or more consecutive blanks</strong> are
+     encountered. The & modifier precedes a specified informat if one is used.
+  </p>
+  <pre>input Rank City &;</pre>
+  <p>In the raw data file shown below, each value of <i>City</i> is followed by two consecutive blanks.
+     There are two ways that you can use list input to read the values of <i>City</i>.
+  </p>
+  
+  <h4>Using the Ampersand (&) Modifier with a LENGTH Statement</h4>
+  <p>As shown below, you can use a LENGTH statement to define the length of <i>City</i>, and then add
+     an & modifier to the INPUT statement to indicate that the values contain embedded blanks.
+  </p>
+  <img src="images/ch18_image22.png" class="diagram"/>
+
+
+  <h4>Using the Ampersand (&) Modifier with an Informat</h4>
+  <p>You can also read the values for City with the & modifier followed by the $w. informat, which
+     reads standard character values, as shown below. When you do this, the w value in the informat
+     determines the variable's length and should be large enough to accommodate the longest value.
+  </p>
+  <img src="images/ch18_image23.png" class="diagram"/>
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>Remember that you must use <strong>two consecutive blanks</strong> as delimiters when
+           you use the & modifier. You cannot use any other delimiter to indicate the end
+           of each field
+       </td>
+    </tr>
+  </table>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">Reading Nonstandard Values</h3>
+  <p>The colon (:) modifier enables you to read nonstandard data values and character values that are
+     longer than eight characters, but which contain no embedded blanks. The colon (:) indicates that
+     values are read until a blank (or other delimiter) is encountered, and then an informat is applied. If
+     an informat for reading character values is specified, the w value specifies the variable's length,
+     overriding the default length.
+  </p>
+  <p>Notice the values representing the 1986 population of each city in the raw data file below.
+     Because they contain commas, these values are <strong>nonstandard</strong> numeric values.
+  </p>
+  <img src="images/ch18_image24.png" class="diagram"/>
+  <p>In order to read these values, you can modify list input with the colon (:) modifier, followed by the
+     COMMAw.d informat, as shown in the program below. Notice that the COMMAw.d informat does
+     not specify a w value.
+  </p>
+  <pre>
+  data perm.cityrank;
+     infile topten;
+     input Rank City & $12.
+           Pop86 : comma.;</pre>
+  <p>Remember that list input reads each value until the next blank is detected. The default length of
+     numeric variables is 8, so you don't need to specify a w value to indicate the length of a numeric
+     variable.
+  </p>
+  <p>This is different from using a numeric informat with formatted input. In that case, you must
+     specify a w value in order to indicate the number of columns to be read.
+  </p>
+
+  <!-- Topic 6 Subtopic 3 -->
+  <h3 class="subtopic" id="topic6_subtopic3">Processing the DATA Step</h3>
+  <p>At compile time, the informat $12. in the example below sets the length of City to 12 and stores
+     this information in the descriptor portion of the data set. During the execution phase, however, the
+     w value of 12 does not determine the number of columns that are read. This is different from the
+     function of informats in the formatted input style.
+  </p>
+  <pre>
+  data perm.cityrank;
+     infile topten;
+     input Rank City & $12.
+           Pop86 : comma.;
+  run;</pre>
+  <img src="images/ch18_image25.png" class="diagram"/>
+  <br/><br/>
+  <p>The & modifier indicates that the values for City should be read until two consecutive blanks are
+     encountered. Therefore, the value NEW YORK is read from column 4 to column 11, a total of only
+     8 columns. When blanks are encountered in both columns 12 and 13, the value NEW YORK is written to the program data vector.
+  </p>
+  <pre>
+  data perm.cityrank;
+     infile topten;
+     input Rank City & $12.
+           Pop86 : comma.;
+  run;</pre>
+  <img src="images/ch18_image26.png" class="diagram"/>
+  <br/>
+  <img src="images/ch18_image27.png" class="diagram"/>
+  <p>The input pointer moves forward to the next <strong>nonblank</strong> column, which is column 14 in the first
+     record. Now the values for Pop86 are read from column 14 <strong>until the next blank</strong> is encountered.
+     The COMMAw.d informat removes the commas, and the value is written to the program data
+     vector.
+  </p>
+  <pre>
+  data perm.cityrank;
+     infile topten;
+     input Rank City & $12.
+           Pop86 : comma.;
+  run;</pre>
+  <img src="images/ch18_image28.png" class="diagram"/>
+  <br/>
+  <img src="images/ch18_image29.png" class="diagram"/>
+  <p>Notice that the character values for <i>City</i> and the <strong>nonstandard</strong> values for <i>Pop86</i> are stored
+     correctly in the data set.
+  </p>
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Rank</th>
+       <th class="color-red">City</th>
+       <th class="color-red">Pop86</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>NEW YORK</td>
+       <td>7262700</td>
+    </tr>
+    <tr>
+       <td>2S</td>
+       <td>LOS ANGELES</td>
+       <td>3259340</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>CHICAGO</td>
+       <td>3009530</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>HOUSTON</td>
+       <td>1728910</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>PHILADELPHIA</td>
+       <td>1642900</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>DETROIT</td>
+       <td>1086220</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>SAN DIEGO</td>
+       <td>1015190</td>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td>DALLAS</td>
+       <td>1003520</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td>SAN ANTONIO</td>
+       <td>914350</td>
+    </tr>
+    <tr>
+       <td>10</td>
+       <td>PHOENIX</td>
+       <td>894070</td>
+    </tr>
+  </table>
+
+  <!-- Topic 6 Subtopic 4 -->
+  <h3 class="subtopic" id="topic6_subtopic4">Comparing Formatted Input and Modified List Input</h3>
+  <p>As you have seen, informats work differently in modified list input than they do in formatted input.
+     With formatted input, the informat determines both the length of character variables and the
+     number of columns that are read. The same number of columns are read from each record.
+  </p>
+  <img src="images/ch18_image30.png" class="diagram"/>
+  <p>The informat in modified list input determines only the length of the variable, not the number of
+     columns that are read. Here, the raw data values are read until two consecutive blanks are
+     encountered.
+  </p>
+  <pre>input City & $12.;</pre>
+  <img src="images/ch18_image31.png" class="diagram"/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Creating Free-Format Data</h2>
+  <p>In the Chapter, <strong>Creating SAS Data Sets from Raw Data</strong>, you learned how the PUT statement can
+     be used with column output to write observations from a SAS data set to a raw data file. The PUT
+     statement can also be used with <strong>list output</strong> to create free-format raw data files.
+  </p>
+  <p>List output is similar to list input. With list output, you simply list the names of the variables whose
+     values you want to write. The PUT statement writes a variable, leaves a blank, then writes the
+     next value.
+  </p>
+  <hr/>
+  <p><strong>General form, PUT statement using list output:</strong></p>
+  <p><strong>PUT</strong> variable &lt;: format&gt;;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> specifies the variable whose value you want to write</li>
+    <li>a colon (:) precedes a format</li>
+    <li><i>format.</i> specifies a format to use for writing the data values</li>
+  </ul>
+  <hr/>
+
+  <p>The following program creates the raw data file Findat, using the SAS data set Perm.Finance.
+     The DATEw. format is used to write the value of <i>Date</i> in the form <i>DDMMYYYY</i>.
+  </p>
+  <pre>
+  data _null_;
+     set perm.finance;
+     file 'c:\data\findat';
+     put ssn name salary date : date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Finance</th>
+    </tr>
+    <tr>
+      <th class="color-red">SSN</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>074-53-9892</td>
+      <td>Vincent</td>
+      <td>35000</td>
+      <td>05/22/97</td>
+    </tr>
+    <tr>
+      <td>776-84-5391</td>
+      <td>Phillipon</td>
+      <td>29750</td>
+      <td>12/15/96</td>
+    </tr>
+    <tr>
+      <td>929-75-0218</td>
+      <td>Gunter</td>
+      <td>27500</td>
+      <td>04/30/97</td>
+    </tr>
+    <tr>
+      <td>446-93-2122</td>
+      <td>Harbinger</td>
+      <td>33900</td>
+      <td>07/08/96</td>
+    </tr>
+    <tr>
+      <td>228-88-9649</td>
+      <td>Benito</td>
+      <td>28000</td>
+      <td>03/04/96</td>
+    </tr>
+    <tr>
+      <td>029-46-9261</td>
+      <td>Rudelich</td>
+      <td>35000</td>
+      <td>02/15/95</td>
+    </tr>
+    <tr>
+      <td>442-21-8075</td>
+      <td>Sirignano</td>
+      <td>5000</td>
+      <td>11/22/95</td>
+    </tr>
+  </table>
+  <img src="images/ch18_image32.png" class="diagram"/>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Specifying a Delimiter</h3>
+  <p>You can use the DLM= option with a FILE statement to create a character-delimited raw data file.</p>
+  <pre>
+  data _null_;
+     set perm.finance;
+     file 'c:\data\findat2' dlm=',';
+     put ssn name salary date : date9.;
+  run;</pre>
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Finance</th>
+    </tr>
+    <tr>
+      <th class="color-red">SSN</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>074-53-9892</td>
+      <td>Vincent</td>
+      <td>35000</td>
+      <td>05/22/97</td>
+    </tr>
+    <tr>
+      <td>776-84-5391</td>
+      <td>Phillipon</td>
+      <td>29750</td>
+      <td>12/15/96</td>
+    </tr>
+    <tr>
+      <td>929-75-0218</td>
+      <td>Gunter</td>
+      <td>27500</td>
+      <td>04/30/97</td>
+    </tr>
+    <tr>
+      <td>446-93-2122</td>
+      <td>Harbinger</td>
+      <td>33900</td>
+      <td>07/08/96</td>
+    </tr>
+    <tr>
+      <td>228-88-9649</td>
+      <td>Benito</td>
+      <td>28000</td>
+      <td>03/04/96</td>
+    </tr>
+    <tr>
+      <td>029-46-9261</td>
+      <td>Rudelich</td>
+      <td>35000</td>
+      <td>02/15/95</td>
+    </tr>
+    <tr>
+      <td>442-21-8075</td>
+      <td>Sirignano</td>
+      <td>5000</td>
+      <td>11/22/95</td>
+    </tr>
+  </table>
+  <img src="images/ch18_image33.png" class="diagram"/>
+  <br/><br/>
+  <table>
+    <tr>
+      <th class="color-red">Note</th>
+      <td>For creating a simple raw data file, an alternative to the DATA step is the
+          EXPORT procedure.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  <p><strong>General form, PROC EXPORT:</strong></p>
+  <p><strong>PROC EXPORT</strong> DATA=SAS-data-set; <br/>
+     &nbsp;&nbsp;&nbsp; <strong>OUTFILE</strong>=filename &lt;<strong>DELIMITER</strong>='delimiter'&gt;; <br/>
+    <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>SAS-data-set names the input SAS data set</li>
+    <li>filename specifies the complete path and file name of the output</li>
+    <li>delimiter specifies the delimiter to separate columns of data in the output file</li>
+  </ul>
+  <hr/>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Using the DSD Option</h3>
+  <p>What happens if you need to create a comma-delimited file that requires the use of a format that
+     writes out values using commas?
+  </p>
+  <p>If you used the following program, the resulting raw data file would contain five fields rather than
+     four.
+  </p>
+  <pre>
+  data _null_;
+     set perm.finance;
+     file 'c:\data\findat2' dlm=',';
+     put ssn name salary : comma6. date date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Finance</th>
+    </tr>
+    <tr>
+      <th class="color-red">SSN</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>074-53-9892</td>
+      <td>Vincent</td>
+      <td>35000</td>
+      <td>05/22/97</td>
+    </tr>
+    <tr>
+      <td>776-84-5391</td>
+      <td>Phillipon</td>
+      <td>29750</td>
+      <td>12/15/96</td>
+    </tr>
+    <tr>
+      <td>929-75-0218</td>
+      <td>Gunter</td>
+      <td>27500</td>
+      <td>04/30/97</td>
+    </tr>
+    <tr>
+      <td>446-93-2122</td>
+      <td>Harbinger</td>
+      <td>33900</td>
+      <td>07/08/96</td>
+    </tr>
+    <tr>
+      <td>228-88-9649</td>
+      <td>Benito</td>
+      <td>28000</td>
+      <td>03/04/96</td>
+    </tr>
+    <tr>
+      <td>029-46-9261</td>
+      <td>Rudelich</td>
+      <td>35000</td>
+      <td>02/15/95</td>
+    </tr>
+    <tr>
+      <td>442-21-8075</td>
+      <td>Sirignano</td>
+      <td>5000</td>
+      <td>11/22/95</td>
+    </tr>
+  </table>
+  <img src="images/ch18_image34.png" class="diagram"/>
+  <p>You can use the DSD option in the FILE statement to specify that data values containing commas
+     should be enclosed in quotation marks. Remember that the DSD option uses a comma as a
+     delimiter, so a DLM= option isn't necessary here.
+  </p>
+  <pre>
+  data _null_;
+     set perm.finance;
+     file 'c:\data\findat2' dsd;
+     put ssn name salary : comma. date : date9.;
+  run;</pre>
+  <img src="images/ch18_image35.png" class="diagram"/>
+
+  <!-- Topic 7 Subtopic 3 -->
+  <h3 class="subtopic" id="topic7_subtopic3">Reading Values That Contain Delimiters within a Quoted String</h3>
+  <p>You can also use the DSD option in an INFILE statement to read values that contain delimiters
+     within a quoted string. As shown in the following PROC PRINT output, the INPUT statement treats the 
+     commas within the values for <i>Salary</i> as valid characters and removes the quotation
+     marks from the character strings before the value is stored.
+  </p>
+  <pre>
+  data work.finance2;
+     infile findat2 dsd;
+     length SSN $ 11 Name $ 9;
+     input ssn name Salary : comma. Date date9.;
+  run;
+
+  proc print data=work.finance2;
+     format date date9.;
+  run;</pre>
+  <img src="images/ch18_image36.png" class="diagram"/>
+  <br/><br/>
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">SSN</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>074-53-9892</td>
+       <td>Vincent</td>
+       <td>35000</td>
+       <td>22MAY1997</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>776-84-5391</td>
+       <td>Phillipon</td>
+       <td>29750</td>
+       <td>15DEC1996</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>929-75-0218</td>
+       <td>Gunter</td>
+       <td>27500</td>
+       <td>30APR1997</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>446-93-2122</td>
+       <td>Harbinger</td>
+       <td>33900</td>
+       <td>08JUL1996</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>228-88-9649</td>
+       <td>Benito</td>
+       <td>28000</td>
+       <td>04MAR1996</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>029-46-9261</td>
+       <td>Rudelich</td>
+       <td>35000</td>
+       <td>15FEB1995</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>442-21-8075</td>
+       <td>Sirignano</td>
+       <td>5000</td>
+       <td>22NOV1995</td>
+    </tr>
+  </table>
+
+  <!-- Topic 8 -->
+  <h3 class="topic" id="topic8">Mixing Input Styles</h3>
+  <p>Evaluating your raw data and choosing the most appropriate input style is a very important task.
+     You have already worked with three input styles for reading raw data.
+  </p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Inpt Style</th>
+      <th class="color-red">Reads</th>
+    </tr>
+    <tr>
+      <td>Column</td>
+      <td>standard data values in fixed fields</td>
+    </tr>
+    <tr>
+      <td>Formatted</td>
+      <td>nonstandard data values in fixed fields</td>
+    </tr>
+    <tr>
+      <td>List</td>
+      <td>data values that are not arranged in fixed fields, but are separated by
+          blanks or other delimiters
+      </td>
+    </tr>
+  </table>
+  <br/><br/>
+  <p>With some file layouts, you might need to mix input styles in the same INPUT statement in order
+     to read the data correctly.
+  </p>
+  <p>Look at the raw data file below and think about how to combine input styles to read these values.
+  </p>
+  <img src="images/ch18_image37.png" class="diagram"/>
+  
+  <ul>
+    <li>Column input is an appropriate choice for the first field because the values can be read
+        as standard character values and are located in fixed columns
+    </li>
+    <li>The next two fields are also located in fixed columns, but the values require an informat.
+        So, formatted input is a good choice here
+    </li>
+    <li>Values in the fourth field begin in column 28 but do not end in the same column. List input
+        is appropriate here, but notice that some values are longer than eight characters. You need
+        to use the : format modifier with an informat to read these values
+    </li>
+    <li>The last field does not always begin or end in the same column, so list input is the best
+        input style for those values
+    </li>
+  </ul>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Field Description</th>
+      <th class="color-red">Starting Column</th>
+      <th class="color-red">Field Width</th>
+      <th class="color-red">Data Type</th>
+      <th class="color-red">Input Style</th>
+    </tr>
+    <tr>
+      <td>Social Security #</td>
+      <td>1</td>
+      <td>11</td>
+      <td>character</td>
+      <td>column</td>
+    </tr>
+    <tr>
+      <td>Date of Hire</td>
+      <td>13</td>
+      <td>7</td>
+      <td>date</td>
+      <td>formatted</td>
+    </tr>
+    <tr>
+      <td>Annual Salary</td>
+      <td>21</td>
+      <td>6</td>
+      <td>numeric</td>
+      <td>formatted</td>
+    </tr>
+    <tr>
+      <td>Department</td>
+      <td>28</td>
+      <td>5 to 9</td>
+      <td>character</td>
+      <td>list</td>
+    </tr>
+    <tr>
+      <td>Phone Extension</td>
+      <td>??</td>
+      <td>4</td>
+      <td>numeric</td>
+      <td>list</td>
+    </tr>
+  </table>
+
+  <p>The INPUT statement to read the data should look like this:</p>
+  <pre>
+  data perm.mixed;
+     infile rawdata;
+     input SSN $ 1-11 @13 HireDate date7.
+           @21 Salary comma6.Department : $9. Phone;
+  run;
+  proc print data=perm.mixed;
+  run;</pre>
+
+  <p></p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">SSN</th>
+      <th class="color-red">HireDate</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Department</th>
+      <th class="color-red">Phone</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>209-20-3721</td>
+      <td>6581</td>
+      <td>41983</td>
+      <td>SALES</td>
+      <td>2896</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>223-96-8933</td>
+      <td>9619</td>
+      <td>27356</td>
+      <td>EDUCATION</td>
+      <td>2344</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>232-18-3485</td>
+      <td>7899</td>
+      <td>33167</td>
+      <td>MARKETING</td>
+      <td>2674</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>251-25-9392</td>
+      <td>9017</td>
+      <td>34033</td>
+      <td>RESEARCH</td>
+      <td>2956</td>
+    </tr>
+  </table>
+
+  <!-- Topic 8 Subtopic 1 -->
+  <h3 class="subtopic" id="topic8_subtopic1">Additional Features</h3>
+
+  <h4>Writing Character Strings and Variable Values</h4>
+  <p>You can use a PUT statement to write both character strings and variable values to a raw data
+     file. To write out a character string, simply add a character string, enclosed in quotation marks, to 
+     the PUT statement. It's a good idea to include a blank space as the last character in the string to
+     avoid spacing problems.
+  </p>
+  <pre>
+  filename totaldat 'c:\records\junsales';
+  data _null_;
+     set work.totals;
+     file totaldat;
+     put 'Sales for salesrep ' salesrep
+         'totaled ' sales : dollar9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Work.Totals</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">SalesRep</th>
+      <th class="color-red">Sales</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Friedman</td>
+      <td>$14,893</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Keane</td>
+      <td>$14,324</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Schuster</td>
+      <td>$13,914</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Davidson</td>
+      <td>$13,674</td>
+    </tr>
+  </table>
+  <img src="images/ch18_image38.png" class="diagram"/>
+  </table>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Summary</h2>
+
+  <!-- Topic 9 Subtopic 1-->
+  <h3 class="subtopic" id="topic9_subtopic1">Text Summary</h3>
+
+  <h4>Free-Format Data</h4>
+  <p>External files can contain raw data that is <strong>free format</strong>; that is, the data is not arranged in fixed
+     fields. The fields can be separated by blanks or by some other delimiter, such as commas.
+  </p>
+
+  <h4>Using List Input</h4>
+  <p>Free-format data can easily be read with <strong>list input</strong> because you do not need to specify column
+     locations of the data. You simply list the variable names in the same order as the corresponding
+     raw data fields. You must distinguish character variables from numeric variables by using the
+     dollar ($) sign.
+  </p>
+  <p>When characters other than blanks are used to separate the data values, you can specify the
+     field delimiter by using the <strong>DLM= option</strong> in the INFILE statement.
+  </p>
+  <p>You can also specify a range of variables in the INPUT statement when the variable values in the
+     raw data file are sequential and are separated by blanks (or by some other delimiter). This is
+     especially useful if your data contains similar variables, such as the answers to a questionnaire.
+  </p>
+  <p>In its simplest form, list input places several limitations on the types of data that can be read.</p>
+
+  <h4>Reading Missing Values</h4>
+  <p>If your data contains missing values at the end of a record, you can use the INFILE statement
+     with the MISSOVER option to prevent SAS from going to the next record to find the missing
+     values.
+  </p>
+  <p>If your data contains missing values at the beginning or in the middle of a record, you might be
+     able to use the <strong>DSD option</strong> in the INFILE statement to correctly read the raw data. The DSD
+     option sets the default delimiter to a comma and treats two consecutive delimiters as a missing
+     value.
+  </p>
+  <p>If the data uses multiple delimiters or a single delimiter other than a comma, you can use both the
+     DSD option and the DLM= option in the INFILE statement.
+  </p>
+  <p>The DSD option can also be used to read raw data when there is a missing value at the
+     beginning of a record, as long as a delimiter precedes the first value in the record.
+  </p>
+
+  <h4>Specifying the Length of Character Values</h4>
+  <p>You can specify the length of character variables by using the LENGTH statement. The
+     LENGTH statement enables you to use list input to read names that are longer than eight
+     characters without truncating them.
+  </p>
+  <p>Because variable attributes are defined when the variable is first encountered in the DATA step,
+     the LENGTH statement precedes the INPUT statement and defines both the length and the type
+     of the variable.
+  </p>
+  <p>When you use the LENGTH statement, you do not need to specify the variable type again in the
+     INPUT statement.
+  </p>
+
+  <h4>Modifying List Input</h4>
+  <p><strong>Modified list input</strong> can be used to read values that contain embedded blanks and nonstandard
+     values. Modified list input uses two format modifiers:
+  </p>
+  <ul>
+    <li>the <strong>ampersand (&) modifier</strong> enables you to read character values that contain single
+        embedded blanks
+    </li>
+    <li>the <strong>colon (:) modifier</strong> enables you to read nonstandard data values and character
+        values that are longer than eight characters, but which contain no embedded blanks.
+    </li>
+  </ul>
+  <p>Remember that informats work differently in modified list input than they do in formatted input.</p>
+  
+  <h4>Creating Free-Format Data</h4>
+  <p>You can create a raw data file using <strong>list output</strong>. With list output, you simply list the names of the
+     variables whose values you want to write. The PUT statement writes a variable, leaves a blank,
+     then writes the next value.
+  </p>
+  <p>You can use the DLM= option with a FILE statement to create a delimited raw data file. You can
+     use the DSD option in a FILE statement to specify that data values containing commas should be
+     enclosed in quotation marks. You can also use the DSD option to read values that contain
+     delimiters within a quoted string.
+  </p>
+
+  <h4>Mixing Input Styles</h4>
+  <p>With some file layouts, you might need to mix input styles in the same INPUT statement in order
+     to read the data correctly.
+  </p>
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>
+  <ul>
+    <li>When you use list input,
+       <ul>
+          <li>fields must be separated by at least one blank or other delimiter</li>
+          <li>fields must be read in order, from left to right. You cannot skip or re-read fields</li>
+          <li>use a LENGTH statement to avoid truncating character values that are longer
+              than eight characters
+          </li>
+       </ul>
+    </li>
+    <li>In formatted input, the informat determines both the length of character variables and the
+        number of columns that are read. The same number of columns are read from each record
+    </li>
+    <li>The informat in modified list input determines only the length of the variable value, not the
+         number of columns that are read
+    </li>
+  </ul>
+
+
+</div> <!-- end of div content -->
+</body>
+</html>

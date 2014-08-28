@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="cordova_pluins.js"></script>
+<script type="text/javascript">
+
+</script>
+
+<style>
+  
+</style>
+
+</head>
+
+<body>
+	
+<div id="content">
+
+  <!-- Chapter 1 -->
+  <a href="javascript: showHideChapterTopics('chapter1-topics')" class="chapters-heading">
+     <p>1. Basic Concepts</p>
+  </a>
+  <div id="chapter1-topics">
+        <ul class="chapters-ul">
+            <li><a href="javascript: loadPage('ch1', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic2', '')">SAS Programs</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic1')">Components of SAS Programs</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic2')">Characteristics of SAS Programs</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic3')">Layout for SAS Programs</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic4')">Processing SAS Programs</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic5')">Log Messages</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic2', 'subtopic6')">Results of Processing</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic3', '')">SAS Libraries</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic3', 'subtopic1')">How SAS Files Are Stored</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic3', 'subtopic2')">Storing Files Temporarily or Permanently</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic4', '')">Referencing SAS Files</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic4', 'subtopic1')">Two-Level Names</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic4', 'subtopic2')">Referencing Temporary SAS Files</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic4', 'subtopic3')">Referencing Permanent SAS Files</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic4', 'subtopic4')">Rules for SAS Names</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic5', '')">SAS Data Sets</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic5', 'subtopic1')">Overview of Data Sets</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic5', 'subtopic2')">Descriptor Portion</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic5', 'subtopic3')">Data Portion</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic5', 'subtopic4')">Observations (Rows)</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic6', '')">Variable Attributes</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic1')">Name</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic2')">Type</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic3')">Length</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic4')">Format</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic5')">Informat</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic6')">Label</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic7')">Variables (Columns)</a></li>
+                    <li><a href="javascript: loadPage('ch1', 'topic6', 'subtopic8')">Missing Values</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch1', 'topic7', '')">Summary</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch1', 'topic7', 'subtopic1')">Text Summary</a></li>
+                     <li><a href="javascript: loadPage('ch1', 'topic7', 'subtopic2')">Points to Remember</a></li>
+                 </ul>
+            </li>
+        </ul>
+   </div>
+   <br/>
+  <!-- end of Chapter 1 -->
+
+
+  <!-- Chapter 2 -->
+  <a href="javascript: showHideChapterTopics('chapter2-topics')" class="chapters-heading">
+     <p>2. Referncing Files and Settings Options</p>
+  </a>
+  <div id="chapter2-topics">
+        <ul class="chapters-ul subtopic-grey">
+            <li><a href="javascript: loadPage('ch2', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch2', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch2', 'topic2', '')">Refrencing Files</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic1')">SAS Libraries</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic2')">Assigning Librefs</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic3')">Verifying Librefs</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic4')">How Long Librefs Remain in Effect</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic5')">Specifying Two-Level Names</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic2', 'subtopic6')">Other Formats</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch2', 'topic3', '')">Viewing the Contents of SAS Libraries</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch2', 'topic3', 'subtopic1')">The CONTENTS Procedure</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic3', 'subtopic2')">The DATASETS Procedure</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch2', 'topic4', '')">Setting SAS System Options</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch2', 'topic4', 'subtopic1')">SAS Output</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic4', 'subtopic2')">Handling Two-Digit Year Values: Year 2000 Compliance</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch2', 'topic5', '')">Viewing System Options</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch2', 'topic5', 'subtopic1')">The OPTIONS Procedure</a></li>
+                    <li><a href="javascript: loadPage('ch2', 'topic5', 'subtopic2')"></a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch2', 'topic6', '')">Additional System Options</a></li>
+            <li><a href="javascript: loadPage('ch2', 'topic7', '')">Summary</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch2', 'topic7', 'subtopic1')">Text Summary</a></li>
+                     <li><a href="javascript: loadPage('ch2', 'topic7', 'subtopic2')">Points to Remember</a></li>
+                 </ul>
+            </li>
+        </ul>
+  </div>
+  <br/>
+  <!-- end of Chapter 2 -->
+
+
+  <!-- Chapter 3 -->
+  <a href="javascript: showHideChapterTopics('chapter3-topics')" class="chapters-heading">
+     <p>3. Editing and Debugging SAS Programs</p>
+  </a>
+  <div id="chapter3-topics">
+        <ul class="chapters-ul  subtopic-grey">
+            <li><a href="javascript: loadPage('ch3', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch3', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch3', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch3', 'topic2', '')">SAS Program Layout</a></li>
+            <li><a href="javascript: loadPage('ch3', 'topic3', '')">Interpreting Error messages</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch3', 'topic3', 'subtopic1')">Error Types</a></li>
+                    <li><a href="javascript: loadPage('ch3', 'topic3', 'subtopic2')">Syntax Errors</a></li>
+                </ul>
+            </li>
+        </ul>
+  </div>
+  <br/>
+  <!-- end of Chapter 3 -->
+
+
+  <!-- Chapter 16 -->
+  <a href="javascript: showHideChapterTopics('chapter16-topics')" class="chapters-heading">
+     <p>16. Processing Variables with Arrays</p>
+  </a>
+  <div id="chapter16-topics">
+        <ul class="chapters-ul subtopic-grey">
+            <li><a href="javascript: loadPage('ch16', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch16', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch16', 'topic2', '')">Creating One-Dimensional Arrays</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch16', 'topic2', 'subtopic1')">Understanding SAS Arrays</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic2', 'subtopic2')">General Form of an Array</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic2', 'subtopic3')">Variable Lists as Array Elements</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic2', 'subtopic4')">Referencing Elements of an Array</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic2', 'subtopic5')">Compilation and Execution</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch16', 'topic3', '')">Expanding Your Use of Arrays</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic1')">Creating Variables in an ARRAY Statement</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic2')">Assigning Initial Values to Arrays</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic3')">Creating Temporary Array Elements</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic4')">Understanding Multidimensional Arrays</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic5')">Defining a Multidimensional Array</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic3', 'subtopic6')">Example: Referencing Elements of a Two-Dimensional Array</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch16', 'topic4', '')">Additional Features</a>
+            </li>
+            <li><a href="javascript: loadPage('ch16', 'topic5', '')">Summary</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch16', 'topic5', 'subtopic1')">Text Summary</a></li>
+                    <li><a href="javascript: loadPage('ch16', 'topic5', 'subtopic2')">Points to Remember</a></li>
+                </ul>
+            </li>
+        </ul>
+  </div>
+  <br/>
+  <!-- end of Chapter 16 -->
+
+  <!-- Chapter 17 -->
+  <a href="javascript: showHideChapterTopics('chapter17-topics')" class="chapters-heading">
+     <p>17. Reading Raw Data in Fixed Fields</p>
+  </a>
+  <div id="chapter17-topics">
+        <ul class="chapters-ul subtopic-grey">
+            <li><a href="javascript: loadPage('ch17', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch17', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch17', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic2', '')">Review of Column Input</a>
+                <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic2', 'subtopic1')">Introduction</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic2', 'subtopic2')">Column Input Features</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic3', '')">Identifying Standard and Nonstandard Numeric Data</a>
+                <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic3', 'subtopic1')">Standard Numeric Data</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic3', 'subtopic2')">Nonstandard Numeric Data</a></li>
+                </ul>
+            <li>
+            <li><a href="javascript: loadPage('ch17', 'topic4', '')">Choosing an Input Style</a>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic5', '')">Using Formatted Input</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic5', 'subtopic1')">General Form of the INPUT Statement Using Formatted Input<a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic5', 'subtopic2')">Using the @n Column Pointer Control</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic5', 'subtopic3')">Reading Columns in Any Order</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic5', 'subtopic4')">The +n Pointer Control</a></li>
+                 </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic6', '')">Using Informats</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic6', 'subtopic1')">Reading Character Values</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic6', 'subtopic2')">Reading Standard Numeric Data</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic6', 'subtopic3')">Reading Nonstandard Numeric Data</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic6', 'subtopic4')">DATA Step Processing of Informats</a></li>
+                 </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic7', '')">Record Formats</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic7', 'subtopic1')">Fixed-Length Records</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic7', 'subtopic2')">Variable-Length Records</a></li>
+                 </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch17', 'topic8', '')">Summary</a>
+                 <ul class="chapters-ul">
+                     <li><a href="javascript: loadPage('ch17', 'topic8', 'subtopic1')">Text Summary</a></li>
+                     <li><a href="javascript: loadPage('ch17', 'topic8', 'subtopic2')">Points to Remember</a></li>
+                 </ul>
+            </li>
+       </ul>
+  </div>
+  <br/>
+  <!-- end of Chapter 17 -->
+
+
+
+  <!-- Chapter 18 -->
+  <a href="javascript: showHideChapterTopics('chapter18-topics')" class="chapters-heading">
+     <p>18. Reading Free-Format Data</p>
+  </a>
+  <div id="chapter18-topics">
+        <ul class="chapters-ul subtopic-grey">
+            <li><a href="javascript: loadPage('ch18', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+           <li><a href="javascript: loadPage('ch18', 'topic2', '')">Reading Free-Format Data</a></li>
+           <li><a href="javascript: loadPage('ch18', 'topic3', '')">Using List Input</a>
+               <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic3', 'subtopic1')">Processing List Input</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic3', 'subtopic2')">Working with Delimiters</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic3', 'subtopic3')">Reading a Range of Variables</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic3', 'subtopic4')">Limitations of List Input</a></li>
+                </ul>
+           </li>
+           <li><a href="javascript: loadPage('ch18', 'topic4', '')">Reading Missing values</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic4', 'subtopic1')">Reading Missing Values at the End of a Record</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic4', 'subtopic2')">Reading Missing Values at the Beginning or Middle of a Record</a></li>
+                </ul>
+           </li>
+           <li><a href="javascript: loadPage('ch18', 'topic5', '')">Specifying the Length of Character Values</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic5', 'subtopic1')">The LENGTH Statement</a></li>
+                </ul>
+           </li>
+           <li><a href="javascript: loadPage('ch18', 'topic6', '')">Modifying List Input</a>
+               <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic6', 'subtopic1')">Reading Values That Contain Embedded Blanks</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic6', 'subtopic2')">Reading Nonstandard Values</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic6', 'subtopic3')">Processing the DATA Step</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic6', 'subtopic4')">Comparing Formatted Input and Modified List Input</a></li>
+                </ul>
+           </li>
+          <li><a href="javascript: loadPage('ch18', 'topic7', '')">Creating Free-Format Data</a>
+              <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic7', 'subtopic1')">Specifying a Delimiter</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic7', 'subtopic2')">Using the DSD Option</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic7', 'subtopic3')">Reading Values That Contain Delimiters within a Quoted String</a></li>
+              </ul>
+          </li>
+          <li><a href="javascript: loadPage('ch18', 'topic8', '')">Mixing Input Styles</a>
+              <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic8', 'subtopic1')">Additional Features</a></li>
+              </ul>
+          </li>
+          <li><a href="javascript: loadPage('ch18', 'topic9', '')">Summary</a>
+              <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch18', 'topic9', 'subtopic1')">Text Summary</a></li>
+                    <li><a href="javascript: loadPage('ch18', 'topic9', 'subtopic2')">Points to Remember</a></li>
+              </ul>
+          </li>
+        </ul>
+
+   </div>
+   <br/>
+  <!-- end of Chapter 18 -->
+
+
+
+  <!-- Chapter 19 -->
+  <a href="javascript: showHideChapterTopics('chapter19-topics')" class="chapters-heading">
+     <p>19. Reading Date and Time Values</p>
+  </a>
+  <div id="chapter19-topics">
+           <ul class="chapters-ul subtopic-grey">
+            <li><a href="javascript: loadPage('ch19', 'topic1', '')">Overview</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch19', 'topic1', 'subtopic1')">Introduction</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic1', 'subtopic2')">Objectives</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch19', 'topic2', '')">How SAS Stores Date Values</a></li>
+            <li><a href="javascript: loadPage('ch19', 'topic3', '')">How SAS stores Time Values</a></li>
+            <li><a href="javascript: loadPage('ch19', 'topic4', '')">Reading Date and Time Informats</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic1')">Overview</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic2')">Specifying Informats</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic3')">MMDDYYw. Informat</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic4')">DATEw. Informat</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic5')">TIMEw. Informat</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic6')">DATETIMEw. Informat</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic4', 'subtopic7')">YEARCUTOFF= SAS System Option</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch19', 'topic5', '')">Using Dates and Times in Calculations</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch19', 'topic5', 'subtopic1')">Introduction</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch19', 'topic6', '')">Using Date and Time Formats</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch19', 'topic6', 'subtopic1')">The WEEKDATEw. Format</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic6', 'subtopic2')">The WORDDATEw. Format</a></li>
+                </ul>
+            </li>
+            <li><a href="javascript: loadPage('ch19', 'topic7', '')">Summary</a>
+                <ul class="chapters-ul">
+                    <li><a href="javascript: loadPage('ch19', 'topic7', 'subtopic1')">Text Summary</a></li>
+                    <li><a href="javascript: loadPage('ch19', 'topic7', 'subtopic2')">Points to Remember</a></li>
+                </ul>
+            </li>
+        </ul>
+   </div>
+   <br/>
+  <!-- end of Chapter 19 -->
+
+</div>
+
+</body>
+</html>

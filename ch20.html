@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram-style{
+         max-width: 100%;
+     }
+</style>
+
+</head>
+<body>
+
+<div data-role="content">
+
+
+  <h3 class="color-blue">Overview</h3>
+  <h3 class="color-red">Introduction</h3>
+
+  <p>Information for one observation can be spread out over several records. You can write multiple
+     INPUT statements to read each record that comprises a single observation, as in this example:
+  </p>
+  <img src="images/ch20_image1.png" style="max-width:100%"/>
+
+  <p>Or, you can write one INPUT statement that contains a line pointer control to specify the record(s)
+     from which values are to be read, as in this example:
+  </p>
+  <img src="images/ch20_image2.png" style="max-width:100%"/>
+
+  <h3 class="color-red">Objectives</h3>
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>read multiple records sequentially and create a single observation</li>
+    <li>read multiple records non-sequentially and create a single observation</li>
+  </ul>
+
+  <h3 class="color-blue">Use Line pointer Controls</h3>
+  <p>You know that as SAS reads raw data values, it keeps track of its position with an input pointer.
+     You have used column pointer controls and column specifications to determine the column
+     placement of the input pointer.
+  </p>
+  <table border="1">
+     <tr>
+        <td>Column Specifications</td>
+        <td><pre>input Name $ 1-12 Age 15-16 Gender $ 18;</pre></td>
+     </tr>
+     <tr>
+        <td>Column Pointer Controls</td>
+        <td><pre>input Name $12. @15 Age 2. @18 Gender $1.;</pre></td>
+     </tr>
+  </table>
+
+  <p></p>
+  <pre>
+  </pre>
+  <img src="images/ch20_image3.png" style="max-width:100%"/>  
+
+  <p>There are two types of line pointer controls</p>
+  <ul>
+     <li>The forward slash (/) specifies a line location that is relative to the current one</li>
+     <li>The #n specifies the absolute number of the line to which you want to move the pointer</li>
+  </ul>
+
+  <!-- Page 520 -->
+
+  <p>First we'll look at the forward slash (/). Later in this chapter, you'll learn how to use the #n, and
+     you will see how these two controls can be combined.
+  </p>
+  <h3 class="color-blue"></h3>
+  <h3 class="color-red"></h3>
+  <p>
+     You use the forward slash (/) line pointer control to read multiple records sequentially. The /
+     advances the input pointer to the next record. The / line pointer control only moves the input
+     pointer forward and must be specified after the instructions for reading the values in the current
+     record.
+     <br/><br/>
+     The single INPUT statement below reads the values for <i>Lname</i> and <i>Fname</i> in the first record,
+     followed by the values for <i>Department</i> and <i>JobCode</i> in the second record. Then the value for
+     Salary is read in the third record.
+  </p>
+  <img src="images/ch20_image4.png" style="max-width:100%"/>  
+
+  <p>Take a closer look at using the forward slash (/) line pointer control in the following example.</p>
+  <p>The raw data file Memdata contains the mailing list of a professional organization. Your task is to
+     combine the information for each member into one data set observation. We’ll begin by reading
+     each member’s name, followed by the street address, and finally the city, state, and zip code.
+  </p>
+  <ul>
+    <li>As you write the instructions to read the values for Fname and Lname, notice that not all
+        of the values for Lname begin in the same column. So, you should use standard list input
+        to read these values
+        <img src="images/ch20_image5.png" style="max-width:100%"/>  
+    </li>
+    <li>Now you want to read the values for Address from the second record. The / line pointer
+         control advances the input pointer to the next record. At this point the INPUT statement is
+         incomplete, so you should not place a semicolon after the line pointer control
+         <img src="images/ch20_image6.png" style="max-width:100%"/>  
+    </li>
+    <li>You can use column input to read the values in the next record as one variable named
+        Address. Then add a line pointer control to move the input pointer to the next record
+        <img src="images/ch20_image7.png" style="max-width:100%"/>  
+    </li>
+    <li>
+        As you write the statements to read the values for City, notice that one of the values is
+        longer than eight characters and contains embedded blanks. Also note that each value is
+        followed by two consecutive blanks. To read these values, you should use modified list
+        input with the ampersand (&) modifier.
+        <br/><br/>
+        The values for State and the values for Zip do not begin in the same column. Therefore,
+        you should use list input to read these values
+        <img src="images/ch20_image8.png" style="max-width:100%"/>  
+    </li>
+  </ul>
+
+  <h3 class="color-red">Sequential Processing of Multiple Records in the DATA Step</h3>
+  <p>Now that you’ve learned the basics of using the / line pointer control, let’s take a closer look at the
+     sequential processing of multiple records in the DATA step.
+     <br/><br/>
+     During compilation, the program data vector is created for the Perm.Members data set. When
+     the DATA step executes, the values in the first record are read, and the / line pointer control
+     moves the input pointer to the second record.
+  </p>
+  <img src="images/ch20_image9.png" style="max-width:100%"/>  
+
+  <p>The values for Address are read, and the second / line pointer control advances the input pointer
+     to the third record.
+  </p>
+
+  <!-- Page 522 -->
+  <img src="images/ch20_image10.png" style="max-width:100%"/> 
+  <p>The values for City, State, and Zip are read, and the INPUT statement is completely executed.</p> 
+  <img src="images/ch20_image11.png" style="max-width:100%"/> 
+  <p>The values in the program data vector are written to the data set as the first observation.</p>
+  <img src="images/ch20_image12.png" style="max-width:100%"/> 
+  <p>Control returns to the top of the DATA step, and the variable values are reinitialized to missing.</p>
+  <img src="images/ch20_image13.png" style="max-width:100%"/> 
+  <p>During the second iteration, values for Fname and Lname are read beginning in column one of
+     the fourth record.
+  </p>
+  <img src="images/ch20_image14.png" style="max-width:100%"/> 
+  <p>The values for Address are read and the / line pointer control advances the input pointer to the
+     fifth record.
+  </p>
+
+  <!-- Page 523 -->
+  <img src="images/ch20_image15.png" style="max-width:100%"/> 
+
+  <p>The values for City, State, and Zip are read, and the INPUT statement is completely executed.</p>
+  <img src="images/ch20_image16.png" style="max-width:100%"/> 
+  <img src="images/ch20_image17.png" style="max-width:100%"/> 
+
+  <p>The values in the program data vector are written to the data set as the second observation.</p>
+  <img src="images/ch20_image18.png" style="max-width:100%"/> 
+  <p>After the data set is complete, PROC PRINT output for Perm.Members shows that a single
+     observation contains the complete information for each member.
+  </p>
+  <pre>
+  proc print data=perm.members;
+  run;
+  </pre>
+
+  <table border="1">
+     <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Fname</th>
+       <th class="color-red">Lname</th>
+       <th class="color-red">Address</th>
+       <th class="color-red">City</th>
+       <th class="color-red">State</th>
+       <th class="color-red">Zip</th>
+     </tr>
+     <tr>
+       <td>1</td>
+       <td>LEE</td>
+       <td>ATHNOS</td>
+       <td>1215 RAINTREE CIRCLE</td>
+       <td>PHOENIX</td>
+       <td>AZ</td>
+       <td>85044</td>
+     </tr>
+     <tr>
+       <td>2</td>
+       <td>HEIDIE</td>
+       <td>BAKER</td>
+       <td>1751 DIEHL ROAD</td>
+       <td>VIENNA</td>
+       <td>VA</td>
+       <td>22124</td>
+     </tr>
+     <tr>
+       <td>3</td>
+       <td>MYRON</td>
+       <td>BARKER</td>
+       <td>131 DONERAIL DRIVE</td>
+       <td>ATLANTA</td>
+       <td>GA</td>
+       <td>30363</td>
+     </tr>
+     <tr>
+       <td>4</td>
+       <td>JOYCE</td>
+       <td>BENEFIT</td>
+       <td>85 MAPLE AVENUE</td>
+       <td>MENLO PARK</td>
+       <td>CA</td>
+       <td>94025</td>
+     </tr>
+  </table>
+
+  <h3 class="color-red">Number of Records per Observation</h3>
+
+  <!-- Page 524 -->
+
+  <p>Note that the raw data file must contain the same number of records for each observation that
+     is being created.
+  </p>
+  <p>For example, suppose there are only two records for the second member. However, the INPUT
+     statement is set up to read three records.
+  </p>
+  <img src="images/ch20_image19.png" class="diagram-style" />
+
+  <p>The second member's name and address are read and assigned to corresponding variables.
+     Then the input pointer advances to the next record, as directed by the INPUT statement, and the
+     third member's name is read as a value for City.
+  </p>
+  <p>The DATA step is still looking for a value for State and Zip, so the input pointer advances to the
+     next record and reads the values for the member's address.
+  </p>
+  <p>The PROC PRINT output for this data set illustrates the problem.</p>
+  
+  <table border="1">
+     <tr>
+        <th class="color-red">Obs</th>
+        <th class="color-red">Fname</th>
+        <th class="color-red">Lname</th>
+        <th class="color-red">Address</th>
+        <th class="color-red">City</th>
+        <th class="color-red">State</th>
+        <th class="color-red">Zip</th>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>LEE</td>
+        <td>ATHNOS</td>
+        <td>1215 RAINTRE E CIRCLE</td>
+        <td>PHOENIX</td>
+        <td>AZ</td>
+        <td>85044</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>HEIDIE</td>
+        <td>BAKER</td>
+        <td>1751 DIEHL ROAD</td>
+        <td>MYRON BARK</td>
+        <td>131</td>
+        <td>DONERAIL</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>ATLANTA</td>
+        <td>GA</td>
+        <td>JOYCE BENEFIT</td>
+        <td>85 MAPLE A</td>
+        <td>MENLO</td>
+        <td>PARK</td>
+     </tr>
+  </table>
+
+  <p>So, before you write the INPUT statement, ensure that the raw data file contains the same
+     number of records for each observation.
+  </p>
+
+  <img src="images/ch20_image20.png" class="diagram-style" />
+
+  <table>
+     <tr>
+         <th class="color-blue">Note</th>
+         <td>For more information about working with raw data files that contain missing records, see the SAS documentation.</td>
+     </tr>
+  </table>
+
+  <!-- Page 525 -->
+  <h3 class="color-blue">Reading Multiple Records Non-Sequentially</h3>
+  <h3 class="color-red">The #n Line Pointer Control</h3>
+
+  <p>You already know how to read multiple records sequentially by using the / line pointer control.
+     Now let's look at reading multiple records non-sequentially by using the #n line pointer control.
+  </p>
+  <p>The #n specifies the absolute number of the line to which you want to move the input pointer. The
+     #n pointer control can read records in any order; therefore, it must be specified before the
+     instructions for reading values in a specific record.
+  </p>
+  <p>The INPUT statement below first reads the values for Department and JobCode in the second
+     record, then the values for Lname and Fname in the first record. Finally, it reads the value for
+     Salary in the third record.
+  </p>
+  <img src="images/ch20_image21.png" class="diagram-style" />
+
+  <h3>Example: Using the #n Line Pointer Control</h3>
+  <p>Take a closer look at using the #n line pointer control in the following example.
+   </p>
+  <img src="images/ch20_image22.png" class="diagram-style" />
+
+  <p>The raw data file Patdata contains information about the patients of a small group of general
+     surgeons.
+  </p>
+  <p>The first three records contain a patient’s name, address, city, state, and zip code. The fourth
+     record contains the patient’s ID number followed by the name of the primary physician.
+  </p>
+  <p>Suppose you want to read each patient’s information in the following order:</p>
+  <ol>
+     <li>ID number <i>(ID)</i></li>
+     <li>first name <i>(Fname)</i></i></li>
+     <li>last name <i>(Lname)</i></li>
+     <li>address <i>(Address)</i></li>
+     <li>city <i>(City)</i></li>
+     <li>state <i>(State)</i></li>
+     <li>zip <i>(Zip)</i></li>
+     <li>doctor <i>(Doctor)</i></li>
+  </ol>
+
+  <!-- Page 526 -->
+  <ul>
+    <li><p>To read the values for <i>ID</i> in the fourth record, specify #4 before naming the variable and
+        defining its attributes.</p>
+        <img src="images/ch20_image23.png" class="diagram-style" />
+    </li>
+    <li><p>To read the values for <i>Fname</i> and <i>Lname</i> in the first record, specify #1 before naming the
+           variables and defining their attributes.
+        </p>
+        <img src="images/ch20_image24.png" class="diagram-style" />
+    </li>
+    <li><p>Use the #n line pointer control to move the input pointer to the second record and read
+           the value for Address.
+        </p>
+        <img src="images/ch20_image25.png" class="diagram-style" />
+    </li>
+    <li><p>Now move the input pointer to the third record and read the values for <i>City</i>, <i>State</i>, and
+           <i>Zip</i>, in that order.
+        </p>
+        <table>
+            <tr>
+               <th class="color-blue">Note</th>
+               <td>In this raw data file, the values for City contain eight or fewer characters and
+                   do not contain embedded blanks. So, you can use standard list input to read
+                   these values.
+               </td>
+            </tr>
+        </table>
+        <img src="images/ch20_image26.png" class="diagram-style" />
+    </li>
+    <li><p>Now you need to move the input pointer down to the fourth record to read the values for
+           <i>Doctor</i>, which begin in column 7. Don't forget to add a semicolon at the end of the INPUT
+           statement. A RUN statement completes the program.
+        </p>
+        <img src="images/ch20_image27.png" class="diagram-style" />
+    </li>
+  </ul>
+
+  <h3 class="color-red">Execution of the DATA Step</h3>
+  <p>The #n pointer controls in the program below cause four records to be read for each execution of
+     the DATA step.
+  </p>
+
+  <pre>
+  data perm.patients;
+     infile patdata;
+     input #4 ID $5.
+        #1 Fname $ Lname $
+        #2 Address $23.
+        #3 City $ State $ Zip $
+        #4 @7 Doctor $6.;
+  run;
+  </pre>
+
+
+  <!-- Page 526 -->
+  <p>The first time the DATA step executes, the first four records are read, and an observation is
+     written to the data set.
+  </p>
+  <img src="images/ch20_image28.png" class="diagram-style" />
+
+  <p>During the second iteration, the next four records are read, and the second observation is written
+     to the data set, and so on.
+  </p>
+  <img src="images/ch20_image29.png" class="diagram-style" />
+
+  <p>The PROC PRINT output of the data set shows how information that was spread over several
+     records has been condensed into one observation.
+  </p>
+
+  <pre>
+  proc print data=perm.patients noobs;
+  run;
+  </pre>
+ 
+  <table border="1">
+     <tr>
+       <th class="color-red">ID</th>
+       <th class="color-red">Fname</th>
+       <th class="color-red">Lname</th>
+       <th class="color-red">Address</th>
+       <th class="color-red">City</th>
+       <th class="color-red">State</th>
+       <th class="color-red">Zip</th>
+       <th class="color-red">Doctor</th>
+     </tr>
+     <tr>
+       <td>XM034</td>
+       <td>ALEX</td>
+       <td>BEDWAN</td>
+       <td>609 WILTON MEADOW DRIVE</td>
+       <td>GARNER</td>
+       <td>NC</td>
+       <td>27529</td>
+       <td>FLOYD</td>
+     </tr>
+     <tr>
+       <td>XF124</td>
+       <td>ALISON</td>
+       <td>BEYER</td>
+       <td>8521 HOLLY SPRINGS ROAD</td>
+       <td>APEX</td>
+       <td>NC</td>
+       <td>27502</td>
+       <td>LAWSON</td>
+     </tr>
+     <tr>
+       <td>XF232</td>
+       <td>LISA</td>
+       <td>BONNER</td>
+       <td>109 BRAMPTO N AVENUE</td>
+       <td>CARY</td>
+       <td>NC</td>
+       <td>27511</td>
+       <td>27511/td>
+     </tr>
+     <tr>
+       <td>XM065</td>
+       <td>GEORGE</td>
+       <td>CHESSON</td>
+       <td>3801 WOODSID E COURT</td>
+       <td>GARNER</td>
+       <td>NC</td>
+       <td>27529</td>
+       <td>FLOYD</td>
+     </tr>
+  </table>
+
+  <!-- Page 528 -->
+
+  <h3 class="color-blue">Combining Line Pointer Controls</h3>
+  <p>The forward slash (/) line pointer control and the #n line pointer control can be used together in a
+     SAS program to read multiple records both sequentially and non-sequentially.
+  </p>
+  <p>For example, you could use both the / line pointer control and the #n line pointer control to read
+     the variables in the raw data file Patdata in the following order:
+  </p>
+
+ <table>
+    <tr>
+      <td>1. ID</td>
+      <td>5. City</td>
+    </tr>
+    <tr>
+      <td>2. Fname</td>
+      <td>6. State</td>
+    </tr>
+    <tr>
+      <td>3. Lname</td>
+      <td>7. Zip</td>
+    </tr>
+    <tr>
+      <td>4. Address</td>
+      <td>8. Doctor</td>
+    </tr>
+  </table>
+
+  <img src="images/ch20_image30.png" class="diagram-style" />
+  <ul>
+    <li>To read the values for <i>ID</i> in the fourth record, specify #4 before naming the variable and
+        defining its attributes.
+    </li>
+    <li>Specify #1 to move the input pointer back to the first record, where the values for <i>Fname</i>
+        and <i>Lname</i> are read.
+    </li>
+    <li>Because the next record to be read is sequential, you can use the / line pointer control
+        after the variable <i>Lname</i> to move the input pointer to the second record, where the value
+        for <i>Address</i> is read.
+    </li>
+    <li>The / line pointer control in the next line directs the input pointer to the third record, where
+        the values for <i>City</i>, <i>State</i>, and <i>Zip</i> are read.
+    </li>
+    <li>The final / line pointer control moves the input pointer back to the fourth record, where the
+        value for <i>Doctor</i> is read.
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>Alternatively, you can use only the #n line pointer control (as shown earlier in
+           this chapter and below) to read the variables in the order shown above.
+       </td>
+    </tr>
+  </table>
+  <img src="images/ch20_image31.png" class="diagram-style" />
+    </li>
+  </ul>
+
+
+  <h3 class="color-blue">Summary</h3>
+  <h3 class="color-red">Text Summary</h3>
+
+  <h3>Multiple Records Per Observation</h3>
+  <p>Information for one observation can be spread out over several records. You can write one
+     INPUT statement that contains line pointer controls to specify the records from which values are
+     read.
+  </p>
+
+  <h3>Reading Multiple Records Sequentially</h3>
+  <p>The forward slash (/) line pointer control is used to read multiple records sequentially. Each time a
+     / pointer is encountered, the input pointer advances to the next line.
+  </p>
+
+  <h3>Reading Multiple Records Non-Sequentially</h3>
+  <p>The #n line pointer control is used to read multiple records non-sequentially. The #n specifies the
+     absolute number of the line to which you want to move the pointer.
+  </p>
+
+  <h3>Combining Line Pointer Controls</h3>
+  <p>The / line pointer control and the #n line pointer control can be combined within a SAS program to
+     read multiple records both sequentially and non-sequentially.
+  </p>
+
+  <h3 class="color-red">Points to Remember</h3>
+  <ul>
+     <li>When a file contains multiple records per observation, the file must contain the same
+         number of records for each observation that is being created.
+     </li>
+     <li>Because the / pointer control can only move forward, the pointer control is specified after
+         the values in the current record are read
+     </li>
+     <li>The #n pointer control can read records in any order and must be specified before the
+         variable names are defined.
+     </li>
+     <li>A semicolon should be placed at the end of the complete INPUT statement.</li>
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div> <!-- end of content -->
+
+</body>
+</html>

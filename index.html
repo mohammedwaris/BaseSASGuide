@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-scrollto.js"></script>
+<script type="text/javascript">
+
+var currentPage = '';
+
+$(document).ready(function(){
+	$('#page-data').load('chapters.html' + ' #content', {}, function(){});
+	currentPage = 'chapters';
+});
+
+function loadChapters(){
+	$('#page-data').html(chapters_page_data);
+	$('#index-button').addClass('display-none');
+	currentPage = 'chapters';
+	updateHeaderContent();
+}
+
+function loadPage(ch, topic, subtopic){
+
+  if(ch == 'ch1'){
+     chapters_page_data = $('#page-data').html();
+	 currentPage = ch;
+	 $('#index-button').removeClass('display-none');
+	 updateHeaderContent();
+     $('#page-data').load(ch + '.html' + ' #content', {}, function(){
+        if(subtopic == ''){
+           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
+        }else{
+           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top) - 100 + 'px'});
+        }
+     });
+  }else{
+     chapters_page_data = $('#page-data').html();
+	 currentPage = ch;
+	 $('#index-button').removeClass('display-none');
+	 updateHeaderContent();
+     $('#page-data').load(ch + '.html' + ' #content', {}, function(){
+        if(subtopic == ''){
+           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
+        }else{
+           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top - 100) + 'px'});
+        }
+     });   
+  }
+
+}// end of loadPage()
+
+function showHideChapterTopics(id){
+    //alert(id);
+    if($('#'+id).hasClass('display-none') == true){
+      $('#'+id).removeClass('display-none');
+    }else{
+      $('#'+id).addClass('display-none');
+    }
+}
+
+function updateHeaderContent(){
+	//alert()
+	if(currentPage == 'chapters'){
+		$('#sub-title').html('(Chapters)');
+		$('#index-button').addClass('display-none');
+		if(unlockAllChaptersStatus == 0){
+			$('#unlock-all-chapters-button').removeClass('display-none');
+		}
+	}else if(currentPage == 'ch1'){
+		$('#sub-title').html('(Basic Concepts)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch21'){
+		$('#sub-title').html('(Creating Multiple Observations from a Single Record)');
+		$('#index-button').removeClass('display-none');
+	}
+	
+	if(currentPage == 'ch1' || currentPage == 'ch2' || currentPage == 'ch3' || currentPage == 'ch21'){
+		//if(unlockAllChaptersStatus == 0){
+			$('#unlock-all-chapters-button').addClass('display-none');
+			//}
+	}
+}
+</script>
+<style>
+    body{
+        margin-top: 100px;
+        margin-left:10px;
+        margin-right:10px;
+     }
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: #cc0000;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .topic{
+        color: #236B8E;
+        background-color: #87CEEB;
+        border-radius: 5px;
+        padding:12px;
+        text-align:center;
+     }
+     .subtopic{
+        color: #F2473F;
+        background-color: #FFC1C1;
+        border-radius: 5px;
+        padding:8px;
+        margin-right: 10%;
+        margin-left: 10%;
+     }
+     .underline{ text-decoration: underline;}
+
+     .chapters-ul{
+       list-style-type: none;
+     }
+     .back-color-grey{
+       background-color: #cccccc;
+     }
+     .chapters-heading{
+       font-weight: bold;
+       font-size: 1em;
+       
+       
+     }
+     .chapters-heading p{
+       background-color: #dddddd;
+       border-radius: 5px;
+       padding:10px;
+       
+     }
+     .chapters-heading:hover{
+        text-decoration: none;
+     }
+     .chapters-heading:active {
+       background-color: grey;
+       text-decoration: none;
+     }
+     .chapters-heading:visited {
+       text-decoration: none;
+     }
+     .display-none{
+       display: none;
+     }
+
+     .subtopic-grey a{
+       color:grey;
+     }
+     .visibility-hidden{
+   	  visibility: hidden;
+     }
+     .display-none{
+   	  display: none;
+     }
+     .color-green{
+   	  color: green;
+     }
+</style>
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+ <table style="width:100%;" border="0">
+   <tr>
+     <td><div class="container"><h4 >Base SAS Exam Guide</h4><p class="color-green" id="sub-title">(Chapters)</p></div></td>
+     <td>
+         <button id="unlock-all-chapters-button" type="button" class="btn btn-primary display-none" onclick="unlockAllChapters()">Buy</button>
+		  <button id="index-button" type="button" class="btn btn-primary display-none" onclick="loadChapters();">Index</button>
+     </td>
+   </tr>
+ </table>
+</nav>
+
+
+<div id="page-data">
+
+
+
+</div><!-- end of pagedata -->
+
+
+</body>
+</html>

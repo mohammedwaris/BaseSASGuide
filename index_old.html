@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="cordova_pluins.js"></script>
+<script type="text/javascript">
+
+var androidInAppBillingInitStatus = -1;
+var unlockAllChaptersStatus = -1;
+var currentPage = '';
+
+document.addEventListener('deviceready', onDeviceReady, false);
+
+
+function onDeviceReady(){
+	alert(getPlatform());
+	loadPage('chapters');
+	document.addEventListener('backbutton', onBackButtonPressed, false);
+	initializeInAppBilling();
+}
+
+function initializeInAppBilling(){
+	
+	if(getPlatform() == 'android') {
+		//this is a android device initialize android in-app billing plugin
+		inappbilling.init(function(){
+							//success
+							checkIfAlreadyUnlocked();
+						  }, function(){
+							  //fail
+						  },{},"all_chapters");
+	}else if(getPlatform() == 'ios'){
+		//this is a ios device initialize ios in-app- billing plugin
+	}else if(getPlatform() == 'unknown'){
+		alert('Error: In-app-billing plugin cannot be initialized');
+	}
+}
+
+function onBackButtonPressed(){
+	if(currentPage == 'chapters'){
+		//ask for exit
+		navigator.app.exitApp();
+		/*navigator.notification.confirm(
+		        'Exit ?', // message
+		         exitApp,            // callback to invoke with index of button pressed
+		        'Confirm',           // title
+		        'Yes,No'         // buttonLabels
+		    );*/
+		
+	}else{
+		loadPage('chapters');
+	}
+}
+
+function exitApp(buttonIndex){
+	if(buttonIndex == 1)
+		navigator.app.exitApp();
+}
+
+function getPlatform(){
+	outPlatform = 'unknown';
+	
+	/*inPlatform = device.platform;
+	
+	if(inPlatform == 'Android'){
+		outPlatform = 'android';
+	}else if(inPlatform == 'iOS'){
+		outPlatform = 'ios';
+	}else{
+		outPlatform = 'unknown';
+	}*/
+	outPlatform = 'android';
+	
+	return outPlatform;
+}
+
+function checkIfAlreadyUnlocked(){
+	if(getPlatform() == 'android'){
+		//this is a android device
+		inappbilling.getPurchases(function(data){
+									//success
+									if(data.length == 0){
+										unlockAllChaptersStatus = 0;
+										$('#unlock-all-chapters-button').removeClass('display-none');
+									}else{
+										purchasedItem = data[0];
+										if(purchasedItem.productId == "all_chapters"){
+											//chapters already unlocked
+											unlockAllChaptersStatus = 1;
+											$('#unlock-all-chapters-button').addClass('display-none');
+										}
+									}
+								}, function(){
+									//fail
+									alert('Error: Cannot retrieved purchase information');
+								}
+	   );
+	}else if(getPlatform() == 'ios'){
+		//this is a ios device
+	}
+}
+
+function unlockAllChapters(){
+	if(getPlatform() == 'android'){
+		//this is a android device
+		inappbilling.buy(function(){
+							// success
+							//alert("buy success");
+							unlockAllChapterStatus = 1;
+							$('#unlock-all-chapters-button').addClass('display-none');
+						}, function(){
+							//fail
+							//alert("buy fail");
+						}, "all_chapters");
+	}else if(getPlatform() == 'ios'){
+		//this is a ios device
+	}else if(getPlatform() == 'unknown'){
+		alert('Error: Cannot initiate a purchase now');
+	}
+}
+
+$(document).ready(function(){
+	
+	
+	
+});
+
+function loadPage(page){
+	$('#content').load(page + '.html' + ' #content', function() {
+		currentPage = page;
+		updateHeaderContent();
+	});
+}
+
+function loadChapter(chapterno){
+	if(chapterno == 1)
+		loadPage('ch' + chapterno);
+	else{
+			if(unlockAllChaptersStatus == -1){
+				//purchase status is unknown.
+				alert('Your purchase information is unknown. Please try again later.');
+			}else if(unlockAllChaptersStatus == 0){
+				//user has not purchased it yet.
+				alert('Please click buy button to unlock all chapters.');
+				
+			}else if(unlockAllChaptersStatus == 1){
+				//User has purchased it.
+				loadPage('ch' + chapterno);
+			}
+	}
+}
+
+function updateHeaderContent(){
+	//alert()
+	if(currentPage == 'chapters'){
+		$('#sub-title').html('(Chapters)');
+		$('#index-button').addClass('display-none');
+		if(unlockAllChaptersStatus == 0){
+			$('#unlock-all-chapters-button').removeClass('display-none');
+		}
+	}else if(currentPage == 'ch1'){
+		$('#sub-title').html('(Basic Concepts)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch21'){
+		$('#sub-title').html('(Creating Multiple Observations from a Single Record)');
+		$('#index-button').removeClass('display-none');
+	}
+	
+	if(currentPage == 'ch1' || currentPage == 'ch2' || currentPage == 'ch3' || currentPage == 'ch21'){
+		//if(unlockAllChaptersStatus == 0){
+			$('#unlock-all-chapters-button').addClass('display-none');
+			//}
+	}
+}
+
+</script>
+
+<style>
+  body{
+    padding-top:100px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  .color-green{
+	  color: green;
+  }
+  td,th{
+    padding-right: 5px;
+  }
+  .color-red{
+    color: red;
+  }
+  .color-blue{
+    color: blue;
+  }
+  .underline{ text-decoration: underline;}
+  
+  .visibility-hidden{
+	  visibility: hidden;
+  }
+  .display-none{
+	  display: none;
+  }
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+ <table style="width:100%;" border="0">
+   <tr>
+     <td><div class="container"><h4>Base SAS Exam Guide</h4><p class="color-green" id="sub-title">(Chapters)</p></div></td>
+     <td>
+         <button id="unlock-all-chapters-button" type="button" class="btn btn-primary display-none" onclick="unlockAllChapters()">Buy</button>
+		  <button id="index-button" type="button" class="btn btn-primary display-none" onclick="loadPage('chapters');">Index</button>
+     </td>
+   </tr>
+ </table>
+</nav>
+
+<div id="content">
+	
+</div>
+
+</body>
+</html>

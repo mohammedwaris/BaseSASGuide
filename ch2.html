@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram-style{
+         max-width: 100%;
+     }
+     
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>When you begin a SAS session, it's often convenient to set up your environment first. For
+     example, you might want to
+  </p>
+  <ul>
+    <li>define libraries that contain the SAS data sets that you intend to us</li>
+    <li>set features of your SAS listings, such as whether the date and time appear</li>
+    <li>specify how two-digit year values should be interpreted</li>
+  </ul>
+  
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>define new libraries by using programming statements</li>
+    <li>reference SAS files to be used during your SAS session</li>
+    <li>set system options to determine how date values are read and to control the appearance
+        of listing output that is created during your SAS session
+    </li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Referencing Files</h12>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">SAS Libraries</h3>
+
+  <p>In the previous chapter, you learned that SAS files are stored in <strong>SAS libraries</strong>. By default, SAS
+     defines several libraries for you:
+  </p>
+  <ul>
+     <li><strong>Sashelp</strong> is a permanent library that contains sample data and other files that control how
+         SAS works at your site. This is a read-only library
+     </li>
+     <li><strong>Sasuser</strong> is a permanent library that contains SAS files in the Profile catalog that store
+         your personal settings. This is also a convenient place to store your own files
+     </li>
+     <li><strong>Work</strong> is a temporary library for files that do not need to be saved from session to session</li>
+  </ul>
+
+  <p>You can also define additional libraries. In fact, often the first step in setting up your SAS session
+     is to define the libraries.
+  </p>
+  <p>To define a library, you assign a library name (a libref) to it and specify a path, such as a
+     directory path. You will use the libref as the first part of the file's two-level name (libref.filename)
+     to reference the file within the library. You can use programming statements to assign library
+     names.
+  </p>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Assigning Librefs</h3>
+  <p>To define libraries, you can use a <strong>LIBNAME statement</strong>. You can store the LIBNAME statement
+     with any SAS program so that the SAS data library is assigned each time the program is
+     submitted.
+  </p>
+
+  <p><strong>General form, basic LIBNAME statement:</strong></p>
+
+  <p><strong>LIBNAME</strong> libref 'SAS-data-library';</p>
+
+  <p>where</p>
+
+  <ul>
+     <li>libref is 1 to 8 characters long, begins with a letter or underscore, and contains only
+         letters, numbers, or underscores
+     </li>
+     <li>SAS-data-library is the name of a SAS data library in which SAS data files are stored.
+        The specification of the physical name of the library differs by operating environment
+     </li>
+  </ul>
+
+  <p>The LIBNAME statement below assigns the libref Clinic to the SAS data library
+     <strong>D:\Users\Qtr\Reports</strong> in the Windows environment.
+  </p>
+  <pre>libname clinic 'd:\users\qtr\reports';</pre>
+
+  <p>The table below gives examples of physical names for SAS data libraries in various operating
+     environments.
+  </p>
+
+  <table border="1">
+     <tr>
+        <th class="color-red">Environment</th>
+        <th class="color-red">Sample Physical Name</th>
+     </tr>
+     <tr>
+        <td>Windows</td>
+        <td>c:\fitness\data</td>
+     </tr>
+     <tr>
+        <td>UNIX</td>
+        <td>/users/april/fitness/sasdata</td>
+     </tr>
+     <tr>
+        <td>OpenVMS</td>
+        <td>dua0:[april.fitness]</td>
+     </tr>
+     <tr>
+        <td>CMS</td>
+        <td>b</td>
+     </tr>
+     <tr>
+        <td>z/OS (OS/390)</td>
+        <td>april.fitness.sasdata</td>
+     </tr>
+  </table>
+
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>The code examples in this exam guide are shown in the Windows
+           operating environment. If you are running SAS within another
+           operating environment, then the platform-specific names and
+           locations will look different. Otherwise, SAS programming code
+           will be the same across operating environments.
+       </td>
+    </tr>
+  </table>
+
+  <p>You can use multiple LIBNAME statements to assign as many librefs as needed.</p>
+
+  <!-- Topic 2 Subtopic 3 -->
+  <h3 class="subtopic" id="topic2_subtopic3">Verifying Librefs</h3>
+  <p>After assigning a libref, it is a good idea to check the Log window to verify that the libref has been
+     assigned successfully.
+  </p>
+  <p class="color-red">SAS Log</p>
+  <pre>17 libname clinic 'd:\users\qtr\reports';
+
+NOTE: Libref CLINIC was successfully assigned as follows:
+      Engine: V9
+      Physical Name: d:\users\qtr\reports</pre>
+
+
+  <!-- Topic 2 Subtopic 4 -->
+  <h3 class="subtopic" id="topic2_subtopic4">How Long Librefs Remain in Effect</h3>
+
+  <!-- Page 30 -->
+
+  <p>The LIBNAME statement is global, which means that the librefs remain in effect until you modify
+     them, cancel them, or end your SAS session.
+  </p>
+  <p>Therefore, the LIBNAME statement assigns the libref for the current SAS session only. Each time
+     you begin a SAS session, you must assign a libref to each permanent SAS data library that
+     contains files that you want to access in that session. (Remember that Work is the default libref
+     for a temporary SAS data library.)
+  </p>
+  <img src="images/ch2_image1.png" class="diagram-style"/>
+
+  <p>When you end your SAS session or delete a libref, SAS no longer has access to the files in the
+     library. However, the contents of the library still exist on your operating system.
+  </p>
+
+  <!-- Topic 2 Subtopic 5 -->
+  <h3 class="subtopic" id="topic2_subtopic5">Specifying Two-Level Names</h3>
+  <p>After you assign a libref, you specify the libref as the first element in the two-level name for a SAS
+     file.
+  </p>
+
+  <p>For example, in order for the PRINT procedure to read <strong>Clinic.Admit</strong>, you specify the two-level
+     name of the file as follows:
+  </p>
+  <pre>
+  proc print data=clinic.admit;
+  run;</pre>
+
+  <!-- Topic 2 Subtopic 6 -->
+  <h3 class="subtopic" id="topic2_subtopic6">Other Formats</h3>
+  <p>You can use the LIBNAME statement to reference not only SAS files but also files that were
+     created with other software products, such as database management systems.
+  </p>
+  <p>SAS can read or write these files by using the appropriate engine for that file type. Depending on
+     your operating environment and on the SAS/ACCESS products that you license, you can create
+     libraries with various engines. Each engine enables you to read a different file format, including
+     file formats from other software vendors.
+  </p>
+  <p>For some file types, you need to tell SAS which engine to use. For others, SAS automatically
+     chooses the appropriate engine.
+  </p>
+  <img src="images/ch2_image2.png" class="diagram-style"/>
+  <p>A SAS engine is a set of internal instructions that SAS uses for writing to and reading from files in
+     a SAS library.
+  </p>
+
+  <h4>Specifying Engines</h4>
+  <p>To indicate which engine to use, you specify the engine name in the LIBNAME statement, as
+     shown below.
+  </p>
+
+  <hr/>
+  <p><strong>General form, LIBNAME statement for files in other formats:</strong></p>
+  <p><strong>LIBNAME</strong> libref engine 'SAS-data-library';</p>
+  <p>where</p>
+  <ul>
+     <li>libref is 1 to 8 characters long, begins with a letter or underscore, and contains only
+         letters, numbers, or underscores
+     </li>
+     <li>engine is the name of a library engine that is supported in your operating environment</li>
+     <li>SAS-data-library is the name of a SAS library in which SAS data files are stored. The
+         specification of the physical name of the library differs by operating environment
+     </li>
+  </ul>
+  </hr/>
+
+  <h4>Interface Library Engines</h4>
+  <p>Interface library engines support read-only access to BMDP, OSIRIS, and SPSS files. With these
+     engines, the physical filename that is associated with a libref is an actual filename, not a SAS
+     library. This is an exception to the rules for librefs.
+  </p>
+  <table>
+  </table>
+  <p>For example, the LIBNAME statement below specifies the libref <strong>Rptdata</strong> and the engine <strong>SPSS</strong>
+     for the file <strong>G:\Myspss.dat</strong> in the Windows operating environment.
+  </p>
+  <pre>libname rptdata spss 'g:\myspss.dat';</pre>
+  <p>For more information about interface library engines, see the SAS documentation for your
+     operating environment.
+  </p>
+  
+  <h4>SAS/ACCESS Engines</h4>
+  <p>If your site licenses SAS/ACCESS software, then you can use the LIBNAME statement to access
+     data that is stored in a DBMS file. The types of data that you can access depend on your
+     operating environment and on which SAS/ACCESS products you have licensed.
+  </p>
+  <table border="1">
+    <tr>
+       <th class="color-red">Relational Databases</th>
+       <th class="color-red">Nonrelational Files</th>
+       <th class="color-red">PC Files</th>
+    </tr>
+    <tr>
+       <td>ORACLE</td>
+       <td>ADABAS</td>
+       <td>Excel (.xls)</td>
+    </tr>
+    <tr>
+       <td>SYBASE</td>
+       <td>IMS/DL-I</td>
+       <td>Lotus (.wkn)</td>
+    </tr>
+    <tr>
+       <td>Informix</td>
+       <td>CA-IDMS</td>
+       <td>DBF</td>
+    </tr>
+    <tr>
+       <td>DB2 for z/OS (OS/390)</td>
+       <td>SYSTEM 2000</td>
+       <td>DIF</td>
+    </tr>
+    <tr>
+       <td>DB2 for UNIX and PC</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>Oracle Rdb</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>ODBC</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>CA-OpenIngres</td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+    </tr>
+  </table>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Viewing the Contents of SAS Libraries</h2>
+
+  <!-- Topic 3 Subtopic 1-->
+  <h3 class="subtopic" id="topic3_subtopic1">The CONTENTS Procedure</h3>
+
+  <p>You've learned how to use SAS windows to view the contents of a SAS library or of a SAS file.
+     Alternatively, you can use the <strong>CONTENTS procedure</strong> to create SAS output that describes either
+     of the following:
+  </p>
+  <ul>
+    <li>the contents of a library</li>
+    <li>the descriptor information for an individual SAS data set</li>
+  </ul>
+  <p><strong>General form, basic PROC CONTENTS step:</strong></p>
+  <p><strong>PROC CONTENTS DATA</strong>=libref.<strong>_ALL_ NODETAILS</strong>;
+     <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>libref is the libref that has been assigned to the SAS library</li>
+    <li><strong>_ALL_</strong> requests a listing of all files in the library. Use a period (.) to append _ALL_ to the
+        libref</li>
+    <li><strong>NODETAILS (NODS)</strong> suppresses the printing of detailed information about each file
+        when you specify _ALL_. You can specify NODS only when you specify _ALL_
+    </li>
+  </ul>
+
+  <h4>Example</h4>
+  <p>To view the contents of the Mylib library, submit the following PROC CONTENTS step:</p>
+  <pre>
+  proc contents data=mylib._all_ nods;
+  run;</pre>
+  <p>The output from this step lists only the names, types, sizes, and modification dates for the SAS
+     files in the Mylib library.
+  </p>
+  <table border="1">
+    <tr>
+       <th colspan="2" class="color-blue" style="text-align:center;">----- Directory -----</th>
+    </tr>
+    <tr>
+       <th>Libref:</th>
+       <td>MYLIB</td>
+    </tr>
+    <tr>
+       <th>Engine:</th>
+       <td>V8</td>
+    </tr>
+    <tr>
+       <th>Physical Name:</th>
+       <td>C:\WINNT\Profiles\Personal\My SAS Files\V8</td>
+    </tr>
+    <tr>
+       <th>File Name:</th>
+       <td>C:\WINNT\Profiles\Personal\My SAS Files\V8</td>
+    </tr>
+  </table>
+  <br/><br/>
+  <table border="1">
+     <tr>
+        <th class="color-red">#</th>
+        <th class="color-red">Name</th>
+        <th class="color-red">Memtype</th>
+        <th class="color-red">File Size</th>
+        <th class="color-red">Last Modified</th>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>ADMIT</td>
+        <td>DATA</td>
+        <td>9216</td>
+        <td>23JUN2000:16:30:38</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>ADMITJUNE</td>
+        <td>DATA</td>
+        <td>9216</td>
+        <td>23JUN2000:16:30:38</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>COMPANY</td>
+        <td>DATA</td>
+        <td>5120</td>
+        <td>23JUN2000:16:30:38</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>CREDIT</td>
+        <td>DATA</td>
+        <td>5120</td>
+        <td>23JUN2000:16:30:38</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>CUSTDET1</td>
+        <td>DATA</td>
+        <td>33792</td>
+        <td>04MAY2000:13:45:49</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>DIABETES</td>
+        <td>DATA</td>
+        <td>9216</td>
+        <td>23JUN2000:16:30:38</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>DMDATA</td>
+        <td>CATALOG</td>
+        <td>21504</td>
+        <td>04MAY2000:13:59:19</td>
+     </tr>
+  </table>
+  <br/>
+  <p>To view the descriptor information for the Mylib.Admit data set, you can submit the following
+     PROC CONTENTS step:
+  </p>
+  <pre>
+  proc contents data=mylib.admit;
+  run;</pre>
+
+  <p>The output from this step lists information for <strong>Mylib.Admit</strong>, including an alphabetic list of the
+     variables in the data set.</p>
+  <table border="1">
+     <tr>
+       <th>Data Set Name</th>
+       <td>MYLIB.ADMIT</td>
+       <th>Observations</th>
+       <td>21</td>
+     </tr>
+     <tr>
+       <th>Member Type</th>
+       <td>V8</td>
+       <th>Variables</th>
+       <td>9</td>
+     </tr>
+     <tr>
+       <th>Engine</th>
+       <td>V8</td>
+       <th>Indexes</th>
+       <td>0</td>
+     </tr>
+     <tr>
+       <th>Created</th>
+       <td>15:05 Thursday, July 17, 2003</td>
+       <th>Observation Length</th>
+       <td>64</td>
+     </tr>
+     <tr>
+       <th>Last Modified</th>
+       <td>15:05 Thursday, July 17, 2003</td>
+       <th>Deleted Observations</th>
+       <td>0</td>
+     </tr>
+     <tr>
+       <th>Protection</th>
+       <td>&nbsp;</td>
+       <th>Compressed</th>
+       <td>NO</td>
+     </tr>
+     <tr>
+       <th>Data Set Type</th>
+       <td>&nbsp;</td>
+       <th>Sorted</th>
+       <td>NO</td>
+     </tr>
+     <tr>
+       <th>Label</th>
+       <td>&nbsp;</td>
+       <th>&nbsp;</th>
+       <td>&nbsp;</td>
+     </tr>
+  </table>
+  <br/><br/>
+  
+  <table border="1">
+     <tr>
+        <th class="color-red" colspan="2">Engine/Host Dependent Information</th>
+     </tr>
+     <tr>
+        <th>Data Set Page Size</th>
+        <td>8192</td>
+     </tr>
+     <tr>
+        <th>Number of Data Set Pages</th>
+        <td>1</td>
+     </tr>
+     <tr>
+        <th>First Data Page</th>
+        <td>1</td>
+     </tr>
+     <tr>
+        <th>Max Obs per Page</th>
+        <td>127</td>
+     </tr>
+     <tr>
+        <th>Obs in First Data Page</th>
+        <td>21</td>
+     </tr>
+     <tr>
+        <th>Number of Data Set Repairs</th>
+        <td>0</td>
+     </tr>
+     <tr>
+        <th>File Name</th>
+        <td>C:\WINNT\Profiles\Personal\My SAS Files\V8\admit.sas7bdat</td>
+     </tr>
+     <tr>
+        <th>Release Created</th>
+        <td>8.0202M0</td>
+     </tr>
+     <tr>
+        <th>Host Created</th>
+        <td>XP_PRO</td>
+     </tr>
+  </table>
+
+  <br/<br/>
+
+  <table border="1">
+    <tr>
+       <th colspan="5" class="color-red">Alphabetic List of Variables and Attributes</th>
+    </tr>
+    <tr>
+       <th class="color-red">#</th>
+       <th class="color-red">Variable</th>
+       <th class="color-red">Type</th>
+       <th class="color-red">Len</th>
+       <th class="color-red">Format</th>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td>ActLevel</td>
+       <td>Char</td>
+       <td>4</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>Age</td>
+       <td>Num</td>
+       <td>8</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>Date</td>
+       <td>Num</td>
+       <td>8</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td>Fee</td>
+       <td>Num</td>
+       <td>8</td>
+       <td>7.2</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>Height</td>
+       <td>Num</td>
+       <td>8</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>ID</td>
+       <td>Char</td>
+       <td>4</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>Name</td>
+       <td>Char</td>
+       <td>14</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>Sex</td>
+       <td>Char</td>
+       <td>1</td>
+       <td>&nbsp;</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>Weight</td>
+       <td>Num</td>
+       <td>8</td>
+       <td>&nbsp;</td>
+    </tr>
+  </table>
+
+  <!-- Topic 3 Subtopic 2-->
+  <h3 class="subtopic" id="topic3_subtopic2">The DATASETS Procedure</h3>
+  <p>In addition to PROC CONTENTS, you can also use PROC DATASETS with the CONTENTS
+     statement to view the contents of a SAS library or a SAS data set.
+  </p>
+  <hr/>
+  <p><strong>General form, PROC DATASETS step with CONTENTS statement:</strong></p>
+  <p>
+     PROC DATASETS;
+     &nbsp;&nbsp;CONTENTS DATA=libref._ALL_ NODETAILS;
+     QUIT;
+  <p>
+  <p>where</p>
+  <ul>
+     <li><strong>CONTENTS</strong> describes the contents of one or more SAS data sets and prints the
+         directory of the SAS data library
+     </li>
+     <li>libref is the libref that has been assigned to the SAS data library
+     </li>
+     <li><strong>_ALL_</strong> requests a listing of all files in the library. Use a period (.) to append _ALL_ to the
+         libref
+     </li>
+     <li><strong>NODETAILS (NODS)</strong> suppresses the printing of detailed information about each file
+         when you specify _ALL_. You can specify NODS only when you specify _ALL_
+     </li>
+  </ul>
+  <hr/>
+  <p>For example, the following PROC steps produce essentially the same output (with minor
+     formatting differences):
+  </p>
+  <pre>
+  proc datasets;
+     contents data=sasuser._all_ nods;
+  quit;
+  proc contents data=sasuser._all_ nods;
+  run;</pre>
+
+  <p>The major difference between the CONTENTS procedure and the CONTENTS statement in
+     PROC DATASETS is the default for libref in the DATA= option. For PROC CONTENTS, the
+     default is either <strong>Work</strong> or <strong>User</strong>. For the CONTENTS statement, the default is the libref of the
+     procedure input library. Notice also that PROC DATASETS is an interactive procedure that
+     requires a QUIT statement rather than a RUN statement.
+  </p>
+
+  <table>
+     <tr>
+        <th class="color-blue">Note</th>
+        <td>In addition to the CONTENTS statement, PROC DATASETS also uses several
+            other statements. These statements enable you to perform tasks that PROC
+            CONTENTS does not perform. For more information about PROC DATASETS,
+            see the SAS documentation for your operating environment
+        </td>
+     </tr>
+  </table>
+
+  <h4>Viewing Descriptor Information for a SAS Data Set</h4>
+  <p>As with PROC CONTENTS, you can also use PROC DATASETS to display the descriptor
+     information for a specific SAS data set.
+  </p>
+  <p>By default, PROC CONTENTS and PROC DATASETS list variables alphabetically. To list
+     variable names in the order of their logical position (or creation order) in the data set, you can
+     specify the <strong>VARNUM option</strong> in PROC CONTENTS or in the CONTENTS statement in PROC
+     DATASETS.
+  </p>
+  <p>For example, either of these programs creates output that includes the list of variables shown
+     below:
+  </p>
+  <pre>
+  proc datasets;
+     contents data=sasuser.admit varnum;
+  quit;
+
+  proc contents data=sasuser.admit varnum;
+  run;</pre>
+
+  <table border="1">
+     <tr>
+        <th colspan="5" class="color-red">Variables in Creation Order</th>
+     </tr>
+     <tr>
+        <th>#</th>
+        <th>Variable</th>
+        <th>Type</th>
+        <th>Len</th>
+        <th>Format</th>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>ID</td>
+        <td>Char</td>
+        <td>4</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>Name</td>
+        <td>Char</td>
+        <td>14</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>Sex</td>
+        <td>Char</td>
+        <td>1</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>Age</td>
+        <td>Num</td>
+        <td>8</td>
+        <td>1</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>Date</td>
+        <td>Num</td>
+        <td>8</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>Height</td>
+        <td>Num</td>
+        <td>8</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>Weight</td>
+        <td>Num</td>
+        <td>8</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>ActLevel</td>
+        <td>Char</td>
+        <td>4</td>
+        <td>&nbsp;</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>Fee</td>
+        <td>Num</td>
+        <td>8</td>
+        <td>7.2</td>
+     </tr>
+  </table>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Setting SAS System Options</h2>
+
+  <!-- Topic 4 Subtopic 1-->
+  <h3 class="subtopic" id="topic4_subtopic1">SAS Output</h3>
+  <p>Next, let's consider the appearance and format of your SAS output. You can specify result
+     formats to create your output as
+  </p>
+  <ul>
+    <li>an HTML document</li>
+    <li>a listing (traditional SAS output)</li>
+    <li>both of the above</li>
+  </ul>
+
+  <p>You can create HTML output by using programming statements on any SAS platform. In addition,
+     in desktop operating environments, you can use windows to specify result formats. You can learn
+     more about how to create HTML output in Chapter, <strong>Producing HTML Output</strong>.
+  </p>
+  <p>If you create your procedure output as a SAS listing, you can also control the appearance of your
+     output by setting system options such as
+  </p>
+  <ul>
+    <li>line size (the maximum width of the log and output)</li>
+    <li>page size (the number of lines per printed page of output)</li>
+    <li>the display of page numbers</li>
+    <li>the display of date and time
+        <table>
+           <tr>
+              <th class="color-blue">Note</th>
+              <td>The above options do not affect the appearance of HTML output.</td>
+           </tr>
+        </table>
+    </li>
+  </ul>  
+
+  <p>All SAS system options have default settings that are used unless you specify otherwise. For
+     example, page numbers are automatically displayed (unless your site modifies this default).
+  </p>
+  <img src="images/ch2_image3.png" class="diagram-style" />
+  
+  <p>To modify system options, you submit an OPTIONS statement. You can place an OPTIONS
+     statement anywhere in a SAS program to change the settings from that point onward. However, it
+     is good programming practice to place OPTIONS statements outside of DATA or PROC steps so
+     that your programs are easier to read and debug.
+  </p>
+  <table>
+           <tr>
+              <th class="color-blue">Note</th>
+              <td>Because the OPTIONS statement is global, the settings remain in effect until
+                  you modify them, or until you end your SAS session.
+              </td>
+           </tr>
+  </table>
+
+  <hr/>
+  <p><strong>General form, OPTIONS statement:</strong></p>
+  <p><strong>OPTIONS</strong> options;</p>
+  </p>where options specifies one or more system options to be changed. The available system options
+      depend on your host operating system.
+  </p>
+  <hr/>
+
+  <h4>Example: NUMBER | NONUMBER and DATE | NODATE Options</h4>
+  <p>By default, page numbers and dates appear with output. The following OPTIONS statement
+     suppresses the printing of both page numbers and the date and time in listing output.
+  </p>
+  <pre>options nonumber nodate;</pre>
+  <p>In the following example, page numbers and the current date are not displayed in the PROC
+     PRINT output. Page numbers are not displayed in the PROC FREQ output, either, but the date
+     does appear at the top of the page that contains the PROC FREQ report.
+  </p>
+  <pre>
+  options nonumber nodate;
+  proc print data=clinic.admit;
+     var id sex age height weight;
+     where age>=30;
+  run;
+  options date;
+  proc freq data=clinic.diabetes;
+     where fastgluc>=300;
+     tables sex;
+  run;</pre>
+
+  <hr/>
+  <table>
+     <tr>
+        <td colspan="6" style="text-align:center;">The SAS Sytem</td>
+     </tr>
+     <tr>
+        <td colspan="6">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>Obs</td>
+        <td>ID</td>
+        <td>Sex</td>
+        <td>Age</td>
+        <td>Height</td>
+        <td>Weight</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>2462</td>
+        <td>F</td>
+        <td>34</td>
+        <td>66</td>
+        <td>152</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>2501</td>
+        <td>F</td>
+        <td>31</td>
+        <td>61</td>
+        <td>123</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>2523</td>
+        <td>F</td>
+        <td>43</td>
+        <td>63</td>
+        <td>137</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>2539</td>
+        <td>M</td>
+        <td>51</td>
+        <td>71</td>
+        <td>158</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>2552</td>
+        <td>F</td>
+        <td>32</td>
+        <td>67</td>
+        <td>151</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>2555</td>
+        <td>M</td>
+        <td>35</td>
+        <td>70</td>
+        <td>173</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>2563</td>
+        <td>M</td>
+        <td>34</td>
+        <td>73</td>
+        <td>154</td>
+     </tr>
+     <tr>
+        <td>10</td>
+        <td>2568</td>
+        <td>F</td>
+        <td>49</td>
+        <td>64</td>
+        <td>172</td>
+     </tr>
+     <tr>
+        <td>11</td>
+        <td>2571</td>
+        <td>F</td>
+        <td>44</td>
+        <td>66</td>
+        <td>140</td>
+     </tr>
+     <tr>
+        <td>13</td>
+        <td>2574</td>
+        <td>M</td>
+        <td>30</td>
+        <td>69</td>
+        <td>147</td>
+     </tr>
+     <tr>
+        <td>14</td>
+        <td>2575</td>
+        <td>F</td>
+        <td>40</td>
+        <td>69</td>
+        <td>163</td>
+     </tr>
+     <tr>
+        <td>15</td>
+        <td>2578</td>
+        <td>M</td>
+        <td>47</td>
+        <td>72</td>
+        <td>173</td>
+     </tr>
+     <tr>
+        <td>16</td>
+        <td>2579</td>
+        <td>M</td>
+        <td>60</td>
+        <td>71</td>
+        <td>191</td>
+     </tr>
+     <tr>
+        <td>17</td>
+        <td>2584</td>
+        <td>F</td>
+        <td>43</td>
+        <td>65</td>
+        <td>123</td>
+     </tr>
+     <tr>
+        <td>20</td>
+        <td>2589</td>
+        <td>F</td>
+        <td>41</td>
+        <td>67</td>
+        <td>141</td>
+     </tr>
+     <tr>
+        <td>21</td>
+        <td>2595</td>
+        <td>M</td>
+        <td>54</td>
+        <td>71</td>
+        <td>183</td>
+     </tr>
+  </table>
+  <hr/>
+
+  <table>
+     <tr>
+        <td colspan="5" style="text-align:center;">The SAS System</td>
+     </tr>
+     <tr>
+        <td colspan="5" style="text-align:center;">15:19 Thursday, September 23, 1999</td>
+     </tr>
+     <tr>
+        <td colspan="5" style="text-align:center;">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>Sex</td>
+        <td>Frequency</td>
+        <td>Percent</td>
+        <td>Cumulative Frequency</td>
+        <td>Cumulative Percent</td>
+     </tr>
+     <tr>
+        <td>F</td>
+        <td>2</td>
+        <td>25.0</td>
+        <td>2</td>
+        <td>25.0</td>
+     </tr>
+     <tr>
+        <td>M</td>
+        <td>6</td>
+        <td>75.0</td>
+        <td>8</td>
+        <td>100.0</td>
+     </tr>
+  </table>
+  <hr/>
+
+  <h4>Example: PAGENO= Option</h4>
+  <p>If you print page numbers, you can specify the beginning page number for your report by using
+     the PAGENO= option. If you don't specify the PAGENO= option, output is numbered sequentially
+     throughout your SAS session, starting with page 1.
+  </p>
+  <p>In the following example, the output pages are numbered sequentially throughout the SAS
+     session, beginning with number 3.
+  </p>
+  <pre>
+  options nodate pageno=3;
+  proc print data=hrd.funddrv;
+  run;</pre>
+  
+  <hr/>
+  <table>
+     <tr>
+        <td colspan="5" style="text-align:center">The SAS System</td>
+        <td tyle="text-align:center">3</td>
+     </tr>
+     <tr>
+        <td colspan="6" style="text-align:center">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>Obs</td>
+        <td>Lastname</td>
+        <td>Qtr1</td>
+        <td>Qtr2</td>
+        <td>Qtr3</td>
+        <td>Qtr4</td>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>ADAMS</td>
+        <td>18</td>
+        <td>18</td>
+        <td>20</td>
+        <td>20</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>ALEXANDER</td>
+        <td>15</td>
+        <td>18</td>
+        <td>15</td>
+        <td>10</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>APPLE</td>
+        <td>25</td>
+        <td>25</td>
+        <td>25</td>
+        <td>25</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>ARTHUR</td>
+        <td>10</td>
+        <td>25</td>
+        <td>20</td>
+        <td>30</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>AVERY</td>
+        <td>15</td>
+        <td>15</td>
+        <td>15</td>
+        <td>15</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>BAREFOOT</td>
+        <td>20</td>
+        <td>20</td>
+        <td>20</td>
+        <td>20</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>BAUCOM</td>
+        <td>25</td>
+        <td>20</td>
+        <td>20</td>
+        <td>30</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>BLAIR</td>
+        <td>10</td>
+        <td>10</td>
+        <td>5</td>
+        <td>10</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>BLALOCK</td>
+        <td>5</td>
+        <td>10</td>
+        <td>10</td>
+        <td>15</td>
+     </tr>
+     <tr>
+        <td>10</td>
+        <td>BOSTIC</td>
+        <td>20</td>
+        <td>25</td>
+        <td>30</td>
+        <td>25</td>
+     </tr>
+     <tr>
+        <td>11</td>
+        <td>BRADLEY</td>
+        <td>12</td>
+        <td>16</td>
+        <td>14</td>
+        <td>18</td>
+     </tr>
+  </table>
+  <hr/>
+
+  <h4>Example: PAGESIZE= Option</h4>
+  <p>The PAGESIZE= option specifies how many lines each page of output contains. In the following
+     example, each page of the output that the PRINT procedure produces contains 15 lines (including
+     those used by the title, date, and so on).
+  <p>
+  <pre>
+  options pageno=1 pagesize=15;
+  proc print data=clinic.admit;
+  run;</pre>
+
+  <hr/>
+  <table>
+     <tr>
+        <td colspan="5" style="text-align:center;">The SAS System</td>
+        <td>1</td>
+     </tr>
+     <tr>
+        <td colspan="6" style="text-align:center;">15:19 Thursday, September 23, 1999</td>
+     </tr>
+     <tr>
+        <td colspan="6" style="text-align:center;">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>Obs</td>
+        <td>ID</td>
+        <td>name</td>
+        <td>Sex</td>
+        <td>Age</td>
+        <td>Date</td>
+     </tr>
+     <tr>
+        <td>1</td>
+        <td>2458</td>
+        <td>Murray, W</td>
+        <td>M</td>
+        <td>27</td>
+        <td>1</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>2462</td>
+        <td>Almers, C</td>
+        <td>F</td>
+        <td>34</td>
+        <td>3</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>2501</td>
+        <td>Bonaventure, T</td>
+        <td>F</td>
+        <td>31</td>
+        <td>17</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>2523</td>
+        <td>Johnson, R</td>
+        <td>F</td>
+        <td>43</td>
+        <td>31</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>2539</td>
+        <td>LaMance, K</td>
+        <td>M</td>
+        <td>51</td>
+        <td>4</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>2544</td>
+        <td>Jones, M</td>
+        <td>M</td>
+        <td>29</td>
+        <td>6</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>2552</td>
+        <td>Reberson, P</td>
+        <td>F</td>
+        <td>32</td>
+        <td>9</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>2555</td>
+        <td>King, E</td>
+        <td>M</td>
+        <td>35</td>
+        <td>13</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>2563</td>
+        <td>Pitts, D</td>
+        <td>M</td>
+        <td>34</td>
+        <td>22</td>
+     </tr>
+     <tr>
+        <td>10</td>
+        <td>2568</td>
+        <td>Eberhardt, S</td>
+        <td>F</td>
+        <td>49</td>
+        <td>27</td>
+     </tr>
+  </table>
+  <hr/>
+
+  <h4>Example: LINESIZE= Option</h4>
+  <p>The LINESIZE= option specifies the width of the print line for your procedure output and log.
+     Observations that do not fit within the line size continue on a different line.
+  </p>
+  <p>In the following example, the observations are longer than 64 characters, so the observations
+     continue on a subsequent page.
+  </p>
+  <pre>
+  options pageno=1 linesize=64;
+  proc print data=flights.europe;
+  run;</pre>
+
+  <hr/>
+
+  <table>
+    <tr>
+       <td colspan="9" style="text-align:center;">The SAS System</td>
+       <td>1</td>
+    </tr>
+
+    <tr>
+       <td colspan="10" style="text-align:right;">15:19 Thursday, September 23, 1999</td>
+    </tr>
+    <tr>
+       <td colspan="10">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Obs</td>
+      <td>Flight</td>
+      <td>Date</td>
+      <td>Depart</td>
+      <td>Orig</td>
+      <td>Dest</td>
+      <td>Miles</td>
+      <td>Mail</td>
+      <td>Freight</td>
+      <td>Boarded</td>
+    </tr>
+    <tr>
+      <td colspan="10">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>821</td>
+      <td>04MAR99</td>
+      <td>9:31</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3442</td>
+      <td>403</td>
+      <td>209</td>
+      <td>167</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>271</td>
+      <td>04MAR99</td>
+      <td>11:40</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3856</td>
+      <td>492</td>
+      <td>308</td>
+      <td>146</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>271</td>
+      <td>05MAR99</td>
+      <td>12:19</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3857</td>
+      <td>366</td>
+      <td>498</td>
+      <td>177</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>821</td>
+      <td>06MAR99</td>
+      <td>14:56</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3442</td>
+      <td>345</td>
+      <td>243</td>
+      <td>167</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>821</td>
+      <td>07MAR99</td>
+      <td>13:17</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3635</td>
+      <td>248</td>
+      <td>307</td>
+      <td>215</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>271</td>
+      <td>07MAR99</td>
+      <td>9:31</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3442</td>
+      <td>353</td>
+      <td>205</td>
+      <td>155</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>821</td>
+      <td>08MAR99</td>
+      <td>11:40</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3856</td>
+      <td>391</td>
+      <td>395</td>
+      <td>186</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>271</td>
+      <td>08MAR99</td>
+      <td>12:19</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3857</td>
+      <td>366</td>
+      <td>279</td>
+      <td>152</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>821</td>
+      <td>09MAR99</td>
+      <td>14:56</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3442</td>
+      <td>219</td>
+      <td>368</td>
+      <td>203</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>271</td>
+      <td>09MAR99</td>
+      <td>13:17</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3635</td>
+      <td>357</td>
+      <td>282</td>
+      <td>159</td>
+    </tr>
+  </table>
+  <hr/>
+  <table>
+     <tr>
+         <td colspan="6" style="text-align:center">The SAS System</td>
+         <td>2</td>
+     </tr>
+     <tr>
+         <td colspan="7" style="text-align:right">15:19 Thursday, September 23, 1999</td>
+     </tr>
+     <tr>
+        <td colspan="7">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>Obs</td> 
+        <td>Transfer</td> 
+        <td>NonRev</td> 
+        <td>Deplaned</td> 
+        <td>Capacity</td> 
+        <td>MonthDay</td> 
+        <td>Revenue</td> 
+     </tr>
+     <tr>
+        <td colspan="7">&nbsp;</td>
+     </tr>
+     <tr>
+        <td>1</td>
+       <td>17</td>
+        <td>7</td>
+        <td>222</td>
+        <td>250</td>
+        <td>1</td>
+        <td>150634</td>
+     </tr>
+     <tr>
+        <td>2</td>
+        <td>8</td>
+        <td>3</td>
+        <td>163</td>
+        <td>250</td>
+        <td>1</td>
+        <td>150634</td>
+     </tr>
+     <tr>
+        <td>3</td>
+        <td>15</td>
+        <td>5</td>
+        <td>227</td>
+        <td>250</td>
+        <td>1</td>
+        <td>190098</td>
+     </tr>
+     <tr>
+        <td>4</td>
+        <td>13</td>
+        <td>4</td>
+        <td>222</td>
+        <td>250</td>
+        <td>1</td>
+        <td>150634</td>
+     </tr>
+     <tr>
+        <td>5</td>
+        <td>14</td>
+        <td>6</td>
+        <td>158</td>
+        <td>250</td>
+        <td>1</td>
+        <td>193930</td>
+     </tr>
+     <tr>
+        <td>6</td>
+        <td>18</td>
+        <td>7</td>
+        <td>172</td>
+        <td>250</td>
+        <td>2</td>
+        <td>166740</td>
+     </tr>
+     <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>1</td>
+        <td>114</td>
+        <td>250</td>
+        <td>2</td>
+        <td>167772</td>
+     </tr>
+     <tr>
+        <td>8</td>
+        <td>7</td>
+        <td>4</td>
+        <td>187</td>
+        <td>250</td>
+        <td>2</td>
+        <td>163248</td>
+     </tr>
+     <tr>
+        <td>9</td>
+        <td>6</td>
+        <td>3</td>
+        <td>210</td>
+        <td>250</td>
+        <td>2</td>
+        <td>183106</td>
+     </tr>
+     <tr>
+        <td>10</td>
+        <td>15</td>
+        <td>4</td>
+        <td>191</td>
+        <td>250</td>
+        <td>2</td>
+        <td>170766</td>
+     </tr>
+  </table>
+  <hr/>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Handling Two-Digit Year Values: Year 2000 Compliance</h3>
+  <p>If you use two-digit year values in your data lines, external files, or programming statements,
+     you should consider another important system option, the YEARCUTOFF= option. This option
+     specifies which 100-year span is used to interpret two-digit year values.
+  </p>
+  <img src="images/ch2_image4.png" style="diagram-style"/>
+  <p>All versions of SAS represent dates correctly from 1582 A.D. to 20,000 A.D. (Leap years, century,
+     and fourth-century adjustments are made automatically. Leap seconds are ignored, and SAS
+     does not adjust for daylight saving time.) However, you should be aware of the YEARCUTOFF=
+     value to ensure that you are properly interpreting two-digit years in data lines.
+  </p>
+  <p>As with other system options, you specify the YEARCUTOFF= option in the OPTIONS statement:</p>
+  <pre>options yearcutoff=1925;</pre>
+
+  <h4>How the YEARCUTOFF= Option Works</h4>
+  <p>When a two-digit year value is read, SAS interprets it based on a 100-year span that starts with
+     the YEARCUTOFF= value. The default value of YEARCUTOFF= is 1920.
+  </p>
+  <img src="images/ch2_image5.png" style="diagram-style"/>  
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Date Expression</th>
+       <th class="color-red">Interpreted As</th>
+    </tr>
+    <tr>
+       <td>12/07/41</td>
+       <td>12/07/1941</td>
+    </tr>
+    <tr>
+       <td>18Dec15</td>
+       <td>18Dec2015</td>
+    </tr>
+    <tr>
+       <td>04/15/30</td>
+       <td>04/15/1930</td>
+    </tr>
+    <tr>
+       <td>15Apr95</td>
+       <td>15Apr1995</td>
+    </tr>
+  </table>
+
+  <p>However, you can override the default and change the value of YEARCUTOFF= to the first year
+     of another 100-year span. For example, if you specify YEARCUTOFF=1950, then the 100-year
+     span will be from 1950 to 2049.
+  </p>
+  <pre>options yearcutoff=1950;</pre>
+  <p>Using YEARCUTOFF=1950, dates are interpreted as shown below:</p>
+  <img src="images/ch2_image6.png" style="diagram-style"/> 
+
+  <table border="1">
+    <tr>
+       <th class="color-red">Date Expression</th>
+       <th class="color-red">Interpreted As</th>
+    </tr>
+    <tr>
+       <td>12/07/41</td>
+       <td>12/07/2041</td>
+    </tr>
+    <tr>
+       <td>18Dec15</td>
+       <td>18Dec2015</td>
+    </tr>
+    <tr>
+       <td>04/15/30</td>
+       <td>04/15/2030</td>
+    </tr>
+    <tr>
+       <td>15Apr95</td>
+       <td>15Apr1995</td>
+    </tr>
+  </table>
+ 
+  <h4>How Four-Digit Year Values Are Handled</h4>
+  <p>Remember, the value of the YEARCUTOFF= system option affects only two-digit year values. A
+     date value that contains a four-digit year value will be interpreted correctly even if it does not fall
+     within the 100-year span set by the YEARCUTOFF= system option.
+  </p>
+  <table>
+     <tr>
+        <th class="color-blue">Note</th>
+        <td>You can learn more about reading date values in Chapter, Reading Date
+            and Time Values
+        </td>
+     </tr>
+  </table>  
+
+  <h4>Using System Options to Specify Observations</h4>
+  <p>You've seen how to use SAS system options to change the appearance of output and interpret
+     two- digit year values. You can also use the OBS= and FIRSTOBS= system options to specify
+     the observations to process from SAS data sets.
+  </p>
+  <p>You can specify either or both of these options as needed. That is, you can use</p>
+  <ul>
+    <li>OBS= to specify the last observation to be processed</li>
+    <li>FIRSTOBS= to specify the first observation to be processed</li>
+    <li>FIRSTOBS= and OBS= together to specify a range of observations to be processed.</li>
+  </ul>
+
+  <hr/>
+  <p><strong>General form, FIRSTOBS= and OBS= options in an OPTIONS statement:</strong></p>
+  <p><strong>OPTIONS FIRSTOBS=n;<br/>
+     OPTIONS OBS=n;</strong>
+  </p>
+  <p>where n is a positive integer. For FIRSTOBS=, n specifies the number of the <strong>first</strong> observation to
+     process. For OBS=, n specifies the number of the <strong>last</strong> observation to process. By default,
+     FIRSTOBS=1. The default value for OBS= is MAX, which is the largest signed, four-byte integer
+     that is representable in your operating environment.
+  </p>
+  <table>
+     <tr>
+        <th class="color-red">Warning</th>
+        <td>Each of these options applies to every input data set that is used in a
+            program or a SAS process
+        </td>
+     </tr>
+  </table>  
+  <hr/>
+  
+  <h4>Example: FIRSTOBS= and OBS= Options</h4>
+  <p>The data set <strong>Sasuser.Heart</strong> contains 20 observations. If you specify FIRSTOBS=10, SAS reads
+     the 10th observation of the data set first and reads through the last observation (for a total of 11
+     observations).
+  </p>
+  <pre>
+  options firstobs=10;
+  proc print data=sasuser.heart;
+  run;</pre>
+  <p>The PROC PRINT step produces the following output:</p>
+  <table border="1">
+     <tr>
+        <th class="color-red">Obs</td> 
+        <th class="color-red">Patient</td> 
+        <th class="color-red">Sex</td> 
+        <th class="color-red">Survive</td> 
+        <th class="color-red">Shock</td> 
+        <th class="color-red">Arterial</td> 
+        <th class="color-red">Heart</td> 
+        <th class="color-red">Cardiac</td> 
+        <th class="color-red">Urinary</td> 
+     </tr>
+     <tr>
+       <td>10</td>
+       <td>509</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>OTHER</td>
+       <td>79</td>
+       <td>84</td>
+       <td>256</td>
+       <td>90</td>
+     </tr>
+     <tr>
+       <td>11</td>
+       <td>742</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>HYPOVOL</td>
+       <td>100</td>
+       <td>54</td>
+       <td>135</td>
+       <td>0</td>
+     </tr>
+     <tr>
+       <td>12</td>
+       <td>609</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>NONSHOCK</td>
+       <td>93</td>
+       <td>101</td>
+       <td>260</td>
+       <td>90</td>
+     </tr>
+     <tr>
+       <td>13</td>
+       <td>318</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>OTHER</td>
+       <td>72</td>
+       <td>81</td>
+       <td>410</td>
+       <td>405</td>
+     </tr>
+     <tr>
+       <td>14</td>
+       <td>412</td>
+       <td>1</td>
+       <td>SURV </td>
+       <td>BACTER</td>
+       <td>61</td>
+       <td>87</td>
+       <td>296</td>
+       <td>44</td>
+     </tr>
+     <tr>
+       <td>15</td>
+       <td>601</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>BACTER</td>
+       <td>84</td>
+       <td>101</td>
+       <td>260</td>
+       <td>377</td>
+     </tr>
+     <tr>
+       <td>16</td>
+       <td>402</td>
+       <td>1</td>
+       <td>SURV</td>
+       <td>CARDIO</td>
+       <td>88</td>
+       <td>137</td>
+       <td>312</td>
+       <td>75</td>
+     </tr>
+     <tr>
+       <td>17</td>
+       <td>98</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>CARDIO</td>
+       <td>84</td>
+       <td>87</td>
+       <td>260</td>
+       <td>377</td>
+     </tr>
+     <tr>
+       <td>18</td>
+       <td>4</td>
+       <td>1</td>
+       <td>SURV</td>
+       <td>HYPOVOL</td>
+       <td>81</td>
+       <td>149</td>
+       <td>406</td>
+       <td>200</td>
+     </tr>
+     <tr>
+       <td>19</td>
+       <td>50</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>HYPOVOL</td>
+       <td>72</td>
+       <td>111</td>
+       <td>332</td>
+       <td>12</td>
+     </tr>
+     <tr>
+       <td>20</td>
+       <td>2</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>OTHER</td>
+       <td>101</td>
+       <td>114</td>
+       <td>424</td>
+       <td>97</td>
+     </tr>
+  </table>
+
+  <p>If you specify OBS=10 instead, SAS reads through the 10th observation, in this case for a total of
+     10 observations. (Notice that FIRSTOBS= has been reset to the default value.)
+  </p>
+  <pre>
+  options firstobs=1 obs=10;
+  proc print data=sasuser.heart;
+  run;</pre>
+  <p>Now the PROC PRINT step produces this output:</p>
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Patient</th>
+       <th class="color-red">Sex</th>
+       <th class="color-red">Survive</th>
+       <th class="color-red">Shock</th>
+       <th class="color-red">Arterial</th>
+       <th class="color-red">Heart</th>
+       <th class="color-red">Cardiac</th>
+       <th class="color-red">Urinary</th>
+    </tr>
+    <tr>
+       <td>1</td>
+       <td>203</td>
+       <td>1</td>
+       <td>SURV</td>
+       <td>NONSHOCK</td>
+       <td>88</td>
+       <td>95</td>
+       <td>66</td>
+       <td>110</td>
+    </tr>
+    <tr>
+       <td>2</td>
+       <td>54</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>HYPOVOL</td>
+       <td>83</td>
+       <td>183</td>
+       <td>95</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>3</td>
+       <td>664</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>CARDIO</td>
+       <td>72</td>
+       <td>111</td>
+       <td>332</td>
+       <td>12</td>
+    </tr>
+    <tr>
+       <td>4</td>
+       <td>210</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>BACTER</td>
+       <td>74</td>
+       <td>97</td>
+       <td>369</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>5</td>
+       <td>101</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>NEURO</td>
+       <td>80</td>
+       <td>130</td>
+       <td>291</td>
+       <td>0</td>
+    </tr>
+    <tr>
+       <td>6</td>
+       <td>102</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>OTHER</td>
+       <td>87</td>
+       <td>107</td>
+       <td>471</td>
+       <td>65</td>
+    </tr>
+    <tr>
+       <td>7</td>
+       <td>529</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>CARDIO</td>
+       <td>103</td>
+       <td>106</td>
+       <td>217</td>
+       <td>15</td>
+    </tr>
+    <tr>
+       <td>8</td>
+       <td>524</td>
+       <td>2</td>
+       <td>DIED </td>
+       <td>CARDIO</td>
+       <td>145</td>
+       <td>99</td>
+       <td>156</td>
+       <td>10</td>
+    </tr>
+    <tr>
+       <td>9</td>
+       <td>426</td>
+       <td>1</td>
+       <td>SURV</td>
+       <td>OTHER</td>
+       <td>68</td>
+       <td>77</td>
+       <td>410</td>
+       <td>75</td>
+    </tr>
+    <tr>
+       <td>10</td>
+       <td>509</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>OTHER</td>
+       <td>79</td>
+       <td>84</td>
+       <td>256</td>
+       <td>90</td>
+    </tr>
+  </table>
+  <br/>
+  <p>Combining FIRSTOBS= and OBS= processes observations in the middle of the data set. For
+     example, the following program processes only observations 10 through 15, for a total of 6
+     observations:
+  </p>
+  <pre>
+  options firstobs=10 obs=15;
+  proc print data=sasuser.heart;
+  run;</pre>
+  <p>Here is the output:</p>
+    <table border="1">
+     <tr>
+        <th class="color-red">Obs</td> 
+        <th class="color-red">Patient</td> 
+        <th class="color-red">Sex</td> 
+        <th class="color-red">Survive</td> 
+        <th class="color-red">Shock</td> 
+        <th class="color-red">Arterial</td> 
+        <th class="color-red">Heart</td> 
+        <th class="color-red">Cardiac</td> 
+        <th class="color-red">Urinary</td> 
+     </tr>
+     <tr>
+       <td>10</td>
+       <td>509</td>
+       <td>2</td>
+       <td>SURV</td>
+       <td>OTHER</td>
+       <td>79</td>
+       <td>84</td>
+       <td>256</td>
+       <td>90</td>
+     </tr>
+     <tr>
+       <td>11</td>
+       <td>742</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>HYPOVOL</td>
+       <td>100</td>
+       <td>54</td>
+       <td>135</td>
+       <td>0</td>
+     </tr>
+     <tr>
+       <td>12</td>
+       <td>609</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>NONSHOCK</td>
+       <td>93</td>
+       <td>101</td>
+       <td>260</td>
+       <td>90</td>
+     </tr>
+     <tr>
+       <td>13</td>
+       <td>318</td>
+       <td>2</td>
+       <td>DIED</td>
+       <td>OTHER</td>
+       <td>72</td>
+       <td>81</td>
+       <td>410</td>
+       <td>405</td>
+     </tr>
+     <tr>
+       <td>14</td>
+       <td>412</td>
+       <td>1</td>
+       <td>SURV </td>
+       <td>BACTER</td>
+       <td>61</td>
+       <td>87</td>
+       <td>296</td>
+       <td>44</td>
+     </tr>
+     <tr>
+       <td>15</td>
+       <td>601</td>
+       <td>1</td>
+       <td>DIED</td>
+       <td>BACTER</td>
+       <td>84</td>
+       <td>101</td>
+       <td>260</td>
+       <td>377</td>
+     </tr>
+  </table>
+
+  <p>To reset the number of the last observation to process, you can specify OBS=MAX in the
+     OPTIONS statement.
+  </p>
+  <pre>options obs=max;</pre>
+  <p>This instructs any subsequent SAS programs in the SAS session to process through the last
+     observation in the data set being read.
+  </p>
+
+  <h4>Using FIRSTOBS= and OBS= for Specific Data Sets</h4>
+  <p>As you saw above, using the FIRSTOBS= or OBS= system options determines the first or last
+     observation, respectively, that is read for all steps for the duration of your current SAS session or
+     until you change the setting. However, you might want to
+  </p>
+  <ul>
+     <li>override these options for a given data set</li>
+     <li>apply these options to a specific data set only</li>
+  </ul>
+  <p>To affect any single file, you can use FIRSTOBS= or OBS= as <strong>data set options</strong> instead of as
+    system options. You specify the data set option in parentheses immediately following the input
+    data set name.
+  </p>
+
+  
+  <table>
+     <tr>
+        <th class="color-blue">Note</th>
+        <td>A FIRSTOBS= or OBS= specification from a data set option overrides the
+            corresponding FIRSTOBS= or OBS= system option
+        </td>
+     </tr>
+  </table>  
+
+  <h4>Example: FIRSTOBS= and OBS as Data Set Options</h4>
+  <p>As shown in the last example, this program processes only observations 10 through 15, for a total
+     of 6 observations:
+  </p>
+  <pre>
+  options firstobs=10 obs=15;
+  proc print data=sasuser.heart;
+  run;</pre>
+  <p>You can create the same output by specifying FIRSTOBS= and OBS= as data set options. The
+     data set options override the system options for this instance only.
+  </p>
+  <pre>
+  options firstobs=10 obs=15;
+  proc print data=sasuser.heart(firstobs=4 obs=20);
+  run;</pre>
+  <p>To specify FIRSTOBS= or OBS= for this program only, you could omit the OPTIONS statement
+     altogether and simply use the data set options.
+  </p>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Viewing System Options</h2>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">The OPTIONS Procedure</h3>
+  <p>You can use the OPTIONS procedure to display the current setting of one or all SAS system
+     options. The results are displayed in the log.
+  </p>
+  <hr/>
+  <p><strong>General form, OPTIONS procedure:</strong></p>
+  <p><strong>PROC OPTIONS</strong> &lt;option(s)&gt;;<br/>
+     <strong>RUN;</strong>
+  </p>
+  <br/>
+  <p>where option(s) specifies how SAS system options are displayed.</p>
+  <hr/>
+
+  <h3>Example</h3>
+  <p>To list all SAS system options, their settings, and a description, submit the following code:</p>
+  <pre>
+  proc options;
+  run;</pre>
+  <p>The log lists the options and their settings:</p>
+  <p class="color-red">Partial Log</p>
+  <hr/>
+  <p>
+     1 proc options;:<br/>
+     2 run;<br/>
+     SAS (r) Proprietary Software Release 9 TS2M0
+     <br/><br/>
+     Portable Options:<br/><br/>
+     APPLETLOC=C:\Program Files\SAS Institute\Shared Files\applets\9
+     Location of Java applets
+     <br/>
+     ARMAGENT= ARM Agent to use to collect ARM records
+     <br/>
+     ARMLOC=ARMLOC.LOG Identify location where ARM records are to be
+     written
+     <br/>
+     ARMSUBSYS=(ARM_NONE)
+     Enable/Disable ARMing of SAS subsystems
+     <br/>
+     NOASYNCHIO Do not enable asynchronous input/output
+     <br/>
+     AUTOSAVELOC= Identifies the location
+     where program editor contents are auto saved
+  </p>
+  <hr/>
+
+  <p>To list the value of one particular system option, use the OPTION= option in the PROC OPTIONS
+     statement as shown below:
+  </p>
+  <pre>
+  proc options option=yearcutoff;
+  run;</pre>
+  <table>
+     <tr>
+        <th class="color-blue">Note</th>
+        <td>If a SAS system option uses an equal sign, such as YEARCUTOFF=, you do
+            not include the equal sign when specifying the option to OPTION=.
+        </td>
+     </tr>
+  </table>
+  <br/> 
+  <p>The log shows that the setting of the YEARCUTOFF= option is 1920.</p> 
+  <hr/>
+  <p>
+     3 proc options option=yearcutoff;<br/>
+     4 run;<br/>
+     SAS (r) Proprietary Software Release 9 TS2M0<br/>
+     YEARCUTOFF=1920 Cutoff year for DATE and DATETIME informats<br/>
+     and functions
+  </p>
+
+  <!-- Topic 6 -->
+  <h3 class="topic" id="topic6">Additional System Options</h3>
+  <p>When you set up your SAS session, you can set SAS system options that affect listing output,
+     information written to the SAS log, and much more. Here are some additional system options that
+     you are likely to use with SAS procedures:
+  </p>
+  <table border="1">
+    <tr>
+     <th class="color-red">Option</th>
+     <th class="color-red">Description</th>
+    </tr>
+    <tr>
+       <td>FORMCHAR='formattingcharacters'</td>
+       <td>specifies the formatting characters for your output device.
+           Formatting characters are used to construct the outlines of
+           tables, and dividers for various procedures, such as the FREQ
+           and TABULATE procedures. If you do not specify formatting
+           characters as an option in the procedure, then the default
+           specifications given in the FORMCHAR= system option are
+           used.
+       </td>
+    </tr>
+    <tr>
+       <td>FORMDLIM='delimitingcharacter'</td>
+       <td>specifies a character that is used to delimit page breaks in SAS
+           System output. Normally, the delimiting character is null. When
+           the delimiting character is null, a new physical page starts
+           whenever a page break occurs.
+       </td>
+    </tr>
+    <tr>
+       <td>LABEL | NOLABEL</td>
+       <td>permits SAS procedures to temporarily replace variable names
+           with descriptive labels. The LABEL system option must be in
+           effect before the LABEL option of any procedure can be used.
+           If NOLABEL is specified, then the LABEL option of a procedure
+           is ignored. The default setting is LABEL.
+       </td>
+    </tr>
+    <tr>
+       <td>OBS=n</td>
+       <td>specifies the observation from a data set (or the record from a
+           raw data file) that SAS reads last. You can also use the OBS=
+           system option to control the analysis of SAS data sets in PROC
+           steps. n specifies the number of the last observation to
+           process.
+       </td>
+    </tr>
+    <tr>
+       <td>SOURCE | NOSOURCE</td>
+       <td>controls whether SAS source statements are written to the SAS
+           log. NOSOURCE specifies not to write SAS source statements
+           to the SAS log. The default setting is SOURCE.
+       </td>
+    </tr>
+  </table>
+  <br/>
+  <p>You can also use programming statements to control the result format of each item of procedure
+     output individually. For more information, see Chapter, Producing HTML Output.
+  </p>
+  
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Summary</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+
+  <h4>Referencing Files in SAS Libraries</h4>
+  <p>To reference a SAS file, you assign a libref (library reference) to the SAS library in which the file
+     is stored. Then you use the libref as the first part of the two-level name <strong>(libref.filename)</strong> for the
+     file.
+  </p>
+  <p>To reference a SAS library, you can submit a <strong>LIBNAME statement</strong>. You can store the LIBNAME
+     statement with any SAS program to reference the SAS library automatically when you submit the
+     program. The LIBNAME statement assigns the libref for the current SAS session only. You must
+     assign a libref each time you begin a SAS session in order to access SAS files that are stored in
+     a permanent SAS library. (<strong>Work</strong> is the default libref for a temporary SAS library.)
+  </p>
+  <p>You can also use the LIBNAME statement to reference data in files that were created with other
+     software products, such as database management systems. SAS can write to or read from the
+     files by using the appropriate <strong>engine</strong> for that file type. For some file types, you need to tell SAS
+     which engine to use. For others, SAS automatically chooses the appropriate engine.
+  </p>  
+
+  <h4>Viewing the Contents of SAS Libraries</h4>
+  <p>To list the contents of a library, use the <strong>CONTENTS procedure</strong>. Append a period and the _ALL_
+     option to the libref to get a listing of all files in the library. Add the NODS option to suppress
+     detailed information about the files. As an alternative to PROC CONTENTS, you can use <strong>PROC
+     DATASETS</strong>.
+  </p>
+
+  <h4>Setting SAS System Options</h4>
+  <p>For your listing output, you can also control the appearance of your output by setting system
+     options such as line size, page size, the display of page numbers, and the display of the date and
+     time. (These options do not affect the appearance of HTML output.)
+  </p>
+  <p>All SAS system options have default settings that are used unless you specify otherwise. For
+     example, page numbers are automatically displayed (unless your site modifies this default). To
+     modify system options, you submit an <strong>OPTIONS statement</strong>. You can place an OPTIONS
+     statement anywhere in a SAS program to change the current settings. Because the OPTIONS
+     statement is global, the settings remain in effect until you modify them or until you end your SAS
+     session.    
+  </p>
+  <p>If you use two-digit year values in your SAS data lines, you must be aware of the
+     <strong>YEARCUTOFF= option</strong> to ensure that you are properly interpreting two-digit years in your SAS
+     program. This option specifies which 100-year span is used to interpret two-digit year values.
+  </p>
+
+  <h4>Viewing SAS System Options</h4>
+  <p>You can use the <strong>OPTIONS procedure</strong> to display the value of one or more SAS system options.
+     The output of this procedure is included in the log.
+  </p>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
+  <ul>
+    <li>LIBNAME and OPTIONS statements remain in effect for the current SAS session only</li>
+    <li>When you work with date values,
+       <ul>
+         <li>check the default value of the YEARCUTOFF= system option and change it if
+             necessary
+         </li>
+         <li>specify the proper informat for reading a date value or the proper format for
+             writing a date value
+         </li>
+         <li>specify the correct field width so that the entire date value is read or written</li>
+      </ul>
+    </li>
+  </ul>
+
+
+</div> <!-- end of div content -->
+
+</body>
+</html>
