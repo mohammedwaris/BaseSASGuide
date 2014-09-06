@@ -16,7 +16,9 @@
     <content src="index.html" />
     <access origin="*" />
 	
-	<gap:plugin name="com.leonid.smartmobilesoftware.inappbilling" version="3.0.0" />
+	<gap:plugin name="com.leonid.smartmobilesoftware.inappbilling" version="3.0.0">
+		<param name="billing_key" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmYbACR0gHbASwprFbTOKGmVuYznLgwPbUJcT1+C48AhWUb674xjCZjtMG65qRmtJ55XKFG8Oijy+A/9As8AqD61j7Wx2cpBTHtCVHJ9Q2DUrREPHME66A75FzX8iGJ760g02iTmdSuQiQKBa5HVVyLOIskBPmeBk11JB0HC4uV7tr/0AQ+5/940PZF+NPGn2UwYvASYMnVk71ZEH4cxcEP30UrA4dfzN3P7SXTJhcOGCY/iFIzreSkrEH3OMjJTmyUG0S2tbenMCSXCIJtzpj+pHF3aM5IwUjh3g/V8yw8YVlOWIPZZXaDXVpTg5pCaZXfrf6KpHCoKhMFaZ5EpJ9QIDAQAB"/>
+	</gap:plugin>
 	
 	<platform name="android">
 	              <icon src="res/android/icons/icon36x36.png" density="ldpi" />
