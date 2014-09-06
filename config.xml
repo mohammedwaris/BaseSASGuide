@@ -1,5 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.jlojic.basesasguide" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget xmlns="http://www.w3.org/ns/widgets" 
+	xmlns:gap   = "http://phonegap.com/ns/1.0"
+	id="com.jlojic.basesasguide" 
+	version="1.0.0" 
+	versionCode = "100">
+	
     <name>Base SAS Exam Guide</name>
     <description>
         A Practical guide for Base SAS certification.
@@ -15,19 +20,24 @@
 	
     <content src="index.html" />
     <access origin="*" />
+	<icon src="icon.png"/>
 	
 	<gap:plugin name="com.leonid.smartmobilesoftware.inappbilling" version="3.0.0">
 		<param name="billing_key" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmYbACR0gHbASwprFbTOKGmVuYznLgwPbUJcT1+C48AhWUb674xjCZjtMG65qRmtJ55XKFG8Oijy+A/9As8AqD61j7Wx2cpBTHtCVHJ9Q2DUrREPHME66A75FzX8iGJ760g02iTmdSuQiQKBa5HVVyLOIskBPmeBk11JB0HC4uV7tr/0AQ+5/940PZF+NPGn2UwYvASYMnVk71ZEH4cxcEP30UrA4dfzN3P7SXTJhcOGCY/iFIzreSkrEH3OMjJTmyUG0S2tbenMCSXCIJtzpj+pHF3aM5IwUjh3g/V8yw8YVlOWIPZZXaDXVpTg5pCaZXfrf6KpHCoKhMFaZ5EpJ9QIDAQAB"/>
 	</gap:plugin>
 	
-	<platform name="android">
-	              <icon src="res/android/icons/icon36x36.png" density="ldpi" />
-	              <icon src="res/android/icons/icon48x48.png" density="mdpi" />
-	              <icon src="res/android/icons/icon72x72.png" density="hdpi" />
-	              <icon src="res/android/icons/icon96x96.png" density="xhdpi" />
-				  <icon src="res/android/icons/icon144x144.png" density="xxhdpi" />
-	</platform>
+    <!-- Android -->
+    <gap:platform name="android" />
+    <preference name="android-minSdkVersion" value="8" />
+    <preference name="android-targetSdkVersion" value="18" /> 
+    
+    <icon src="icons/android/icon36x36.png" gap:platform="android" gap:density="ldpi" />
+    <icon src="icons/android/icon48x48.png" gap:platform="android" gap:density="mdpi" />
+    <icon src="icons/android/icon72x72.png" gap:platform="android" gap:density="hdpi" />
+    <icon src="icons/android/icon96x96.png" gap:platform="android" gap:density="xhdpi" />
 	
-	<icon src="icon.png"/>
+	
+	
+	
 	
 </widget>
