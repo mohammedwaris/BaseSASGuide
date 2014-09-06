@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>In previous chapters, you've seen both traditional SAS listing output and HTML output. When you
+     set options to create HTML output, SAS uses <strong>Output Delivery System (ODS)</strong> statements to
+     generate the output.
+  </p>
+
+  <p>Using ODS, you can create, customize, and manage HTML output in any operating environment
+     by submitting programming statements. After you create HTML files, you can view them using
+     Internet Explorer, Netscape Navigator, or any Web browser that fully supports HTML 3.2.
+  </p>
+
+  <p>This chapter shows you how to create and view HTML output using ODS. You also learn how to
+     apply styles to ODS output.
+  </p>
+
+  <table> 
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>By default, all code that you submit to SAS Enterprise Guide has ODS
+          statements included to create HTML output. Before you submit your own
+          ODS statements, you must turn off this default behavior. The practice
+          programs on your companion CD include instructions for turning off the
+          default behavior.
+      </td>
+    </tr> 
+  </table>
+  <br/>
+  <img src="images/ch10_image1.png" class="diagram" />
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>open and close ODS destinations.</li>
+    <li>create a simple HTML file with the output of one or more procedures.</li>
+    <li>create HTML output with a linked table of contents in a frame.</li>
+    <li>use options to specify links and file paths.</li>
+    <li>view HTML output.</li>
+    <li>apply styles to HTML output.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">The Output Delivery System</h2>
+
+  <p>Before you learn to write ODS programming statements, it's helpful to understand a little about
+     ODS.
+  </p>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Advantages of ODS</h3>
+
+  <p>ODS gives you formatting options and makes procedure output much more flexible. With ODS,
+     you can easily create output in a variety of formats, including
+  </p>
+  <ul>
+    <li>HTML output
+        <table border="1">
+          <tr>
+            <th class="color-red">Obs</th>
+            <th class="color-red">ID</th>
+            <th class="color-red">Name</th>
+            <th class="color-red">Fee</th>
+          </tr>
+          <tr>
+             <td>1</td>
+             <td>2458</td>
+             <td>Murray, W</td>
+             <td>85.20</td>
+          </tr>
+          <tr>
+             <td>2</td>
+             <td>2462</td>
+             <td>Almers, C</td>
+             <td>124.80</td>
+          </tr>
+          <tr>
+             <td>3</td>
+             <td>2501</td>
+             <td>Bonaventure, T</td>
+             <td>149.75</td>
+          </tr>
+          <tr>
+             <td>4</td>
+             <td>2523</td>
+             <td>Johnson, R</td>
+             <td>149.75</td>
+          </tr>
+          <tr>
+             <td>5</td>
+             <td>2539</td>
+             <td>LaMance, K</td>
+             <td>124.80</td>
+          </tr>
+          <tr>
+             <td>6</td>
+             <td>2544</td>
+             <td>Jones, M</td>
+             <td>124.80</td>
+          </tr>
+        </table>
+        <br/><br/>
+    </li>
+    <li>An output data set of procedure results
+        <table border="1">
+          <tr>
+            <th class="color-red">VarName</th>
+            <th class="color-red">Quantile</th>
+            <th class="color-red">Estimate</th>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>100% max</td>
+             <td>80</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>99%</td>
+             <td>80</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>95%</td>
+             <td>79</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>90%</td>
+             <td>78</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>75% Q3</td>
+             <td>76</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>50% Median</td>
+             <td>72</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>25% Q1</td>
+             <td>70</td>
+          </tr>
+          <tr>
+             <td>RestHR</td>
+             <td>10%</td>
+             <td>68</td>
+          </tr>
+        </table>  
+        <br/>   <br/>  
+    </li>
+    <li>Traditional SAS listing output
+        <hr/>
+        <table>
+          <tr>
+             <td style="text-align:center;" colspan="4">The SAS System</td>
+          </tr>
+          <tr>
+             <td colspan="4">&nbsp;</td>
+          </tr>
+          <tr>
+             <td>Obs</td>
+             <td>ID</td>
+             <td>Name</td>
+             <td>Fee</td>
+          </tr>
+          <tr>
+             <td>1</td>
+             <td>2458</td>
+             <td>Murray, W</td>
+             <td>85.20</td>
+          </tr>
+          <tr>
+             <td>2</td>
+             <td>2462</td>
+             <td>Almers, C</td>
+             <td>124.80</td>
+          </tr>
+          <tr>
+             <td>3</td>
+             <td>2501</td>
+             <td>Bonaventure, T</td>
+             <td>149.75</td>
+          </tr>
+          <tr>
+             <td>4</td>
+             <td>2523</td>
+             <td>Johnson, R</td>
+             <td>149.75</td>
+          </tr>
+          <tr>
+             <td>5</td>
+             <td>2539</td>
+             <td>LaMance, K</td>
+             <td>124.80</td>
+          </tr>
+          <tr>
+             <td>6</td>
+             <td>2544</td>
+             <td>Jones, M</td>
+             <td>124.80</td>
+          </tr>
+        </table>
+        <hr/>
+    </li>
+  </ul>
+
+  <p>Also, ODS holds your output in its component parts (<strong>data and table definition</strong>) so that numerical
+     data retains its full data precision.
+  </p>
+  <p>Let's see how ODS creates output.</p>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">How ODS Works</h3>
+
+  <p>When you submit your ODS statements and the SAS program that creates your output, ODS
+     does the following:
+  </p>
+
+  <ol>
+    <li>ODS creates your output in the form of output objects. <br/><br/>
+        Each output object contains the results of a procedure or DATA step (the <strong>data
+        component</strong>) and can also contain information about how to render the results (the
+        <strong>table definition</strong>). <br/>
+        <img src="images/ch10_image2.png" class="diagram"/>
+        <br/>
+    </li>
+    <li>ODS sends the output object to the <strong>ODS destination(s)</strong>kharab to  that you specify and creates
+        formatted output as specified by the destination. For example, when the Listing and
+        HTML destinations are open, ODS creates Listing and HTML output. <br/>
+        <img src="images/ch10_image3.png" class="diagram"/>
+        <br/>
+    </li>
+  </ol>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Opening and Closing ODS Destinations</h2>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">ODS Destinations</h3>
+
+  <p>You use ODS statements to specify <strong>destinations</strong> for your output. Each destination creates a
+     specific type of formatted output. The table that follows lists the ODS destinations that are
+     supported.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">This destination...</th>
+      <th class="color-red">Produces...</th>
+    </tr>
+    <tr>
+      <td>HTML</td>
+      <td>output that is formatted in HyperText Markup Language(HTML)</td>
+    </tr>
+    <tr>
+      <td>Listing</td>
+      <td>output that is formatted like traditional SAS procedure (listing) output</td>
+    </tr>
+    <tr>
+      <td>Markup Language Family</td>
+      <td>output that is formatted using markup languages such as Extensible Markup Language (XML)</td>
+    </tr>
+    <tr>
+      <td>ODS Document</td>
+      <td>a hierarchy of output objects that enables you to render multiple ODS output without re-running procedures</td>
+    </tr>
+    <tr>
+      <td>Output</td>
+      <td>SAS data sets</td>
+    </tr>
+    <tr>
+      <td>Printer Family</td>
+      <td>output that is formatted for a high-resolution printer, such as
+          PostScript (PS), Portable Document Format (PDF), or Printer
+          Control Language (PCL) files
+      </td>
+    </tr>
+    <tr>
+      <td>RTF</td>
+      <td>Rich Text Format output for use with Microsoft Word</td>
+    </tr>
+  </table>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>In this chapter, we will discuss the Listing destination and the HTML destination.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Using Statements to Open and Close ODS Destinations</h3>
+
+  <p>For each type of formatted output that you want to create, you use an ODS statement to open the
+     destination. The exception is the Listing destination, which is open by default. At the end of your
+     program, you use another ODS statement to close the destination so that you can access your
+     output.
+  </p>
+
+  <hr/>
+  <p><strong>General form, ODS statement to open and close destinations:</strong></p>
+  <p><strong>ODS</strong> open-destination;</p>
+  <p><strong>ODS</strong> close-destination <strong>CLOSE</strong>;</p>
+  <p>where</p>
+  <ul>
+    <li><i>open-destination</i> is a keyword and any required options for the type of output that you
+        want to create, such as
+        <ul>
+          <li><strong>HTML FILE</strong>='html-file-pathname'</li>
+          <li><strong>LISTING</strong>.</li>
+        </ul>
+    </li>
+    <li><i>close-destination</i> is a keyword for the type of output.</li>
+  </ul>
+  <hr/>
+ 
+  <p>You can issue ODS statements in any order, depending on whether you need to open or close
+     the ODS destination. Most ODS destinations are closed by default, and you open them at the
+     beginning of your program and close them at the end. The exception is the Listing destination,
+     which is open by default.
+  </p>
+
+  <img src="images/ch10_image4.png" class="diagram"/>
+
+  <h4>Example</h4>
+
+  <p>The following program creates SAS listing output because the Listing destination is open by
+     default. No other ODS destinations are open, so no other output formats are produced.
+  </p>
+  
+  <pre>
+  proc print data=sasuser.mydata;
+  run;</pre>
+  <p>The following program produces HTML and listing output:</p>
+  <pre>
+  ods html body='c:\mydata.html';
+  proc print data=sasuser.mydata;
+  run;
+  ods html close;</pre>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>This example is meant to demonstrate how you open and close ODS
+          destinations. You learn the specifics of creating HTML output later in this
+          chapter.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 3 Subtopic 3 -->
+  <h3 class="subtopic" id="topic3_subtopic3">Closing the Listing Destination</h3>
+
+  <p>As you have learned, the Listing destination is open by default. Because open destinations use
+     system resources, it's a good idea to close the Listing destination at the <strong>beginning</strong> of your
+     program if you don't want to produce listing output. Here is an example:
+  </p>
+  <pre>ods listing close;</pre>
+  <p>The Listing destination remains closed until you end your current SAS session or until you reopen
+     the destination. It's a good programming practice to re-set ODS to listing output (the default
+     setting) at the end of your programs. Here is an example:
+  </p>
+  <pre>ods listing;</pre>
+
+  <h4>Example</h4>
+  <p>The following program produces only HTML output:</p>
+  <pre>
+  ods listing close;
+  ods html body='c:\mydata.html';
+  proc print data=sasuser.mydata;
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <!-- Topic 3 Subtopic 4 -->
+  <h3 class="subtopic" id="topic3_subtopic4">Closing Multiple ODS Destinations Concurrently</h3>
+
+  <p>One of the features of ODS is that you can produce output in multiple formats concurrently by
+     opening each ODS destination at the beginning of the program.
+  </p>
+  <p>When you have more than one open ODS destination, you can use the keyword <strong>_ALL_</strong> in the
+     ODS CLOSE statement to close all open destinations concurrently.
+  </p>
+
+  <h4>Example</h4>
+
+  <p>The program below opens the HTML and PDF destinations before the PROC step and closes all
+     ODS destinations at the end of the program:
+  </p>
+
+  <pre>
+  ods html file='HTML-file-pathname';
+  ods pdf file='PDF-file-pathname';
+  proc print data=sasuser.admit;
+  run;
+  ods _all_ close;
+  ods listing;</pre>
+
+  <p>Notice that the last ODS statement re-opens the Listing destination so that ODS returns to
+     producing listing output for subsequent DATA or PROC steps in the current session.
+  </p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Creating Simple HTML</h2>
+
+  <p>To create HTML output, you open the HTML destination using the <strong>ODS HTML statement</strong>.</p>
+  
+  <hr/>
+  <p><strong>General form, ODS HTML statement:</strong></p>
+  <p><strong>ODS HTML BODY</strong>=file-specification; <br/>
+     <strong>ODS HTML CLOSE</strong>;</p>
+  <p>where file-specification identifies the file that contains the HTML output. The specification can be</p>
+  <ul>
+    <li>an HTML filename (include the complete pathname if you want to save the HTML file to a
+        specific location).</li>
+    <li>a fileref (file shortcut) that has been assigned to an HTML file.</li>
+    <li>a SAS catalog entry in the form entry-name.html.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>FILE= can also be used to specify the file that contains the HTML output. <br/>
+          FILE= is an alias for BODY=.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>The program below creates PROC PRINT output in an HTML file. The BODY= option specifies
+     the file F:\admit.html in the Windows operating environment as the file that contains the PROC
+     PRINT results.
+  </p>
+
+  <pre>
+  ods listing close;
+  ods html body='f:\admit.html';
+  proc print data=clinic.admit label;
+     var sex age height weight actlevel;
+     label actlevel='Activity Level';
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <p>Notice that ODS statements close the Listing destination and open the HTML destination. Then,
+     after the RUN statement, you close the HTML destination and open the Listing destination.
+  </p>
+
+  <p>The HTML file admit.html contains the results of all procedure steps between the ODS HTML
+     statement and ODS HTML CLOSE statement.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">ActivityLevel</th>
+    </tr>
+    <tr> 
+      <td>1</td>
+      <td>M</td>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>2</td>
+      <td>F</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>3</td>
+      <td>F</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>4</td>
+      <td>F</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>5</td>
+      <td>M</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>6</td>
+      <td>M</td>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>7</td>
+      <td>F</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>8</td>
+      <td>M</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>9</td>
+      <td>M</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>10</td>
+      <td>F</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>11</td>
+      <td>F</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>12</td>
+      <td>F</td>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>13</td>
+      <td>M</td>
+      <td>30</td>
+      <td>69</td>
+      <td>147</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>14</td>
+      <td>F</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>15</td>
+      <td>M</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>16</td>
+      <td>M</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>17</td>
+      <td>F</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>18</td>
+      <td>M</td>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>19</td>
+      <td>F</td>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>20</td>
+      <td>F</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>21</td>
+      <td>M</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>MOD</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Creating HTML Output from Multiple Procedures</h3>
+
+  <p>You can also use the ODS HTML statement to direct the results from multiple procedures to the
+     same HTML file.
+  </p>
+  <p>The program below generates HTML output for the PRINT and TABULATE procedures. The
+     results for both procedures are saved to the file <strong>C:\Records\data.html</strong> (in the Windows operating
+     system).
+  </p>
+
+  <pre>
+  ods listing close;
+  ods html body='c:\records\data.html';
+  proc print data=clinic.admit label;
+     var id sex age height weight actlevel;
+     label actlevel='Activity Level';
+  run;
+  proc tabulate data=clinic.stress2;
+     var resthr maxhr rechr;
+     table min mean, resthr maxhr rechr;
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <p>The following is a representation of the HTML file containing the results from the program above.
+     Notice that the results from each procedure are appended.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="7">The SAS System</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">ActivityLevel</th>
+    </tr>
+    <tr> 
+      <td>1</td>
+      <td>2458</td>
+      <td>M</td>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>2</td>
+      <td>2462</td>
+      <td>F</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>3</td>
+      <td>2501</td>
+      <td>F</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>4</td>
+      <td>2523</td>
+      <td>F</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>5</td>
+      <td>2539</td>
+      <td>M</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>6</td>
+      <td>2544</td>
+      <td>M</td>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>7</td>
+      <td>2552</td>
+      <td>F</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>8</td>
+      <td>2555</td>
+      <td>M</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>9</td>
+      <td>2563</td>
+      <td>M</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>10</td>
+      <td>2568</td>
+      <td>F</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>11</td>
+      <td>2571</td>
+      <td>F</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>12</td>
+      <td>2572</td>
+      <td>F</td>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>13</td>
+      <td>2574</td>
+      <td>M</td>
+      <td>30</td>
+      <td>69</td>
+      <td>147</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>14</td>
+      <td>2575</td>
+      <td>F</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>15</td>
+      <td>2578</td>
+      <td>M</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>16</td>
+      <td>2579</td>
+      <td>M</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>17</td>
+      <td>2584</td>
+      <td>F</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>MOD</td>
+    </tr>
+    <tr> 
+      <td>18</td>
+      <td>2586</td>
+      <td>M</td>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>19</td>
+      <td>2588</td>
+      <td>F</td>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>LOW</td>
+    </tr>
+    <tr> 
+      <td>20</td>
+      <td>2589</td>
+      <td>F</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>HIGH</td>
+    </tr>
+    <tr> 
+      <td>21</td>
+      <td>2595</td>
+      <td>M</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>MOD</td>
+    </tr>
+  </table>
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">The SAS System</th>
+    </tr>
+    <tr>
+      <th class="color-red">&nbsp;</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+    </tr>
+    <tr>
+      <th>Min</th>
+      <td>65.00</td>
+      <td>152.00</td>
+      <td>108.00</td>
+    </tr>
+    <tr>
+      <th>Mean</th>
+      <td>72.95</td>
+      <td>171.10</td>
+      <td>128.95</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Creating HTML Output with a Table of Contents</h2>
+
+  <p>So far in this chapter, you've used the BODY= option to create a simple HTML file containing your
+     procedure output. Suppose you want to create an HTML file that has a table of contents with links
+     to the output of each specific procedure. You can do this by specifying additional files in the ODS
+     HTML statement.
+  </p>
+  
+  <hr/>
+  <p><strong>General form, ODS HTML statement to create a linked table of contents:</strong></p>
+  <p><strong>ODS HTML</strong> <br/>
+     &nbsp;&nbsp; <strong>BODY</strong>=body-file-specification <br/>
+     &nbsp;&nbsp; <strong>CONTENTS</strong>=contents-file-specification <br/>
+     &nbsp;&nbsp; <strong>FRAME</strong>=frame-file-specification; <br/>
+     <strong>ODS HTML CLOSE</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>body-file-specification is the name of an HTML file that contains the procedure output.</li>
+    <li>contents-file-specification is the name of an HTML file that contains a table of contents
+        with links to the procedure output.
+    </li>
+    <li>frame-file-specification is the name of an HTML file that integrates the table of contents
+        and the body file. If you specify FRAME=, you must also specify CONTENTS=.
+    </li>
+  </ul>  
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>To direct the HTML output to a specific storage location, specify the complete
+          pathname of the HTML file in the file-specification.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>In the program below,</p>
+  <ul>
+    <li>the BODY= option creates <strong>data.html</strong> in the <strong>c:\records</strong> directory. The body file contains
+        the results of the two procedures.
+    </li>
+    <li>the CONTENTS= option creates <strong>toc.html</strong> in the c:\records directory. The table of
+        contents file has links to each procedure output in the body file.
+    </li>
+    <li>the FRAME= option creates <strong>frame.html</strong> in the <strong>c:\records</strong> directory. The frame file
+        integrates the table of contents and the body file.
+        <img src="images/ch10_image5.png" class="diagram" />
+        <pre>
+        ods listing close;
+        ods html body='c:\records\data.html'
+                 contents='c:\records\toc.html'
+                 frame='c:\records\frame.html';
+        proc print data=clinic.admit label;
+           var id sex age height weight actlevel;
+           label actlevel='Activity Level';
+        run;
+        proc print data=clinic.stress2;
+           var id resthr maxhr rechr;
+        run;
+        ods html close;
+        ods listing;
+        </pre>
+
+        <p>The frame file, frame.html, is shown below.</p>
+        <img src="images/ch10_image6.png" class="diagram" />
+    </li>
+  </ul>
+  <br/>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Using the Table of Contents</h3>
+
+  <p>The table of contents created by the CONTENTS= option contains a numbered heading for each
+     procedure that creates output. Below each heading is a link to the output for that procedure.
+  </p>
+
+  <p>On some browsers, you can select a heading to contract or expand the table of contents.</p>
+  <img src="images/ch10_image7.png" class="diagram" />
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Using Options to Specify Links and Paths</h2>
+
+  <p>When ODS generates HTML files for the body, contents, and frame, it also generates links
+     between the files by using the HTML filenames that you specify in the ODS HTML statement. If
+     you specify complete pathnames, then ODS uses those pathnames in the links it generates.
+  </p>
+  <p>The ODS statement below creates a frame file that has links to <strong>C:\Records\toc.html</strong> and
+     <strong>C:\Records\data.html</strong>, and a contents file that has links to <strong>C:\Records\data.html</strong>.
+  </p>
+
+  <pre>
+  ods html body='c:\records\data.html'
+           contents='c:\records\toc.html'
+           frame='c:\records\frame.html';</pre>
+
+  <p>A portion of the source code for the HTML file frame.html is shown below. Notice that the links
+     have the complete pathnames specified in the file specifications for the contents and body files.
+     Links in the contents file contain the same pathname.
+  </p>
+
+  <hr/>
+  &lt;FRAME MARGINWIDTH="4" MARGINHEIGHT="0" SRC="c:\records\toc.html"
+         NAME="contents" SCROLLING=auto&gt; <br/><br/>
+  &lt;FRAME MARGINWIDTH="9" MARGINHEIGHT="0" SRC="c:\records\data.html"
+         NAME="body" SCROLLING=auto&gt;
+  <hr/>
+
+  <p>These links work when you are viewing the HTML files locally, but if you want to place these files
+     on a Web server so that other people can access them, then the links need to include either the
+     complete URL for an absolute link or the HTML filename for a relative link.
+  </p>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">The URL= Suboption</h3>
+
+  <p>By specifying the <strong>URL= suboption</strong> in the BODY= or CONTENTS= file specification, you can
+     provide a URL that ODS uses in all the links that it creates to the file. You can use the URL=
+     suboption in any ODS file specification except FRAME= (because no ODS file references the
+     frame file).
+  </p>
+
+  <hr/>
+  <p><strong>General form, URL= suboption in a file specification:</strong></p>
+  <p>(<strong>URL</strong>='Uniform-Resource-Locator')</p>
+  <p>where <i>Uniform-Resource-Locator</i> is the name of an HTML file or the full URL of an HTML file.
+     ODS uses this URL instead of the filename in all the links and references that it creates that point
+     to the file.
+  </p>
+  <table>
+    <tr>
+      <th class="color-blue">Info</th>
+      <td>The URL= suboption is useful for building HTML files that can be moved from
+          one location to another. If the links from the contents and page files are
+          constructed with a simple URL (one name), they work as long as the contents,
+          page, and body files are all in the same location.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  <br/>
+
+  <h4>Example: Relative URLs</h4>
+  <p>In this ODS HTML statement, the URL= suboption specifies only the HTML filename. This is the
+     most common style of linking between files because maintenance is easier and the files can be
+     moved as long as they all remain in the same directory or storage location.
+  </p>
+  <pre>
+  ods html body='c:\records\data.html' (url='data.html')
+           contents='c:\records\toc.html' (url='toc.html')
+           frame='c:\records\frame.html';</pre>
+
+  <p>The source code for <strong>frame.html</strong> has only the HTML filename as specified in the URL=
+     suboptions for the body and contents files.
+  </p>
+  
+  <hr/>
+  &lt;FRAME MARGINWIDTH="4" MARGINHEIGHT="0" SRC="toc.html"
+         NAME="contents" SCROLLING=auto&gt; <br/><br/>
+  &lt;FRAME MARGINWIDTH="9" MARGINHEIGHT="0" SRC="data.html"
+         NAME="body" SCROLLING=auto&gt;
+  <hr/>
+  <br/>
+
+  <h4>Example: Absolute URLs</h4>
+
+  <p>Alternatively, in this ODS HTML statement, the URL= suboptions specify complete URLs by using
+     HyperText Transfer Protocol (HTTP). These files can be stored in the same or different locations.
+  </p>
+  <pre>
+  ods html body='c:\records\data.html'
+           (url='http://mysite.com/myreports/data.html')
+           contents='c:\records\toc.html'
+           (url='http://mysite.com/mycontents/toc.html')
+           frame='c:\records\frame.html';</pre>
+
+  <p>As you would expect, the source code for <strong>frame.html</strong> has the entire HTTP addresses that you
+     specified in the URL= suboptions for the body and contents files.
+  </p>
+
+  <p>
+     &lt;FRAME MARGINWIDTH="4" MARGINHEIGHT="0"
+            SRC="http://mysite.com/myreports/toc.html"
+            NAME="contents" SCROLLING=auto&gt; <br/><br/>
+     &lt;FRAME MARGINWIDTH="9" MARGINHEIGHT="0"
+            SRC="http://mysite.com/myreports/data.html"
+            NAME="body" SCROLLING=auto&gt;
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>When you use the URL= suboption to specify a complete URL, you might need
+          to move your files to that location before you can view them.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">The PATH= Option</h3>
+
+  <p>So far, you've learned to specify the complete pathname for HTML files in the BODY=,
+     CONTENTS=, and FRAME= specifications when you want to save HTML files to specific
+     locations. To streamline your ODS HTML statement, you can also use the <strong>PATH= option</strong> to
+     specify the location where you want to store your HTML output, and you can use the <strong>URL=NONE</strong>
+     to prevent ODS from using the pathname in any links it creates in your files.
+  </p>
+
+  <hr/>
+  <p><strong>General form, PATH= option:</strong></p>
+  <p><strong>PATH</strong>=file-specification &lt;(<strong>URL</strong>='Uniform-Resource-Locator' | <strong>NONE</strong>)&gt;</p>
+  <p>where</p>
+  <ul>
+    <li><i>file-location-specification</i> identifies the location where you want HTML files to be saved. It
+        can be one of the following:
+        <ul>
+           <li>the complete pathname to an aggregate storage location, such as a directory or
+               partitioned data set.
+           </li>
+           <li>a fileref (file shortcut) that has been assigned to a storage location</li>
+           <li>a SAS catalog (libname.catalog).</li>
+        </ul>
+    </li>
+    <li><i>Uniform-Resource-Locator</i> provides a URL for links in the HTML files that ODS
+        generates. If you specify the keyword <strong>NONE</strong>, no information from the PATH= option appears
+        in the links or references. <br/><br/>
+        If you do not use the URL= suboption, then information from the PATH= option is added to
+        links and references in the files that are created.
+    </li>
+  </ul>
+  <hr/>
+  <br/>
+
+  <h4>Example: PATH= Option with URL=NONE</h4>
+  <p>In the program below, the PATH= option directs the files <strong>data.html</strong>, <strong>toc.html</strong>, and <strong>frame.html</strong> to
+     the <strong>C:\Records</strong> directory in the Windows operating environment. The links from the frame file to
+     the body and contents files contain only the HTML filenames <strong>data.html</strong> and <strong>toc.html</strong>.
+  </p>
+  <pre>
+  ods listing close;
+  ods html path='c:\records' (url=none)
+           body='data.html'
+           contents='toc.html'
+           frame='frame.html';
+  proc print data=clinic.admit;
+  run;
+  proc print data=clinic.stress2;
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <p>This program generates the same files and links as the previous example in which you learned to
+     use the URL= suboption with the BODY= and CONTENTS= file specifications. However, it’s a bit
+     simpler to specify the path only once in the PATH= option and to specify URL=NONE.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Info</th>
+      <td>If you plan to move your HTML files, you should specify <strong>URL=NONE</strong> with the
+          PATH= option to prevent information from the PATH= option from creating
+          URLs that are invalid or incorrect.
+      </td>
+    </tr>
+  </table>
+  <br/>
+ 
+  <h4>Example: PATH= Option without the URL= Suboption</h4>
+
+  <p>In the program below, the PATH= option directs the files <strong>data.html</strong>, <strong>toc.html</strong>, and <strong>frame.html</strong> to
+     the <strong>C:\Records</strong> directory in the Windows operating environment. The links from the frame file to
+     the body and contents files contain the complete pathname, <strong>c:\records\data.html</strong> and
+     <strong>c:\records\toc.html</strong>:
+  </p>
+
+  <pre>
+  ods listing close;
+  ods html path='c:\records'
+           body='data.html'
+           contents='toc.html'
+           frame='frame.html';
+  proc print data=clinic.admit;
+  run;
+  proc print data=clinic.stress2;
+  run;
+  ods html close;
+  ods listing;</pre>
+  <br/>
+
+  <h4>Example: PATH= Option with a Specified URL</h4>
+
+  <p>In the program below, the PATH= option directs the files <strong>data.html</strong>, <strong>toc.html</strong>, and <strong>frame.html</strong> to
+     the <strong>C:\Records</strong> directory in the Windows operating environment. The links from the frame file to
+     the body and contents files contain the specified URL, http://mysite.com/myreports/data.html
+     and http://mysite.com/myreports/toc.html:
+  </p>
+
+  <pre>
+  ods listing close;
+  ods html path='c:\records'(url='http://mysite.com/myreports/')
+           body='data.html'
+           contents='toc.html'
+           frame='frame.html';
+  proc print data=clinic.admit;
+  run;
+  proc print data=clinic.stress2;
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Changing the Appearance of HTML Output</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">The STYLE= Option</h3>
+
+  <p>You can change the appearance of your HTML output by using the <strong>STYLE= option</strong> in the ODS
+     HTML statement.
+  </p>
+  <hr/>
+  <p><strong>General form, STYLE= option:</strong></p>
+  <p><strong>STYLE</strong>=style-name</p>
+  <p>where <i>style-name</i> is the name of a valid SAS or user-defined style definition.</p>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Don't enclose <i>style-name</i> in quotation marks.</td>
+    </tr> 
+  </table>
+  <hr/>
+  <br/>
+
+  <h4>Example</h4>
+  <p>Predefined styles are shipped with SAS. In the program below, the STYLE= option applies the
+     Brick style to the output for both PROC PRINT steps.
+  </p>
+
+  <pre>
+  ods listing close;
+  ods html body='c:\records\data.html'(url='data.html')
+           contents='c:\records\toc.html'(url='toc.html')
+           frame='c:\records\frame.html'
+           style=brick;
+  proc print data=clinic.admit label;
+     var id sex age height weight actlevel;
+     label actlevel='Activity Level';
+  run;
+  proc print data=clinic.stress2;
+     var id resthr maxhr rechr;
+  run;
+  ods html close;
+  ods listing;</pre>
+
+  <p>The following example shows PROC PRINT output with the Brick style applied.</p>
+
+  <img src="images/ch10_image8.png" class="diagram"/>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Your site might have its own customized style definitions.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Additional Features</h2>
+
+  <!-- Topic 8 Subtopic 1 -->
+  <h3 class="subtopic" id="topic8_subtopic1">Customizing HTML Output</h3>
+
+  <p>You've seen that you can use the STYLE= option to apply predefined styles to your HTML output.
+     However, you might want to further customize your results.
+  </p>
+  <p>ODS provides ways for you to customize HTML output using <strong>definitions</strong> for tables, columns,
+     headers, and so forth. These definitions describe how to render the HTML output or part of the
+     HTML output. You can create style definitions using PROC TEMPLATE.
+  </p>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Summary</h2>
+
+  <!-- Topic 9 Subtopic 1 -->
+  <h3 class="subtopic" id="topic9_subtopic1">Text Summary</h3>
+
+  <h4>The OUTPUT Delivery System</h4>
+  <p>The Output Delivery System (ODS) makes new report formatting options available in SAS. ODS
+     separates your output into component parts so that the output can be sent to any ODS
+     destination that you specify.
+  </p>
+  <br/>
+
+  <h4>Opening and Closing ODS Destinations</h4>
+  <p>Each <strong>ODS destination</strong> creates a different type of formatted output. By default, the Listing
+     destination is open and SAS creates listing output. Because an open destination uses system
+     resources, it's a good idea to close the Listing destination if you don't need to create listing
+     output. By using ODS statements, you can create multiple output formats concurrently. When you
+     have several ODS destinations open, you can close them all by using the <strong>ODS _ALL_ CLOSE
+     statement</strong>.
+  </p>
+  <br/>
+
+  <h4>Creating Simple HTML Output</h4>
+  <p>You use the <strong>ODS HTML statement</strong> to open the HTML destination. Use the BODY= or FILE=
+     options to create an HTML body file containing procedure results. You can also use the ODS
+     HTML statement to direct the HTML output from multiple procedures to the same HTML file.
+  </p>
+  <br/>
+
+  <h4>Creating HTML Output with a Table of Contents</h4>
+  <p>In order to manage multiple pieces of procedure output, you can use the <strong>CONTENTS</strong>= and
+     <strong>FRAME= options</strong> with the ODS HTML statement to create a table of contents that links to your
+     HTML output. The <strong>table of contents</strong> contains a heading for each procedure that creates output.
+  </p>
+  <br/>
+
+  <h4>Using Options to Specify Links and Paths</h4>
+  <p>By specifying the <strong>URL=option</strong> in the file specification, you can provide a URL that ODS uses in
+     all the links that it creates to the file. You can also use the <strong>PATH= option</strong> to specify the directory
+     where you want to store your HTML output. When you use the PATH= option, you don't need to
+     specify the complete pathname for the body, contents, or frame files.
+  </p>
+  <br/>
+
+  <h4>Changing the Appearance of HTML Output</h4>
+  <p>You can change the appearance of your output by using the <strong>STYLE= option</strong> in the ODS HTML
+     statement. Several predefined styles are shipped with SAS.
+  </p>
+  <br/>
+
+  <h4>Additional Features</h4>
+  <p>ODS provides ways for you to customize HTML output using style definitions. Definitions are
+     created by using PROC TEMPLATE and describe how to render the HTML output or part of the
+     HTML output.
+  </p>
+  <br/>
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>
+  <ul> 
+    <li>An open destination uses system resources. Therefore, it’s a good idea to close the
+        Listing destination before you create HTML output and re-open the Listing destination after
+        you close the HTML destination.
+    </li>
+    <li>The ODS HTML CLOSE statement closes the HTML destination and is added after the
+        RUN statement for the procedure.
+    </li>
+    <li>If you use the CONTENTS= and FRAME= options, open the frame file from within your
+        Web browser to view the procedure output and the table of contents.
+    </li>
+  </ul>
+
+
+  
+
+  
+
+
+
+
+
+
+</div> <!-- end of div content -->
+

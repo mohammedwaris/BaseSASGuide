@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>You've learned how to create a SAS data set from raw data that is stored in an external file.
+     You've also learned how to subset observations and how to assign values to variables.
+  </p>
+  <p>This chapter shows you additional techniques for creating and managing variables. In this
+     chapter, you learn how to create accumulator variables, assign variable values conditionally,
+     select variables, and assign permanent labels and formats to variables.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+      <th class="color-red">Cumalative Total Seconds (+5,400)</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>D</td>
+      <td>758</td>
+      <td>6,158</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>D</td>
+      <td>706</td>
+      <td>6,864</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>D</td>
+      <td>731</td>
+      <td>7,595</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>D</td>
+      <td>849</td>
+      <td>8,444</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>76</td>
+      <td>163</td>
+      <td>135</td>
+      <td>D</td>
+      <td>967</td>
+      <td>9,411</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>create variables that accumulate variable values.</li>
+    <li>initialize values of accumulator variables.</li>
+    <li>assign values to variables conditionally.</li>
+    <li>specify an alternative action when a condition is false.</li>
+    <li>specify lengths for variables.</li>
+    <li>delete unwanted observations.</li>
+    <li>select variables.</li>
+    <li>assign permanent labels and formats.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Creating and Modifying Variables</h2>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Accumulating Totals</h3>
+
+  <p>It is often useful to create a variable that accumulates the values of another variable.</p>
+
+  <p>Suppose you want to create the data set <strong>Clinic.Stress</strong> and to add a new variable, <i>SumSec</i>, to
+     accumulate the total number of elapsed seconds in treadmill stress tests.
+  </p>
+
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+      <td>605</td>
+    </tr>
+    <tr>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+      <td>673</td>
+    </tr>
+    <tr>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+      <td>582</td>
+    </tr>
+    <tr>
+      <td>2359</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+      <td>706</td>
+    </tr>
+  </table>
+  </div>
+
+  <br/>
+
+  <p>To add the result of an expression to an accumulator variable, you can use a <strong>Sum statement</strong> in
+     your DATA step.
+  </p>
+  <hr/>
+  <p><strong>General form, Sum statement:</strong></p>
+  <p>variable+expression;</p>
+  <p>where</p>
+  <ul>
+    <li>variable specifies the name of the accumulator variable. This variable must be numeric.
+        The variable is automatically set to 0 before the first observation is read. The variable's value
+        is retained from one DATA step execution to the next.
+    </li>
+    <li>expression is any valid SAS expression.</li>
+  </ul>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>If the expression produces a missing value, the Sum statement treats it
+          like a zero. (By contrast, in an assignment statement, a missing value is
+          assigned if the expression produces a missing value.)
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The Sum statement is one of the few SAS statements that doesn't begin with a
+          keyword.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>The Sum statement adds the result of the expression that is on the right side of the plus sign (+)
+     to the numeric variable that is on the left side of the plus sign. At the beginning of the DATA step,
+     the value of the numeric variable is not set to missing as it usually is when reading raw data.
+     Instead, the variable retains the new value in the program data vector for use in processing the
+     next observation.
+  </p>
+
+  <h4>Example</h4>
+  <p>To find the total number of elapsed seconds in treadmill stress tests, you need a variable (in this
+     example, <i>SumSec</i>) whose value begins at 0 and increases by the amount of the total seconds in
+     each observation. To calculate the total number of elapsed seconds in treadmill stress tests, you
+     use the Sum statement shown below.
+  </p>
+
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     SumSec+totaltime;
+  run;</pre>
+
+  <p>The value of the variable on the left side of the plus sign (here, <i>SumSec</i>) begins at 0 and
+     increases by the value of <i>TotalTime</i> with each observation.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">SumSec</th>
+      <th class="color-red">=</th>
+      <th class="color-red">TotalTime</th>
+      <th class="color-red">+</th>
+      <th class="color-red">Previous Total</th>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>758</td>
+      <td>=</td>
+      <td>758</td>
+      <td>+</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1363</td>
+      <td>=</td>
+      <td>605</td>
+      <td>+</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>2036</td>
+      <td>=</td>
+      <td>673</td>
+      <td>+</td>
+      <td>1363</td>
+    </tr>
+    <tr>
+      <td>2618</td>
+      <td>=</td>
+      <td>582</td>
+      <td>+</td>
+      <td>2036</td>
+    </tr>
+    <tr>
+      <td>3324</td>
+      <td>=</td>
+      <td>706</td>
+      <td>+</td>
+      <td>2618</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Initializing Accumulator Variables</h3>
+
+  <p>In a previous example, the accumulator variable <i>SumSec</i> was initialized to 0 by default before the
+     first observation was read. But what if you want to initialize <i>SumSec</i> to a different number, such
+     as the total seconds from previous treadmill stress tests?
+  </p>
+
+  <p>You can use the <strong>RETAIN statement</strong> to assign an initial value other than the default value of 0 to
+     a variable whose value is assigned by a Sum statement.
+  </p>
+
+  <p>The RETAIN statement</p>
+  <ul>
+    <li>assigns an initial value to a retained variable.</li>
+    <li>prevents variables from being initialized each time the DATA step executes.</li>
+  </ul>
+
+  <hr/>
+  <p><strong>General form, simple RETAIN statement for initializing accumulator variables:</strong></p>
+  <p><strong>RETAIN</strong> variable initial-value;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> is a variable whose values you want to retain.</li>
+    <li><i>initial-value</i> specifies an initial value (numeric or character) for the preceding variable.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The RETAIN statement
+          <ul>
+            <li>is a compile-time only statement that creates variables if they do not already exist.</li>
+            <li>initializes the retained variable to missing before the first execution of the DATA step if you do not supply an initial value.</li>
+            <li>has no effect on variables that are read with SET, MERGE, or UPDATE
+                statements. (The SET and MERGE statements are discussed in later
+                chapters.)
+            </li>
+          </ul>
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>Suppose you want to add 5400 seconds (the accumulated total seconds from a previous treadmill
+     stress test) to the variable <i>SumSec</i> in the <strong>Clinic.Stress</strong> data set when you create the data set. To
+     initialize <i>SumSec</i> with the value 5400, you use the RETAIN statement shown below:
+  </p>
+
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+  run;</pre>
+
+  <p>Now the value of <i>SumSec</i> begins at 5400 and increases by the value of <i>TotalTime</i> with each
+     observation.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">SumSec</th>
+      <th class="color-red">=</th>
+      <th class="color-red">TotalTime</th>
+      <th class="color-red">+</th>
+      <th class="color-red">Previous Total</th>
+    </tr>
+    <tr>
+      <td>5400</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>6158</td>
+      <td>=</td>
+      <td>758</td>
+      <td>+</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>6763</td>
+      <td>=</td>
+      <td>605</td>
+      <td>+</td>
+      <td>6158</td>
+    </tr>
+    <tr>
+      <td>7436</td>
+      <td>=</td>
+      <td>673</td>
+      <td>+</td>
+      <td>6763</td>
+    </tr>
+    <tr>
+      <td>8018</td>
+      <td>=</td>
+      <td>582</td>
+      <td>+</td>
+      <td>7436</td>
+    </tr>
+    <tr>
+      <td>8724</td>
+      <td>=</td>
+      <td>706</td>
+      <td>+</td>
+      <td>8018</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Assigning Values Conditionally</h2>
+
+  <p>In the previous section, you created the variable <i>SumSec</i> by using a Sum statement to add total
+     seconds from a treadmill stress test. This time, let's create a variable that categorizes the length
+     of time that a subject spends on the treadmill during a stress test. This new variable,
+     <i>TestLength</i>, will be based on the value of the existing variable <i>TotalTime</i>. The value of
+     <i>TestLength</i> will be assigned conditionally.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">If This Is the TotalTime</th>
+      <th class="color-red">Then This Is the TestLength</th>
+    </tr>
+    <tr>
+      <td>greater than 800</td>
+      <td>Long</td>
+    </tr>
+    <tr>
+      <td>750 - 800</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>less than 750</td>
+      <td>Short</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>To perform an action conditionally, use an <strong>IF-THEN</strong> statement. The IF-THEN statement executes
+     a SAS statement when the condition in the IF clause is true.
+  </p>
+  <hr/>
+  <p><strong>General form, IF-THEN statement:</strong></p>
+  <p><strong>IF</strong> expression <strong>THEN</strong> statement;</p>
+  <p>where</p>
+  <ul>
+    <li><i>expression</i> is any valid SAS expression.</li>
+    <li><i>statement</i> is any executable SAS statement.</li>
+  </ul>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>To assign the value Long to the variable <i>TestLength</i> when the value of <i>TotalTime</i> is greater
+     than 800, add the following IF-THEN statement to your DATA step:
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     if totaltime>800 then TestLength='Long';
+  run;</pre>
+
+  <p>SAS executes the assignment statement only when the condition <i>(TotalTime>800)</i> is true. If
+     the condition is false, then the value of <i>TestLength</i> will be missing.
+  </p>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Comparison and Logical Operators</h3>
+  <p>When writing IF-THEN statements, you can use any of the following <strong>comparison</strong> operators:</p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Operator</th>
+      <th class="color-red">Comparison Operation</th>
+    </tr>
+    <tr>
+      <td>= or eq</td>
+      <td>equal to</td>
+    </tr>
+    <tr>
+      <td>^= or ne</td>
+      <td>not equal to</td>
+    </tr>
+    <tr>
+      <td>&gt; or gt</td>
+      <td>greater than</td>
+    </tr>
+    <tr>
+      <td>&lt; or lt</td>
+      <td>less than</td>
+    </tr>
+    <tr>
+      <td>&gt;= or ge</td>
+      <td>greater than or equal to</td>
+    </tr>
+    <tr>
+      <td>&lt;= or le</td>
+      <td>less than or equal to</td>
+    </tr>
+    <tr>
+      <td>in</td>
+      <td>equal to one of a list</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Examples</h4>
+  <pre>
+  if test<85 and time<=20
+     then Status='RETEST';
+  if region in ('NE','NW','SW')
+     then Rate=fee-25;
+  if target gt 300 or sales ge 50000
+     then Bonus=salary*.05;</pre>
+
+  <p>You can also use these logical operators:</p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Operator</th>
+      <th class="color-red">Logical Operation</th>
+    </tr>
+    <tr>
+      <td>&</td>
+      <td>and</td>
+    </tr>
+    <tr>
+      <td>|</td>
+      <td>or</td>
+    </tr>
+    <tr>
+      <td>^ or ~</td>
+      <td>not</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Use the AND operator to execute the THEN statement if both expressions that are linked by AND
+     are true.
+  </p>
+  <pre>
+  if status='OK' and type=3
+     then Count+1;
+  if (age^=agecheck | time^=3)
+     & error=1 then Test=1;
+  </pre>
+
+  <p>Use the OR operator to execute the THEN statement if either expression that is linked by OR is
+     true.
+  </p>
+  <pre>
+  if (age^=agecheck | time^=3)
+     & error=1 then Test=1;
+  if status='S' or cond='E'
+     then Control='Stop';</pre>
+
+  <p>Use the NOT operator with other operators to reverse the logic of a comparison.</p>
+  <pre>
+  if not(loghours<7500)
+     then Schedule='Quarterly';
+  if region not in ('NE','SE')
+     then Bonus=200;</pre>
+
+  <p>Character values must be specified in the same case in which they appear in the data set and
+     must be enclosed in quotation marks.
+  </p>
+  <pre>
+  if status='OK' and type=3
+     then Count+1;
+  if status='S' or cond='E'
+     then Control='Stop';
+  if not(loghours<7500)
+     then Schedule='Quarterly';
+  if region not in ('NE','SE')
+     then Bonus=200;</pre>  
+  <p>Logical comparisons that are enclosed in parentheses are evaluated as true or false before they
+     are compared to other expressions. In the example below, the OR comparison in parentheses is
+     evaluated before the first expression and the AND operator are evaluated.
+  </p>
+
+  <img src="images/ch11_image1.png" class="diagram" />
+  <br/>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>In SAS, <strong>any numeric value other than 0 or missing is true, and a value
+          of 0 or missing is false</strong>. Therefore, a numeric variable or expression can
+          stand alone in a condition. If its value is a number other than 0 or missing,
+          the condition is true; if its value is 0 or missing, the condition is false. <br/>
+          0 = False <br/>
+          . = False <br/>
+          1 = True <br/><br/>
+          As a result, you need to <strong>be careful when using the OR operator</strong> with a
+          series of comparisons. Remember that only one comparison in a series of
+          OR comparisons must be true to make a condition true, and any nonzero,
+          nonmissing constant is always evaluated as true. Therefore, the following
+          subsetting IF statement is always true: <br/>
+          if x=1 or 2; <br/><br/>
+          SAS first evaluates x=1, and the result can be either true or false.
+          However, because the 2 is evaluated as nonzero and nonmissing (true),
+          the entire expression is true. In the following statement, however, the
+          condition is not necessarily true because either comparison can evaluate
+          as true or false: <br/>
+          if x=1 or x=2; 
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Providing an Alternative Action</h3>
+
+  <p>Now suppose you want to assign a value to <i>TestLength</i> that is based on the other possible
+     values of <i>TotalTime</i>. One way to do this is to add IF-THEN statements to the other two
+     conditions, as shown below.
+  </p>
+  <pre>
+  if totaltime>800 then TestLength='Long';
+  if 750<=totaltime<=800 then TestLength='Normal';
+  if totaltime<750 then TestLength='Short';</pre>
+  <p>However, when the DATA step executes, each IF statement is evaluated in order, even if the first
+     condition is true. This wastes system resources and slows the processing of your program.
+  </p>
+  <p>Instead of using a series of IF-THEN statements, you can use the <strong>ELSE</strong> statement to specify an
+     alternative action to be performed when the condition in an IF-THEN statement is false. As shown
+     below, you can write multiple ELSE statements to specify a series of mutually exclusive
+     conditions.
+  </p>
+  <pre>
+  if totaltime>800 then TestLength='Long';
+  else if 750<=totaltime<=800 then TestLength='Normal';
+  else if totaltime<750 then TestLength='Short';</pre>
+  <p>The ELSE statement must immediately follow the IF-THEN statement in your program. An ELSE
+     statement executes only if the previous IF-THEN/ELSE statement is false.
+  </p>
+  <hr/>
+  
+  <p><strong>General form, ELSE statement:</strong></p>
+  <p><strong>ELSE</strong> statement;</p>
+  <p>where statement is any executable SAS statement, including another IF-THEN statement.</p>
+  <hr/>
+  <p>So to assign a value to <i>TestLength</i> when the condition in your IF-THEN statement is false, you
+     can add the ELSE statement to your DATA step, as shown below:
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     if totaltime>800 then TestLength='Long';
+     else if 750<=totaltime<=800 then TestLength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;</pre>
+  
+  <p>Using ELSE statements with IF-THEN statements can save resources:</p>
+  <ul>
+    <li>Using IF-THEN statements without the ELSE statement causes SAS to evaluate all IFTHEN
+        statements.
+    </li>
+    <li>Using IF-THEN statements with the ELSE statement causes SAS to execute IF-THEN
+        statements until it encounters the first true statement. Subsequent IF-THEN statements are
+        not evaluated.
+    </li>
+  </ul>
+
+  <p>For greater efficiency, construct your IF-THEN/ELSE statements with conditions of decreasing
+     probability.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Remember that you can use PUT statements to test your conditional logic.
+          <pre>
+          data clinic.stress;
+             infile tests;
+             input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+                   RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+                   Tolerance $ 45;
+             TotalTime=(timemin*60)+timesec;
+             retain SumSec 5400;
+             sumsec+totaltime;
+             if totaltime>800 then TestLength='Long';
+             else if 750<=totaltime<=800 then TestLength='Normal';
+             else put 'NOTE: Check this Length: ' totaltime=;
+          run;</pre>
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Specifying Lengths for Variables</h2>
+
+  <p>Previously, you added IF-THEN and ELSE statements to a DATA step in order to create the
+     variable <i>TestLength</i>. Values for <i>TestLength</i> were assigned conditionally, based on the value
+     for <i>TotalTime</i>.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     if totaltime>800 then TestLength='Long';
+     else if 750<=totaltime<=800 then TestLength='Normal';
+     else if totaltime<750 then TestLength='Short';
+   run;</pre>
+  
+   <p>But look what happens when you submit this program.</p>
+   <p>During compilation, when creating a new character variable in an assignment statement, SAS
+      allocates as many bytes of storage space as there are characters in the <strong>first value</strong> that it
+      encounters for that variable. In this case, the first value for <i>TestLength</i> occurs in the IF-THEN
+      statement, which specifies a four-character value (Long). So <i>TestLength</i> is assigned a length of
+      4, and any longer values (Normal and Short) are truncated.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Variable TestLength (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">TestLength</th>
+    </tr>
+    <tr>
+      <td>Norm</td>
+    </tr>
+    <tr>
+      <td>Shor</td>
+    </tr>
+    <tr>
+      <td>Shor</td>
+    </tr>
+    <tr>
+      <td>Shor</td>
+    </tr>
+    <tr>
+      <td>Norm</td>
+    </tr>
+    <tr>
+      <td>Shor</td>
+    </tr>
+    <tr>
+      <td>Long</td>
+    </tr>
+    <tr>
+      <td>...</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>The example above assigns a character constant as the value of the new variable. The table that
+     follows lists more examples of the default type and length that SAS assigns when the type and
+     length of a variable are not explicitly set.
+  </p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Expression</th>
+      <th class="color-red">Example</th>
+      <th class="color-red">Resulting Type of X</th>
+      <th class="color-red">Resulting Length of X</th>
+      <th class="color-red">Explanation</th>
+    </tr>
+    <tr>
+      <td>Character variable</td>
+      <td>length a $ 4; <br/>
+          x=a;
+      </td>
+      <td>Character variable</td>
+      <td>4</td>
+      <td>Length of source variable</td>
+    </tr>
+    <tr>
+      <td>Character literal (character constant)</td>
+      <td>x='ABC'; <br/>
+          x='ABCDE';
+      </td>
+      <td>Character variable</td>
+      <td>3</td>
+      <td>Length of first literal (constant) encountered</td>
+    </tr>
+    <tr>
+      <td>Concatenation of variables</td>
+      <td>length a $ 4 <br/>
+          b $ 6 <br/>
+          c $ 2; <br/>
+          x=a||b||c;
+      </td>
+      <td>Character variable</td>
+      <td>12</td>
+      <td>Sum of the lengths of all variables</td>
+    </tr>
+    <tr>
+      <td>Concatenation of variables and literals</td>
+      <td>length a $ 4; <br/>
+          x=a||'CAT'; <br/>
+          x=a||'CATNIP';
+      </td>
+      <td>Character variable</td>
+      <td>7</td>
+      <td>Sum of the lengths of variables and literals (constants) encountered in first assignment statement</td>
+    </tr>
+    <tr>
+      <td>Numeric variable</td>
+      <td>length a 4; <br/>
+          x=a;
+      </td>
+      <td>Numeric variable</td>
+      <td>8</td>
+      <td>Default numeric length (8 bytes unless otherwise specified) <br/>
+          Note: In general, it is not recommended that you change the default length
+          of numeric variables, as this can affect numeric precision.
+      </td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>You can use a <strong>LENGTH statement</strong> to specify a length (the number of bytes) for <i>TestLength</i>
+     before the first value is referenced elsewhere in the DATA step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, LENGTH statement:</strong></p>
+  <p><strong>LENGTH</strong> variable(s) &lt;$&gt; length;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable(s)</i> names the variable(s) to be assigned a length.</li>
+    <li><i>$</i> is specified if the variable is a character variable.</li>
+    <li><i>length</i> is an integer that specifies the length of the variable.</li>
+  </ul>
+  <hr/>
+  <br/>
+
+  <h4>Examples</h4>
+
+  <pre>
+  length Type $ 8;
+  length Address1 Address2 Address3 $ 200;
+  length FirstName $ 12 LastName $ 16;</pre> 
+
+  <p>Within your program, you include a LENGTH statement to assign a length to accommodate the
+     longest value of the variable TestLength. The longest value is Normal, which has six
+     characters. Because <i>TestLength</i> is a character variable, you must follow the variable name
+     with a dollar sign ($).
+  </p> 
+
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;</pre>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Variable TestLength (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">TestLength</th>
+    </tr>
+    <tr>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>Long</td>
+    </tr>
+    <tr>
+      <td>...</td>
+    </tr>
+  </table>
+  <div class="div-scroll-content">
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Subsetting Data</h2>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Deleting Unwanted Observations</h3>
+
+  <p>So far in this chapter, you've learned to use IF-THEN statements to execute assignment
+     statements conditionally. But you can specify any executable SAS statement in an IF-THEN
+     statement. For example, you can use an <strong>IF-THEN statement</strong> with a <strong>DELETE statement</strong> to
+     determine which observations to omit from the data set that SAS is creating as it reads raw data.
+  </p>
+
+  <ul>
+    <li>The IF-THEN statement executes a SAS statement when the condition in the IF clause is
+        true.
+    </li>
+    <li>The DELETE statement stops processing the current observation.</li>
+  </ul>
+
+  <hr/>
+  <p><strong>General form, DELETE statement:</strong></p>
+  <p><strong>DELETE</strong>;</p>
+  <p>To conditionally execute a DELETE statement, you submit a statement in the following general
+     form:
+  </p>
+  <p><strong>IF</strong> expression <strong>THEN DELETE</strong>;</p>
+  <p>If the expression is</p>
+  <ul>
+    <li><strong>true</strong>, the DELETE statement executes, and control returns to the top of the DATA step
+       (the observation is deleted).
+    </li>
+    <li><strong>false</strong>, the DELETE statement does not execute, and processing continues with the next
+        statement in the DATA step.
+    </li>
+  </ul>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>The IF-THEN and DELETE statements below omit any observations whose values for RestHR
+     are lower than 70.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if resthr<70 then delete;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;</pre>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Selecting Variables with the DROP= and KEEP= Data Set Options</h3>
+  <p>Sometimes you might need to read and process fields that you don't want to keep in your data
+     set. In this case, you can use the <strong>DROP= and KEEP= data set options</strong> to specify the variables
+     that you want to drop or keep.
+  </p>
+  <p>Use the KEEP= option instead of the DROP= option if more variables are dropped than kept. You
+     specify data set options in parentheses after a SAS data set name.
+  </p>
+
+  <hr/>
+  <p><strong>General form, DROP= and KEEP= data set options:</strong></p>
+  <p>(<strong>DROP</strong>=variable(s)) <br/>
+     (<strong>KEEP</strong>=variable(s))
+  </p>
+  <p>where</p>
+  <ul>
+    <li>the <strong>DROP</strong>= or <strong>KEEP</strong>= option, in parentheses, follows the name of the data set that
+        contains the variables to be dropped or kept.
+    </li>
+    <li><i>variable(s)</i> identifies the variables to drop or keep.</li>
+  </ul>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>Suppose you are interested in keeping only the new variable <i>TotalTime</i> and not the original
+     variables <i>TimeMin</i> and <i>TimeSec</i>. You can drop TimeMin and TimeSec when you create the
+     <strong>Stress</strong> data set.
+  </p>
+  <pre>
+  data clinic.stress(drop=timemin timesec);
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;</pre>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+      <th class="color-red">SumSec</th>
+      <th class="color-red">TestLength</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>D</td>
+      <td>758</td>
+      <td>6158</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>D</td>
+      <td>706</td>
+      <td>6864</td>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>D</td>
+      <td>941</td>
+      <td>7805</td>
+      <td>Long</td>
+    </tr>
+    <tr>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>D</td>
+      <td>731</td>
+      <td>8536</td>
+      <td>Short</td>
+    </tr>
+    <tr>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>D</td>
+      <td>849</td>
+      <td>9385</td>
+      <td>Long</td>
+    </tr>
+    <tr>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>76</td>
+      <td>163</td>
+      <td>135</td>
+      <td>D</td>
+      <td>967</td>
+      <td>10352</td>
+      <td>Long</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Another way to exclude variables from your data set is to use the <strong>DROP statement</strong> or the <strong>KEEP
+     statement</strong>. Like the DROP= and KEEP= data set options, these statements drop or keep
+     variables. However, the DROP statement differs from the DROP= data set option in the following
+     ways:
+  </p>
+  <ul>
+    <li>You cannot use the DROP statement in SAS procedure steps.</li>
+    <li>The DROP statement applies to all output data sets that are named in the DATA
+        statement.
+    </li>
+    <li>To exclude variables from some data sets but not from others, place the appropriate
+        DROP= data set option next to each data set name that is specified in the DATA statement.
+    </li>
+  </ul>
+
+  <p>The KEEP statement is similar to the DROP statement, except that the KEEP statement specifies
+     a list of variables to write to output data sets. Use the KEEP statement instead of the DROP
+     statement if the number of variables to keep is significantly smaller than the number to drop.
+  </p>
+
+  <hr/>
+  <p><strong>General form, DROP and KEEP statements:</strong></p>
+  <p><strong>DROP</strong> variable(s);</p>
+  <p><strong>KEEP</strong> variable(s);</p>
+  <p>where variable(s) identifies the variables to drop or keep.</p>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>The two programs below produce the same results. The first example uses the DROP= data set
+     option; the second example uses the DROP statement.
+  </p>
+  <pre>
+  data clinic.stress (drop=timemin timesec);
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;
+  <br/>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     drop timemin timesec;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+  run;</pre>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Assigning Permanent Labels and Formats</h2>
+
+  <p>At this point, you've read and manipulated your raw data to obtain the observations, variables,
+     and variable values that you want. Your final task in this chapter is to permanently assign labels
+     and formats to variables.
+  </p>
+
+  <p>In Chapter, <strong>Creating List Reports</strong>, you practiced temporarily assigning labels and formats
+     within a PROC step. These temporary labels and formats are applicable only for the duration of
+     the step. To permanently assign labels and formats, you use <strong>LABEL and FORMAT statements
+     in DATA steps</strong>.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Remember that labels and formats do not affect how data is stored in the data
+          set, only how data appears in output.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>To specify the label <strong>Cumulative Total Seconds (+5,400)</strong> and the format COMMA6. for the
+     variable SumSec, you can submit the following program:
+  </p>
+
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if resthr<70 then delete;
+     if tolerance='D';
+     drop timemin timesec;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6;
+     if totaltime>800 then testlength='Long';
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+     label sumsec='Cumulative Total Seconds (+5,400)';
+     format sumsec comma6.;
+  run;</pre>
+
+  <p>You're finished! When you print the new data set, <i>SumSec</i> is labeled and formatted as specified.
+     (Don't forget to include the LABEL option in the PROC PRINT statement.)
+  </p>
+  <pre>
+  proc print data=clinic.stress label;
+  run;</pre>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+      <th class="color-red">Cumulative Total Seconds (+5,400)</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>D</td>
+      <td>758</td>
+      <td>6,158</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>D</td>
+      <td>706</td>
+      <td>6,854</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>D</td>
+      <td>731</td>
+      <td>7,595</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>D</td>
+      <td>849</td>
+      <td>8,444</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>76</td>
+      <td>163</td>
+      <td>135</td>
+      <td>D</td>
+      <td>967</td>
+      <td>9,411</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-blue"></th>
+      <td>Remember that many SAS procedures automatically use permanent labels and formats i
+          without requiring additional statements or options.
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <table>
+    <tr>
+      <th class="color-red"></th>
+      <td>If you assign temporary labels or formats within a PROC step, they
+          override any permanent labels or formats that were assigned during the
+          DATA step.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Assigning Values Conditionally Using SELECT Groups</h2>
+
+  <p>Earlier in this chapter, you learned to assign values conditionally by using IF-THEN/ELSE
+     statements. You can also use <strong>SELECT groups</strong> in DATA steps to perform conditional processing.
+  </p>
+  <p>A SELECT group contains these statements:</p>
+
+  <div class="div-scroll-content">
+  <table border="1">
+    <tr>
+      <th class="color-red">Use This Statement</th>
+      <th class="color-red">To Perform This Action</th>
+    </tr>
+    <tr> 
+      <td>SELECT</td>
+      <td>begins a SELECT group.</td>
+    </tr>
+    <tr> 
+      <td>WHEN</td>
+      <td>identifies SAS statements that are executed when a particular
+          condition is true.
+      </td>
+    </tr>
+    <tr> 
+      <td>OTHERWISE (optional)</td>
+      <td>specifies a statement to be executed if no WHEN condition is met.</td>
+    </tr>
+    <tr> 
+      <td>END</td>
+      <td>ends a SELECT group.</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>You can decide whether to use IF-THEN/ELSE statements or SELECT groups based on the
+     following criteria.
+  </p>
+
+  <p>When you have a <strong>long series</strong> of mutually exclusive conditions and the comparison is numeric,
+     using a SELECT group is slightly more efficient than using a series of IF-THEN or IF-THEN/ELSE
+     statements because CPU time is reduced. SELECT groups also make the program easier to read
+     and debug.
+  </p>
+
+  <p>For programs with few conditions, use IF-THEN/ELSE statements.</p>
+  <hr/>
+  <p><strong>General form, SELECT group:</strong></p>
+  <p><strong>SELECT</strong> &lt;(select-expression)&gt;; <br/>
+     &nbsp;&nbsp; <strong>WHEN-1</strong> (when-expression-1 &lt;..., when-expression-n&gt;) statement; <br/>
+     &nbsp;&nbsp; <strong>WHEN-n</strong> (when-expression-1 &lt;..., when-expression-n&gt;) statement; <br/>
+     &nbsp;&nbsp; &lt;<strong>OTHERWISE</strong> statement;&gt; <br/>
+     <strong>END</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li><strong>SELECT</strong> begins a SELECT group.</li>
+    <li>the optional select-expression specifies any SAS expression that evaluates to a single
+        value.
+    </li>
+    <li><strong>WHEN</strong> identifies SAS statements that are executed when a particular condition is true.</li>
+    <li>when-expression specifies any SAS expression, including a compound expression. You
+        must specify at least one when-expression.
+    </li>
+    <li>statement is any executable SAS statement. You must specify the statement argument.</li>
+    <li>the optional <strong>OTHERWISE</strong> statement specifies a statement to be executed if no WHEN
+        condition is met.
+    </li>
+    <li><strong>END</strong> ends a SELECT group.</li>
+  </ul>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>The following code is a simple example of a SELECT group. Notice that the variable a is
+     specified in the SELECT statement, and various values to compare to a are specified in the
+     WHEN statements. When the value of the variable <i>a</i> is
+  </p>
+  <ul>
+    <li>1, x is multiplied by 10</li>
+    <li>3, 4, or 5, x is multiplied by 100</li>
+    <li>2 or any other value, nothing happens. <br/>
+        <pre>
+        select (a);
+           when (1) x=x*10;
+           when (3,4,5) x=x*100;
+           otherwise;
+        end;</pre>
+    </li>
+  </ul>
+
+  <h4>Example: SELECT Group in a DATA Step</h4>
+  <p>Now let's look at a SELECT group in context. In the DATA step below, the SELECT group
+     assigns values to the variable <i>Group</i> based on values of the variable <i>JobCode</i>. Most of the
+     assignments are one-to-one correspondences, but ticket agents (the <i>JobCode</i> values TA1, TA2,
+     and TA3) are grouped together, as are values in the Other category.
+  </p>
+  
+  <pre>
+  data emps(keep=salary group);
+     set sasuser.payrollmaster;
+     length Group $ 20;
+     select(jobcode);
+        when ("FA1") group="Flight Attendant I";
+        when ("FA2") group="Flight Attendant II";
+        when ("FA3") group="Flight Attendant III";
+        when ("ME1") group="Mechanic I";
+        when ("ME2") group="Mechanic II";
+        when ("ME3") group="Mechanic III";
+        when ("NA1") group="Navigator I";
+        when ("NA2") group="Navigator II";
+        when ("NA3") group="Navigator III";
+        when ("PT1") group="Pilot I";
+        when ("PT2") group="Pilot II";
+        when ("PT3") group="Pilot III";
+        when ("TA1","TA2","TA3") group="Ticket Agents";
+        otherwise group="Other";
+     end;
+  run;</pre>
+  
+  <p>Notice that in this case the SELECT statement does contain a select-expression. You are
+     checking values of a single variable, so using <strong>select(jobcode)</strong> and only the JobCode value
+     in each WHEN statement is more concise than eliminating the select-expression and repeating
+     the variable in each when-expression, as in <strong>when(jobcode="FA1")</strong>.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Notice that the LENGTH statement in the DATA step above specifies a length
+          of 20 for <i>Group</i>. Remember that without the LENGTH statement, values for
+          <i>Group</i> might be truncated, as the first value for <i>Group</i> (Flight Attendant I) is
+          not the longest possible value.
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>When you are comparing values in the when-expression, be sure to
+          express the values exactly as they are coded in the data. For example, the
+          when-expression below would be evaluated as false because the values
+          for JobCode in <strong>Sasuser.Payrollmaster</strong> are stored in uppercase letters. <br/>
+          when ("fa1") group="Flight Attendant I"; <br/>
+          In this case, given the SELECT group above, Group would be assigned the value Other.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Specifying SELECT Statements with Expressions</h3>
+
+  <p>As you saw in the general form for SELECT groups, you can optionally specify a selectexpression
+     in the SELECT statement. The way SAS evaluates a when-expression depends on
+     whether you specify a select-expression.
+  </p>
+  <p>If you <strong>do</strong> specify a select-expression in the SELECT statement, SAS compares the value of the
+     select-expression with the value of each when-expression. That is, SAS evaluates the selectexpression
+     and when-expression, compares the two for equality, and returns a value of true or
+     false.
+  </p>
+  <ul>
+    <li>If the comparison is <strong>true</strong>, SAS executes the statement in the WHEN statement.</li>
+    <li>If the comparison is <strong>false</strong>, SAS proceeds either to the next when-expression in the
+        current WHEN statement, or to the next WHEN statement if no more expressions are
+        present. If no WHEN statements remain, execution proceeds to the OTHERWISE
+        statement, if one is present.
+    </li>
+  </ul>
+
+  <table>
+    <tr>
+      <th class="color-red"></th>
+      <td>If the result of all SELECT-WHEN comparisons is false and no
+          OTHERWISE statement is present, SAS issues an <strong>error message</strong> and
+          <strong>stops executing</strong> the DATA step. <br/><br/>
+          In the following SELECT group, SAS determines the value of toy and
+          compares it to values in each WHEN statement in turn. If a WHEN
+          statement is true compared to the toy value, then SAS assigns the related
+          price and continues processing the rest of the DATA step. If none of the
+          comparisons is true, then SAS executes the OTHERWISE statement and
+          writes a debugging message to the SAS log. <br/>
+          <pre>
+          select (toy);
+             when ("Bear") price=35.00;
+             when ("Violin") price=139.00;
+             when ("Top","Whistle","Duck") price=7.99;
+             otherwise put "Check unknown toy: " toy=;
+          end;</pre>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Specifying SELECT Statements without Expressions</h3>
+
+  <p>If you <strong>don't</strong> specify a select-expression, SAS evaluates each when-expression to produce a
+     result of true or false.
+  </p>
+  <ul>
+    <li>If the result is <strong>true</strong>, SAS executes the statement in the WHEN statement.</li>
+    <li>If the result is <strong>false</strong>, SAS proceeds either to the next when-expression in the current
+        WHEN statement, or to the next WHEN statement if no more expressions are present, or
+        to the OTHERWISE statement if one is present. (That is, SAS performs the action that is
+        indicated in the first true WHEN statement.)
+    </li>
+  </ul>
+
+  <p>If more than one WHEN statement has a true when-expression, <strong>only the first</strong> WHEN statement
+     is used; once a when-expression is true, no other when-expressions are evaluated.
+  </p>
+
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>If the result of all when-expressions is false and no OTHERWISE
+          statement is present, SAS issues an <strong>error message</strong>. <br/><br/>
+          In the example below, the SELECT statement does not specify a selectexpression.
+          The WHEN statements are evaluated in order, and only one is
+          used. For example, if the value of toy is Bear and the value of month is
+          FEB, only the second WHEN statement is used, even though the condition in the third WHEN statement is also met. In this case, the variable price
+          is assigned the value 25.00.
+          <pre>
+          select;
+             when (toy="Bear" and month in ('OCT', 'NOV', 'DEC'))
+             price=45.00;
+             when (toy="Bear" and month in ('JAN', 'FEB'))
+             price=25.00;
+             when (toy="Bear") price=35.00;
+             otherwise;
+          end;</pre>
+      </td>
+    </tr> 
+  </table>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Grouping Statements Using DO Groups</h2>
+
+  <p>So far in this chapter, you've seen examples of conditional processing (IF-THEN/ELSE
+     statements and SELECT groups) that execute only a single SAS statement when a condition is
+     true. However, you can also execute a group of statements as a unit by using <strong>DO groups</strong>.
+  </p>
+
+  <p>To construct a DO group, you use the DO and END statements along with other SAS statements.</p>
+  <hr/>
+  <p><strong>General form, simple DO group:</strong></p>
+  <p><strong>DO</strong>; <br/>
+    &nbsp;&nbsp; SAS statements <br/>
+    <strong>END</strong>;</p>  
+  <p>where</p>
+  <ul>
+    <li>the DO statement begins DO-group processing.</li>
+    <li>SAS statements between the DO and END statements are called a DO group and
+        execute as a unit.
+    </li>
+    <li>the <strong>END</strong> statement terminates DO-group processing.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can nest DO statements within DO groups.</td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>You can use DO groups in IF-THEN/ELSE statements and SELECT groups to perform many
+     statements as part of the conditional action.
+  </p>
+
+  <h4>Examples</h4>
+
+  <p>In this simple DO group, the statements between DO and END are performed only when
+     <i>TotalTime</i> is greater than 800. If <i>TotalTime</i> is less than or equal to 800, statements in the DO
+     group do not execute, and the program continues with the assignment statement that follows the
+     appropriate ELSE statement.
+  </p>
+
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID $ 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     retain SumSec 5400;
+     sumsec+totaltime;
+     length TestLength $ 6 Message $ 20;
+     if totaltime>800 then
+     do;
+        testlength='Long';
+        message='Run blood panel';
+     end;
+     else if 750<=totaltime<=800 then testlength='Normal';
+     else if totaltime<750 then TestLength='Short';
+   run;</pre>
+
+  <p>In the SELECT group below, the statements between DO and END are performed only when the
+     value of <i>Payclass</i> is hourly. Notice that an IF-THEN statement appears in the DO group; the
+     PUT statement executes only when <i>Hours</i> is greater than 40. The second END statement in the
+     program closes the SELECT group.
+  </p>
+
+  <pre>
+  data payroll;
+     set salaries;
+     select(payclass);
+        when ('monthly') amt=salary;
+        when ('hourly')
+        do;
+           amt=hrlywage*min(hrs,40);
+           if hrs>40 then put 'CHECK TIMECARD';
+        end;
+        otherwise put 'PROBLEM OBSERVATION';
+    end;
+  run;</pre>
+  <br/>
+
+  <h4>Indenting and Nesting DO Groups</h4>
+
+  <p>You can nest DO groups to any level, just like you nest IF-THEN/ELSE statements. (The memory
+     capabilities of your system might limit the number of nested DO statements that you can use. For
+     details, see the SAS documentation about how many levels of nested DO statements your
+     system's memory can support.)
+  </p>
+  <p>The following is an example of nested DO groups:</p>
+  <pre>
+  do;
+     statements;
+     do;
+        statements;
+        do;
+           statements;
+        end;
+     end;
+  end;</pre>
+
+  <p>It is good practice to indent the statements in DO groups, as shown in the preceding statements,
+     so that their position indicates the levels of nesting.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>There are three other forms of the DO statement:
+          <ul>
+            <li>The <strong>iterative DO statement</strong> executes statements between DO and END
+                statements repetitively based on the value of an index variable. The
+                iterative DO statement can contain a WHILE or UNTIL clause.
+            </li>
+            <li>The <strong>DO UNTIL statement</strong> executes statements in a DO loop repetitively
+                until a condition is true, checking the condition after each iteration of the
+                DO loop.
+            </li>
+            <li>The <strong>DO WHILE statement</strong> executes statements in a DO loop repetitively
+                while a condition is true, checking the condition before each iteration of
+                the DO loop.
+            </li>
+          </ul>
+          You can learn about these forms of the DO statement in Chapter,
+          <strong>Generating Data with DO Loops</strong>.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Summary</h2>
+
+  <!-- Topic 9 Subtopic 1 -->
+  <h3 class="subtopic" id="topic9_subtopic1">Text Summary</h3>
+
+  <h4>Accumulating Totals</h4>
+  <p>Use a <strong>Sum statement</strong> to add the result of an expression to an accumulator variable.</p>
+  <br/>
+
+  <h4>Initializing Accumulator Variables</h4>
+  <p>You can use the <strong>RETAIN statement</strong> to assign an initial value to a variable whose value is
+     assigned by a Sum statement.</p>
+  <br/>
+
+  <h4>Assigning Values Conditionally</h4>
+  <p>To perform an action conditionally, use an <strong>IF-THEN statement</strong>. The IF-THEN statement
+     executes a SAS statement when the condition in the IF clause is true. You can include
+     comparison and logical operators; logical comparisons that are enclosed in parentheses are
+     evaluated as true or false before other expressions are evaluated. Use the <strong>ELSE statement</strong> to
+     specify an alternative action when the condition in an IF-THEN statement is false.
+  </p>
+  <br/>
+
+  <h4>Specifying Lengths for Variables</h4>
+  <p>When creating a new variable, SAS allocates as many bytes of storage space as there are
+     characters in the first value that it encounters for that variable. This can result in truncated values.
+     You can use the <strong>LENGTH statement</strong> to specify a length before the variable's first value is
+     referenced in the DATA step.
+  </p>
+  <br/>
+
+  <h4>Subsetting Data</h4>
+  <p>To omit observations as you read raw data, include the <strong>DELETE statement</strong> in an IF-THEN
+     statement. If you need to read and process variables that you don't want to keep in the data set,
+     then use the <strong>DROP</strong>= and <strong>KEEP</strong>= data set options or the <strong>DROP</strong> and <strong>KEEP statements</strong>.
+  </p>
+  <br/>
+
+  <h4>Assigning Permanent Labels and Formats</h4>
+  <p>You can use <strong>LABEL</strong> and <strong>FORMAT statements</strong> in DATA steps to permanently assign labels and
+     formats. These do not affect how data is stored in the data set, only how it appears in output.
+  </p>
+  <br/>
+
+  <h4>Assigning Values Conditionally Using SELECT Groups</h4>
+  <p>As an alternative to IF-THEN/ELSE statements, you can use <strong>SELECT groups</strong> in DATA steps to
+     perform conditional processing. SELECT groups are more efficient than IF-THEN/ELSE
+     statements when you have a long series of mutually exclusive conditions.
+  </p>
+  <br/>
+
+  <h4>Grouping Statements Using DO Groups</h4>
+  <p>You can execute a group of statements as a unit by <strong>DO groups</strong> in DATA steps. You can use DO
+     groups in IF-THEN/ELSE statements and SELECT groups to perform many statements as part of
+     the conditional action.
+  </p>
+  <br/>
+
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>Like the assignment statement, the Sum statement does not contain a keyword.</li>
+    <li>If the expression in a Sum statement produces a missing value, the Sum statement
+        ignores it. (By contrast, assignment statements assign a missing value if the expression
+        produces a missing value.)
+    </li>
+    <li>Using ELSE statements with IF-THEN statements can save resources. For greater
+        efficiency, construct your IF-THEN/ELSE statements with conditions of decreasing
+        probability.
+    </li>
+    <li>When you create a new variable, make sure the LENGTH statement appears before any
+        other reference to the variable in the DATA step. If the variable has been created by another
+        statement, a later use of the LENGTH statement will not change its size.
+    </li>
+    <li>Labels and formats do not affect how data is stored in the data set, only how it appears in
+       output. You assign labels and formats temporarily in PROC steps and permanently in DATA
+       steps.
+    </li>
+  </ul>
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+</div><!-- end of div content -->

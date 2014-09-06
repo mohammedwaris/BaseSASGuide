@@ -29,10 +29,985 @@
 
 <div id="content">
 
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1-->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>You can execute SAS statements repeatedly by placing them in a DO loop. DO loops can
+     execute any number of times in a single iteration of the DATA step. Using DO loops enables you
+     to write concise DATA steps that are easier to change and debug.
+  </p>
+  <p>For example, the DO loop in this program eliminates the need for 12 separate programming
+     statements to calculate annual earnings:
+  </p>
+
+  <pre>
+  data finance.earnings;
+     set finance.master;
+     Earned=0;
+     do count=1 to 12;
+       earned+(amount+earned)*(rate/12);
+     end;
+  run;</pre>
+
+  <p>You can also use DO loops to</p>
+  <ul>
+    <li>generate data</li>
+    <li>conditionally execute statements</li>
+    <li>read data</li>
+  </ul>
+
+  <p>This chapter shows you how to construct DO loops and how to include DO loops in your
+     programs.
+  </p>
+
+  <!-- Topic 1 Subtopic 2-->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+  <p></p>
+  <ul>
+    <li>construct a DO loop to perform repetitive calculations</li>
+    <li>control the execution of a DO loop</li>
+    <li>generate multiple observations in one iteration of the DATA step</li>
+    <li>construct nested DO loops.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Constructing DO Loops</h2>
+
+  <!-- Topic 2 Subtopic 1-->
+  <h3 class="subtopic" id="topic2_subtopic1">Introduction</h3>
+
+  <p>DO loops process a group of statements repeatedly rather than once. This can greatly reduce the
+     number of statements required for a repetitive calculation. For example, these 12 Sum
+     statements compute a company's annual earnings from investments. Notice that all 12
+     statements are identical.
+  </p>
+  <pre>
+  data finance.earnings;
+     set finance.master;
+     Earned=0;
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+     earned+(amount+earned)*(rate/12);
+  run;</pre>
+
+  <p>Each Sum statement accumulates the calculated interest earned for an investment for one
+     month. The variable Earned is created in the DATA step to store the earned interest. The
+     investment is compounded monthly, meaning that the value of the earned interest is cumulative.
+  </p>
+
+  <p>A DO loop enables you to achieve the same results with fewer statements. In this case, the Sum
+     statement executes 12 times within the DO loop during each iteration of the DATA step.
+  </p>
+  <pre>
+  data finance.earnings;
+     set finance.master;
+     Earned=0;
+     do count=1 to 12;
+        earned+(amount+earned)*(rate/12);
+     end;
+  run;</pre>
+
+  <!-- Topic 2 Subtopic 2-->
+  <h3 class="subtopic" id="topic2_subtopic2">General Form of DO Loops</h3>
+
+  <p>To construct a DO loop, you use the DO and END statements along with other SAS statements.</p>
+  <hr/>
+  <p><strong>General form, simple iterative DO loop:</strong></p>
+  <p><strong>DO</strong> index-variable=start <strong>TO</strong> stop <strong>BY</strong> increment;<br/>
+     SAS statements <br/>
+     <strong>END</strong>;
+  </p>
+
+  <p>where the start, stop, and increment values</p>
+  <ul>
+    <li>are set upon entry into the DO loop</li>
+    <li>cannot be changed during the processing of the DO loop</li>
+    <li>can be numbers, variables, or SAS expressions</li>
+  </ul>
+
+  <p>The END statement terminates the loop</p>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The value of the index variable can be changed within the loop</td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>When creating a DO loop with the iterative DO statement, you must specify an index variable.
+     The index variable stores the value of the current iteration of the DO loop. You can use any valid
+     SAS name.
+  </p>
+  <p><strong>DO</strong> index-variable<strong>=start TO stop BY increment</strong>; <br/>
+     &nbsp;&nbsp;<strong>SAS statements</strong> <br/>
+     <strong>END</strong>; <br/>
+  </p>
+  <p>Next, specify the conditions that execute the DO loop. A simple <strong>specification</strong> contains a <strong>start
+     value</strong>, <strong>a stop value</strong>, and an <strong>increment value</strong> for the DO loop.
+  </p>
+  <p><strong>DO index-variable=start</strong> TO stop BY increment; <br/>
+     &nbsp;&nbsp;<strong>SAS statements</strong> <br/>
+     <strong>END</strong>;
+  </p>
+  <p>The start value specifies the initial value of the index variable.</p>
+  <p><strong>DO index-variable=</strong>start <strong>TO stop</strong> BY increment; <br/>
+     &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+     <strong>END</strong>; <br/>
+  </p>
+  <p>The TO clause specifies the stop value. The stop value is the last index value that executes the
+     DO loop.
+  </p>
+  <p><strong>DO index-variable=start</strong> TO stop <strong>BY increment</strong>; <br/>
+     &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+     <strong>END</strong>; 
+  </p>
+
+  <p>The optional BY clause specifies an increment value for the index variable. Typically, you want
+     the DO loop to increment by 1 for each iteration. If you do not specify a BY clause, the default
+     increment value is 1.
+  </p>
+  <p><strong>DO index-variable=start TO stop</strong> BY increment; <br/>
+     &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+     <strong>END</strong>;
+  </p>
+
+  <p>For example, the specification below increments the index variable by 1, resulting in quiz values
+     of 1, 2, 3, 4, and 5:
+  </p>
+  <p><strong>do quiz=1 to 5;</strong></p>
+  <p>By contrast, the following specification increments the index variable by 2, resulting in rows
+     values of 2, 4, 6, 8, 10, and 12:
+  </p>
+  <p><strong>do rows=2 to 12 by 2;</strong></p>
+
+  <!-- Topic 2 Subtopic 3-->
+  <h3 class="subtopic" id="topic2_subtopic3">DO Loop Execution</h3>
+
+  <p>Using the form of the DO loop that was just presented, let's see how the DO loop executes in the
+     DATA step. This example calculates how much interest was earned each month for a one-year
+     investment.
+  </p>
+  <pre>
+  data finance.earnings;
+     Amount=1000;
+     Rate=.075/12;
+     do month=1 to 12;
+        Earned+(amount+earned)*(rate);
+     end;
+  run;</pre>
+  <p>This DATA step does not read data from an external source. When submitted, it compiles and
+     then executes only once to generate data. During compilation, the program data vector is created
+     for the <strong>Finance.Earnings</strong> data set.
+  </p>
+
+  <img src="images/ch15_image1.png" class="diagram"/>
+
+  <p>When the DATA step executes, the values of <i>Amount</i> and <i>Rate</i> are assigned.</p>
+  <img src="images/ch15_image2.png" class="diagram"/>  
+
+  <p>Next, the DO loop executes. During each execution of the DO loop, the value of <i>Earned</i> is
+     calculated and is added to its previous value; then the value of <i>month</i> is incremented. On the
+     twelfth execution of the DO loop, the program data vector looks like this:
+  </p>
+  <img src="images/ch15_image3.png" class="diagram"/> 
+
+  <p>After the twelfth execution of the DO loop, the value of <i>month</i> is incremented to 13. Because 13
+     exceeds the stop value of the iterative DO statement, the DO loop stops executing, and
+     processing continues to the next DATA step statement. The end of the DATA step is reached, the
+     values are written to the <strong>Finance.Earnings</strong> data set, and in this example, the DATA step ends.
+     Only one observation is written to the data set.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Finance.Earnings</th>
+    </tr>
+    <tr>
+      <th class="color-red">Amount</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">month</th>
+      <th class="color-red">Earned</th>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td>0.00625</td>
+      <td>13</td>
+      <td>77.6326</td>
+    </tr>
+  </table> 
+  <br/><br/>
+  <p>Notice that the index variable <i>month</i> is also stored in the data set. In most cases, the index
+     variable is needed only for processing the DO loop and can be dropped from the data set.
+  </p>
+
+  <!-- Topic 2 Subtopic 4 -->
+  <h3 class="subtopic" id="topic2_subtopic4">Counting Iterations of DO Loops</h3>
+
+  <p>In some cases, it is useful to create an index variable to count and store the number of iterations
+     in the DO loop. Then you can drop the index variable from the data set.
+  </p>
+
+  <pre>
+  data work.earn (drop=counter);
+     Value=2000;
+     do counter=1 to 20;
+        Interest=value*.075;
+        value+interest;
+        Year+1;
+     end;
+  run;</pre>
+
+  <table>
+    <tr>
+       <th class="color-red" colspan="3">SAS Data Set Work.Earn</th>
+    </tr>
+    <tr>
+       <th class="color-red">Value</th>
+       <th class="color-red">Interest</th>
+       <th class="color-red">Year</th>
+    </tr>
+    <tr>
+      <td>8495.70</td>
+      <td>592.723</td>
+      <td>20</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>The Sum statement Year+1 accumulates the number of iterations of the DO loop and stores the
+     total in the new variable <i>Year</i>. The final value of Year is then stored in the data set, whereas the
+     index variable <i>counter</i> is dropped. The data set has one observation.
+  </p>
+
+  <h4>Explicit OUTPUT Statements</h4>
+
+  <p>To create an observation for each iteration of the DO loop, place an OUTPUT statement inside
+     the loop. By default, every DATA step contains an implicit OUTPUT statement at the end of the
+     step. But placing an explicit OUTPUT statement in a DATA step overrides automatic output,
+     causing SAS to add an observation to the data set only when the explicit OUTPUT statement is
+     executed.
+  </p>
+
+  <p>The previous example created one observation because it used automatic output at the end of
+     the DATA step. In the following example, the OUTPUT statement overrides automatic output, so
+     the DATA step writes 20 observations.
+  </p>
+
+  <pre>
+  data work.earn;
+     Value=2000;
+     do Year=1 to 20;
+        Interest=value*.075;
+        value+interest;
+        output;
+     end;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Work.Earn (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Value</th>
+      <th class="color-red">Year</th>
+      <th class="color-red">Interest</th>
+    </tr>
+    <tr>
+      <td>2150.00</td>
+      <td>1</td>
+      <td>150.000</td>
+    </tr>
+    <tr>
+      <td>2311.25</td>
+      <td>2</td>
+      <td>161.250</td>
+    </tr>
+    <tr>
+      <td>2484.59</td>
+      <td>3</td>
+      <td>173.344</td>
+    </tr>
+    <tr>
+      <td>2670.94</td>
+      <td>4</td>
+      <td>186.345</td>
+    </tr>
+    <tr>
+      <td>2871.26</td>
+      <td>5</td>
+      <td>200.320</td>
+    </tr>
+    <tr>
+      <td>3086.60</td>
+      <td>6</td>
+      <td>215.344</td>
+    </tr>
+    <tr>
+      <td>3318.10</td>
+      <td>7</td>
+      <td>231.495</td>
+    </tr>
+    <tr>
+      <td>3566.96</td>
+      <td>8</td>
+      <td>248.857</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <td>8495.70</td>
+      <td>20</td>
+      <td>592.723</td>
+    </tr>
+  </table>
+ 
+  <!-- Topic 2 Subtopic 5 -->
+  <h3 class="subtopic" id="topic2_subtopic5">Decrementing DO Loops</h3>
+
+  <p>You can decrement a DO loop's index variable by specifying a negative value for the BY clause.
+     For example, the specification in this iterative DO statement decreases the index variable by 1,
+     resulting in values of 5, 4, 3, 2, and 1.
+  </p>
+  <p><strong>DO index-variable=5 to 1 by</strong> -1; <br/>
+     &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+     <strong>END</strong>; <br/>
+  </p>
+   
+  <p>When you use a negative BY clause value, the start value must always be greater than the stop
+     value in order to decrease the index variable during each iteration.
+  </p>
+  <p><strong>DO index-variable=</strong>5 <strong>to</strong> 1 <strong>by</strong> -1; <br/>
+     &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+     <strong>END</strong>; <br/>
+  </p>
+
+  <h4>Specifying a Series of Items</h4>
+  <p>You can also specify how many times a DO loop executes by listing items in a series.</p>
+  <hr/>
+  <p><strong>General form, DO loop with a variable list:</strong></p>
+  <p><strong>DO</strong> index-variable=value1, value2, value3...; <br/>
+     SAS statements <br/>
+     <strong>END</strong>; <br/>
+  </p>
+  <p>where values can be character or numeric.</p>
+  <hr/>
+
+  <p>When the DO loop executes, it executes once for each item in the series. The index variable
+     equals the value of the current item. You must use commas to separate items in the series.
+  </p>
+  <p>To list items in a series, you must specify either</p>
+  <ul>
+    <li>all numeric values <br/>
+        <strong>DO index-variable=</strong>2,5,9,13,27; <br/>
+        &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+        <strong>END</strong>;
+    </li>
+    <li>all character values, with each value enclosed in quotation marks <br/>
+        <strong>DO index-variable=</strong>'MON','TUE','WED','THR','FRI';<br/>
+        &nbsp;&nbsp; <strong>SAS statements</strong><br/>
+        <strong>END</strong>;
+    </li>
+    <li>all variable names- the index variable takes on the values of the specified variables <br/>
+        <strong>DO index-variable=</strong>win,place,show; <br/>
+        &nbsp;&nbsp; <strong>SAS statements</strong> <br/>
+        <strong>END</strong>;
+    </li>
+  </ul>
+
+  <p>Variable names must represent either all numeric or all character values. Do not enclose variable
+     names in quotation marks.
+  </p>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Nesting DO Loops</h2>
+
+  <p>Iterative DO statements can be executed within a DO loop. Putting a DO loop within a DO loop is
+     called <strong>nesting</strong>.
+  </p>
+
+  <pre>
+  do i=1 to 20;
+     SAS statements
+     do j=1 to 10;
+        SAS statements
+     end;
+     SAS statements
+  end;</pre>
+
+  <p>The following DATA step computes the value of a one-year investment that earns 7.5% annual
+     interest, compounded monthly.
+  </p>
+
+  <pre>
+  data work.earn;
+     Capital=2000;
+     do month=1 to 12;
+        Interest=capital*(.075/12);
+        capital+interest;
+     end;
+  run;</pre>
+  
+  <p>Let's assume the same amount of capital is to be added to the investment each year for 20 years.
+     The new program must perform the calculation for each month during each of the 20 years. To do
+     this, you can include the monthly calculations within another DO loop that executes 20 times.
+  </p>
+
+  <pre>
+  data work.earn;
+     do year=1 to 20;
+        Capital+2000;
+        do month=1 to 12;
+           Interest=capital*(.075/12);
+           capital+interest;
+        end;
+     end;
+  run;</pre>
+
+  <p>During each iteration of the outside DO loop, an additional 2,000 is added to the capital, and the
+     nested DO loop executes 12 times.
+  </p>
+
+  <pre>
+  data work.earn;
+     do year=1 to 20;
+        Capital+2000;
+        do month=1 to 12;
+           Interest=capital*(.075/12);
+           capital+interest;
+        end;
+     end;
+  run;</pre>
+
+  <p>Remember, in order for nested DO loops to execute correctly, you must</p>
+  <ul>
+    <li>assign a unique index-variable name in each iterative DO statement.
+        <pre>
+        data work.earn;
+           do year=1 to 20;
+              Capital+2000;
+              do month=1 to 12;
+                 Interest=capital*(.075/12);
+                 capital+interest;
+              end;
+           end;
+        run;</pre>
+    </li>
+    <li>end each DO loop with an END statement
+        <pre>
+        data work.earn;
+           do year=1 to 20;
+              Capital+2000;
+              do month=1 to 12;
+                 Interest=capital*(.075/12);
+                 capital+interest;
+              end;
+           end;
+        run;</pre>
+    </li>
+  </ul>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>It is easier to manage nested DO loops if you indent the statements in each
+          DO loop as shown above
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Iteratively Processing Data That Is Read from a Data Set</h2>
+  
+  <p>So far you have seen examples of DATA steps that use DO loops to generate one or more
+     observations from one iteration of the DATA step. Now let's look at a DATA step that reads a data
+     set to compute the value of a new variable.
+  </p>
+  <p>The SAS data set <strong>Finance.CDRates</strong>, shown below, contains interest rates for certificates of
+     deposit (CDs) that are available from several institutions.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Finance.CDRates</th>
+    </tr>
+    <tr>
+      <th class="color-red">Institution</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Years</th>
+    </tr>
+    <tr>
+      <td>MBNA America</td>
+      <td>0.0817</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>Metropolitan Bank</td>
+      <td>0.0814</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Standard Pacific</td>
+      <td>0.0806</td>
+      <td>4</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>Suppose you want to compare how much each CD will earn at maturity with an investment of
+     $5,000. The DATA step below creates a new data set, <strong>Work.Compare</strong>, that contains the added
+     variable, <i>Investment</i>.
+  </p>
+
+  <pre>
+  data work.compare(drop=i);
+     set finance.cdrates;
+     Investment=5000;
+     do i=1 to years;
+        investment+rate*investment;
+     end;
+  run;</pre>
+
+  <p>The index variable is used only to execute the DO loop, so it is dropped from the new data set.
+     Notice that the data set variable <i>Years</i> is used as the stop value in the iterative DO statement.
+     As a result, the DO loop executes the number of times that are specified by the current value of
+     <i>Years</i>. During the first iteration of the DATA step, for example, the DO loop executes five times.
+  </p>
+
+  <p>During each iteration of the DATA step,</p>
+  <ul>
+    <li>an observation is read from <strong>Finance.CDRates</strong></li>
+    <li>the value 5000 is assigned to the variable <i>Investment</i></li>
+    <li>the DO loop executes, based on the current value of <i>Years</i></li>
+    <li>the value of <i>Investment</i> is computed (each time that the DO loop executes), using the
+        current value of <i>Rate</i>
+    </li>
+  </ul>
+
+  <p>At the bottom of the DATA step, the first observation is written to the <strong>Work.Compare</strong> data set.
+     Control returns to the top of the DATA step, and the next observation is read from
+     <strong>Finance.CDRates</strong>. These steps are repeated for each observation in <strong>Finance.CDRates</strong>. The resulting data set contains the computed values of <i>Investment</i> for all observations that have
+     been read from <strong>Finance.CDRates</strong>.
+  </p>
 
 
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Work.Compare</th>
+    </tr>
+    <tr>
+      <th class="color-red">Institution</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Years</th>
+      <th class="color-red">Investment</th>
+    </tr>
+    <tr> 
+      <td>MBNA America</td>
+      <td>0.0817</td>
+      <td>5</td>
+      <td>7404.64</td>
+    </tr>
+    <tr> 
+      <td>Metropolitan Bank</td>
+      <td>0.0814</td>
+      <td>3</td>
+      <td>6323.09</td>
+    </tr>
+    <tr> 
+      <td>Standard Pacific</td>
+      <td>0.0806</td>
+      <td>4</td>
+      <td>6817.57</td>
+    </tr>
+  </table>
 
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Conditionally Executing DO Loops</h2>
+ 
+  <p>The iterative DO statement requires that you specify the number of iterations for the DO loop.
+     However, there are times when you want to execute a DO loop until a condition is reached or
+     while a condition exists, but you don't know how many iterations are needed.
+  </p>
+  <p>Suppose you want to calculate the number of years that are required for an investment to reach
+     $50,000. In the DATA step below, using an iterative DO statement is inappropriate because you
+     are trying to determine the number of iterations required for <i>Capital</i> to reach $50,000.
+  </p>
+  
+  <pre>
+  data work.invest;
+     do year=1 to ? ;
+        Capital+2000;
+        capital+capital*.10;
+      end;
+  run;</pre>
 
+  <p>The DO WHILE and DO UNTIL statements enable you to execute DO loops based on whether a
+     condition is true or false.
+  </p>
+
+  <!-- Topic 5 Subtopic 1-->
+  <h3 class="subtopic" id="topic5_subtopic1">Using the DO UNTIL Statement</h3>
+
+  <p>The DO UNTIL statement executes a DO loop until the expression is true.</p>
+  <hr/>
+  <p><strong>General form, DO UNTIL statement:</strong></p>
+  <p><strong>DO</strong> UNTIL(expression); <br/>
+     more SAS statements <br/>
+     <strong>END</strong>; 
+  </p>
+  <br/>
+  <p>where expression is a valid SAS expression enclosed in parentheses.</p>
+  <hr/>
+
+  <p>The expression is not evaluated until the bottom of the loop, so a DO UNTIL loop always
+     executes at least once. When the expression is evaluated as true, the DO loop is not executed
+     again.
+  </p>
+
+  <p>Assume you want to know how many years it will take to earn $50,000 if you deposit $2,000 each
+     year into an account that earns 10% interest. The DATA step that follows uses a DO UNTIL statement 
+     to perform the calculation until the value is reached. Each iteration of the DO loop
+     represents one year of earning.
+  </p>
+
+  <pre>
+  data work.invest;
+     do until(Capital>=50000);
+        capital+2000;
+        capital+capital*.10;
+        Year+1;
+     end;
+  run;</pre>
+
+  <p>During each iteration of the DO loop,</p>
+  <ul>
+    <li>2000 is added to the value of <i>Capital</i> to reflect the annual deposit of $2,000</li>
+    <li>the value of <i>Capital</i> with 10% interest is calculated</li>
+    <li>the value of <i>Year</i> is incremented by 1</li>
+  </ul>
+
+  <p>Because there is no index variable in the DO UNTIL statement, the variable Year is created in a
+     Sum statement to count the number of iterations of the DO loop. This program produces a data
+     set that contains the single observation shown below. To accumulate more than $50,000 in
+     capital requires 13 years (and 13 iterations of the DO loop).
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Work.Invest</th>
+    </tr>
+    <tr>
+      <th class="color-red">Capital</th>
+      <th class="color-red">Year</th>
+    </tr>
+    <tr>
+      <td>53949.97</td>
+      <td>13</td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 Subtopic 2-->
+  <h3 class="subtopic" id="topic5_subtopic2">Using the DO WHILE Statement</h3>
+
+  <p>Like the DO UNTIL statement, the DO WHILE statement executes DO loops conditionally. You
+     can use the DO WHILE statement to execute a DO loop while the expression is true.
+  </p>
+
+  <hr/>
+  <p><strong>General form, DO WHILE statement:</strong></p>
+  <p><strong>DO WHILE</strong>(expression); <br/>
+     more SAS statements
+     <strong>END</strong>;</p>
+  <p>where expression is a valid SAS expression enclosed in parentheses.</p>
+  <hr/>
+
+  <p>An important difference between the DO UNTIL and DO WHILE statements is that the DO WHILE
+     expression is evaluated at the top of the DO loop. If the expression is false the first time it is
+     evaluated, then the DO loop never executes. For example, in the following program, if the value
+     of <i>Capital</i> is less than 50,000, the DO loop does not execute.
+  </p>
+  <pre>
+  data work.invest;
+     do while(Capital>=50000);
+        capital+2000;
+        capital+capital*.10;
+        Year+1;
+     end;
+  run;</pre>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Using Conditional Clauses with the Iterative DO Statement</h2>
+
+  <p>You have seen how the DO WHILE and DO UNTIL statements enable you to execute statements
+     conditionally and how the iterative DO statement enables you to execute statements a set
+     number of times, unconditionally.
+  </p>
+
+  <p>DO WHILE(expression); <br/>
+     DO UNTIL(expression); <br/>
+     DO index-variable=start TO stop BY increment;
+  </p>
+
+  <p>Now let's look at a form of the iterative DO statement that combines features of both conditional
+     and unconditional execution of DO loops.
+  </p>
+
+  <p>In this DATA step, the DO UNTIL statement determines how many years it takes (13) for an
+     investment to reach $50,000.
+  </p>
+
+  <pre>
+  data work.invest;
+     do until(Capital>=50000);
+        Year+1;
+        capital+2000;
+        capital+capital*.10;
+     end;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Work.Invest</th>
+    </tr>
+    <tr>
+      <th class="color-red">Capital</th>
+      <th class="color-red">Year</th>
+    </tr>
+    <tr>
+      <td>53949.97</td>
+      <td>13</td>
+    </tr>
+  </table>
+  <br/><br/>
+ 
+  <p>Suppose you also want to limit the number of years that you invest your capital to 10 years. You
+     can add the UNTIL or WHILE expression to an iterative DO statement to further control the
+     number of iterations. This iterative DO statement enables you to execute the DO loop until
+     <i>Capital</i> is greater than or equal to 50000 or until the DO loop executes 10 times, whichever
+     occurs first.
+  </p>
+
+  <pre>
+  data work.invest(drop=i);
+     do i=1 to 10 until(Capital>=50000);
+        Year+1;
+        capital+2000;
+        capital+capital*.10;
+     end;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Work.Invest</th>
+    </tr>
+    <tr>
+      <th class="color-red">Capital</th>
+      <th class="color-red">Year</th>
+    </tr>
+    <tr>
+      <td>35062.33</td>
+      <td>10</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>In this case, the DO loop stops executing after 10 iterations, and the value of <i>Capital</i> never
+     reaches 50000. If you increase the amount added to Capital each year to 4000, the DO loop
+     stops executing after the eighth iteration when the value of <i>Capital</i> exceeds 50000.
+  </p>
+  <pre>
+  data work.invest(drop=i);
+     do i=1 to 10 until(Capital>=50000);
+        Year+1;
+        capital+4000;
+        capital+capital*.10;
+     end;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Work.Invest</th>
+    </tr>
+    <tr>
+      <th class="color-red">Capital</th>
+      <th class="color-red">Year</th>
+    </tr>
+    <tr>
+      <td>50317.91</td>
+      <td>8</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>The UNTIL and WHILE specifications in an iterative DO statement function similarly to the DO
+     UNTIL and DO WHILE statements. Both statements require a valid SAS expression enclosed in
+     parentheses.
+  </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>UNTIL(expression)</strong>; <br/>
+     DO index-variable=start TO stop BY increment <strong>WHILE(expression)</strong>; <br/>
+  </p>
+
+  <p>The UNTIL expression is evaluated at the bottom of the DO loop, so the DO loop always
+     executes at least once. The WHILE expression is evaluated before the execution of the DO loop.
+     So, if the condition is not true, the DO loop never executes.
+  </p>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Creating Samples</h2>
+  
+  <p>Because it performs iterative processing, a DO loop provides an easy way to draw sample
+     observations from a data set. For example, suppose you would like to sample every tenth
+     observation of the 5,000 observations in <strong>Factory.Widgets</strong>. Start with a simple DATA step:
+  </p>
+  <pre>
+  data work.subset;
+     set factory.widgets;
+  run;</pre>
+  
+  <p>You can create the sample data set by enclosing the SET statement in a DO loop. Use the start,
+     stop, and increment values to select every tenth observation of the 5,000. Add the POINT= option
+     to the SET statement, setting the POINT= option equal to the index variable that is used in the
+     DO loop. (You learned about the POINT= option in Chapter, <strong>Reading SAS Data Sets</strong>.)
+  </p>
+
+  <pre>
+  data work.subset;
+     do sample=10 to 5000 by 10;
+        set factory.widgets point=sample;
+     end;
+  run;</pre>
+
+  <p>Remember that, in order to prevent continuous DATA step looping, you need to add a STOP
+     statement when using the POINT= option. Then, because the STOP statement prevents the
+     output of observations at the end of the DATA step, you also need to add an OUTPUT statement.
+  </p>
+
+  <p>Place the statement inside the DO loop in order to output each observation that is selected. (If the
+     OUTPUT statement were placed after the DO loop, only the last observation would be written.)
+  </p>
+
+  <pre>
+  data work.subset;
+     do sample=10 to 5000 by 10;
+        set factory.widgets point=sample;
+        output;
+     end;
+     stop;
+  run;</pre>
+
+  <p>When the program runs, the DATA step reads the observations that are identified by the POINT=
+     option in Factory.Widgets. The values of the POINT= option are provided by the DO loop, which
+     starts at 10 and goes to 5,000 in increments of 10. The data set Work.Subset contains 500
+     observations.
+  </p>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Summary</h2>
+
+  <!-- Topic 8 Subtopic 1-->
+  <h3 class="subtopic" id="topic8_subtopic1">Text Summary</h3>
+
+  <h4>Purpose of DO Loops</h4>
+  <p>DO loops process groups of SAS statements repeatedly, reducing the number of statements that
+     are required in repetitive calculations.
+  </p>
+
+  <h4>Syntax of Iterative DO Loops</h4>
+  <p>To construct an iterative DO loop, specify an index variable and the conditions that will execute
+     the loop. These conditions include a start value for the index variable, a stop value, and an
+     increment value. Start, stop, and increment values can be any number, numeric variable, or SAS
+     expression that results in a number.
+  </p>
+
+  <h4>DO Loop Execution</h4>
+  <p>During each iteration of a DO loop, new values are created in the SAS program data vector.
+     When the loop's index value exceeds the stop value, the DO loop stops, and processing
+     continues with the following DATA step statement.
+  </p>
+
+  <h4>Counting DO Loop Iterations</h4>
+  <p>A simple way to track DO loop iterations is to create a temporary counting variable, then drop this
+     variable from the data set. Or, include an OUTPUT statement within the DO loop to write an
+     observation for each iteration. This overrides the automatic generation of output at the end of the
+     DATA step.
+  </p>
+
+  <h4>Decrementing DO Loops</h4>
+  <p>You can decrement a DO loop by specifying a negative value for the BY clause. The start value
+     must be greater than the stop value.
+  </p>
+
+  <h4>Specifying a Series of Items</h4>
+  <p>You can specify how many times a DO loop executes by listing items in a series; the DO loop will
+     execute once for each item, with the index variable equal to the value of each item. A series can
+     consist of all numeric values, all character values (enclosed in quotation marks), or all variable
+     names (without quotation marks).
+  </p>
+
+  <h4>Nesting DO Loops</h4>
+  <p>DO loops can run within DO loops, as long as you assign a unique index variable to each loop
+     and terminate each DO loop with its own END statement.
+  </p>
+
+  <h4>Iteratively Processing Data That Is Read from a Data Set</h4>
+  <p>You can use a DO loop to read a data set and compute the value of a new variable. DO loop start
+     and stop values, for example, can be read from a data set.
+  </p>
+
+  <h4>Conditionally Executing DO Loops</h4>
+  <p>The <strong>DO UNTIL</strong> statement executes a DO loop until a condition is true. Because the expression is
+     not evaluated until the bottom of the loop, a DO UNTIL loop will execute at least once. The <strong>DO
+     WHILE</strong> statement is used to execute a DO loop while a condition is true. Because the DO WHILE
+     statement is evaluated at the top of the DO loop, if the expression is false the first time it is
+     evaluated, then the DO loop never executes.
+  </p>
+
+  <h4>Using Conditional Clauses within Iterative DO Statements</h4>
+  <p>DO WHILE and DO UNTIL statements can be used within iterative DO loops to combine
+     conditional and unconditional execution.
+  </p>
+
+  <h4>Creating Samples</h4>
+  <p>DO loops provide an easy way to create samples from other data sets. Enclose the SET
+     statement in a DO loop, using the start, stop, and increment values to select the observations.
+     Add the POINT= option to the SET statement, setting it equal to the index variable of the DO
+     loop. Then add a STOP statement to prevent DATA step looping, and add an OUTPUT statement
+     to write DATA step output.
+  </p>
+
+  <!-- Topic 8 Subtopic 2-->
+  <h3 class="subtopic" id="topic8_subtopic2">Points to Remember</h3>
+  <ul>
+    <li>If you do not specify a BY clause, then the increment value for DO loops is 1</li>
+    <li>In most cases, the index variable is needed only for processing the DO loop and can be
+        dropped from the data set
+    </li>
+    <li>The index variable is always incremented by one value beyond the stop value unless you
+        terminate the DO loop in some other manner
+    </li>
+    <li>It's easier to manage nested DO loops if you indent the statements in each loop</li>
+    <li>In order for nested DO loops to execute correctly, you must
+        <ul>
+           <li>assign a unique index-variable name in each iterative DO statement</li>
+           <li>end each DO loop with an END statement</li>
+        </ul>
+    </li>
+  </ul>
+  
 
 
 

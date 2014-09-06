@@ -29,8 +29,11 @@
 
 <div id="content">
 
-  <h1 class="topic" id="topic1">Overview</h1>  
-  <h4 class="subtopic" id="topic1_subtopic1">Introduction</h4>
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2> 
+ 
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
   <p>SAS provides many informats for reading raw data values in various forms. In Chapter,
      <strong>Reading Raw Data in Fixed Fields</strong>, you learned how to use informats to read standard and
      nonstandard data. In this chapter, you learn how to use a special category of SAS informats
@@ -50,7 +53,7 @@
 
   <img src="images/ch19_image1.png" class="diagram"/>
   
-  <h4 class="subtopic" id="topic1_subtopic2">Objectives</h4>
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
   <p>In this chapter, you learn how</p>
   <ul>
     <li>SAS stores date and time values</li>
@@ -61,7 +64,7 @@
     <li>to display various date and time values</li>
   </ul>
 
-  <h1 class="topic" id="topic2">How SAS Stores Date Values</h1>
+  <h2 class="topic" id="topic2">How SAS Stores Date Values</h2>
   <p>Before you read date or time values into a SAS data set or use those values in calculations, you
      should understand how SAS stores date and time values.
   </p>
@@ -73,6 +76,7 @@
      for the date January 2, 2000, to a single SAS date value:
   </p>
 
+  <div class="div-scroll-content">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -100,12 +104,14 @@
        <td>14611</td>
     </tr>
   </table>
+  </div>
+
   <br/>
   <p>Storing dates and times as numeric values enables you to use dates and times in calculations in
      much the same way as you would use any other number.
   </p>
 
-  <h1 class="topic" id="topic3">How SAS Stores Time Values</h1>
+  <h2 class="topic" id="topic3">How SAS Stores Time Values</h2>
   <p>SAS stores <strong>time values</strong> similar to the way it stores date values. A SAS time value is stored as
      the number of seconds since midnight.
   </p>
@@ -116,8 +122,8 @@
   </p>
   <img src="images/ch19_image4.png" class="diagram"/>
 
-  <h1 class="topic" id="topic4">Reading Date and Time Informats</h1>
-  <h4 class="subtopic" id="topic4_subtopic1">Overview</h4>
+  <h2 class="topic" id="topic4">Reading Date and Time Informats</h2>
+  <h3 class="subtopic" id="topic4_subtopic1">Overview</h3>
   <p>You use SAS date and time <strong>informats</strong> to read date and time expressions and convert them to
      SAS date and time values. Like other SAS informats, date and time informats are composed of
   </p>
@@ -140,6 +146,8 @@
      expressions represent the date October 15, 1999. Each of these common date expressions can
      be read using the appropriate SAS date informat.
   </p>
+
+  <div class="div-scroll-content">
   <table border="1">
     <tr>
       <th class="color-red">Date Expression</th>
@@ -162,10 +170,11 @@
       <td>YYMMDDw.</td>
     </tr>
   </table>
-  
+  </div>
+
   <!-- Page 504 -->
 
-  <h4 class="subtopic" id="topic4_subtopic2">Specifying Informats</h4>
+  <h3 class="subtopic" id="topic4_subtopic2">Specifying Informats</h3>
   <p>Using the INPUT statement with an informat after a variable name is the simplest way to read
      date and time values into a variable.
   </p>
@@ -189,9 +198,11 @@
   <p>Now let’s look at some specific informats that you can use.</p>
   
   <!-- Topic 4 Subtopic 3 -->
-  <h4 class="subtopic" id="topic4_subtopic3">MMDDYYw. Informat</h4>
+  <h3 class="subtopic" id="topic4_subtopic3">MMDDYYw. Informat</h3>
+
   <p>You can tell by its name that the informat MMDDYYw. reads date values in the form 10/15/99.</p>
   <hr/>
+
   <p><strong>General form, values that are read with the MMDDYYw. informat:</strong></p>
   <p><i>mmddyy</i> or <i>mmddyyyy</i> where</p>
   <ul>
@@ -201,7 +212,14 @@
   </ul>
   <hr/>
 
-  <p></p>
+  <p>In the MMDDYYw. informat, the month, day, and year fields can be separated by blanks or
+     delimiters such as hyphens (-) or slashes (/). If you use delimiters, you must place them between
+     all fields in the values. Remember to specify a field width that includes not only the month, day,
+     and year values, but any delimiters as well. Here are some date expressions that you can read
+     using the MMDDYYw. informat:
+  </p>
+
+  <div class="div-scroll-content">
   <table border="1">
     <tr>
       <th class="color-red">Date Expression</th>
@@ -224,11 +242,12 @@
       <th>MMDDYY10.</th>
     </tr>
   </table>
+  </div>
 
   <!-- Page 505 -->
 
   <!-- Topic 4 Subtopic 4 -->
-  <h4 class="subtopic" id="topic4_subtopic4">DATEw. Informat</h4>
+  <h3 class="subtopic" id="topic4_subtopic4">DATEw. Informat</h3>
   <p>The DATEw. informat reads date values in the form 30May2000.</p>
   <hr/>
   <p><strong>General form, values that are read with the DATEw. informat:</strong></p>
@@ -261,7 +280,7 @@
     </tr>
   </table>
 
-  <h4 class="subtopic" id="topic4_subtopic5">TIMEw. Informat</h4>
+  <h3 class="subtopic" id="topic4_subtopic5">TIMEw. Informat</h3>
   <p>The TIMEw. informat reads values in the form <i>hh:mm:ss.ss</i>.</p>
   <hr/>
   <p><strong>General form, values that are read with the TIMEw. informat:</strong></p>
@@ -312,7 +331,7 @@
 
   <!-- Page 506 -->
 
-  <h4 class="subtopic" id="topic4_subtopic6">DATETIMEw. Informat</h4>
+  <h3 class="subtopic" id="topic4_subtopic6">DATETIMEw. Informat</h3>
   <p>The DATETIMEw. informat reads expressions that are composed of two parts, a date value and a
      time value, in the form: <i>ddmmmyy hh:mm:ss.ss</i>.
   </p>
@@ -355,7 +374,7 @@
   <br/>
 
   <!-- Topic 4 Subtopic 7 -->
-  <h4 class="subtopic" id="topic4_subtopic7">YEARCUTOFF= SAS System Option</h4>
+  <h3 class="subtopic" id="topic4_subtopic7">YEARCUTOFF= SAS System Option</h3>
   <p>Recall from Chapter, <strong>Referencing Files and Setting Options</strong>, that the value of the
      YEARCUTOFF= system option affects only <strong>two-digit year values</strong>. A date value that contains a
      four-digit year value will be interpreted correctly even if it does not fall within the 100-year span
@@ -430,8 +449,8 @@
     </table>
   </ul>
 
-  <h1 class="topic" id="topic5">Using Dates and Times in Calculations</h1>
-  <h4 class="subtopic" id="topic5_subtopic1">Introduction</h4>
+  <h2 class="topic" id="topic5">Using Dates and Times in Calculations</h2>
+  <h3 class="subtopic" id="topic5_subtopic1">Introduction</h3>
   <p>In this chapter so far, you’ve learned how date and time informats read common date and time
      expressions in specific forms. Now you will see how converting date and time expressions to
      numeric SAS date values can be useful, particularly for determining time intervals or performing
@@ -667,10 +686,10 @@
      <img src="images/ch19_image13.png" class="diagram" />
 
      <!-- Topic 6 -->
-     <h1 class="topic" id="topic6">Using Date and Time Formats</h1>
+     <h2 class="topic" id="topic6">Using Date and Time Formats</h2>
    
      <!-- Topic 6 Subtopic 1 -->
-     <h4 class="subtopic" id="topic6_subtopic1">The WEEKDATEw. Format</h4>
+     <h3 class="subtopic" id="topic6_subtopic1">The WEEKDATEw. Format</h3>
      <p>You can use the WEEKDATEw. format to write these values out in a format that displays the day
         of the week, month, day, and year.</p>
      <hr/>
@@ -803,7 +822,7 @@
      </table>
      <br/><br/>
      <!-- Topic 6 Subtopic 2 -->
-     <h4 class="subtopic" id="topic6_subtopic2">The WORDDATEw. Format</h4>
+     <h3 class="subtopic" id="topic6_subtopic2">The WORDDATEw. Format</h3>
      <p>The WORDDATEw. format is similar to the WEEKDATEw. format, but it does not display the day
         of the week or the two-digit year values.
      </p>
@@ -949,9 +968,10 @@
      run;</pre>
 
      <!-- Topic 7 -->
-     <h1 class="topic" id="topic7">Summary</h1>
+     <h2 class="topic" id="topic7">Summary</h2>
+
      <!-- Topic 7 Subtopic 1 -->
-     <h4 class="subtopic" id="topic7_subtopic1">Text Summary</h4>
+     <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
 
      <h4>How SAS Stores Date and Time Values</h4>
      <p>SAS stores date values as numeric <strong>SAS date values</strong>, which are the number of days from
@@ -991,7 +1011,7 @@
      </p>
 
      <!-- Topic 7 Subtopic 2 -->
-     <h4 class="subtopic" id="topic7_subtopic2">Points to Remember</h4>
+     <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
      <ul>
        <li>SAS makes adjustments for leap years, but not for leap seconds or daylight saving time</li>
        <li>The minimum acceptable field width for the TIMEw. informat is 5. If you specify a w value

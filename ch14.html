@@ -1,0 +1,4953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1-->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>When planning modifications to SAS data sets, be sure to examine the many SAS functions that
+     are available. SAS functions are prewritten expressions that provide programming shortcuts for
+     many calculations and manipulations of data.
+  </p>
+  <p>This chapter teaches you how to use a variety of functions, such as those shown in the table
+     below. You learn to convert data from one data type to another, to work with SAS date and time
+     values, and to manipulate the values of character variables.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Description</th>
+      <th class="color-red">Form</th>
+      <th class="color-red">Sample Value</th>
+    </tr>
+    <tr>
+       <td>YEAR</td>
+       <td>Extracts the year value from a SAS date value</td>
+       <td>YEAR(date)</td>
+       <td>2006</td>
+    </tr>
+    <tr>
+       <td>QTR</td>
+       <td>Extracts the quarter value from a SAS date value</td>
+       <td>QTR(date)</td>
+       <td>1</td>
+    </tr>
+    <tr>
+       <td>MONTH</td>
+       <td>Extracts the month value from a SAS date value</td>
+       <td>MONTH(date)</td>
+       <td>12</td>
+    </tr>
+    <tr>
+       <td>DAY</td>
+       <td>Extracts the day value from a SAS date value</td>
+       <td>DAY(date)</td>
+       <td>5</td>
+    </tr>
+  </table>
+
+  <!-- Topic 1 Subtopic 2-->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>convert character data to numeric data</li>
+    <li>convert numeric data to character data</li>
+    <li>create SAS date values</li>
+    <li>extract the month, year, and interval from a SAS date value</li>
+    <li>perform calculations with date and datetime values and time intervals</li>
+    <li>extract, edit, and search the values of character variables</li>
+    <li>replace or remove all occurrences of a particular word within a character string</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Understanding SAS Functions</h2>
+
+  <p>SAS <strong>functions</strong> are built-in routines that enable you to complete many types of data
+     manipulations quickly and easily. Generally speaking, functions provide programming shortcuts.
+     There are many categories of SAS functions: <strong>arithmetic functions, financial functions,
+     character functions, probability functions</strong>, and more.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">Categories of SAS Functions</th>
+    <tr>
+    <tr>
+      <td>Array</td>
+      <td>Mathematical</td>
+    </tr>
+    <tr>
+      <td>Bitwise Logical Operations</td>
+      <td>Probability</td>
+    </tr>
+    <tr>
+      <td>Character</td>
+      <td>Quantile</td>
+    </tr>
+    <tr>
+      <td>Character String Matching</td>
+      <td>Random Number</td>
+    </tr>
+    <tr>
+      <td>Currency Conversion</td>
+      <td>SAS File I/O</td>
+    </tr>
+    <tr>
+      <td>Date and Time</td>
+      <td>Special</td>
+    </tr>
+    <tr>
+      <td>Descriptive Statistics</td>
+      <td>State and Zip Code</td>
+    </tr>
+    <tr>
+      <td>Double Byte Character Set</td>
+      <td>Trigonometric</td>
+    </tr>
+    <tr>
+      <td>External Files</td>
+      <td>Truncation</td>
+    </tr>
+    <tr>
+      <td>Financial</td>
+      <td>Variable Control</td>
+    </tr>
+    <tr>
+      <td>Hyperbolic</td>
+      <td>Variable Information</td>
+    </tr>
+    <tr>
+      <td>Macro</td>
+      <td>Web Tools</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>Some functions provide results that can also be obtained by using a SAS procedure. For
+     example, functions that provide descriptive statistics return values that can also be obtained
+     through the MEANS procedure.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Functions That Compute Descriptive Statistics</th>
+    </tr>
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Syntax</th>
+      <th class="color-red">Calculates</th>
+    </tr>
+    <tr>
+      <td>SUM</td>
+      <td>sum(argument, argument,...)</td>
+      <td>sum of values</td>
+    </tr>
+    <tr>
+      <td>MEAN</td>
+      <td>mean(argument, argument,...)</td>
+      <td>average of nonmissing values</td>
+    </tr>
+    <tr>
+      <td>MIN</td>
+      <td>min(argument, argument,...)</td>
+      <td>minimum value</td>
+    </tr>
+    <tr>
+      <td>MAX</td>
+      <td>max(argument, argument,...)</td>
+      <td>maximum value</td>
+    </tr>
+    <tr>
+      <td>VAR</td>
+      <td>var(argument, argument,...)</td>
+      <td>variance of the values</td>
+    </tr>
+    <tr>
+      <td>STD</td>
+      <td>std(argument, argument,...)</td>
+      <td>standard deviation of the values</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>Despite the similarity of certain SAS functions and procedures, don't assume that they can be
+     used interchangeably. For example, missing values might be handled differently for a similar
+     function and procedure.
+  </p>
+
+  <!-- Topic 2 Subtopic 1-->
+  <h3 class="subtopic" id="topic1_subtopic1">Uses of SAS Functions</h3>
+  
+  <p>Using SAS functions, you can</p>
+  <ul>
+    <li>calculate sample statistics</li>
+    <li>create SAS date values</li>
+    <li>convert U.S. Zip codes to state postal codes</li>
+    <li>round values</li>
+    <li>generate random numbers</li>
+    <li>extract a portion of a character value</li>
+    <li>convert data from one data type to another</li>
+  </ul>
+
+  <p>This chapter concentrates on functions that</p>
+  <ul>
+    <li>convert data</li>
+    <li>manipulate SAS date values</li>
+    <li>modify values of character variables</li>
+  </ul>
+
+  <!-- Topic 2 Subtopic 2-->
+  <h3 class="subtopic" id="topic1_subtopic2">Example of a SAS Function</h3>
+
+  <p>SAS functions can be used in DATA step programming statements and in some statistical
+     procedures. A SAS function can be specified anywhere that you would use a SAS expression, as
+     long as the function is part of a SAS statement.
+  </p>
+
+  <p>Let's look at a simple example of a SAS function. The assignment statement below uses the
+     MEAN function to calculate the average of three exam scores that are stored in the variables
+     <i>Exam1, Exam2</i>, and <i>Exam3</i>.
+  </p>
+
+  <p>AvgScore=mean(exam1,exam2,exam3);</p>
+
+  <p>When you reference a SAS function, the function returns a value that is based on the function
+     arguments. The MEAN function above contains three arguments: the variables <i>Exam1, Exam2</i>,
+     and <i>Exam3</i>. The function calculates the mean of the three variables that are listed as arguments.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Some functions require a specific number of arguments, whereas other
+          functions can contain any number of arguments. Some functions require no
+          arguments
+      </td>
+    </tr>
+  </table>
+
+  
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">General Form of SAS Functions</h2>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Arguments, Variable Lists, Arrays</h3>
+
+  <p>To use a SAS function, specify the function name followed by the function arguments, which are
+     enclosed in parentheses.
+  </p>
+  <hr/>
+  <p><strong>General form, SAS function:</strong></p>
+  <p>function-name(argument-1&lt;,argument-n&gt;);</p>
+  <p>where arguments can be</p>
+  <ul>
+    <li>variables <i>P H D Q x,y,z</i></li>
+    <li>constants P H D Q <i>456,502,612,498</i></li>
+    <li>expressions P H D Q <i>37*2,192/5 mean(22,34,56)</i></li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Even if the function does not require arguments, the function name
+          must still be followed by parentheses- for example, function-name().
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  <br/>
+
+  <p>When a function contains more than one argument, the arguments are usually separated by
+     commas.
+  </p>
+
+  <p>function-name(argument-1,argument-2,argument-n)</p>
+
+  <p>However, for some functions, variable lists and arrays can also be used as arguments, as long as
+     the list or the array is preceded by the word OF.
+  </p>
+  <br/>
+
+
+  <h4>Example</h4>
+
+  <p>Here is an example of a function that contains multiple arguments. Notice that the arguments are
+     separated by commas.
+  </p>
+
+  <p><strong>mean(x1,x2,x3)</strong></p>
+
+  <p>The arguments for this function can also be written as a variable list.</p>
+
+  <p><strong>mean(of x1-x3)</strong></p>
+
+  <p>Or, the variables can be referenced by an <strong>array</strong>.</p>
+
+  <p><strong>mean(of newarray {*})</strong></p>
+
+  <p>When specifying function arguments with a variable list or an array, be sure to precede the list or
+     the array with the word OF. If you omit the word OF, the function arguments might not be
+     interpreted as you expect. For example, the function below calculates the average of X1 minus
+     X3, not the average of the variables X1, X2, and X3.
+  </p>
+
+  <p><strong>mean(x1-x3)</strong></p>
+
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Target Variables</h3>
+
+  <p>Now that you are familiar with the purpose and general form of SAS functions, let's think about
+     target variables. A target variable is the variable to which the result of a function is assigned. For
+     example, in the statement below, the variable AvgScore is the target variable.
+  </p>
+  <p><strong>AvgScore=mean(exam1,exam2,exam3);</strong></p>
+  <p>Unless the length of the target variable has been previously defined, a default length is
+     assigned. The default length depends on the function; the default for character functions can be
+     as long as 200.
+  </p>
+  <p>Default lengths could cause variables to use more space than necessary in your data set. So,
+     when using SAS functions, consider the appropriate length for any target variables. If necessary,
+     add a LENGTH statement to specify a length for the target variable before the statement that
+     creates the values of that variable.
+  </p>
+
+  
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Converting Data with Functions</h2>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Introduction to Converting Data</h3>
+
+  <p>Suppose you are asked to complete a number of modifications to the data set Hrd.Temp. The
+     first modification is to create a new variable that contains the salary of temporary employees.
+     Examining the data set, you realize that one of the variables needed to calculate salaries is the
+     character variable <i>PayRate</i>. To complete the calculation, you need to convert <i>PayRate</i> from
+     character to numeric.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td class="back-color-grey">10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td class="back-color-grey">8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td class="back-color-grey">40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+  </table>
+  <br/><br/>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Salary=payrate*hours;
+  run;</pre>
+
+  <p>In such cases, you should use the <strong>INPUT</strong> function before attempting the calculation. The INPUT
+     function converts character data values to numeric values. The <strong>PUT</strong> function converts numeric
+     data values to character values. Both functions are discussed in this section.
+  </p>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Potential Problems of Omitting INPUT or PUT</h3>
+
+  <p>What happens if you omit the INPUT function or the PUT function when converting data?</p>
+
+  <p>SAS will detect the mismatched variables and will try an automatic character-to-numeric or
+     numeric- to-character conversion. However, this process doesn't always work. Suppose each
+     value of <i>PayRate</i> begins with a dollar sign ($). When SAS tries to automatically convert the
+     values of <i>PayRate</i> to numeric values, the dollar sign blocks the process. The values cannot be
+     converted to numeric values. Similar problems can occur with automatic numeric-to-character
+     conversion.
+  </p>
+
+  <p>Therefore, it is <strong>always</strong> best to include INPUT and PUT functions in your programs when
+     conversions occur.
+  </p>
+
+  <!-- Topic 4 Subtopic 3 -->
+  <h3 class="subtopic" id="topic4_subtopic3">Automatic Character-to-Numeric Conversion</h3>
+
+  <p>Let's begin with the automatic conversion of character values to numeric values.</p>
+
+  <p>By default, if you reference a <strong>character variable in a numeric context</strong> such as an arithmetic
+     operation, SAS tries to convert the variable values to numeric. For example, in the DATA step
+     below, the character variable PayRate appears in a numeric context. It is multiplied by the
+     numeric variable Hours to create a new variable named <i>Salary</i>.
+  </p>
+
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Salary=payrate*hours;
+  run;</pre>
+
+  <p>When this step is executed, SAS automatically converts the character values of <i>PayRate</i> to
+     numeric values so that the calculation can occur. This conversion is completed by creating a
+     temporary numeric value for each character value of <i>PayRate</i>. This temporary value is used in
+     the calculation. The character values of <i>PayRate</i> are <strong>not</strong> replaced by numeric values.
+  </p>
+
+  <p>Whenever data is automatically converted, a message is written to the SAS log stating that the
+     conversion has occurred.
+  </p>
+
+  <p class="color-red"><strong>SAS Log</strong></p>
+  <hr/>
+  <p>
+  4 data hrd.: newtemp; <br/>
+  5 set hrd.temp; <br/>
+  6 Salary=payrate*hours; <br/>
+  7 run; <br/><br/>
+
+  NOTE: Character values have been converted to <br/>
+  numeric values at the places given by: <br/>
+  (Line):(Column). <br/><br/>
+
+  6:11 <br/><br/>
+
+  NOTE: The data set Hrd.Newtemp has 40 observations <br/>
+  and 19 variables. <br/>
+  NOTE: The data statement used 0.78 seconds. <br/>
+  </p>
+  <hr/>
+
+  <!-- Topic 4 Subtopic 4 -->
+  <h3 class="subtopic" id="topic4_subtopic4">When Automatic Conversion Occurs</h3>
+
+  <p>Automatic character-to-numeric conversion occurs when a character value is</p>
+  <ul>
+    <li>assigned to a previously defined numeric variable, such as the numeric variable Rate <br/>
+        <strong>Rate=payrate;</strong>
+    </li>
+    <li>used in an arithmetic operation <br/>
+        <strong>Salary=payrate*hours;</strong>
+    </li>
+    <li>compared to a numeric value, using a comparison operator <br/>
+        <strong>if payrate>=rate;</strong>
+    </li>
+    <li>specified in a function that requires numeric arguments <br/>
+        <strong>NewRate=sum(payrate,raise);</strong>
+    </li>
+  </ul>
+
+  <p>The automatic conversion</p>
+  <ul>
+    <li>uses the w.d informat, where w is the width of the character value that is being converted</li>
+    <li>produces a numeric missing value from any character value that does not conform to
+        standard numeric notation (digits with an optional decimal point or leading sign)
+    </li>
+  </ul>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Character Value</th>
+      <th class="color-red">automatic conversion</th>
+      <th class="color-red">Numeric Value</th>
+    </tr>
+    <tr>
+      <td>12.47</td>
+      <td style="text-align:center">-></td>
+      <td>12.47</td>
+    </tr>
+    <tr>
+      <td>-8.96</td>
+      <td style="text-align:center">-></td>
+      <td>-8.96</td>
+    </tr>
+    <tr>
+      <td>1.243E1</td>
+      <td style="text-align:center">-></td>
+      <td>12.43</td>
+    </tr>
+    <tr>
+      <td>1,742.64</td>
+      <td style="text-align:center">-></td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+
+  <!-- Topic 4 Subtopic 5 -->
+  <h3 class="subtopic" id="topic4_subtopic5">Restriction for WHERE Expressions</h3>
+
+  <p>The WHERE statement does not perform automatic conversions in comparisons. The simple
+     program below demonstrates what happens when a WHERE expression encounters the wrong
+     data type. The variable <i>Number</i> contains a numeric value, and the variable <i>Character</i> contains
+     a character value, but the two WHERE statements specify the wrong data type.
+  </p>
+
+  <pre>
+  data work.convtest;
+     Number=4;
+     Character='4';
+  run;
+  proc print data=work.convtest;
+     where character=4;
+  run;
+  proc print data=work.convtest;
+     where number='4';
+  run;</pre>
+
+  <p>This mismatch of character and numeric variables and values prevents the program from
+     processing the WHERE statements. Automatic conversion is not performed. Instead, the program
+     stops, and error messages are written to the SAS log.
+  </p>
+
+  <p class="color-red"><strong</strong>SAS Log</p>
+
+  <hr/>
+  <p>
+  1 data work.: convtest; <br/>
+  2 Number=4; <br/>
+  3 Character='4'; <br/>
+  4 run; <br/>
+  NOTE: The data set Work.ConvTest has 1 observations and 2 variables. <br/><br/>
+  5 proc print data=work.convtest; <br/>
+  6 where character=4; <br/>
+  7 run; <br/>
+  ERROR: Where clause operator requires compatible variables. <br/><br/>
+  NOTE: The SAS System stopped processing this step because of errors. <br/><br/>
+  8 proc print data=work.convtest; <br/>
+  9 where number='4'; <br/>
+  10 run; <br/>
+  ERROR: Where clause operator requires compatible variables. <br/>
+  zzzz <br/>
+  NOTE: The SAS System stopped processing this step because of errors. <br/>
+  </p>
+  <hr/>
+
+  <!-- Topic 4 Subtopic 6 -->
+  <h3 class="subtopic" id="topic4_subtopic6">Explicit Character-to-Numeric Conversion</h3>
+
+  <p>In order to avoid the problems we saw in the previous section, use the <strong>INPUT</strong> function to convert
+     character data values to numeric values. To learn how to use this function, let's examine one of
+     the data set modifications needed for <strong>Hrd.Temp</strong>. As mentioned earlier, you need to calculate
+     employee salaries by multiplying the character variable <i>PayRate</i> by the numeric variable <i>Hours</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td class="back-color-grey">10</td>
+      <td>11</td>
+      <td class="back-color-grey">88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td class="back-color-grey">8</td>
+      <td>25</td>
+      <td class="back-color-grey">200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td class="back-color-grey">40</td>
+      <td>26</td>
+      <td class="back-color-grey">208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>14516</td>
+      <td>14527</td>
+      <td class="back-color-grey">15</td>
+      <td>10</td>
+      <td class="back-color-grey">80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To calculate salaries, you write the following DATA step. It creates a new data set,
+     <strong>Hrd.Newtemp</strong>, to contain the original data plus the new variable <i>Salary</i>.
+  </p>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Salary=payrate*hours;
+  run;</pre>
+
+  <p>However, you know that submitting this DATA step would cause an automatic character-tonumeric
+     conversion, because the character variable <i>PayRate</i> is used in a numeric context. You
+     can explicitly convert the character values of <i>PayRate</i> to numeric values by using the INPUT
+     function.
+  </p>
+
+  <hr/>
+  <p><strong>General form, INPUT function:</strong></p>
+  <p><strong>INPUT</strong>(source,informat)</p>
+  <p>where</p>
+  <ul>
+    <li><i>source</i> indicates the character variable, constant, or expression to be converted to a
+        numeric value
+    </li>
+    <li>a numeric informat must also be specified, as in this example: <i>input(payrate,2.)</i></li>
+  </ul>
+  <hr/>  
+
+  <p>When choosing the informat, be sure to select a numeric informat that can read the form of the
+     values.
+  </p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Character Value</th>
+      <th class="color-red">Informat</th>
+    </tr>
+    <tr>
+      <td>2115233</td>
+      <td>7.</td>
+    </tr>
+    <tr>
+      <td>2,115,233</td>
+      <td>COMMA9.</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <p>Here's an example of the INPUT function:</p>
+  <p><strong>Test=input(saletest,comma9.);</strong></p>
+
+  <p>The function uses the numeric informat COMMA9. to read the values of the character variable
+     <i>SaleTest</i>. Then the resulting numeric values are stored in the variable <i>Test</i>.
+  </p>
+
+  <p>Now let's use the INPUT function to convert the character values of <i>PayRate</i> to numeric values.
+     You begin the function by specifying <i>PayRate</i> as the source. Because <i>PayRate</i> has a length of
+     2, you choose the numeric informat 2. to read the values of the variable.
+  </p>
+
+  <pre>input(payrate,2.)</pre>
+
+  <p>Finally, you add the function to the assignment statement in your DATA step.</p>
+
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Salary=input(payrate,2.)*hours;
+  run;</pre>
+
+  <p>After the DATA step is executed, the new data set (which contains the variable Salary) is
+     created.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="10">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+      <th class="color-red">BirtDate</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+      <td>7054</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+      <td>5757</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Notice that no conversion messages appear in the SAS log when you use the INPUT function.</p>
+  <p class="color-red">SAS Log</p>
+
+  <hr/>
+  <p>
+  13 data hrd.: newtemp; <br/>
+  14 set hrd.temp; <br/>
+  15 Salary=input(payrate,2.)*hours; <br/>
+  16 run; <br/><br/>
+
+  NOTE: The data set Hrd.Newtemp has 40 observations<br/>
+  and 19 variables. <br/>
+  NOTE: The DATA statement used 0.55 seconds. <br/>
+  </p>
+  <hr/>
+
+  <p>The form of the INPUT function is very similar to the form of the PUT function (which performs
+     numeric-to-character conversions).
+  </p>
+  <p><strong>INPUT</strong>(source,informat)</p>
+  <p><strong>PUT</strong>(source,format)</p>
+  <p>However, note that the INPUT function requires an informat, whereas the PUT function requires a
+     format. To remember which function requires a format versus an informat, note that the INPUT
+     function requires the informat.
+  </p>
+
+  <!-- Topic 4 Subtopic 7 -->
+  <h3 class="subtopic" id="topic4_subtopic7">Automatic Numeric-to-Character Conversion</h3>
+
+  <p>The automatic conversion of numeric data to character data is very similar to character-tonumeric
+     conversion. Numeric data values are converted to character values whenever they are
+     used in a <strong>character context</strong>.
+  </p>
+
+  <p>For example, the numeric values of the variable <i>Site</i> are converted to character values if you</p>
+  <ul>
+    <li>assign the numeric value to a previously defined character variable, such as the
+        character variable <i>SiteCode: SiteCode=site</i>
+    </li>
+    <li>use the numeric value with an operator that requires a character value, such as the
+        concatenation operator: <i>SiteCode=site||dept</i>;
+    </li>
+    <li>specify the numeric value in a function that requires character arguments, such as the
+        SUBSTR function: <i>Region=substr(site,1,4)</i>;
+    </li>
+  </ul>
+
+  <p>Specifically, SAS writes the numeric value with the BEST12. format, and the resulting character
+     value is right-aligned. This conversion occurs before the value is assigned or used with any
+     operator or function. Automatic numeric-to-character conversion can cause unexpected results.
+     For example, suppose the original numeric value has fewer than 12 digits. The resulting character
+     value will have leading blanks, which might cause problems when you perform an operation or
+     function.
+  </p>
+
+  <p>Numeric-to-character conversion also causes a message to be written to the SAS log indicating
+     that the conversion has occurred.
+  </p>
+  <p class="color-red"><strong>SAS Log</strong></p>
+  <hr/>
+  9 data hrd.: newtemp; <br/>
+  10 set hrd.temp; <br/>
+  11 SiteCode=site; <br/>
+  12 run; <br/><br/>
+
+  NOTE: Numeric values have been converted to character <br/>
+  values at the places given by: (Line):(Column). <br/><br/>
+
+  11:13 <br/><br/>
+
+  NOTE: The data set HRD.NEWTEMP has 40 observations <br/>
+  and 19 variables. <br/>
+  NOTE: The data statement used 1.06 seconds. <br/>
+  <hr/>
+
+  <p>As we saw with the INPUT function, it is best not to rely on automatic conversion. When you
+     know that numeric data must be converted to character data, perform an explicit conversion by
+     including a PUT function in your SAS program. We look at the INPUT and PUT functions in the
+     next section.
+  </p>
+  
+
+  <!-- Topic 4 Subtopic 8 -->
+  <h3 class="subtopic" id="topic4_subtopic8">Explicit Numeric-to-Character Conversion</h3>
+
+  <p>You can use the PUT function to explicitly convert numeric data values to character data values.</p>
+  <p>Let's use this function to complete one of the modifications that is needed for the data set
+     <strong>Hrd.Temp</strong>. Suppose you are asked to create a new character variable named <i>Assignment</i> that
+     concatenates the values of the numeric variable Site and the character variable Dept. The new
+     variable values must contain the value of <i>Site</i> followed by a slash (<i>/</i>) and then the value of
+     <i>Dept</i>- for example, <i>26/DP</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Hrd.Temp</th>
+    <tr>
+    <tr>
+      <th class="color-red">Overtime</th>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    <tr>
+    <tr>
+      <td>4</td>
+      <td>Word processing</td>
+      <td>Word Processor</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>Filing, administrative duties</td>
+      <td>Admin. Asst.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>Organizational dev. specialist</td>
+      <td>Consultant</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>Bookkeeping, word processing</td>
+      <td>Bookkeeper Asst.</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You write an assignment statement that contains the concatenation operator (||) to indicate that
+     <i>Site</i> should be concatenated with <i>Dept</i>,using a slash as a separator. Note that the slash is enclosed
+     in quotation marks. All character constants must be enclosed in quotation marks.
+  </p>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Assignment=site||'/'||dept;
+  run;</pre>
+
+  <p>You know that submitting this DATA step will cause SAS to automatically convert the numeric
+     values of <i>Site</i> to character values, because <i>Site</i> is used in a character context. The variable
+     <i>Site</i> appears with the concatenation operator, which requires character values. To explicitly convert
+     the numeric values of <i>Site</i> to character values, you must add the <strong>PUT function</strong> to your
+     assignment statement.
+  </p>
+
+  <hr/>
+  <p><strong>General form, PUT function:</strong></p>
+  <p><strong>PUT</strong>(source,format)</p>
+  <p>where</p>
+  <ul>
+    <li>source indicates the numeric variable, constant, or expression to be converted to a
+        character value
+    </li>
+    <li>a format matching the data type of the source must also be specified, as in this example:
+        <i>put(site,2.)</i>
+       </ul>
+    </li>
+  </ul>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>
+          <ul>
+             <li>The PUT function always returns a character string</li>
+             <li>The PUT function returns the source written with a format</li>
+             <li>The format must agree with the source in type</li>
+             <li>Numeric formats right-align the result; character formats leftalign
+                 the result
+             </li>
+             <li>If you use the PUT function to create a variable that has not
+                 been previously identified, it creates a character variable whose
+                 length is equal to the format width
+             </li>
+          </ul>
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>Because you are listing a numeric variable as the source, you must specify a numeric format.</p>
+  <p>Now that you know the general form of the PUT function, you can rewrite the assignment
+     statement in your DATA step to explicitly convert the numeric values of <i>Site</i> to character values.
+  </p>
+
+  <p>To perform this conversion, write the PUT function, specifying <i>Site</i> as the source. Because
+     <i>Site</i> has a length of 2, choose 2. as the numeric format. After you add this PUT function to the
+     assignment statement, the DATA step creates the new data set that contains <i>Assignment</i>.
+  </p>
+
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Assignment=put(site,2.)||'/'||dept;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="7">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Overtime</th>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+      <th class="color-red">BirthDate</th>
+      <th class="color-red">Assignment</th>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Word processing</td>
+      <td>Word Processor</td>
+      <td>DP</td>
+      <td>26</td>
+      <td>7054</td>
+      <td class="back-color-grey">26/DP</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>Filing, administrative duties</td>
+      <td>Admin. Asst.</td>
+      <td>PURH</td>
+      <td>57</td>
+      <td>5757</td>
+      <td class="back-color-grey">57/PURH</td>
+    </tr>
+  </table>
+
+  <br/>
+
+  <p>Notice that no conversion messages appear in the SAS log when you use the PUT function.</p>
+  <p class="color-red"><strong>SAS Log</strong><p>
+
+  <hr/>
+  <p>
+  13 data hrd.: newtemp; <br/>
+  14 set hrd.temp; <br/>
+  15 Assignment=put(site,2.)||'/'||dept; <br/>
+  16 run; <br/><br/>
+
+  NOTE: The data set Hrd.Newtemp has 40 observations <br/>
+  and 19 variables. <br/>
+  NOTE: The DATA statement used 0.71 seconds.
+  </p>
+  <hr/>
+
+  <h4>Matching the Data Type</h4>
+
+  <p>Remember that the format specified in the PUT function must match the data type of the source.</p>
+  <p><i>PUT(source,format)</i></p>
+
+  <p>So, to do an explicit numeric-to-character data conversion, you specify a numeric source and a
+     numeric format. The form of the PUT function is very similar to the form of the INPUT function.
+  </p>
+  <p><i>PUT(source,format)</i></p>
+  <p><i>INPUT(source,informat)</i></p>
+
+  <p>Note that the PUT function requires a format, whereas the INPUT function requires an informat.
+     To remember which function requires a format versus an informat, note that the INPUT function
+     requires the informat.
+  </p>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Manipulating SAS Date Values with Functions</h2>
+
+  <!-- Topic 5 Subtopic 1-->
+  <h3 class="subtopic" id="topic5_subtopic1">SAS Date and Time Values</h3>
+
+  <p>SAS includes a variety of functions that enable you to work with SAS <strong>date values</strong>. SAS stores a
+     date value as the number of days from January 1, 1960, to a given date. Here is an example:
+  </p>
+  <img src="images/ch14_image1.png" class="diagram" />
+
+  <p>A SAS time value is stored as the number of seconds since midnight. Here is an example:</p>
+  <img src="images/ch14_image2.png" class="diagram" />
+
+  <p>Consequently, a SAS <strong>datetime value</strong> is stored as the number of seconds between midnight on
+     January 1, 1960, and a given date and time.
+  </p>
+  <img src="images/ch14_image3.png" class="diagram" />
+
+  <p>SAS stores date values as numbers so that you can easily sort the values or perform arithmetic
+     computations. You can use SAS date values as you use any other numeric values.
+  </p>
+
+  <pre>
+  data test(keep=name totday);
+     set hrd.temp;
+     TotDay=enddate-startdate;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    <tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td class="back-color-grey">14567</td>
+      <td class="back-color-grey">14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>    
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td class="back-color-grey">14524</td>
+      <td class="back-color-grey">14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>    
+  </table>
+  <br/>
+
+  <p>You can display SAS date values in a variety of forms by associating a SAS format with the
+     values. The format affects only the display of the dates, not the date values in the data set. For
+     example, the FORMAT statement below associates the DATE9. format with the variables
+     <i>StartDate</i> and <i>EndDate</i>. A portion of the output created by this PROC PRINT step appears
+     below.
+  </p>
+
+  <pre>
+  proc print data=hrd.temp;
+     format startdate enddate date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">Days Hours</th>
+    <tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td class="back-color-grey">19NOV1999</td>
+      <td class="back-color-grey">12JAN2000</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>    
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td class="back-color-grey">07OCT1999</td>
+      <td class="back-color-grey">17NOV1999</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>    
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td class="back-color-grey">22NOV1999</td>
+      <td class="back-color-grey">30DEC1999</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td class="back-color-grey">29SEP1999</td>
+      <td class="back-color-grey">10OCT1999</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>SAS date values are valid for dates that are based on the Gregorian calendar from A.D. 1582
+     through A.D. 20,000.
+  </p>
+
+  <img src="images/ch14_image4.png" class="diagram" />
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Use caution when working with historical dates. The Gregorian calendar was
+          used throughout most of Europe from 1582, but Great Britain and the
+          American colonies did not adopt the calendar until 1752
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 Subtopic 2-->
+  <h3 class="subtopic" id="topic5_subtopic2">SAS Date Functions</h3>
+
+  <p>SAS stores dates, times, and datetimes as numeric values. You can use several functions to
+     create these values.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Typical Use</th>
+      <th class="color-red">Result</th>
+    </tr>
+    <tr>
+      <td>MDY</td>
+      <td>date=mdy(mon,day,yr);</td>
+      <td>SAS date</td>
+    </tr>
+    <tr>
+      <td>TODAY DATE</td>
+      <td>now=today(); <br/> now=date();</td>
+      <td>today's date as a SAS date</td>
+    </tr>
+    <tr>
+      <td>TIME</td>
+      <td>curtime=time();</td>
+      <td>current time as a SAS time</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>TIME <i>curtime=time();</i> current time as a SAS time</p>
+  <p>You use other functions to extract months, quarters, days, and years from SAS date values.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Typical Use</th>
+      <th class="color-red">Result</th>
+    </tr>
+    <tr>
+      <td>DAY</td>
+      <td>day=day(date);</td>
+      <td>day of month (1-31)</td>
+    </tr>
+    <tr>
+      <td>QTR</td>
+      <td>quarter=qtr(date);</td>
+      <td>quarter (1-4)</td>
+    </tr>
+    <tr>
+      <td>WEEKDAY</td>
+      <td>wkday=weekday(date);</td>
+      <td>day of week (1-7)</td>
+    </tr>
+    <tr>
+      <td>MONTH</td>
+      <td>month=month(date);</td>
+      <td>month (1-12)</td>
+    </tr>
+    <tr>
+      <td>INTCK</td>
+      <td>x=intck('day',d1,d2); <br/> <br/>
+          x=intck('week',d1,d2); <br/> <br/>
+          x=intck('month',d1,d2); <br/> <br/>
+          x=intck('qtr',d1,d2); <br/> <br/>
+          x=intck('year',d1, d2); 
+      </td>
+      <td>days from D1 to D2 <br/> <br/>
+          weeks from D1 to D2 <br/> <br/>
+          months from D1 to D2 <br/> <br/>
+          quarters from D1 to D2 <br/> <br/>
+          years from D1 to D2
+      </td>
+    </tr>
+    <tr>
+      <td>INTNX</td>
+      <td>x=intnx('interval',start-from,increment);</td>
+      <td>date, time, or datetime value</td>
+    </tr>
+    <tr>
+      <td>DATDIF <br/> <br/> YRDIF</td>
+      <td>x=datdif('date1',date2, ACT/ACT); <br/> <br/>
+          x=yrdif('date1',date2, ACT/ACT);
+      </td>
+      <td>days between date1 and date2 <br/> <br/>
+          years between date1 and date2
+      </td>
+    </tr>
+  </table>
+  <br/>
+  
+  <p>In the following pages, you will see several SAS date functions, showing how they are used to
+     both create and extract date values.
+  </p>
+
+  <!-- Topic 5 Subtopic 3-->
+  <h3 class="subtopic" id="topic5_subtopic3">YEAR, QTR, MONTH, and DAY Functions</h3>
+
+  <p>Every SAS date value can be queried for the values of its year, month, and day. You extract
+     these values by using the functions <strong>YEAR, QTR, MONTH,</strong> and <strong>DAY</strong>. They all work the same
+     way, so we'll discuss them as a group.
+  </p>
+  <hr/>
+  <p><strong>General form, YEAR, QTR, MONTH, and DAY functions:</strong></p>
+
+  <p><strong>YEAR</strong>(date)</p>
+  <p><strong>QTR</strong>(date)</p>
+  <p><strong>MONTH</strong>(date)</p>
+  <p><strong>DAY</strong>(date)</p>
+
+  <p>where date is a SAS date value that is specified either as a variable or as a SAS date constant.</p>
+  <hr/>
+
+  <p>The YEAR function returns a four-digit numeric value that represents the year- for example,
+     2002. The QTR function returns a value of 1, 2, 3, or 4 from a SAS date value to indicate the
+     quarter of the year in which a date value falls. The MONTH function returns a numeric value that
+     ranges from 1 to 12, representing the month of the year. The value 1 represents January, 2
+     represents February, and so on. The DAY function returns a numeric value from 1 to 31,
+     representing the day of the month. As you can see, these functions are very similar in purpose
+     and form.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Description</th>
+      <th class="color-red">Form</th>
+      <th class="color-red">Sample Value</th>
+    </tr>
+    <tr>
+      <td>YEAR</td>
+      <td>Extracts the year value from a SAS date value</td>
+      <td>YEAR(date)</td>
+      <td>2005</td>
+    </tr>
+    <tr>
+      <td>QTR</td>
+      <td>Extracts the quarter value from a SAS date value</td>
+      <td>QTR(date)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>MONTH</td>
+      <td>Extracts the month value from a SAS date value</td>
+      <td>MONTH(date)</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>DAY</td>
+      <td>Extracts the day value from a SAS date value</td>
+      <td>DAY(date)</td>
+      <td>5</td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Finding the Year</h4>
+
+  <p>Now let's use the YEAR function to complete a task.</p>
+
+  <p>Suppose you need to create a subset of the data set <strong>Hrd.Temp</strong> that contains information about
+     all temporary employees who were hired during a specific year, such as 1998. <strong>Hrd.Temp</strong>
+     contains the dates on which employees began work with the company and their ending dates, but
+     there is no year variable.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>14516</td>
+      <td>14527</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To determine the year in which employees were hired, you can apply the YEAR function to the
+     variable that contains the employee start date, <i>StartDate</i>. You write the YEAR function as
+  </p>
+
+  <p>year(startdate)</p>
+
+  <p>Then, to create the new data set, you include this function in a subsetting IF statement within a
+     DATA step. This subsetting IF statement specifies that only observations in which the YEAR
+     function extracts a value of 1998 are placed in the new data set.
+  </p>
+
+  <pre>
+  data hrd.temp98;
+     set hrd.temp;
+     if year(startdate)=1998;
+  run;</pre>
+
+  <p>Finally, you add a PROC PRINT step to the program so that you can view the new data set.
+     Notice that the PROC PRINT step includes a FORMAT statement to display the variables
+     StartDate and EndDate with the DATE9. format.
+  </p>
+
+  <pre>
+  data hrd.temp98;
+     set hrd.temp;
+     if year(startdate)=1998;
+  proc print data=hrd.temp98;
+     format startdate enddate date9.;
+  run;</pre>
+
+  <p>Here is a portion of the PROC PRINT output that is created by your program. Notice that the new
+     data set contains information about those employees who were hired in 1998.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9972070</td>
+      <td class="back-color-grey">02AUG1998</td>
+      <td>17AUG1998</td>
+      <td>12</td>
+      <td>12</td>
+      <td>96</td>
+    </tr>
+    <tr>
+      <td>DURHAM</td>
+      <td>NC</td>
+      <td>27713</td>
+      <td>3633020</td>
+      <td class="back-color-grey">06OCT1998</td>
+      <td>10OCT1998</td>
+      <td>10</td>
+      <td>5</td>
+      <td>40</td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Finding the Year and Month</h4>
+
+  <p>Let's use the YEAR and MONTH functions to complete a simple task.</p>
+
+  <p>Suppose you need to create a subset of the data set <strong>Hrd.Temp</strong> that contains information about
+     all temporary employees who were hired in November 1999. <strong>Hrd.Temp</strong> contains the beginning
+     and ending dates for staff employment, but there are no month or year variables in the data set.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>14516</td>
+      <td>14527</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To determine the year in which employees were hired, you can apply the YEAR function to the
+     variable that contains the employee start date, StartDate. You write the YEAR function as
+  </p>
+
+  <p><strong>year(startdate)</strong></p>
+
+  <p>Likewise, to determine the month in which employees were hired, you apply the MONTH function
+     to StartDate.
+  </p>
+
+  <p><strong>month(startdate)</strong></p>
+
+  <p>To create the new data set, you include these functions in a subsetting IF statement within a
+     DATA step. The subsetting IF statement specifies that the new data set includes only
+     observations in which the YEAR function extracts a value of 1999 and the MONTH function
+     extracts a value of 11 (for November).
+  </p>
+
+  <pre>
+  data hrd.nov99;
+     set hrd.temp;
+     if year(startdate)=1999 and month(startdate)=11;
+  run;</pre>
+
+  <p>Finally, you add a PROC PRINT step to the program so that you can view the new data set.
+     Notice that the PROC PRINT step includes a FORMAT statement to display the variables
+     <i>StartDate</i> and <i>EndDate</i> with the DATE9. format.
+  </p>
+
+  <pre>
+  data hrd.nov99;
+     set hrd.temp;
+     if year(startdate)=1999 and month(startdate)=11;
+  proc print data=hrd.nov99;
+     format startdate enddate date9.;
+  run;</pre>
+
+  <p>Here is a portion of the PROC PRINT output that is created by your program. Notice that the new
+     data set contains information about only those employees who were hired in November 1999.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td class="back-color-grey">19NOV1999</td>
+      <td>12JAN2000</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td class="back-color-grey">22NOV1999</td>
+      <td>30DEC1999</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>DURHAM</td>
+      <td>NC</td>
+      <td>27713</td>
+      <td>3633618</td>
+      <td class="back-color-grey">02NOV1999</td>
+      <td>13NOV1999</td>
+      <td>12</td>
+      <td>9</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>CARRBORO</td>
+      <td>NC</td>
+      <td>27510</td>
+      <td>9976732</td>
+      <td class="back-color-grey">16NOV1999</td>
+      <td>04JAN2000</td>
+      <td>15</td>
+      <td>7</td>
+      <td>64</td>
+    </tr>
+  </table>
+
+  <!-- Topic 5 Subtopic 4-->
+  <h3 class="subtopic" id="topic5_subtopic4">WEEKDAY Function</h3>
+
+  <p>The <strong>WEEKDAY</strong> function enables you to extract the day of the week from a SAS date value.</p>
+
+  <hr/>
+  <p><strong>General form, WEEKDAY function:</strong></p>
+  <p><strong>WEEKDAY</strong>(date)</p>
+  <p>where date is a SAS date value that is specified either as a variable or as a SAS date constant.</p>
+  <hr/>
+ 
+  <p>The WEEKDAY function returns a numeric value from 1 to 7. The values represent the days of
+     the week.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Value</th>
+      <th class="color-red">equals</th>
+      <th class="color-red">Day of the Week</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>=</td>
+      <td>Sunday</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>=</td>
+      <td>Monday</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>=</td>
+      <td>Tuesday</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>=</td>
+      <td>Wednesday</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>=</td>
+      <td>Thursday</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>=</td>
+      <td>Friday</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>=</td>
+      <td>Saturday</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>For example, suppose the data set <strong>Radio.Sch</strong> contains a broadcast schedule. The variable
+     <i>AirDate</i> contains SAS date values. To create a data set that contains only weekend
+     broadcasts, you use the WEEKDAY function in a subsetting IF statement. You include only
+     observations in which the value of <i>AirDate</i> corresponds to a Saturday or Sunday.
+  </p>
+
+  <pre>
+  data radio.schwkend;
+     set radio.sch;
+     if weekday(airdate)=7 or weekday(airdate)=1;
+  run;</pre>
+
+  <!-- Topic 5 Subtopic 5-->
+  <h3 class="subtopic" id="topic5_subtopic5">MDY Function</h3>
+
+  <p>The MDY function creates a SAS date value from numeric values that represent the month, day,
+     and year. For example, suppose the data set Hrd.Temp contains the employee start date in three
+     numeric variables, <i>Month, Day</i>, and <i>Year</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="10">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">Month</th>
+      <th class="color-red">Day</th>
+      <th class="color-red">Year</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td class="back-color-grey">1</td>
+      <td class="back-color-grey">12</td>
+      <td class="back-color-grey">2000</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td class="back-color-grey">11</td>
+      <td class="back-color-grey">17</td>
+      <td class="back-color-grey">1999</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td class="back-color-grey">12</td>
+      <td class="back-color-grey">30</td>
+      <td class="back-color-grey">1999</td>
+      <td>40</td>
+      <td>26</td>
+      <td>2008</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td class="back-color-grey">10</td>
+      <td class="back-color-grey">10</td>
+      <td class="back-color-grey">1999</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Having the start date in three variables makes it difficult to perform calculations that are based on
+     the length of employment. You can convert these numeric values to useful SAS date values by
+     applying the MDY function.
+  </p>
+
+  <hr/>
+  <p><strong>General form, MDY function:</strong></p>
+  <p><strong>MDY</strong>(month,day,year)</p>
+  <p>where</p>
+  <ul>
+    <li><i>month</i> can be a variable that represents the month, or a number from 1-12</li>
+    <li><i>day</i> can be a variable that represents the day, or a number from 1-31</li>
+    <li><i>year</i> can be a variable that represents the year, or a number that has 2 or 4 digits</li>
+  </ul>
+  <hr/>
+
+  <p>In the data set <strong>Hrd.Temp</strong>, the values for month, day, and year are stored in the numeric variables
+     <i>Month, Day</i>, and <i>Year</i>. You write the following MDY function to create the SAS date values:
+  </p>
+
+  <p><strong>mdy(month,day,year)</strong></p>
+
+  <p>Then place this function in an assignment statement to create a new variable to contain the SAS
+     date values.
+  </p>
+
+  <pre>
+  data hrd.newtemp(drop=month day year);
+     set hrd.temp;
+     Date=mdy(month,day,year);
+  run;</pre>
+
+  <p>Here is the new data set that contains the variable <i>Date</i>.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="8">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+      <td class="back-color-grey">14621</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+      <td class="back-color-grey">14565</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+      <td class="back-color-grey">14608</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+      <td class="back-color-grey">14527</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Remember, to display SAS date values in a more readable form, you can associate a SAS format
+     with the values. For example, the FORMAT statement below associates the DATE9. format with
+     the variable <i>Date</i>. A portion of the output that is created by this PROC PRINT step appears
+     below.
+  </p>
+
+  <pre>
+  proc print data=hrd.newtemp;
+     format date date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+      <td class="back-color-grey">12JAN2000</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+      <td class="back-color-grey">17NOV1999</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+      <td class="back-color-grey">30DEC1999</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+      <td class="back-color-grey">10OCT1999</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The MDY function can also add the same SAS date to every observation. This might be useful if
+     you want to compare a fixed beginning date with differing end dates. Just use numbers instead of
+     data set variables when providing values to the MDY function.
+  </p>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     DateCons=mdy(6,17,2002);
+     proc print data=hrd.newtemp;
+     format datecons date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+      <th class="color-red">DateCons</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6224549</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+      <td class="back-color-grey">17JUN2002</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td>6223251</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+      <td class="back-color-grey">17JUN2002</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td>9974749</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+      <td class="back-color-grey">17JUN2002</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td>6970450</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+      <td class="back-color-grey">17JUN2002</td>
+    </tr>
+  </table>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Be careful when entering and formatting year values. The MDY
+          function accepts two- digit values for the year, but SAS interprets
+          two-digit values according to the 100-year span that is set by the
+          <strong>YEARCUTOFF= system option</strong>. The default value of
+          YEARCUTOFF= is 1920. For details, see Chapter, <strong>Reading Date
+          and Time Values</strong>.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Whenever possible, use four-digit year values in the MDY function:</p>
+  <ul>
+    <li>MDY(5,10,20) = May 10, 1920</li>
+    <li>MDY(5,10,2020) = May 10, 2020</li>
+  </ul>
+
+  <p>To display the years clearly, format SAS dates with the DATE9. format. This forces the year to
+     appear with four digits, as shown above in the Date and DateCons variables of your
+     <strong>Hrd.Newtemp</strong> output.
+  </p>
+
+  <p>Let's look at another example of the MDY function. The data set Dec.Review contains a variable
+     named Day. This variable contains the day of the month for each employee’s performance
+     appraisal. The appraisals were all completed in December 1998.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Dec.Review</th>
+    </tr>
+    <tr>
+      <th class="color-red">Site</th>
+      <th class="color-red">Day</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Name</th>
+    </tr>
+    <tr>
+      <td>Westin</td>
+      <td>12</td>
+      <td>A2</td>
+      <td>Mitchell, K</td>
+    </tr>
+    <tr>
+      <td>Stockton</td>
+      <td>4</td>
+      <td>A5</td>
+      <td>Worton, M</td>
+    </tr>
+    <tr>
+      <td>Center City</td>
+      <td>17</td>
+      <td>B1</td>
+      <td>Smith, A</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The following DATA step uses the MDY function to create a new variable named ReviewDate.
+     This variable contains the SAS date value for the date of each performance appraisal.
+  </p>
+
+  <pre>
+  data dec.review98;
+     set dec.review;
+     ReviewDate=mdy(12,day,1998);
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Dec.Review98</th>
+    </tr>
+    <tr>
+      <th class="color-red">Site</th>
+      <th class="color-red">Day</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">ReviewDate</th>
+    </tr>
+    <tr>
+      <td>Westin</td>
+      <td>12</td>
+      <td>A2</td>
+      <td>Mitchell, K</td>
+      <td class="back-color-grey">14225</td>
+    </tr>
+    <tr>
+      <td>Stockton</td>
+      <td>4</td>
+      <td>A5</td>
+      <td>Worton, M</td>
+      <td class="back-color-grey">14217</td>
+    </tr>
+    <tr>
+      <td>Center City</td>
+      <td>17</td>
+      <td>B1</td>
+      <td>Smith, A</td>
+      <td class="back-color-grey">14230</td>
+    </tr>
+  </table>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If you specify an invalid date in the MDY function, SAS assigns a missing
+          value to the target variable
+      </td>
+    </tr>
+  </table>
+  <br/>
+  
+  <pre>
+  data dec.review98;
+     set dec.review;
+     ReviewDate=mdy(15,day,1998);
+  run;</pre>
+
+ <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Dec.Review98</th>
+    </tr>
+    <tr>
+      <th class="color-red">Site</th>
+      <th class="color-red">Day</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">ReviewDate</th>
+    </tr>
+    <tr>
+      <td>Westin</td>
+      <td>12</td>
+      <td>A2</td>
+      <td>Mitchell, K</td>
+      <td class="back-color-grey">.</td>
+    </tr>
+    <tr>
+      <td>Stockton</td>
+      <td>4</td>
+      <td>A5</td>
+      <td>Worton, M</td>
+      <td class="back-color-grey">.</td>
+    </tr>
+    <tr>
+      <td>Center City</td>
+      <td>17</td>
+      <td>B1</td>
+      <td>Smith, A</td>
+      <td class="back-color-grey">.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 6-->
+  <h3 class="subtopic" id="topic5_subtopic6">DATE and TODAY Functions</h3>
+
+  <p>The <strong>DATE</strong> and <strong>TODAY</strong> functions return the current date from the system clock as a SAS date
+     value. The DATE and TODAY functions have the same form and can be used interchangeably.
+  </p>
+  <hr/>
+  <p><strong>General form, DATE and TODAY functions:</strong></p>
+  <p><strong>DATE() <br/>
+     TODAY() </strong>
+  </p>
+  <p>These functions require no arguments, but they must still be followed by parentheses.</p>
+  <hr/>
+
+  <p>Let's add a new variable, which contains the current date, to the data set Hrd.Temp. To create
+     this variable, write an assignment statement such as the following:
+  </p>
+  <p><strong>EditDate=date();</strong></p>
+  <p>After this statement is added to a DATA step and the step is submitted, the data set that contains
+     EditDate is created.
+  </p>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     EditDate=date();
+  run;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>For this example, the SAS date values shown below were created by
+          submitting this program on January 15, 2000
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">EditDate</th>
+    </tr>
+    <tr>
+      <td>14621</td>
+      <td class="back-color-grey">14624</td>
+    </tr>
+    <tr>
+      <td>14565</td>
+      <td class="back-color-grey">14624</td>
+    </tr>
+    <tr>
+      <td>14608</td>
+      <td class="back-color-grey">14624</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Remember, to display these SAS date values in a different form, you can associate a SAS format
+     with the values. For example, the FORMAT statement below associates the DATE9. format with
+     the variable <i>EditDate</i>. A portion of the output that is created by this PROC PRINT step appears
+     below.
+  </p>
+  <pre>
+  proc print data=hrd.newtemp;
+     format editdate date9.;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">EditDate</th>
+    </tr>
+    <tr>
+      <td>14621></td>
+      <td class="back-color-grey">15JAN2000</td>
+    </tr>
+    <tr>
+      <td>14565</td>
+      <td class="back-color-grey">15JAN2000</td>
+    </tr>
+    <tr>
+      <td>14608</td>
+      <td class="back-color-grey">15JAN2000</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The DATE and TODAY functions can also create a SAS date value from the current date.</p>
+
+  <p><i>ThisDate=date();</i> or <i>ThisDate=today();</i></p>
+
+  <!-- Topic 5 Subtopic 7-->
+  <h3 class="subtopic" id="topic5_subtopic7">INTCK Function</h3>
+
+  <p>The <strong>INTCK</strong> function returns the number of time intervals that occur in a given time span. You can
+     use it to count the passage of days, weeks, months, and so on.
+  </p>
+  <hr/>
+  <p><strong>General form, INTCK function:</strong></p>
+  <p><strong>INTCK</strong>('interval',from,to)</p>
+  <p>where</p>
+  <ul>
+    <li>'interval' specifies a character constant or variable. The value must be one of the
+        following:
+        <table>
+          <tr>
+             <td>DAY</td>
+             <td>DTMONTH</td>
+          </tr>
+          <tr>
+             <td>WEEKDAY</td>
+             <td>DTWEEK</td>
+          </tr>
+          <tr>
+             <td>WEEK</td>
+             <td>HOUR</td>
+          </tr>
+          <tr>
+             <td>TENDAY</td>
+             <td>MINUTE</td>
+          </tr>
+          <tr>
+             <td>SEMIMONTH</td>
+             <td>SECOND</td>
+          </tr>
+          <tr>
+             <td>MONTH</td>
+             <td>&nbsp;</td>
+          </tr>
+          <tr>
+             <td>QTR</td>
+             <td>&nbsp;</td>
+          </tr>
+          <tr>
+             <td>SEMIYEAR</td>
+             <td>&nbsp;</td>
+          </tr>
+          <tr>
+             <td>YEAR</td>
+             <td>&nbsp;</td>
+          </tr>
+        </table>
+    </li>
+    <li><i>from</i> specifies a SAS date, time, or datetime value that identifies the beginning of the time
+        span
+    </li>
+    <li><i>to</i> specifies a SAS date, time, or datetime value that identifies the end of the time span</li>
+  </ul>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The type of interval (date, time, or datetime) must match the type of value
+          in from
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  
+
+  <p>The INTCK function counts intervals from fixed interval beginnings, not in multiples of an interval
+     unit from the from value. Partial intervals are not counted. For example, WEEK intervals are
+     counted by Sundays rather than seven-day multiples from the from argument. MONTH intervals
+     are counted by day 1 of each month, and YEAR intervals are counted from 01JAN, not in 365-day
+     multiples.
+  </p>
+  <p>Consider the results in the following table. The values that are assigned to the variables Weeks,
+     <i>Months</i>, and <i>Years</i> are based on consecutive days.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">SAS Statement</th>
+      <th class="color-red">Value</th>
+    </tr>
+    <tr>
+      <td>Weeks = intck ('week','31 dec 2000'd,'01jan2001'd);</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Months = intck ('month','31 dec 2000'd,'01jan2001'd);</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Years = intck ('year','31 dec 2000'd,'01jan2001'd);</td>
+      <td>1</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Because December 31, 2000, is a Sunday, no WEEK interval is crossed between that day and
+     January 1, 2001. However, both MONTH and YEAR intervals are crossed.
+  </p>
+
+  <p>The following statement creates the variable <i>Years</i> and assigns it a value of 2. The INTCK
+     function determines that 2 years have elapsed between June 15, 1999, and June 15, 2001.
+  </p>
+  <p><strong>Years=intck('year','15jun1999'd,'15jun2001'd);</strong></p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>As shown here, the from and to dates are often specified as date constants.
+          A date constant is a date in the form ddMMMyyyy in quotation marks followed
+          by the character d.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Likewise, the following statement assigns the value 24 to the variable <i>Months</i>.</p>
+  <p><strong>Months=intck('month','15jun1999'd,'15jun2001'd);</strong></p>
+
+  <p>However, the following statement assigns 0 to the variable Years,
+     even though 364 days have elapsed. In this case the YEAR boundary
+     (01JAN) is not crossed.
+  </p>
+  <p><strong>Years=intck('year','01jan2002'd,'31dec2002'd);</strong></p>
+  <br/>
+  
+  <h4>Example: The INTCK Function</h4>
+  
+  <p>A common use of the INTCK function is to identify periodic events such as due dates and
+     anniversaries.
+  </p>
+
+  <p>The following program identifies mechanics whose 20th year of employment occurs in the current
+     month. It uses the INTCK function to compare the value of the variable Hired to the date on
+     which the program is run.
+  </p>
+
+  <pre>
+  data work.anniv20;
+     set flights.mechanics
+         (keep=id lastname firstname hired);
+     Years=intck('year',hired,today());
+     if years=20 and month(hired)=month(today());
+  proc print data=work.anniv20;
+     title '20-Year Anniversaries This Month';
+  run;</pre>
+
+  <p>The following output is created when the program is run in December 1999.</p>
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">20-Year Anniversaries This Month</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">Hired</th>
+      <th class="color-red">Years</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1403</td>
+      <td>BOWDEN</td>
+      <td>EARL</td>
+      <td>24DEC79</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1121</td>
+      <td>HERNANDEZ</td>
+      <td>MICHAEL</td>
+      <td>10DEC79</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1412</td>
+      <td>MURPHEY</td>
+      <td>JOHN</td>
+      <td>08DEC79</td>
+      <td>20</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 8-->
+  <h3 class="subtopic" id="topic5_subtopic8">INTNX Function</h3>
+
+  <p>The <strong>INTNX</strong> function is similar to the INTCK function. The INTNX function applies multiples of a
+     given interval to a date, time, or datetime value and returns the resulting value. You can use the
+     INTNX function to identify past or future days, weeks, months, and so on.
+  </p>
+  <hr/>
+  <p><strong>General form, INTNX function:</strong></p>
+  <p><strong>INTNX</strong>('interval',start-from,increment&lt;,'alignment'&gt;)</p>
+  <p>where</p>
+  <ul>
+    <li><i>'interval'</i> specifies a character constant or variable</li>
+    <li><i>start-from</i> specifies a starting SAS date, time, or datetime value</li>
+    <li><i>increment</i> specifies a negative or positive integer that represents time intervals toward
+        the past or future
+    </li>
+    <li>'alignment' (optional) forces the alignment of the returned date to the beginning, middle,
+        or end of the interval.
+    </li>
+  </ul>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The type of interval (date, time, or datetime) must match the type of value
+          in start-from and increment.
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <hr/>
+
+  <p>When you specify date intervals, the value of the character constant or variable that is used in
+     <i>interval</i> must be one of the following:
+  </p>
+
+  <table>
+    <tr>
+      <td>DAY</td>
+      <td>DTMONTH</td>
+    </tr>
+    <tr>
+      <td>WEEKDAY</td>
+      <td>DTWEEK</td>
+    </tr>
+    <tr>
+      <td>WEEK</td>
+      <td>HOUR</td>
+    </tr>
+    <tr>
+      <td>TENDAY</td>
+      <td>MINUTE</td>
+    </tr>
+    <tr>
+      <td>SEMIMONTH</td>
+      <td>SECOND</td>
+    </tr>
+    <tr>
+      <td>MONTH</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>QTRSEMIYEAR</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>YEAR</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>For example, the following statement creates the variable <i>TargetYear</i> and assigns it a SAS
+     date value of 13515, which corresponds to January 1, 1997.
+  </p>
+  <p><strong>TargetYear=intnx('year','05feb94'd,3);</strong></p>
+
+  <p>Likewise, the following statement assigns the value for the date July 1, 2001, to the variable
+     <i>TargetMonth</i>.
+  </p>
+  <p><strong>TargetMonth=intnx('semiyear','01jan2001'd,1);</strong></p>
+
+  <p>As you know, SAS date values are based on the number of days since January 1, 1960. Yet the
+     INTNX function can use intervals of weeks, months, years, and so on. What day should be
+     returned when these larger intervals are used?
+  </p>
+
+  <p>That's the purpose of the optional alignment argument: it lets you specify whether the date value
+     should be at the beginning, middle, or end of the interval. When specifying date alignment in the
+     INTNX function, use the following arguments or their corresponding aliases:
+  </p>
+
+  <p>BEGINNING B <br/>
+     MIDDLE M <br/>
+     END E <br/>
+     SAMEDAY S <br/>
+  </p>
+
+  <p>The best way to understand the alignment argument is to see its effect on identical statements.
+     The following table shows the results of three INTNX statements that differ only in the value of
+     <i>alignment</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">SAS Statement</th>
+      <th class="color-red">Date Value</th>
+    </tr>
+    <tr>
+      <td>MonthX=intnx('month','01jan95'd,5,'b');</td>
+      <td>12935 (June 1, 1995)</td>
+    </tr>
+    <tr>
+      <td>MonthX=intnx('month','01jan95'd,5,'m');</td>
+      <td>m'); 12949 (June 15, 1995)</td>
+    </tr>
+    <tr>
+      <td>MonthX=intnx('month','01jan95'd,5,'e');</td>
+      <td>12964 (June 30, 1995)</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>These statements count five months from January, but the returned value depends on whether
+     alignment specifies the beginning, middle, or end day of the resulting month. If alignment is not
+     specified, the beginning day is returned by default.
+  </p>
+
+  <!-- Topic 5 Subtopic 9-->
+  <h3 class="subtopic" id="topic5_subtopic9">DATDIF and YRDIF Functions</h3>
+
+  <p>The <strong>DATDIF</strong> and <strong>YRDIF</strong> functions calculate the difference in days and years between two SAS
+     dates, respectively. Both functions accept start dates and end dates that are specified as SAS
+     date values. Also, both functions use a basis argument that describes how SAS calculates the
+     date difference.
+  </p>
+  <hr/>
+  <p><strong>General form, DATDIF and YRDIF functions:</strong></p>
+  <p><strong>DATDIF</strong>(start_date,end_date,basis) <br/>
+     <strong>YRDIF</strong>(start_date,end_date,basis)
+  </p>
+  <p>where</p>
+  <ul>
+    <li><i>start_date</i> specifies the starting date as a SAS date value</li>
+    <li><i>end_date</i> specifies the ending date as a SAS date value</li>
+    <li><i>basis</i> specifies a character constant or variable that describes how SAS calculates the
+        date difference
+    </li>
+  </ul>
+  <hr/>
+
+  <p>There are two character strings that are valid for basis in the DATDIF function and four character
+     strings that are valid for basis in the YRDIF function. These character strings and their meanings
+     are listed in the table below.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Character String</th>
+      <th class="color-red">Meaning</th>
+      <th class="color-red">Valid In DATDIF</th>
+      <th class="color-red">Valid In YRDIF</th>
+    </tr>
+    <tr>
+      <td>'30/360'</td>
+      <td>specifies a 30 day month and a 360 day year</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>'ACT/ACT'</td>
+      <td>uses the actual number of days or years between dates</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>'ACT/360'</td>
+      <td>uses the actual number of days between dates in calculating the number of years (calculated by the number of days divided by 360)</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>'ACT/365'</td>
+      <td>uses the actual number of days between dates in calculating the number of years (calculated by the number of days divided by 365)</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Modifying Character Values with Functions</h2>
+
+  <!-- Topic 6 Subtopic 1-->
+  <h3 class="subtopic" id="topic6_subtopic1">Introduction to Modifying Character Values</h3>
+
+  <p>This section teaches you how to use SAS functions to manipulate the values of character
+     variables. After completing this section, you will be able to
+  </p>
+  <ul>
+    <li>replace the contents of a character value</li>
+    <li>trim trailing blanks from a character value</li>
+    <li>search a character value and extract a portion of the value</li>
+    <li>convert a character value to uppercase or lowercase</li>
+  </ul>
+
+  <p>To begin, let's look at some of the modifications that need to be made to the character variables
+     in <strong>Hrd.Temp</strong>. These modifications include
+  </p>
+  <ul>
+    <li>separating the values of one variable into multiple variables
+        <table border="1">
+           <tr>
+             <th class="color-red">Name</th>
+             <th class="color-red">LastName</th>
+             <th class="color-red">FirstName</th>
+             <th class="color-red">Middle Name</th>
+           </tr>
+           <tr>
+              <td>CICHOCK, ELIZABETH MARIE</td>
+              <td>CICHOCK</td>
+              <td>ELIZABETH</td>
+              <td>MARIE</td>
+           </tr>
+           <tr>
+              <td>BENINCASA, HANNAH LEE</td>
+              <td>BENINCASA</td>
+              <td>HANNAH</td>
+              <td>LEE</td>
+           </tr>
+        </table>
+        <br/>
+    </li>
+    <li>replacing a portion of a character variable's values
+        <table border="1">
+           <tr>
+             <th class="color-red">Phone</th>
+             <th class="color-red">Phone</th>
+           </tr>
+           <tr>
+              <td>6224549</td>
+              <td>4334549</td>
+           </tr>
+           <tr>
+              <td>6223251</td>
+              <td>4333251</td>
+           </tr>
+        <table>
+        <br/>
+    </li>
+    <li>searching for a specific string within a variable's values
+        <table border="1">
+           <tr>
+             <th class="color-red">Job</th>
+           </tr>
+           <tr>
+             <td>filing, administrative duties</td>
+           </tr>
+           <tr>
+             <td>bookkeeping, word processing, accounting</td>
+           </tr>
+        </table>
+    </li>
+  </ul>
+  <br/>
+
+  <p>The character functions listed below can help you complete these tasks.</p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Function</th>
+      <th class="color-red">Purpose</th>
+    </tr> 
+    <tr>
+      <th>SCAN</th>
+      <td>returns a specified word from a character value.</td>
+    </tr>
+    <tr>
+      <th>SUBSTR</th>
+      <td>extracts a substring or replaces character values.</td>
+    </tr>
+    <tr>
+      <th>TRIM</th>
+      <td>trims trailing blanks from character values.</td>
+    </tr>
+    <tr>
+      <th>CATX</th>
+      <td>concatenates character strings, removes leading and trailing blanks, and
+          inserts separators.
+      </td>
+    </tr>
+    <tr>
+      <th>INDEX</th>
+      <td>searches a character value for a specific string.</td>
+    </tr>
+    <tr>
+      <th>FIND</th>
+      <td>searches for a specific substring of characters within a character string
+          that you specify.
+      </td>
+    </tr>
+    <tr>
+      <th>UPCASE</th>
+      <td>converts all letters in a value to uppercase.</td>
+    </tr>
+    <tr>
+      <th>LOWCASE</th>
+      <td>converts all letters in a value to lowercase.</td>
+    </tr>
+    <tr>
+      <th>PROPCASE</th>
+      <td>converts all letters in a value to proper case.</td>
+    </tr>
+    <tr>
+      <th>TRANWRD</th>
+      <td>replaces or removes all occurrences of a pattern of characters within a
+          character string.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 2-->
+  <h3 class="subtopic" id="topic6_subtopic2">SCAN Function</h3>
+
+  <p>The <strong>SCAN</strong> function enables you to separate a character value into words and to return a
+     specified word. Let's look at the following example to see how the SCAN function works.
+  </p>
+  <p>The data set <strong>Hrd.Temp</strong> stores the names of temporary employees in the variable Name. The
+     Name variable contains the employees's first, middle, and last names.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+    </tr>
+    <tr>
+       <td>Administrative Support, Inc.</td>
+       <td>F274</td>
+       <th class="back-color-grey">CICHOCK, ELIZABETH MARIE</th> 
+    </tr>
+    <tr>
+       <td>Administrative Support, Inc.</td>
+       <td>F101</td>
+       <th class="back-color-grey">BENINCASA, HANNAH LEE</th> 
+    </tr>
+  </table>
+  <br/>
+
+  <p>However, suppose you want to separate the value of <i>Name</i> into three variables: one variable to
+     store the first name, one to store the middle name, and one to store the last name. You can use
+     the SCAN function to create these new variables.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">MiddleName</th>
+    </tr>
+    <tr>
+       <td>Administrative Support, Inc.</td>
+       <td>F274</td>
+       <th class="back-color-grey">CICHOCK</th> 
+       <th class="back-color-grey">ELIZABETH</td>
+       <th class="back-color-grey">MARIE</td>
+    </tr>
+    <tr>
+       <td>Administrative Support, Inc.</td>
+       <td>F101</td>
+       <th class="back-color-grey">BENINCASA</th> 
+       <th class="back-color-grey">HANNAH</td>
+       <th class="back-color-grey">LEE</td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Specifying Delimiters</h4>
+
+  <p>The SCAN function uses delimiters, which are characters that are specified as word separators,
+     to separate a character string into words. For example, if you are working with the character
+     string below and you specify the comma as a delimiter, the SCAN function separates the string
+     into three words.
+  </p>
+
+  <img src="images/ch14_image5.png" class="diagram" />
+
+  <p>Then the function returns whichever word you specify. In this example, if you specify the third
+     word, the SCAN function returns the word <i>HIGH</i>.
+  </p>
+
+  <p>Here's another example. Once again, let's use the comma as a delimiter, and specify that the
+     third word be returned.
+  </p>
+  <p><strong>209 RADCLIFFE ROAD, CENTER CITY, NY, 92716</strong></p>
+  <p>In this example, the word returned by the SCAN function is NY.</p>
+
+  <h4>Specifying Multiple Delimiters</h4>
+
+  <p>When using the SCAN function, you can specify as many delimiters as needed to correctly
+     separate the character expression. When you specify multiple delimiters, SAS uses all of the
+     delimiters as word separators. For example, if you specify both the slash and the hyphen as
+     delimiters, the SCAN function separates the following text string into three words:
+  </p>
+  <img src="images/ch14_image6.png" class="diagram" />  
+
+  <p>The SCAN function treats two or more contiguous delimiters, such as the parenthesis and slash
+     below, as one delimiter. Also, leading delimiters have no effect.
+  </p>
+  <img src="images/ch14_image7.png" class="diagram" />  
+
+  <h4>Default Delimiters</h4>
+
+  <p>If you do not specify delimiters when using the SCAN function, default delimiters are used. The
+     default delimiters are
+  </p>
+  <p><strong>blank . < ( + | & ! $ * ) ; ^ - / , %</strong></p>
+
+  <h4>SYNTAX</h4>
+
+  <p>Now that you are familiar with how the SCAN function works, let's examine the syntax of the
+     function.
+  </p>
+  <hr/>
+  <p>General form, SCAN function:</p>
+  <p>SCAN(argument,n,delimiters)</p>
+  <p>where</p>
+  <ul>
+    <li>argument specifies the character variable or expression to scan</li>
+    <li>n specifies which word to read</li>
+    <li>delimiters are special characters that must be enclosed in single quotation marks (' ')</li>
+  </ul>
+  <hr/>
+
+  <p>Use the SCAN function to create your new name variables for <strong>Hrd.Temp</strong>. To begin, examine the
+     values of the existing Name variable to determine which characters separate the names in the
+     values. Notice that blanks and commas appear between the names and that the employee's last
+     name appears first, then the first name, and then the middle name.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <th class="back-color-grey">CICHOCK, ELIZABETH MARIE</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <th class="back-color-grey">BENINCASA, HANNAH LEE</th>
+    </tr>
+    <tr>
+      <td>OD Consulting, Inc.</td>
+      <td>F054</td>
+      <th class="back-color-grey">SHERE, BRIAN THOMAS</th>
+    </tr>
+    <tr>
+      <td>New Time Temps Agency</td>
+      <td>F077</td>
+      <th class="back-color-grey">HODNOFF, RICHARD LEE</th>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To create the <i>LastName</i> variable to store the employee's last name, you write an assignment
+     statement that contains the following SCAN function:
+  </p>
+  <p><strong>LastName=scan(name,1,' ,');</strong></p>
+
+  <p>Note that a blank and a comma are specified as delimiters. You can also write the function
+     without listing delimiters, because the blank and comma are default delimiters
+  </p>
+  <p><strong>LastName=scan(name,1);</strong></p>
+
+  <p>The complete DATA step that is needed to create LastName, <i>FirstName</i>, and <i>MiddleName</i>
+     appears below. Notice that the original <i>Name</i> variable is dropped from the new data set.
+  </p>
+
+  <pre>
+  data hrd.newtemp(drop=name);
+     set hrd.temp;
+     LastName=scan(name,1);
+     FirstName=scan(name,2);
+     MiddleName=scan(name,3);
+  run;</pre>
+
+
+  <h4>Specifying Variable Length</h4>
+
+  <p>Note that the SCAN function assigns a length of 200 to each target variable. (Remember, a target
+     variable is the variable that receives the result of the function.) So, if you submit the DATA step
+     above, the <i>LastName, FirstName</i>, and <i>MiddleName</i> variables are each assigned a length of
+     200. This length is longer than necessary for these variables.
+  </p>
+
+  <p>To save storage space, add a <strong>LENGTH statement</strong> to your DATA step, and specify an
+     appropriate length for all three variables. Because SAS sets the length of a new character
+     variable the first time it is encountered in the DATA step, be sure to place the LENGTH statement
+     before the assignment statements that contain the SCAN function.
+  </p>
+
+  <pre>
+  data hrd.newtemp(drop=name);
+     set hrd.temp;
+     length LastName FirstName MiddleName $ 10;
+     lastname=scan(name,1);
+     firstname=scan(name,2);
+     middlename=scan(name,3);
+  run;</pre>
+
+  <!-- Topic 6 Subtopic 3-->
+  <h3 class="subtopic" id="topic6_subtopic3">SUBSTR Function</h3>
+
+  <p>The SUBSTR function can be used to</p>
+  <ul>
+    <li>extract a portion of a character value</li>
+    <li>replace the contents of a character value</li>
+  </ul>
+
+  <p>Let's begin with the task of extracting a portion of a value. In the data set Hrd.Newtemp, the
+     names of temporary employees are stored in three name variables: <i>LastName, FirstName</i>,
+     and <i>MiddleName</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">Firstname</th>
+      <th class="color-red">MiddleName</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK</td>
+      <td>ELIZABETH</td>
+      <td class="back-color-grey">MARIE</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <td>BENINCASA</td>
+      <td>HANNAH</td>
+      <td class="back-color-grey">LEE</td>
+    </tr>
+    <tr>
+      <td>OD Consulting, Inc.</td>
+      <td>F054</td>
+      <td>SHERE</td>
+      <td>BRIAN</td>
+      <td class="back-color-grey">THOMAS</td>
+    </tr>
+    <tr>
+      <td>New Time Temps Agency</td>
+      <td>F077</td>
+      <td>HODNOFF</td>
+      <td>RICHARD</td>
+      <td class="back-color-grey">LEE</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>However, suppose you want to modify the data set to store only the middle initial instead of the
+     full middle name. To do so, you must extract the first letter of the middle name values and assign
+     these values to the new variable <i>MiddleInitial</i>.
+  </p>
+
+   <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Work.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">MiddleInitial</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK</td>
+      <td>ELIZABETH</td>
+      <td class="back-color-grey">M</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <td>BENINCASA</td>
+      <td>HANNAH</td>
+      <td class="back-color-grey">L</td>
+    </tr>
+    <tr>
+      <td>OD Consulting, Inc.</td>
+      <td>F054</td>
+      <td>SHERE</td>
+      <td>BRIAN</td>
+      <td class="back-color-grey">T</td>
+    </tr>
+    <tr>
+      <td>New Time Temps Agency</td>
+      <td>F077</td>
+      <td>HODNOFF</td>
+      <td>RICHARD</td>
+      <td class="back-color-grey">L</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The SUBSTR function enables you to extract any number of characters from a character string,
+     starting at a specified position in the string.
+  </p>
+  <hr/>
+  <p><strong>General form, SUBSTR function:</strong></p>
+  <p><strong>SUBSTR</strong>(argument,position,<n>)</p>
+  <p>where</p>
+  <ul>
+    <li><i>argument</i> specifies the character variable or expression to scan</li>
+    <li><i>position</i> is the character position to start from</li>
+    <li><i>n</i> specifies the number of characters to extract. If n is omitted, all remaining characters
+        are included in the substring
+    </li>
+  </ul>
+  <hr/>
+
+  <p>Using the SUBSTR function, you can extract the first letter of the MiddleName value to create
+     the new variable <i>MiddleInitial</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">Firstname</th>
+      <th class="color-red">MiddleName</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK</td>
+      <td>ELIZABETH</td>
+      <td class="back-color-grey">MARIE</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <td>BENINCASA</td>
+      <td>HANNAH</td>
+      <td class="back-color-grey">LEE</td>
+    </tr>
+    <tr>
+      <td>OD Consulting, Inc.</td>
+      <td>F054</td>
+      <td>SHERE</td>
+      <td>BRIAN</td>
+      <td class="back-color-grey">THOMAS</td>
+    </tr>
+    <tr>
+      <td>New Time Temps Agency</td>
+      <td>F077</td>
+      <td>HODNOFF</td>
+      <td>RICHARD</td>
+      <td class="back-color-grey">LEE</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You write the SUBSTR function as:</p>
+  <p><strong>substr(middlename,1,1)</strong></p>
+
+  <p>This function specifies that a character string be extracted from the value of MiddleName. The
+     string to be extracted begins in position 1 and contains one character. Then, you place this
+     function in an assignment statement in your DATA step.
+  </p>
+  <pre>
+  data work.newtemp(drop=middlename);
+     set hrd.newtemp;
+     MiddleInitial=substr(middlename,1,1);
+  run;</pre>
+
+  <p>The new <i>MiddleInitial</i> variable is given the same length as <i>MiddleName</i>. <i>The MiddleName</i>
+     variable is then dropped from the new data set.
+  </p>
+
+   <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Work.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">MiddleInitial</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK</td>
+      <td>ELIZABETH</td>
+      <td class="back-color-grey">M</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <td>BENINCASA</td>
+      <td>HANNAH</td>
+      <td class="back-color-grey">L</td>
+    </tr>
+    <tr>
+      <td>OD Consulting, Inc.</td>
+      <td>F054</td>
+      <td>SHERE</td>
+      <td>BRIAN</td>
+      <td class="back-color-grey">T</td>
+    </tr>
+    <tr>
+      <td>New Time Temps Agency</td>
+      <td>F077</td>
+      <td>HODNOFF</td>
+      <td>RICHARD</td>
+      <td class="back-color-grey">L</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You can use the SUBSTR function to extract a substring from any character value if you know the
+     position of the value.
+  </p>
+
+  <br/><br/>
+  <h4>Positioning the SUBSTR Function</h4>
+  <br/>
+
+  <p>SAS uses the SUBSTR function to extract a substring or to modify a variable's values, depending
+     on the position of the function in the assignment statement.
+  </p>
+  <p>When the function is on the right side of an assignment statement, the function returns the
+     requested string.
+  </p>
+  <p><strong>MiddleInitial=substr(middlename,1,1);</strong></p>
+
+  <p>But if you place the SUBSTR function on the left side of an assignment statement, the function is
+     used to modify variable values.
+  </p>
+  <p><strong>substr(region,1,3)='NNW';</strong></p>
+
+  <p>When the SUBSTR function modifies variable values, the right side of the assignment statement
+     must specify the value to place into the variable. For example, to replace the fourth and fifth 
+     characters of a variable named <i>Test</i> with the value 92, you write the following assignment
+     statement:
+  </p>
+
+  <p><strong>substr(test,4,2)='92';</strong></p>
+
+  <table>
+    <tr>
+      <td>Test</td>
+      <td>&nbsp</td>
+      <td>Test</td>
+    </tr>
+    <tr>
+      <td>S7381K2</td>
+      <td>-&gt;</td>
+      <td>S7392K2</td>
+    </tr>
+    <tr>
+      <td>S7381K7</td>
+      <td>-&gt;</td>
+      <td>S7392K7</td>
+    </tr>
+  </table>
+  <br/>
+  
+  <br/><br/>
+  <h4>Replacing Text</h4>
+  <br/>
+
+  <p>There is a second use for the SUBSTR function. This function can also be used to replace the
+     contents of a <strong>character variable</strong>. For example, suppose the local phone exchange 622 was
+     replaced by the exchange 433. You need to update the character variable Phone in <strong>Hrd.Temp</strong> to
+     reflect this change.
+  </p>
+
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td class="back-color-grey">9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td class="back-color-grey">6970450</td>
+      <td>14516</td>
+      <td>14527</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You can use the SUBSTR function to complete this modification. The syntax of the SUBSTR
+     function, when used to replace a variable’s values, is identical to the syntax for extracting a
+     substring.
+  </p>
+
+  <p><strong>SUBSTR(argument,position,n)</strong></p>
+
+  <p>However, in this case,</p>
+  <ul>
+    <li>the first argument specifies the character variable whose values are to be modified</li>
+    <li>the second argument specifies the position at which the replacement is to begin</li>
+    <li>the third argument specifies the number of characters to replace. If n is omitted, all
+        remaining characters are replaced
+    </li>
+  </ul>
+
+  <p>Now let's use the SUBSTR function to replace the 622 exchange in the variable <i>Phone</i>. You
+     begin by writing this assignment statement:
+  </p>
+  <pre>
+  data hrd.temp2;
+     set hrd.temp;
+     substr(phone,1,3)='433';
+  run;</pre>
+
+  <p>This statement specifies that the new exchange 433 should be placed in the variable Phone,
+     starting at character position 1 and replacing three characters.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">6224549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">6223251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td class="back-color-grey">9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+    <tr>
+      <td>RALEIGH</td>
+      <td>NC</td>
+      <td>27612</td>
+      <td class="back-color-grey">6970450</td>
+      <td>14516</td>
+      <td>14527</td>
+      <td>15</td>
+      <td>10</td>
+      <td>80</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>But executing this DATA step places the value 433 into all values of Phone. You only need to
+     replace the values of <i>Phone</i> that contain the 622 exchange. So, you add an assignment
+     statement to the DATA step to extract the exchange from <i>Phone</i>. Notice that the SUBSTR
+     function is used on the right side of the assignment statement.
+  </p>
+
+  <pre>
+  data hrd.temp2(drop=exchange);
+     set hrd.temp;
+     Exchange=substr(phone,1,3);
+     substr(phone,1,3)='433';
+  run;</pre>
+
+  <p>Now the DATA step needs an <strong>IF-THEN statement</strong> to verify the value of the variable Exchange. If
+     the exchange is 622, the assignment statement executes to replace the value of <i>Phone</i>.
+  </p>
+
+  <pre>
+  data hrd.temp2(drop=exchange);
+     set hrd.temp;
+     Exchange=substr(phone,1,3);
+     if exchange='622' then substr(phone,1,3)='433';
+  run;</pre>
+
+  <p>After the DATA step is executed, the appropriate values of <i>Phone</i> contain the new exchange.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+      <th class="color-red">Phone</th>
+      <th class="color-red">StartDate</th>
+      <th class="color-red">EndDate</th>
+      <th class="color-red">PayRate</th>
+      <th class="color-red">Days</th>
+      <th class="color-red">Hours</th>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">4334549</td>
+      <td>14567</td>
+      <td>14621</td>
+      <td>10</td>
+      <td>11</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <td>CARY</td>
+      <td>NC</td>
+      <td>27513</td>
+      <td class="back-color-grey">4333251</td>
+      <td>14524</td>
+      <td>14565</td>
+      <td>8</td>
+      <td>25</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>CHAPEL HILL</td>
+      <td>NC</td>
+      <td>27514</td>
+      <td class="back-color-grey">9974749</td>
+      <td>14570</td>
+      <td>14608</td>
+      <td>40</td>
+      <td>26</td>
+      <td>208</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Once again, remember the rules for using the SUBSTR function. If the SUBSTR function is on the
+     right side of an assignment statement, the function extracts a substring.
+  </p>
+
+  <p><strong>MiddleInitial=substr(middlename,1,1);</strong></p>
+
+  <p>If the SUBSTR function is on the left side of an assignment statement, the function replaces the
+     contents of a character variable.
+  </p>
+  <p><strong>substr(region,1,3)='NNW';</strong></p>
+
+  <!-- Topic 6 Subtopic 4 -->
+  <h3 class="subtopic" id="topic6_subtopic4">SCAN Function Compared with SUBSTR Function</h3>
+
+  <p>The SCAN function is similar to the SUBSTR function. Let's briefly compare the two. Both the
+     SCAN and SUBSTR functions can extract a substring from a character value:
+  </p>
+  <ul>
+    <li><strong>SCAN</strong> extracts words within a value that is marked by delimiters</li>
+    <li><strong>SUBSTR</strong> extracts a portion of a value by starting at a specified location</li>
+  </ul>
+
+  <p>The SUBSTR function is best used when you know the <strong>exact position</strong> of the substring that you
+     want to extract from the character value. The substring does not need to be marked by delimiters.
+     For example, the first two characters of the variable <i>ID</i> identify the class level of college students.
+     The position of these characters does not vary within the values of <i>ID</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">SAS Data</th>
+    </tr>
+    <tr>
+      <th class="color-red">Name</th>
+      <th class="color-red">ID</th>
+    </tr>
+    <tr>
+      <td>Trentonson, Matthew Robert</td>
+      <td class="back-color-grey">SO45467</td>
+    </tr>
+    <tr>
+      <td>Truell, Marcia Elizabeth</td>
+      <td class="back-color-grey">SR32881</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The SUBSTR function is the best choice to extract class level information from ID. By contrast,
+     the SCAN function is best used when
+  </p>
+  <ul>
+    <li>you know the order of the words in the character value</li>
+    <li>the starting position of the words varies</li>
+    <li>the words are marked by some delimiter</li>
+  </ul>
+
+  
+  <!-- Topic 6 Subtopic 5 -->
+  <h3 class="subtopic" id="topic6_subtopic5">TRIM Function</h3>
+
+  <p>The <strong>TRIM</strong> function enables you to remove trailing blanks from character values. To learn about
+     the TRIM function, let's modify the data set <strong>Hrd.Temp</strong>.
+  </p>
+  <p>The data set <strong>Hrd.Temp</strong> contains four address variables: <i>Address, City, State</i>, and <i>Zip</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="7">SAS Data Set Hrd.Temp (Selected Variables)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Address</th>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Zip</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK, ELIZABETH MARIE</td>
+      <td class="back-color-grey">65 ELM DR</td>
+      <td class="back-color-grey">CARY</td>
+      <td class="back-color-grey">NC</td>
+      <td class="back-color-grey">27513</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc</td>
+      <td>F101</td>
+      <td>BENINCASA, HANNAH LEE</td>
+      <td class="back-color-grey">11 SUN DR</td>
+      <td class="back-color-grey">CARY</td>
+      <td class="back-color-grey">NC</td>
+      <td class="back-color-grey">27513</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You need to create one address variable that contains the values of the three variables <i>Address,
+     City</i>, and <i>Zip</i>. (Because all temporary employees are hired locally, the value of <i>State</i> does not
+     need to be included in the new variable.)
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.NewTemp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Agency</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">NewAddress</th>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F274</td>
+      <td>CICHOCK, ELIZABETH MARIE</td>
+      <td class="back-color-grey">65 ELM DR, CARY, 27513</td>
+    </tr>
+    <tr>
+      <td>Administrative Support, Inc.</td>
+      <td>F101</td>
+      <td>BENINCASA, HANNAH LEE</td>
+      <td class="back-color-grey">11 SUN DR, CARY, 27513</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Writing a DATA step to create this new variable is easy. You include an assignment statement
+     that contains the concatenation operator (||), as shown below.
+  </p>
+
+  <pre>
+  data hrd.newtemp(drop=address city state zip);
+     set hrd.temp;
+     NewAddress=address || ', ' || city || ', ' || zip;
+  run;</pre>
+
+  <p>The concatenation operator (||) enables you to concatenate character values. In this assignment
+     statement, the character values of <i>Address, City</i>, and <i>Zip</i> are concatenated with two
+     character constants that consist of a comma and a blank. The commas and blanks are needed to
+     separate the street, city, and ZIP code values. The length of <i>NewAddress</i> is the sum of the
+     length of each variable and constant that is used to create the new variable. Notice that this
+     DATA step drops the original address variables from the new data set.
+  </p>
+
+  <p>When the DATA step is executed, you notice that the values of <i>NewAddress</i> do not appear as
+     expected. The values of the new variable contain embedded blanks.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Hrd.NewTemp</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="3" style="text-align:center;">NewAddress</th>
+    </tr>
+    <tr>
+      <td>65 ELM DRIVE</td>
+      <td>, CARY</td>
+      <td>, 27513</td>
+    </tr>
+    <tr>
+      <td>11 SUN DRIVE</td>
+      <td>, CARY</td>
+      <td>, 27513</td>
+    </tr>
+    <tr>
+      <td>712 HARDWICK STREET</td>
+      <td>, CHAPEL HILL</td>
+      <td>, 27514</td>
+    </tr>
+    <tr>
+      <td>5372 WHITEBUD ROAD</td>
+      <td>, RALEIGH</td>
+      <td>, 27612</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>These blanks appear in the values of <i>NewAddress</i> because the values of the original address
+     variables contained trailing blanks. Whenever the value of a character variable does not match
+     the length of the variable, SAS pads the value with trailing blanks.
+  </p>
+  
+  <table border="1">
+    <tr>
+      <th class="color-red">Address length=32</th>
+      <th class="color-red">City length=15</th>
+      <th class="color-red">Zip length=5</th>
+    </tr>
+    <tr>
+      <td>65 ELM DRIVE...............</td>
+      <td>RALEIGH........</td>
+      <td>27612</td>
+    </tr>
+    <tr>
+      <td>11 SUN DRIVE...............</td>
+      <td>DURHAM.........</td>
+      <td>27612</td>
+    </tr>
+    <tr>
+      <td>712 HARTWICK STREET........</td>
+      <td>CHAPEL HILL....</td>
+      <td>27514</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>So, when the original address values are concatenated to create NewAddress, the trailing blanks
+     in the original values are included in the values of the new variable. The variable Zip is the only
+     one that does not contain trailing blanks.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">NewAddress length=56</th>
+    </tr>
+    <tr>
+      <td>65 ELM DRIVE................., RALEIGH........, 27612</td>
+    </tr>
+    <tr>
+      <td>11 SUN DRIVE................., DURHAM........., 27612</td>
+    </tr>
+    <tr>
+      <td>712 HARTWICK STREET.........., CHAPEL HILL...., 27514</td>
+    </tr>
+  </table>
+  <br/>
+  
+  <p>The TRIM function enables you to remove trailing blanks from character values.</p>
+  <hr/>
+  <p><strong>General form, TRIM function:</strong></p>
+  <p><strong>TRIM</strong>(argument)</p>
+  <p>where argument can be any character expression, such as</p>
+  <ul>
+    <li>a character variable: <strong>trim(address)</strong></li>
+    <li>another character function: <strong>trim(left(id))</strong></li>
+  </ul>
+  <hr/>
+
+  <p>To remove the blanks from the variable <i>NewAddress</i>, include the TRIM function in your
+     assignment statement. Trim the values of <i>Address</i> and <i>City</i>.
+  </p>
+  <pre>
+  data hrd.newtemp(drop=address city state zip);
+    set hrd.temp;
+    NewAddress=trim(address)||', '||trim(city)||', '||zip;
+  run;</pre>
+
+  <p>The revised DATA step creates the values that you expect for <i>NewAddress</i>.</p>
+  
+  <table border="1">
+     <tr>
+       <th class="color-red">SAS Data Set Hrd.Newtemp</th>
+     </tr>
+     <tr>
+       <th class="color-red" style="text-align:center;">NewAddress</th>
+     </tr>
+     <tr>
+       <td>65 ELM DRIVE, CARY, 27513</td>
+     </tr>
+     <tr>
+       <td>11 SUN DRIVE, CARY, 27513</td>
+     </tr>
+     <tr>
+       <td>712 HARDWICK STREET, CHAPEL HILL, 27514</td>
+     </tr>
+     <tr>
+       <td>5372 WHITEBUD ROAD, RALEIGH, 27612</td>
+     </tr>
+  </table>
+  <br/>
+  <br/>
+
+  <h4>Points to Remember</h4>
+  <br/>
+
+  <p>Keep in mind that the TRIM function does not affect how a variable is stored. Suppose you trim
+     the values of a variable and then assign these values to a new variable. The trimmed values are
+     padded with trailing blanks again if the values are shorter than the length of the new variable.
+  </p>
+  <p>Here's an example. In the DATA step below, the trimmed value of <i>Address</i> is assigned to the
+     new variable <i>Street</i>. When the trimmed value is assigned to <i>Street</i>, trailing blanks are added
+     to the value to match the length of 20.
+  </p>
+
+  <pre>
+  data temp;
+     set hrd.temp;
+     length Street $ 20;
+     Street=trim(address);
+  run;</pre>
+
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Address length=32</th>
+      <th class="color-red">Street length=20</th>
+    </tr>
+    <tr>
+      <td>65 ELM DRIVE..................</td>
+      <td>65 ELM DRIVE........</td>
+    </tr>
+    <tr>
+      <td>11 SUN DRIVE..................</td>
+      <td>11 SUN DRIVE........</td>
+    </tr>
+    <tr>
+      <td>712 HARTWICK STREET...........</td>
+      <td>712 HARTWICK STREET.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 6 -->
+  <h3 class="subtopic" id="topic6_subtopic6">CATX Function</h3>
+
+  <p>The <strong>CATX</strong> function enables you to concatenate character strings, remove leading and trailing
+     blanks, and insert separators. The CATX function returns a value to a variable, or returns a value
+     to a temporary buffer. The results of the CATX function are usually equivalent to those that are
+     produced by a combination of the concatenation operator and the TRIM and LEFT functions.
+  </p>
+
+  <p>Remember that you learned to use the TRIM function along with the concatenation operator to
+     create one address variable that contains the values of the three variables <i>Address, City</i>, and
+     <i>Zip</i>, and to remove extra blanks from the new values. You used the DATA step shown below.
+  </p>
+
+  <pre>
+  data hrd.newtemp(drop=address city state zip);
+     set hrd.temp;
+     NewAddress=trim(address)||', '||trim(city)||', '||zip;
+  run;</pre>
+
+  <p>You can accomplish the same concatenation using only the CATX function.</p>
+  <hr/>
+  <p><strong>General form, CATX function:</strong></p>
+  <p><strong>CATX</strong>(separator,string-1 &lt;,...string-n&gt; )</p>
+  <p>where</p>
+  <ul>
+    <li><i>separator</i> specifies the character string that is used as a separator between
+        concatenated strings
+    </li>
+    <li><i>string</i> specifies a SAS character string</li>
+  </ul>
+  <hr/>
+
+
+  <p>You want to create the new variable <i>NewAddress</i> by concatenating the values of the <i>Address,
+     City</i>, and <i>Zip</i> variables from the data set <strong>Hrd.Temp</strong>. You want to strip excess blanks from the
+     old variable values and separate the variable values with a comma. The DATA step below uses
+     the CATX function to create <i>NewAddress</i>.
+  </p>
+  <pre>
+  data hrd.newtemp(drop=address city state zip);
+     set hrd.temp;
+     NewAddress=catx(', ',address,city,zip);
+  run;</pre>
+
+  <p>The revised DATA step creates the values that you expect for <i>NewAddress</i>.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">SAS Data Set Hrd.Newtemp</th>
+    </tr>
+    <tr>
+      <th class="color-red" style="text-align:center;">NewAddress</th>
+    </tr>
+    <tr>
+      <td>65 ELM DRIVE, CARY, 27513</td>
+    </tr>
+    <tr>
+      <td>11 SUN DRIVE, CARY, 27513</td>
+    </tr>
+    <tr>
+      <td>712 HARDWICK STREET, CHAPEL HILL, 27514</td>
+    </tr>
+    <tr>
+      <td>5372 WHITEBUD ROAD, RALEIGH, 27612</td>
+    </tr>
+  </table>
+  <br/>
+  
+  
+  <!-- Topic 6 Subtopic 7 -->
+  <h3 class="subtopic" id="topic6_subtopic7">INDEX Function</h3>  
+ 
+  <p>The <strong>INDEX</strong> function enables you to search a character value for a specified string. The INDEX
+     function searches values from left to right, looking for the first occurrence of the string. It returns
+     the position of the string's first character; if the string is not found, it returns a value of 0.
+  </p>
+  <p>Suppose you need to search the values of the variable <i>Job</i>, which lists job skills. You want to
+     create a data set that contains the names of all temporary employees who have word processing
+     experience.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td>ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td>CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The INDEX function can complete this search.</p>
+  <hr/>
+  <p><strong>General form, INDEX function:</strong></p>
+  <p><strong>INDEX</strong>(source,excerpt)</p>
+  <p>where</p>
+  <ul>
+    <li><i>source</i> specifies the character variable or expression to search</li>
+    <li><i>excerpt</i> specifies a character string that is enclosed in quotation marks (' ')</li>
+  </ul>
+  <hr/>
+
+  <p>To search for the occurrences of word processing in the values of the variable Job, you write the
+     INDEX function as shown below. Note that the character string is enclosed in quotation marks.
+  </p>
+  <p><strong>index(job,'word processing')</strong></p>
+  <p>Then, to create the new data set, include the INDEX function in a subsetting IF statement. Only
+     those observations in which the function locates the string and returns a value greater than 0 are
+     written to the data set.
+  </p>
+  <pre>
+  data hrd.datapool;
+     set hrd.temp;
+     if index(job,'word processing') > 0;
+  run;</pre>
+
+  <p>Here's your data set that shows the temporary employees who have word processing experience.</p>
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>bookkeeping, word processing</td>
+      <td>BOOKKEEPER AST</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>word processing, sec. work</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <td>bookkeeping, word processing</td>
+      <td>BOOKKEEPER AST</td>
+      <td>BK</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <td>word processing, sec. work</td>
+      <td>WORD PROCESSOR</td>
+      <td>PUB</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>90</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Note that the INDEX function is <strong>case sensitive</strong>, so the character string that you are searching for
+     must be specified exactly as it is recorded in the data set. For example, the INDEX function
+     shown below would not locate any employees who have word processing experience.
+  </p>
+
+  <p><strong>index(job,'WORD PROCESSING')</strong></p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td>ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td>CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td>bookkeeping, word processing</td>
+      <td>BOOKKEEPER ASST.</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+  </table>
+  <br/><br/>
+
+  <h4>Finding a String Regardless of Case</h4>
+  <br/>
+
+  <p>To ensure that all occurrences of a character string are found, you can use the <strong>UPCASE</strong> or
+     <strong>LOWCASE</strong> function with the INDEX function. The UPCASE and LOWCASE functions enable you
+     to convert variable values to uppercase or lowercase letters. You can then specify the character
+     string in the INDEX function accordingly.
+  </p>
+
+  <p><strong>index(upcase(job),'WORD PROCESSING')</strong></p>
+  <p><strong>index(lowcase(job),'word processing')</strong></p>
+
+  <!-- Topic 6 Subtopic 8 -->
+  <h3 class="subtopic" id="topic6_subtopic8">FIND Function</h3> 
+
+  <p>The <strong>FIND</strong> function enables you to search for a specific substring of characters within a character
+     string that you specify. The FIND function searches a string for the first occurrence of the
+     substring, and returns the position of that substring. If the substring is not found in the string,
+     FIND returns a value of 0.
+  </p>
+  <p>The FIND function is similar to the INDEX function. Remember that you used the INDEX function
+     to search the values of the variable <i>Job</i> in <strong>Hrd.Temp</strong> in order to create a data set that contains
+     the names of all temporary employees who have word processing experience.
+  </p>
+ <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td>ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td>CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You can also use the FIND function to complete this search.</p>
+  <hr/>
+  <p><strong>General form, FIND function:</strong></p>
+  <p><strong>FIND</strong>(string,substring&lt;,modifiers&gt;&lt;,startpos&gt; )</p>
+  <p>where</p>
+  <ul>
+    <li><i>string</i> specifies a character constant, variable, or expression that will be searched for
+        substrings
+    </li>
+    <li><i>substring</i> is a character constant, variable, or expression that specifies the substring of
+        characters to seach for in string
+    </li>
+    <li><i>modifiers</i> is a character constant, variable, or expression that specifies one or more
+        modifiers
+    </li>
+    <li><i>startpos</i> is an integer that specifies the position at which the search should start and the
+        direction of the search
+    </li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If string or substring is a character literal, you must enclose it in quotation marks</td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>The <i>modifiers</i> argument enables you to specify one or more modifiers for the function, as listed below.</p>
+  <ul>
+    <li>The modifier i causes the FIND function to ignore character case during the search. If this
+        modifier is not specified, FIND searches for character substrings with the same case as the
+        characters in substring
+    </li>
+    <li>The modifier t trims trailing blanks from string and substring</li>
+  </ul>
+ <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If string or substring is a character literal, you must enclose it in quotation marks</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>If <i>startpos</i> is not specified, FIND starts the search at the beginning of the string and searches the
+     string from left to right. If <i>startpos</i> is specified, the absolute value of <i>startpos</i> determines the
+     position at which to start the search. The sign of <i>startpos</i> determines the direction of the search. If
+     <i>startpos</i> is positive, FIND searches from <i>startpos</i> to the right; and if <i>startpos</i> is negative, FIND
+     searches from <i>startpos</i> to the left.
+  </p>
+  <br/><br/>
+
+  <h4>Example</h4>
+  <br/>
+
+  <p>The values of the variable <i>Job</i> are all lowercase. Therefore, to search for the occurrence of word
+     processing in the values of the variable <i>Job</i>, you write the FIND function as shown below. Note
+     that the character substring is enclosed in quotation marks.
+  </p>
+  <p><strong>find(job,'word processing','t')</strong></p>
+
+  <p>Then, to create the new data set, include the FIND function in a subsetting IF statement. Only
+     those observations in which the function locates the string and returns a value greater than 0 are
+     written to the data set.
+  </p>
+  <pre>
+  data hrd.datapool;
+     set hrd.temp;
+     if find(job,'word processing','t') > 0;
+  run;</pre>
+
+  <!-- Topic 6 Subtopic 9 -->
+  <h3 class="subtopic" id="topic6_subtopic9">UPCASE Function</h3> 
+
+  <p>The <strong>UPCASE</strong> function converts all letters in a character expression to uppercase.</p>
+
+  <hr/>
+  <p><strong>General form, UPCASE function:</strong></p>
+  <p><strong>UPCASE</strong>(argument)</p>
+  <p>where argument can be any SAS expression, such as a character variable or constant.</p>
+  <hr/>
+
+  <p>Let's use the UPCASE function to convert the values of a character variable in <strong>Hrd.Temp</strong>. The
+     values of the variable <i>Job</i> appear in lowercase letters.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td class="back-color-grey">word processing</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">filing, administrative duties</td>
+      <td>ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">organizational dev. specialist</td>
+      <td>CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">bookkeeping, word processing</td>
+      <td>BOOKKEEPER ASST.</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To convert the values of Job to uppercase, you write the UPCASE function as follows:</p>
+  <p><strong>upcase(job)</strong></p>
+
+  <p>Then place the function in an assignment statement in a DATA step.</p>
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Job=upcase(job);
+  run;</pre>
+
+  <p>Here's the new data set that contains the converted values of <i>Job</i>.</p>
+
+ <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td class="back-color-grey">WORD PROCESSING</td>
+      <td>WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">FILING, ADMINISTRATIVE DUTIES</td>
+      <td>ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">ORGANIZATIONAL DEV. SPECIALIST</td>
+      <td>CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">BOOKKEEPING, WORD PROCESSING</td>
+      <td>BOOKKEEPER ASST.</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 10 -->
+  <h3 class="subtopic" id="topic6_subtopic10">LOWCASE Function</h3> 
+
+  <p>The <strong>LOWCASE</strong> function converts all letters in a character expression to lowercase.</p>
+
+  <hr/>
+  <p><strong>General form, LOWCASE function:</strong></p>
+  <p><strong>LOWCASE</strong>(argument)</p>
+  <p>where argument can be any SAS expression, such as a character variable or constant.</p>
+  <hr/>
+
+  <p>Here's an example of the LOWCASE function. In this example, the function converts the values of
+     a variable named <i>Title</i> to lowercase letters.
+  </p>
+  <p><strong>lowcase(title)</strong></p>
+  <p>Another example of the LOWCASE function is shown below. The assignment statement in this
+     DATA step uses the LOWCASE function to convert the values of the variable <i>Contact</i> to
+     lowercase.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td class="back-color-grey">WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td class="back-color-grey">ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td class="back-color-grey">CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <td>bookkeeping, word processing</td>
+      <td class="back-color-grey">BOOKKEEPER ASST.</td>
+      <td>BK</td>
+      <td>57</td>
+    </tr>
+  </table>
+  <br/>
+
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Contact=lowcase(contact);
+  run;</pre>
+
+  <p>After this DATA step is executed, the new data set is created. Notice the converted values of the
+     variable <i>Contact</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td class="back-color-grey">word processor</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td class="back-color-grey">admin. asst.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td class="back-color-grey">consultant</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 11 -->
+  <h3 class="subtopic" id="topic6_subtopic11">PROPCASE Function</h3> 
+
+  <p>The <strong>PROPCASE</strong> function converts all words in an argument to proper case (so that the first letter
+     in each word is capitalized).
+  </p>
+  <hr/>
+  <p><strong>General form, PROPCASE function:</strong></p>
+  <p><strong>PROPCASE</strong>(argument&lt;,delimiter(s)&gt;)</p>
+  <p>where</p>
+  <ul>
+    <li><i>argument</i> can be any SAS expression, such as a character variable or constant</li>
+    <li><i>delimiter(s)</i> specifies one or more delimiters that are enclosed in quotation marks. The
+        default delimiters are blank, forward slash, hyphen, open parenthesis, period, and tab
+    </li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If you specify <i>delimiter(s)</i>, then the default delimiters are no longer in
+          effect.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>The PROPCASE function copies a character argument and converts all uppercase letters to
+     lowercase letters. It then converts to uppercase the first character of a word that is preceded by a
+     delimiter. PROPCASE uses the default delimiters unless you use the delimiter(s) argument.
+  </p>
+  <p>Here's an example of the PROPCASE function. In this example, the function converts the values
+     of a variable named <i>Title</i> to proper case and uses the default delimiters.
+  </p>
+  <p><strong>lowcase(title)</strong></p>
+  <p>Another example of the PROPCASE function is shown below. The assignment statement in this
+     DATA step uses the PROPCASE function to convert the values of the variable Contact to
+     proper case.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td class="back-color-grey">WORD PROCESSOR</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td class="back-color-grey">ADMIN. ASST.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td class="back-color-grey">CONSULTANT</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+  </table>
+  <br/>
+
+  <pre>
+  data hrd.newtemp;
+     set hrd.temp;
+     Contact=propcase(contact);
+  run;</pre>
+
+  <p>After this DATA step is executed, the new data set is created. Notice the converted values of the
+     variable <i>Contact</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
+    </tr>
+    <tr>
+      <th class="color-red">Job</th>
+      <th class="color-red">Contact</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Site</th>
+    </tr>
+    <tr>
+      <td>word processing</td>
+      <td class="back-color-grey">Word Processor</td>
+      <td>DP</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <td>filing, administrative duties</td>
+      <td class="back-color-grey">Admin. Asst.</td>
+      <td>PURH</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>organizational dev. specialist</td>
+      <td class="back-color-grey">Consultant</td>
+      <td>PERS</td>
+      <td>34</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 12 -->
+  <h3 class="subtopic" id="topic6_subtopic12">TRANWRD Function</h3> 
+
+  <p>The <strong>TRANWRD</strong> function replaces or removes all occurrences of a pattern of characters within a
+     character string. The translated characters can be located anywhere in the string.
+  </p>
+  <hr/>
+  <p><strong>General form, TRANWRD function:</strong></p>
+  <p><strong>TRANWRD</strong>(source,target,replacement)</p>
+  <p>where</p>
+  <ul>
+    <li><i>source</i> specifies the source string that you want to translate</li>
+    <li><i>target</i> specifies the string that SAS searches for in source</li>
+    <li><i>replacement</i> specifies the string that replaces target</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>target and replacement can be specified as variables or as character
+          strings. If you specify character strings, be sure to enclose the strings in
+          quotation marks (' ' or " ").   
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>You can use TRANWRD function to update variables in place. In this example, the function
+     updates the values of <i>Name</i> by changing every occurrence of the string Monroe to Manson.
+  </p>
+  <p><strong>name=tranwrd(name,'Monroe','Manson')</strong></p>
+  <p>Another example of the TRANWRD function is shown below. In this case, two assignment
+     statements use the TRANWRD function to change all occurrences of Miss or Mrs. to Ms.
+  </p>
+ 
+  <table border="1">
+    <tr>
+      <th class="color-red">SAS Data Set Work.Before</th>
+    </tr>
+    <tr>
+      <th class="color-red" style="text-align:center;">Name</th>
+    </tr>
+    <tr>
+      <td>Mrs. Millicent Garrett Fawcett</td>
+    </tr>
+    <tr>
+      <td>Miss Charlotte Despard</td>
+    </tr>
+    <tr>
+      <td>Mrs. Emmeline Pankhurst</td>
+    </tr>
+    <tr>
+      <td>Miss Sylvia Pankhurst</td>
+    </tr>
+  </table>
+  <br/>
+
+  <pre>
+  data work.after;
+     set work.before;
+     name=tranwrd(name,'Miss','Ms.');
+     name=tranwrd(name,'Mrs.','Ms.');
+  run;</pre>
+  
+  <p>After this DATA step is executed, the new data set is created. Notice the changed strings within
+     the variable <i>Name</i>.
+  </p>
+
+ <table border="1">
+    <tr>
+      <th class="color-red">SAS Data Set Work.Before</th>
+    </tr>
+    <tr>
+      <th class="color-red" style="text-align:center;">Name</th>
+    </tr>
+    <tr>
+      <td>Ms. Millicent Garrett Fawcett</td>
+    </tr>
+    <tr>
+      <td>Ms. Charlotte Despard</td>
+    </tr>
+    <tr>
+      <td>Ms. Emmeline Pankhurst</td>
+    </tr>
+    <tr>
+      <td>Ms. Sylvia Pankhurst</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Modifying Numeric Values with Functions</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Introduction</h3> 
+
+  <p>You've seen how SAS functions can be used to</p>
+  <ul>
+    <li>convert between character and numeric variable values</li>
+    <li>manipulate SAS date values</li>
+    <li>modify values of character variables</li>
+  </ul>
+
+  <p>SAS provides additional functions to create or modify numeric values. These include arithmetic,
+     financial, and probability functions. There are far too many of these functions to explore them all
+     in detail, but let's look at two examples.
+  </p>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">INT Function</h3> 
+
+  <p>To return the integer portion of a numeric value, use the INT function. Any decimal portion of the
+     <strong>INT function</strong> argument is discarded.
+  </p>
+  <hr/>
+  <p><strong>General form, INT function:</strong></p>
+  <p><strong>INT</strong>(argument)</p>
+  <p>where argument is a numeric variable, constant, or expression.</p>
+  <hr/>
+
+  <p>The two data sets shown below give before-and-after views of values that are truncated by the
+     INT function.
+  </p>
+
+  <img src="images/ch14_image8.png" class="diagram"/>
+
+  <!-- Topic 7 Subtopic 3 -->
+  <h3 class="subtopic" id="topic7_subtopic3">ROUND Function</h3> 
+
+  <p>To round values to the nearest specified unit, use the <strong>ROUND function</strong>.</p>
+  <hr/>
+  <p><strong>General form, ROUND function:</strong></p>
+  <p><strong>ROUND</strong>(argument,round-off-unit)</p>
+  <p>where</p>
+  <ul>
+    <li><i>argument</i> is a numeric variable, constant, or expression</li>
+    <li><i>round-off-unit</i> is numeric and nonnegative</li>
+  </ul>
+  <hr/>
+
+  <p>If a round-off unit is not provided, a default value of 1 is used, and the argument is rounded to the
+     nearest integer. The two data sets shown below give before-and-after views of values that are
+     modified by the ROUND function.
+  </p>
+
+  <img src="images/ch14_image9.png" class="diagram"/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Nesting SAS Functions</h2>
+
+  <p>Throughout this lesson, you've seen examples of individual functions. For example, in this
+     assignment statement the SCAN function selects the middle name (third word) from the variable
+     Name:
+  </p>
+  <p><strong>MiddleName=scan(name,3);</strong></p>
+  <p>Then this assignment statement uses the SUBSTR function to select the first letter from the
+     variable MiddleName:
+  </p>
+  <p><strong>MiddleInitial=substr(MiddleName,1,1);</strong></p>
+  <p>To write more efficient programs, however, you can nest functions as appropriate. For example,
+     you can nest the SCAN function within the SUBSTR function in an assignment statement to
+     compute the value for MiddleInitial:
+  </p>
+
+  <p><strong>MiddleInitial=substr(scan(name,3),1,1);</strong></p>
+  <p>This example of nested numeric functions determines the number of years between June 15,
+     1999, and today:
+  </p>
+  <p><strong>Years=intck('year','15jun1999'd,today());</strong></p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can nest any function as long as the function that is used as the argument
+          meets the requirements for the argument.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Nesting SAS Functions</h2>
+
+  <!-- Topic 9 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3> 
+  <br/>
+  
+  <h4>Using SAS Functions</h4>
+  <p><strong>SAS functions</strong> can be used to convert data and to manipulate the values of character variables.
+     Functions are written by specifying the function name, then its <strong>arguments</strong> in parentheses.
+     Arguments can include variables, constants, or expressions. Although arguments are typically
+     separated by commas, they can also be specified as variable lists or arrays.
+  </p>
+
+  <h4>Automatic Character-to-Numeric Conversion</h4>
+  <p>When character variables are used in a numeric context, SAS tries to convert the character
+     values to numeric values. Numeric context includes arithmetic operations, comparisons with
+     numeric values, and assignment to previously defined numeric variables. The original character
+     values are not changed. The conversion creates temporary numeric values and places a note in
+     the SAS log.
+  </p>
+
+  <h4>Explicit Character-to-Numeric Conversion</h4>
+  <p>The <strong>INPUT function</strong> provides direct, controlled conversion of character values to numeric values.
+     When a character variable is specified in a numeric informat, the INPUT function generates
+     numeric values without placing a note in the SAS log.
+  </p>
+
+  <h4>Automatic Numeric-to-Character Conversion</h4>
+  <p>When numeric variables are used in a character context, SAS tries to convert the numeric values
+     to character values. Character context includes concatenation operations, use in functions that
+     require character arguments, and assignment to previously defined character variables. The
+     original numeric values are not changed; the conversion creates temporary character values and
+     places a note in the SAS log.
+  </p>
+
+  <h4>Explicit Numeric-to-Character Conversion</h4>
+  <p>The <strong>PUT function</strong> provides direct, controlled conversion of numeric values to character values.
+     The format specified in a PUT function must match the source, so use an appropriate numeric
+     format to create the new character values. No note will appear in the SAS log.
+  </p>
+
+  <h4>SAS Date and Time Values</h4>
+  <p>SAS <strong>date values</strong> are stored as the number of days from January 1, 1960; time values are stored
+     as the number of seconds since midnight. These values can be displayed in a variety of forms by
+     associating them with SAS formats.
+  </p>
+
+  <h4>YEAR, QTR, MONTH, and DAY Functions</h4>
+  <p>To extract the year, quarter, month, or day value from a SAS date value, specify the YEAR, QTR,
+     MONTH, or DAY function followed by the SAS date value in parentheses. The YEAR function
+     returns a four-digit number; QTR returns a value of 1, 2, 3, or 4; MONTH returns a number from 1
+     to 12; and DAY returns 1 to 31.
+  </p>
+
+  <h4>WEEKDAY Function</h4>
+  <p>To extract the day of the week from a SAS date value, specify the function WEEKDAY followed
+     by the SAS date value in parentheses. The function returns a numeric value from 1 to 7,
+     representing the day of the week.
+  </p>
+
+  <h4>MDY Function</h4>
+  <p>To create a SAS date value for a month, day, and year, specify the MDY function followed by the
+     date values. The result can be displayed in several ways by applying a SAS date format. SAS
+     interprets two-digit values according to the 100-year span that is set by the YEARCUTOFF=
+     system option. The default value of YEARCUTOFF= is 1920.
+  </p>
+
+  <h4>DATE and TODAY Functions</h4>
+  <p>To convert the current date to a SAS date value, specify the DATE or TODAY function without
+     arguments. The DATE and TODAY functions can be used interchangeably.
+  </p>
+
+  <h4>INTCK Function</h4>
+  <p>To count the number of time intervals that occur in a time span, use the INTCK function and
+     specify the interval constant or variable, the beginning date value, and the ending date value. The
+     INTCK function counts intervals from fixed interval beginnings, not in multiples of an interval unit.
+     Partial intervals are not counted.
+  </p>
+
+  <h4>INTNX Function</h4>
+  <p>To apply multiples of an interval to a date value, use the INTNX function and specify the interval
+     constant or variable, the start-from date value, and the increment. Include the alignment option to
+     specify whether the date returned should be at the beginning, middle, or end of the interval.
+  </p>
+
+  <h4>DATDIF and YRDIF Functions</h4>
+  <p>To calculate the difference between dates as a number of days or as a number of years, use the
+     DATDIF or YRDIF function. These functions accept SAS date values and return a difference
+     between the date values calculated according to the basis that you specify in the function.
+  </p>
+
+  <h4>SCAN Function</h4>
+  <p>The SCAN function separates a character string to return a word based on its position. It defines
+     words by counting delimiters, which are characters that are used as word separators. The name
+     of the function is followed, in parentheses, by the name of the character variable, the number of
+     delimiters to count, and the specified delimiters enclosed in quotation marks.
+  </p>
+
+  <h4>SUBSTR Function</h4>
+  <p>The SUBSTR function can be used to extract or replace any portion of a character string. To
+     extract values, place the function on the right side of an assignment statement and specify, in
+     parentheses, the name of the character variable, the starting character position, and the number
+    of characters to extract. To replace values, place the function on the left side of an assignment
+    statement and specify, in parentheses, the name of the variable being modified, the starting
+    character position, and the number of characters to replace.
+  </p>
+
+  <h4>SCAN Function versus SUBSTR Function</h4>
+  <p>relies on delimiters, whereas SUBSTR reads values from specified locations. Use SCAN when
+     you know the delimiter and the order of words. Use SUBSTR when the positions of the characters
+     don't vary.
+  </p>
+
+  <h4>TRIM Function</h4>
+  <p>Because SAS pads the length of character values, unwanted spaces can sometimes appear after
+     strings are concatenated. To remove trailing blanks from character values, specify the TRIM
+     function with the name of a character variable. Remember that trimmed values will be padded
+     with blanks again if they are shorter than the length of the new variable.
+  </p>
+
+  <h4>CATX Function</h4>
+  <p>You can concatenate character strings, remove leading and trailing blanks, and insert separators
+     in one step by using the CATX function. The results of the CATX function are usually equivalent
+     to those that are produced by a combination of the concatenation operator and the TRIM and
+     LEFT functions.
+  </p>
+
+  <h4>INDEX Function</h4>
+  <p>To test character values for the presence of a string, use the INDEX function and specify, in
+     parentheses, the name of the variable and the string enclosed in quotation marks. The INDEX
+     function can be used with an IF statement when you are creating a data set. However, only those 
+     observations in which the function finds the string and returns a value greater than 0 are written to
+     the new data set.
+  </p>
+
+  <h4>FIND Function</h4>
+  <p>You can also use the FIND function to search for a specific substring of characters within a
+     character string that you specify. The FIND function is similar to the INDEX function, but the FIND
+     function enables you to ignore character case in your search and to trim trailing blanks. The FIND
+     function can also begin the search at any position that you specify in the string.
+  </p>
+
+  <h4>UPCASE Function</h4>
+  <p>The UPCASE function converts all letters in a character expression to uppercase. Include the
+     function in an assignment statement, and specify the variable name in parentheses.
+  </p>
+
+  <h4>LOWCASE Function</h4>
+  <p>Uppercase letters in character values can be converted to lowercase by using the LOWCASE
+     function. Include the function in an assignment statement, and specify the variable name in
+     parentheses.
+  </p>
+
+  <h4>PROPCASE Function</h4>
+  <p>Character values can be converted to proper case by using the PROPCASE function. Include the
+     function in an assignment statement, and specify the variable name in parentheses. Remember
+     that you can specify delimiters or use the default delimiters.
+  </p>
+
+  <h4>TRANWRD Function</h4>
+  <p>You can replace or remove patterns of characters in the values of character variables by using
+     the TRANWRD function. Use the function in an assignment statement, and specify the source,
+     target, and replacement strings or variables in parentheses.
+  </p>
+
+  <h4>INT Function</h4>
+  <p>To return the integer portion of a numeric value, use the INT function. Any decimal portion of the
+     INT function argument is discarded.
+  </p>
+
+  <h4>ROUND Function</h4>
+  <p>To round values to the nearest specified unit, use the ROUND function. If a round-off unit is not
+     provided, the argument is rounded to the nearest integer.
+  </p>
+
+  <h4>Nesting SAS Functions</h4>
+  <p>To write more efficient programs, you can nest functions as appropriate. You can nest any
+     functions as long as the function that is used as the argument meets the requirements for the
+     argument.
+  </p>
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3> 
+
+  <ul>
+    <li>Even if a function doesn't require arguments, the function name must still be followed by
+        parentheses
+    </li>
+    <li>When specifying a variable list or an array as a function argument, be sure to precede the
+        list or the array with the word OF
+    </li>
+    <li>To remember which function requires a format versus an informat, note that the INPUT
+        function requires the informat
+    </li>
+    <li>If you specify an invalid date in the MDY function, a missing value is assigned to the
+        target variable
+    </li>
+    <li>The SCAN function treats contiguous delimiters as one delimiter; leading delimiters have
+        no effect
+    </li>
+    <li>When using the SCAN function, you can save storage space by adding a LENGTH
+        statement to your DATA step to set an appropriate length for your new variable(s). Place the
+        LENGTH statement before the assignment statements that contain the SCAN function
+    </li>
+    <li>When the SUBSTR function is on the left side of an assignment statement, it replaces
+        variable values. When SUBSTR is on the right side of an assignment statement, it extracts
+        variable values. The syntax of the function is the same; only the placement of the function
+        changes
+    </li>
+    <li>The INDEX function is case sensitive. To ensure that all forms of a character string are
+        found, use the UPCASE or LOWCASE function with the INDEX function
+    </li>
+  </ul>
+
+  
+  
+  
+  
+
+  
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!-- end of div content -->
+
+  
+
+</body>
+</html>

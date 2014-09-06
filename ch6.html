@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>In the Chapter, <strong>Creating SAS Data Sets from Raw Data</strong>, you learned how to read data, perform
+     basic modifications, and create a new SAS data set.
+  </p>
+
+  <p>This chapter teaches you what happens "behind the scenes" when the DATA step reads raw
+     data. You'll examine the <strong>program data vector</strong>, which is a logical framework that SAS uses when
+     creating SAS data sets.
+  </p>
+
+  <img src="images/ch6_image1.png" class="diagram"/>
+
+  <p>Understanding how the program operates can help you to anticipate how variables will be created
+     and processed, to plan your modifications, and to interpret and debug program errors. It also
+     gives you useful strategies for preventing and correcting common DATA step errors.
+  </p>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>identify the two phases that occur when a DATA step is processed.</li>
+    <li>interpret automatic variables.</li>
+    <li>identify the processing phase in which an error occurs.</li>
+    <li>debug SAS DATA steps.</li>
+    <li>test programs by limiting the number of observations that are created.</li>
+    <li>flag errors in the SAS log..</li>
+  </ul>
+
+
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Writing Basic DATA Steps</h2>
+
+  <p>In the Chapter, <strong>Creating SAS Data Sets from Raw Data</strong>, you learned how to write a DATA step to
+     create a permanent SAS data set from raw data that is stored in an external file.
+  </p>
+
+  <img src="images/ch6_image2.png" class="diagram"/>
+  <br/><br/>
+
+  <pre>
+  data clinic.stress;
+     infile tests obs = 8;
+     input ID 1-4 Name $ 6-25 RestHR 27-29
+           MaxHR 31-33 RecHR 35-37
+           TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+  run;</pre>
+
+  <p>You learned how to submit the DATA step and how to check the log to see whether the step ran
+     successfully.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  NOTE: The infile TESTS is:
+        FILENAME=may/t1/rawdata.dat
+  NOTE: 8 records were read from the infile TESTS.
+  NOTE: The data set CLINIC.STRESS has 8
+        observations and 8 variables.
+  NOTE: The DATA statement used 0:00:07.00 real
+        0:00:07.10 cpu.
+  </pre>
+
+
+  <p>You also learned how to display the contents of the data set with the PRINT procedure.</p>
+  <pre>
+  proc print data=clinic.stress;  
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>79</td>
+      <td>187</td>
+      <td>136</td>
+      <td>12</td>
+      <td>26</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+      <td>13</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+  </table>
+  <br>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">How SAS Processes Programs</h2>
+
+  <p>When you submit a DATA step, SAS processes the DATA step and then creates a new SAS data
+     set. Let's see exactly how that happens.
+  </p>
+
+  <p>A SAS DATA step is processed in two phases:</p>
+
+  <img src="images/ch6_image3.png" class="diagram"/>
+
+  <ul>
+    <li>During the <strong>compilation phase</strong>, each statement is scanned for syntax errors. Most syntax
+        errors prevent further processing of the DATA step. When the compilation phase is
+        complete, the descriptor portion of the new data set is created.
+    </li>
+    <li>If the DATA step compiles successfully, then the <strong>execution phase</strong> begins. During the
+        execution phase, the DATA step reads and processes the input data. The DATA step
+        executes once for each record in the input file, unless otherwise directed.
+    </li>
+  </ul>
+
+  <p>The diagram below shows the flow of DATA step processing for reading raw data. We'll examine
+     both the compilation phase and the execution phase in this chapter.
+  </p>
+
+  <img src="images/ch6_image4.png" class="diagram"/>
+
+  <p>Let's start with the compilation phase.</p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Compilation Phase</h2>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Input Buffer</h3>
+
+  <p>At the beginning of the compilation phase, the input buffer (an area of memory) is created to
+     hold a record from the external file. The input buffer is created only when raw data is read, not
+     when a SAS data set is read. The term input buffer refers to a logical concept; it is not a physical
+     storage area.
+  </p>
+
+  <img src="images/ch6_image5.png" class="diagram"/>
+  <br/>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Program Data Vector</h3>
+
+  <p>After the input buffer is created, the <strong>program data vector</strong> is created. The program data vector is
+     the area of memory where SAS builds a data set, one observation at a time. Like the term input
+     buffer, the term program data vector refers to a logical concept.
+  </p>
+  <p>The program data vector contains <strong>two automatic variables</strong> that can be used for processing but
+     which are not written to the data set as part of an observation.
+  </p>
+  <ul>
+    <li><strong>_N_</strong> counts the number of times that the DATA step begins to execute.</li>
+    <li><strong>_ERROR_</strong> signals the occurrence of an error that is caused by the data during execution.<br/><br/>
+        The default value is 0, which means there is no error. When one or more errors occur, the
+        value is set to 1.<br/>
+        <img src="images/ch6_image6.png" class="diagram"/>
+    </li>
+  </ul>
+  <br/>
+
+  <!-- Topic 4 Subtopic 3 -->
+  <h3 class="subtopic" id="topic4_subtopic3">Syntax Checking</h3>
+
+  <p>During the compilation phase, SAS also scans each statement in the DATA step, looking for
+     syntax errors. Syntax errors include
+  </p>
+  <ul>
+    <li>missing or misspelled keywords.</li>
+    <li>invalid variable names.</li>
+    <li>missing or invalid punctuation.</li>
+    <li>invalid options.</li>
+  </ul>
+
+  <!-- Topic 4 Subtopic 4 -->
+  <h3 class="subtopic" id="topic4_subtopic4">Data Set Variables</h3>
+
+  <p>As the INPUT statement is compiled, a slot is added to the program data vector for each variable
+     in the new data set. Usually, variable attributes such as length and type are determined the first
+     time a variable is encountered.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+           Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image7.png" class="diagram"/>
+
+  <p>Any variables that are created with an assignment statement in the DATA step are also added to
+     the program data vector. For example, the assignment statement below creates the variable 
+     <i>Total</i>. As the statement is compiled, the variable is added to the program data vector. The
+     attributes of the variable are determined by the expression in the statement. Because the
+     expression produces a numeric value, Total is defined as a numeric variable and is assigned
+     the default length of 8.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+           Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image8.png" class="diagram"/>
+
+  <!-- Topic 4 Subtopic 5 -->
+  <h3 class="subtopic" id="topic4_subtopic5">Descriptor Portion of the SAS Data Set</h3>
+
+  <p>At the bottom of the DATA step (in this example, when the RUN statement is encountered), the
+     compilation phase is complete, and the descriptor portion of the new SAS data set is created. The
+     descriptor portion of the data set includes
+  </p>
+  <ul>
+    <li>the name of the data set.</li>
+    <li>the number of observations and variables.</li>
+    <li>the names and attributes of the variables.</li>
+  </ul>
+
+  <p class="color-red">Data Set Descriptor</p>
+
+  <pre>
+  Data Set Name: PERM.UPDATE                       Observations: 0
+  Member Type:   DATA                              Variables: 5
+  Engine:        V9                                Indexes: 0
+  Created:       14:38 Thursday, June 20, 2002     Observation Length: 48
+  Last Modified: 14:38 Thursday, June 20, 2002     Deleted Observations: 0
+  Protection:                                      Compressed: NO
+  Data Set Type:                                   Sorted: NO
+  Label:
+
+               -----Engine/Host Dependent Information-----
+
+  Data Set Page Size:          4096
+  Number of Data Set Pages:    1
+  First Data Page:             1
+  Max Obs per Page:            84
+  Obs in First Data Page:      0
+  Number of Data Set Repairs:  0
+  File Name:                   C:\WINNT\My SAS Files\V8\update.sas7bdat
+  Release Created:             9.0000M0
+  Host Created:                WIN_NT
+
+              -----Alphabetic List of Variables and Attributes-----
+                          # Variable Type Len Pos
+                       --------------------------------
+                          4 BackOrd  Num  8   8
+                          2 IDnum    Char 5   37
+                          3 InStock  Num  8   0
+                          1 Item     Char 13  24
+                          5 Total    Num  8   16</pre>
+
+
+  <p>At this point, the data set contains the five variables that are defined in the input data set and in
+     the assignment statement. Remember, <i>_N_</i> and <i>_ERROR_</i> are not written to the data set. There
+     are no observations because the DATA step has not yet executed. During execution, each raw
+     data record is processed and is then written to the data set as an observation.
+  </p>
+
+  <!-- Topic 4 Subtopic 6 -->
+  <h3 class="subtopic" id="topic4_subtopic6">Summary of the Compilation Phase</h3>
+
+  <p>Let's review the compilation phase.</p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <p>During the compilation phase, the input buffer is created to hold a record from the external file.</p>
+
+  <img src="images/ch6_image9.png" class="diagram"/>
+
+  <p>The program data vector is created to hold the current observation.</p>
+
+  <img src="images/ch6_image10.png" class="diagram"/>
+
+  <p class="color-red">Data Set Descriptor (Partial)</p>
+
+  <pre>
+  Data Set Name:      PERM.UPDATE
+  Member Type:        DATA
+  Engine:             V9
+  Created:            11:25 Friday, June 21, 2002
+  Observations:       0
+  Variables:          5
+  Indexes:            0
+  Observation Length: 30</pre>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Execution Phase</h2>
+
+  <p>After the DATA step is compiled, it is ready for execution. During the execution phase, the data
+     portion of the data set is created. The data portion contains the data values.
+  </p>
+
+  <img src="images/ch6_image11.png" class="diagram"/>
+
+  <p>During execution, each record in the input raw data file is read, stored in the program data vector,
+     and then written to the new data set as an observation. The DATA step executes once for each
+     record in the input file, unless otherwise directed by additional statements.
+  </p>
+
+  <img src="images/ch6_image12.png" class="diagram"/>
+
+  <h4>Example</h4>
+
+  <p>The following DATA step reads values from the file <strong>Invent</strong> and executes nine times because
+     there are nine records in the file.
+  </p>
+
+  <img src="images/ch6_image13.png" class="diagram"/>
+  <br/><br/>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+           Total=instock+backord;
+  run;</pre>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Initializing Variables</h3>
+
+  <p>At the beginning of the execution phase, the value of <i>_N_</i> is 1. Because there are no data errors,
+     the value of <i>_ERROR_</i> is 0.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+  <br/>
+
+  <img src="images/ch6_image14.png" class="diagram"/>
+
+  <p>The remaining variables are initialized to missing. Missing numeric values are represented by
+     periods, and missing character values are represented by blanks.
+  </p>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Input Data</h3>
+
+  <p>Next, the INFILE statement identifies the location of the raw data.</p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Input Pointer</h3>
+
+  <p>When an INPUT statement begins to read data values from a record that is held in the input
+     buffer, it uses an input pointer to keep track of its position (the input pointer is represented by an
+     arrow in the examples in this book).
+  </p>
+
+  <p>The input pointer starts at column 1 of the first record, unless otherwise directed. As the INPUT
+     statement executes, the raw data in columns 1-13 is read and is assigned to Item in the
+     program data vector.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image15.png" class="diagram"/>
+
+  <img src="images/ch6_image16.png" class="diagram"/>
+
+  <p>Notice that the input pointer now rests on column 14. With column input, the pointer moves as far
+     as the INPUT statement instructs it, and it stops in the column immediately following the last one
+     read.
+  </p>
+
+  <img src="images/ch6_image17.png" class="diagram"/>
+
+  <p>Next, the data in columns 15-19 is read and is assigned to IDnum in the program data vector, as
+     shown below. Likewise, the INPUT statement reads the values for InStock from columns 21-22, and it 
+     reads the values for BackOrd from columns 24-25. At the end of the INPUT statement
+     processing, the input pointer is in column 26.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;
+  </pre>
+
+  <img src="images/ch6_image18.png" class="diagram"/>
+
+  <img src="images/ch6_image19.png" class="diagram"/>
+
+  <p>Next, the assignment statement executes. The values for <i>InStock</i> and <i>BackOrd</i> are added to
+     produce the values for <i>Total</i>.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image20.png" class="diagram"/>
+
+  <!-- Topic 5 Subtopic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">End of the DATA Step</h3>
+
+  <p>At the end of the DATA step, several actions occur. First, the values in the program data vector
+     are written to the output data set as the first observation.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
+    </tr>
+    <tr>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>Bird Feeder</td>
+      <td>LG088</td>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Next, the value of _N_ is set to 2 and control returns to the top of the DATA step. Finally, the
+     variable values in the program data vector are re-set to missing. Notice that the automatic
+     variable _ERROR_ retains its value.
+  </p>
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image21.png" class="diagram"/>
+
+  <p>Finally, the variable values in the program data vector are re-set to missing. Notice that the
+     automatic variables <i>_N_</i> and <i>_ERROR_</i> retain their values.
+  </p>
+
+  <img src="images/ch6_image22.png" class="diagram"/>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>When reading variables from raw data, SAS sets the value of each variable in
+          the DATA step to missing at the beginning of each cycle of execution, with
+          these exceptions:
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <ul>
+    <li>variables that are named in a RETAIN statement.</li>
+    <li>variables that are created in a SUM statement.</li>
+    <li>data elements in a _TEMPORARY_ array.</li>
+    <li>any variables that are created with options in the FILE or INFILE statements.</li>
+    <li>automatic variables.</li>
+  </ul>
+
+  <p>In contrast, when reading variables from a <strong>SAS data set</strong>, SAS sets the values to missing only
+     before the first cycle of execution of the DATA step. Thereafter, the variables retain their values
+     until new values become available- for example, through an assignment statement or through
+     the next execution of a SET or MERGE statement. Variables that are created with options in the
+     SET or MERGE statements also retain their values from one cycle of execution to the next. (You
+     will learn about reading SAS data sets and about arrays, the SET statement, and the MERGE
+     statement in later chapters.)
+  </p>
+
+  <!-- Topic 5 Subtopic 5 -->
+  <h3 class="subtopic" id="topic5_subtopic5">Iterations of the DATA Step</h3>
+
+  <p>You can see that the DATA step works like a loop, repetitively executing statements to read data
+     values and create observations one by one. Each loop (or cycle of execution) is called an
+     iteration. At the beginning of the second iteration, the value of <i>_N_</i> is set to 2, and <i>_ERROR_</i> is
+     still 0. Notice that the input pointer rests in column 1 of the second record.
+  </p>
+
+  <img src="images/ch6_image23.png" class="diagram"/>
+
+  <img src="images/ch6_image24.png" class="diagram"/>
+
+  <img src="images/ch6_image25.png" class="diagram"/>
+
+  <p>As the INPUT statement executes for the second time, the values from the second record are
+     held in the input buffer and then read into the program data vector.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image26.png" class="diagram"/>
+
+  <img src="images/ch6_image27.png" class="diagram"/>
+
+  <p>Next, the value for Total is calculated based on the current values for <i>InStock</i> and <i>BackOrd</i>.
+     The RUN statement indicates the end of the DATA step.
+  </p>
+
+  <img src="images/ch6_image28.png" class="diagram"/>
+
+  <p>At the bottom of the DATA step, the values in the program data vector are written to the data set
+     as the second observation.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
+    </tr>
+    <tr>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>Bird Feeder</td>
+      <td>LG088</td>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>6 Glass Mugs</td>
+      <td>SB082</td>
+      <td>6</td>
+      <td>12</td>
+      <td>18</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Next, the value of _N_ is set to 3, control returns to the top of the DATA step, and the values for
+     <i>Item, IDnum, InStock, BackOrd</i>, and <i>Total</i> are re-set to missing.
+  </p>
+
+  <img src="images/ch6_image29.png" class="diagram"/>  
+  <img src="images/ch6_image30.png" class="diagram"/>  
+
+  <!-- Topic 5 Subtopic 6 -->
+  <h3 class="subtopic" id="topic5_subtopic6">End-of-File Marker</h3>
+
+  <p>The execution phase continues in this manner until the end-of-file marker is reached in the raw
+     data file. When there are no more records in the raw data file to be read, the data portion of the
+     new data set is complete.
+  </p>
+
+  <img src="images/ch6_image31.png" class="diagram"/>  
+  <br/>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
+    </tr>
+    <tr>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>Bird Feeder</td>
+      <td>LG088</td>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>6 Glass Mugs</td>
+      <td>SB082</td>
+      <td>6</td>
+      <td>12</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>Glass Tray</td>
+      <td>BQ049</td>
+      <td>12</td>
+      <td>6</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>Padded Hangrs</td>
+      <td>MN256</td>
+      <td>15</td>
+      <td>20</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td>Jewelry Box</td>
+      <td>AJ498</td>
+      <td>23</td>
+      <td>0</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>Red Apron</td>
+      <td>AQ072</td>
+      <td>9</td>
+      <td>12</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>Crystal Vase</td>
+      <td>AQ672</td>
+      <td>27</td>
+      <td>0</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>Brass Clock</td>
+      <td>LS930</td>
+      <td>21</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>Picnic Basket</td>
+      <td>AN910</td>
+      <td>2</td>
+      <td>10</td>
+      <td>12</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Remember, the order in which variables are defined in the DATA step determines the order in
+     which the variables are stored in the data set. The DATA step below, which reverses the order of
+     <i>Item</i> and <i>IDnum</i>, produces a different data set from the same raw data.
+  </p>
+  <pre>
+  data perm.update;
+     infile invent;
+     input IDnum $ 15-19 Item $ 1-13          * reversed
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
+    </tr>
+    <tr>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">Item</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <th class="back-color-grey">LG088</th>
+      <th class="back-color-grey">Bird Feeder</th>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">SB082</th>
+      <th class="back-color-grey">6 Glass Mugs</th>
+      <td>6</td>
+      <td>12</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">BQ049</th>
+      <th class="back-color-grey">Glass Tray</th>
+      <td>12</td>
+      <td>6</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">MN256</th>
+      <th class="back-color-grey">Padded Hangrs</th>
+      <td>15</td>
+      <td>20</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">AJ498</th>
+      <th class="back-color-grey">Jewelry Box</th>
+      <td>23</td>
+      <td>0</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">AQ072</th>
+      <th class="back-color-grey">Red Apron</th>
+      <td>9</td>
+      <td>12</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">AQ672</th>
+      <th class="back-color-grey">Crystal Vase</th>
+      <td>27</td>
+      <td>0</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">LS930</th>
+      <th class="back-color-grey">Picnic Basket</th>
+      <td>21</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th class="back-color-grey">AN910</th>
+      <th class="back-color-grey">Brass Clock</th>
+      <td>2</td>
+      <td>10</td>
+      <td>12</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p><strong>--reversed--</strong></p>
+
+  <!-- Topic 5 Subtopic 7 -->
+  <h3 class="subtopic" id="topic5_subtopic7">Summary of the Execution Phase</h3>
+
+  <p>You've seen how the DATA step iteratively reads records in the raw data file. Now take a minute
+     to review execution-phase processing.
+  </p>
+
+  <p>During the execution phase</p>
+
+  <ul>
+    <li>variables in the program data vector are initialized to missing before each execution of
+        the DATA step.
+    </li>
+    <li>each statement is executed sequentially.</li>
+    <li>the INPUT statement reads the next record from the external file identified by the INFILE
+        statement, and it writes the values into the program data vector.
+    </li>
+    <li>other statements can then further modify the current observation.</li>
+    <li>the values in the program data vector are written to the SAS data set at the end of the
+        DATA step.
+    </li>
+    <li>program flow is returned to the top of the DATA step.</li>
+    <li>the DATA step is executed until the end-of-file marker is reached in the external file.</li>
+  </ul>
+
+  <img src="images/ch6_image32.png" class="diagram"/>  
+ 
+
+  <!-- Topic 5 Subtopic 8 -->
+  <h3 class="subtopic" id="topic5_subtopic8">End of the Execution Phase</h3>
+
+  <p>At the end of the execution phase, the SAS log confirms that the raw data file was read, and it
+     displays the number of observations and variables in the data set.
+  </p>
+ 
+  <p class="color-red">SAS Log (Partial)</p>
+
+  <pre>
+  NOTE: 9 records were read from the infile INVENT.
+  NOTE: The data set PERM.UPDATE has 9 observations
+        and 5 variables.</pre>
+
+  <p>You already know how to display the data set with the PRINT procedure.</p>
+
+  <pre>
+  proc print data=perm.update;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Bird Feeder</td>
+      <td>LG088</td>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>6 Glass Mugs</td>
+      <td>SB082</td>
+      <td>6</td>
+      <td>12</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Glass Tray</td>
+      <td>BQ049</td>
+      <td>12</td>
+      <td>6</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Padded Hangrs</td>
+      <td>MN256</td>
+      <td>15</td>
+      <td>20</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Jewelry Box</td>
+      <td>AJ498</td>
+      <td>23</td>
+      <td>0</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Red Apron</td>
+      <td>AQ072</td>
+      <td>9</td>
+      <td>12</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Crystal Vase</td>
+      <td>AQ672</td>
+      <td>27</td>
+      <td>0</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Brass Clock</td>
+      <td>LS930</td>
+      <td>21</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Picnic Basket</td>
+      <td>AN910</td>
+      <td>2</td>
+      <td>10</td>
+      <td>12</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Debugging a DATA Step</h2>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Diagnosing Errors in the Compilation Phase</h3>
+
+  <p>Now that you know how a DATA step is processed, you can use that knowledge to correct errors.
+     Many errors are detected during the compilation phase, including
+  </p>
+
+  <ul>
+    <li>misspelled keywords and data set names.</li>
+    <li>missing semicolons.</li>
+    <li>unbalanced quotation marks.</li>
+    <li>invalid options.</li>
+  </ul>
+
+  <p>During the compilation phase, SAS can interpret some syntax errors (such as the keyword DATA
+     misspelled as DAAT). If it cannot interpret the error, SAS
+  </p>
+
+  <ul>
+    <li>prints the word ERROR followed by an error message in the log</li>
+    <li>compiles but does not execute the step where the error occurred, and prints the following
+        message to warn you:
+        <pre>
+        NOTE: The SAS System stopped processing this step because of
+              errors.</pre>
+    </li>
+  </ul>
+
+  <p>Some errors are explained fully by the message that SAS prints; other error messages are not as
+     easy to interpret. For example, because SAS statements are in free format, when you fail to end
+     a SAS statement with a semicolon, SAS does not always detect the error at the point where it
+     occurs.
+  </p>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">Diagnosing Errors in the Execution Phase</h3>
+
+  <p>As you have seen, errors can occur in the compilation phase, resulting in a DATA step that is
+     compiled but not executed. Errors can also occur during the execution phase. When SAS detects
+     an error in the execution phase, the following can occur, depending on the type of error:
+  </p>
+  <ul>
+    <li>A note, warning, or error message is displayed in the log.</li>
+    <li>The values that are stored in the program data vector are displayed in the log.</li>
+    <li>The processing of the step either continues or stops.</li>
+  </ul>
+
+  <h4>Example</h4>
+
+  <p>Suppose you misspelled the fileref in the INFILE statement below. This is not a syntax error,
+     because SAS does not validate the file that you reference until the execution phase. During the
+     compilation phase, the fileref <strong>Invnt</strong> is assumed to reference some external raw data file.
+  </p>
+  <pre>
+  data perm.update;
+     infile invnt;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <p>This error is not detected until the execution phase begins. Because there is no external file that
+     is referenced by the fileref Invnt, the DATA step stops processing.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  7 data perm.: update;
+  08 infile invnt;
+  09 input Item $ 1-13 IDnum $ 15-19
+  10 InStock 21-22 BackOrd 24-25;
+  11 Total=instock+backord;
+  12 run;
+
+  ERROR: No logical assign for filename INVNT.
+  NOTE: The SAS System stopped processing this step
+        because of errors.
+  WARNING: The data set PERM.UPDATE may be incomplete.
+           When this step was stopped there were
+           0 observations and 5 variables.</pre>
+
+  <p>Because <strong>Invent</strong> is misspelled as Invnt, the statement in the DATA step that identifies the raw
+     data is incorrect. Note, however, that the correct number of variables was defined in the
+     descriptor portion of the data set.
+  </p>
+
+  <p>Incorrectly identifying a variable's type is another common execution-time error. As you know, the
+     values for <i>IDnum</i> are character values. Suppose you forget to place the dollar sign ($) after the
+     variable's name in your INPUT statement. This is not a compile-time error, because SAS cannot
+     verify <i>IDnum's</i> type until the data values for <i>IDnum</i> are read.
+  </p>
+ 
+  <pre>
+  data perm.update;
+     infile invent;
+     input Item $ 1-13 IDnum 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <img src="images/ch6_image33.png" class="diagram"/>  
+
+  <p>In this case, the DATA step completes the execution phase, and the observations are written to
+     the data set. However, several notes appear in the log.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  NOTE: Invalid data for IDnum in line 7 15-19.
+  RULE: ----+----1----+----2----+----3----+----4--
+  07 Crystal Vase AQ672 27 0
+  Item=Crystal Vase IDnum=. InStock=27 BackOrd=0
+  Total=27 _ERROR_=1 _N_=7
+  NOTE: Invalid data for IDnum in line 8 15-19.
+  08 Picnic Basket LS930 21 0
+  Item=Picnic Basket IDnum=. InStock=21 BackOrd=0
+  Total=21 _ERROR_=1 _N_=8
+  NOTE: Invalid data for IDnum in line 9 15-19.
+  09 Brass Clock AN910 2 10
+  Item=Brass Clock IDnum=. InStock=2 BackOrd=10
+  Total=12 _ERROR_=1 _N_=9
+
+  NOTE: 9 records were read from the infile INVENT.
+  NOTE: The data set PERM.UPDATE has 9 observations
+        and 5 variables.</pre>
+
+
+  <p>Each note identifies the location of the invalid data for each observation. In this example, the
+     invalid data is located in columns 15-19 for all observations.
+  </p>
+
+  <p>The second line in each note (excluding the Rule line) displays the raw data record. Notice that
+     the second field displays the values for <i>IDnum</i>, which are obviously character values.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  NOTE: Invalid data for IDnum in line 7 15-19.
+  RULE: ----+----1----+----2----+----3----+----4--
+  07 Crystal Vase AQ672 27 0
+  Item=Crystal Vase IDnum=. InStock=27 BackOrd=0
+  Total=27 _ERROR_=1 _N_=7
+  NOTE: Invalid data for IDnum in line 8 15-19.
+  08 Picnic Basket LS930 21 0
+  Item=Picnic Basket IDnum=. InStock=21 BackOrd=0
+  Total=21 _ERROR_=1 _N_=8
+  NOTE: Invalid data for IDnum in line 9 15-19.
+  09 Brass Clock AN910 2 10
+  Item=Brass Clock IDnum=. InStock=2 BackOrd=10
+  Total=12 _ERROR_=1 _N_=9
+
+  NOTE: 9 records were read from the infile INVENT.
+  NOTE: The data set PERM.UPDATE has 9 observations
+        and 5 variables.</pre>
+
+  <p>The third and fourth lines display the values that are stored in the program data vector. Here, the
+     values for <i>IDnum</i> are missing, although the other values have been correctly assigned to their
+     respective variables. Notice that _ERROR_ has a value of 1, indicating that an error has
+     occurred.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  NOTE: Invalid data for IDnum in line 7 15-19.
+  RULE: ----+----1----+----2----+----3----+----4--
+  07 Crystal Vase AQ672 27 0
+  Item=Crystal Vase IDnum=. InStock=27 BackOrd=0
+  Total=27 _ERROR_=1 _N_=7
+  NOTE: Invalid data for IDnum in line 8 15-19.
+  08 Picnic Basket LS930 21 0
+  Item=Picnic Basket IDnum=. InStock=21 BackOrd=0
+  Total=21 _ERROR_=1 _N_=8
+  NOTE: Invalid data for IDnum in line 9 15-19.
+  09 Brass Clock AN910 2 10
+  Item=Brass Clock IDnum=. InStock=2 BackOrd=10
+  Total=12 _ERROR_=1 _N_=9
+
+  NOTE: 9 records were read from the infile INVENT.
+  NOTE: The data set PERM.UPDATE has 9 observations
+        and 5 variables.</pre>
+
+  <p>The PRINT procedure displays the data set, showing that the values for IDnum are missing. In
+     this example, the periods indicate that IDnum is a numeric variable, although it should be defined
+     as a character variable.
+  </p>
+
+  <pre>
+  proc print data=perm.update;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Item</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">InStock</th>
+      <th class="color-red">BackOrd</th>
+      <th class="color-red">Total</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Bird Feeder</td>
+      <td>.</td>
+      <td>3</td>
+      <td>20</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>6 Glass Mugs</td>
+      <td class="back-color-grey">.</td>
+      <td>6</td>
+      <td>12</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Glass Tray</td>
+      <td class="back-color-grey">.</td>
+      <td>12</td>
+      <td>6</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Padded Hangrs</td>
+      <td class="back-color-grey">.</td>
+      <td>15</td>
+      <td>20</td>
+      <td>35</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Jewelry Box</td>
+      <td class="back-color-grey">.</td>
+      <td>23</td>
+      <td>0</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Red Apron</td>
+      <td class="back-color-grey">.</td>
+      <td>9</td>
+      <td>12</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Crystal Vase</td>
+      <td class="back-color-grey">.</td>
+      <td>27</td>
+      <td>0</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Picnic Basket</td>
+      <td class="back-color-grey">.</td>
+      <td>21</td>
+      <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Brass Clock</td>
+      <td class="back-color-grey">.</td>
+      <td>2</td>
+      <td>10</td>
+      <td>12</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>When you read raw data with the DATA step, it's important to check the SAS log to verify that
+     your data was read correctly. Here is a typical message.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  WARNING: The data set PERM.UPDATE may be incomplete.
+           When this step was stopped there were
+           0 observations and 5 variables.</pre>
+
+  <p>When no observations are written to the data set, you should check to see whether your DATA
+     step was completely executed. Most likely, a syntax error or another error is being detected at the
+     beginning of the execution phase.
+  </p>
+
+  <p>An <strong>invalid data</strong> message indicates that the program executed, but the data is not acceptable.
+     Typically, the message indicates that a variable's type has been incorrectly identified in the
+     INPUT statement, or that the raw data file contains some invalid data value(s).
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>NOTE: Invalid data for IDnum in line 7 15-19.</pre>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Testing Your Programs</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Writing a NULL Data Set</h3>
+
+  <p>After you write or edit a DATA step, you can compile and execute your program without creating
+     a data set. This enables you to detect the most common errors and saves you development time.
+  </p>
+
+  <p>A simple way to test a DATA step is to specify the keyword <strong>_NULL_</strong> as the data set name in the
+     DATA statement.
+  </p>
+
+  <pre>
+  data _null_;
+     infile invent;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+
+  <p>When you submit the DATA step, no data set is created, but any compilation or execution errors
+     are written to the log after the values of the variables are read and verified. After correcting any
+     errors, you can replace _NULL_ with the name of the data set that you want to create.
+  </p>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Limiting Observations</h3>
+
+  <p>Remember that you can use the <strong>OBS= option</strong> in the INFILE statement to limit the number of
+     observations that are read or created during the execution of the DATA step.
+  </p>
+
+  <pre>
+  data perm.update;
+     infile inventobs=10;
+     input Item $ 1-13 IDnum $ 15-19
+           InStock 21-22 BackOrd 24-25;
+     Total=instock+backord;
+  run;</pre>
+  
+  <p>When processed, this DATA step creates the <strong>Perm.Update</strong> data set with variables but with only
+     10 observations.
+  </p>
+
+  <!-- Topic 7 Subtopic 3 -->
+  <h3 class="subtopic" id="topic7_subtopic3">PUT Statement</h3>
+  
+  <p>When the source of program errors is not apparent, you can use the <strong>PUT statement</strong> to examine
+     variable values and to print your own message in the log. For diagnostic purposes, you can use
+     IF-THEN/ELSE statements to conditionally check for values. You can learn about IF-THEN/ELSE
+     statements in detail in the Chapter, <strong>Creating and Managing Variables</strong>.
+  </p>
+
+  <pre>
+  data work.test;
+     infile loan;
+     input Code $ 1 Amount 3-10 Rate 12-16
+           Account $ 18-25 Months 27-28;
+     if code='1' then type='variable';
+     else if code='2' then type='fixed';
+     else put 'MY NOTE: invalid value: '
+     code=;
+  run;</pre>
+
+  <p>In this example, if <i>CODE</i> does not have the expected values of 1 or 2, the PUT statement writes a
+     message to the log:
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: invalid value: Code=V
+  NOTE: The data set WORK.TEST has 9 observations
+  and 6 variables.</pre>
+
+  <hr/>
+  <p><strong>General form, simple PUT statement:</strong></p>
+  <p><strong>PUT</strong> specification(s);</p>
+  <p>where each specification specifies what is written, how it is written, and where it is written. This
+     can include
+  </p>
+  <ul>
+    <li>a character string.</li>
+    <li>one or more data set variables.</li>
+    <li>the automatic variables <i>_N_</i> and <i>_ERROR_</i>.</li>
+    <li>the automatic variable <i>_ALL_</i>.</li>
+  </ul>
+  <p>and much more. The following pages show examples of PUT specifications.</p>
+  <hr/>
+  <br/>
+
+  <h4>Character Strings</h4>
+
+  <p>You can use a PUT statement to specify a character string to identify your message in the log.
+     The character string must be enclosed in quotation marks.
+  </p>
+  <pre>put 'MY NOTE: The condition was met.';</pre>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: The condition was met.
+  NOTE: The data set WORK.TEST has 9 observations
+        and 6 variables.</pre>
+
+  
+  <h4>Data Set Variables</h4>
+
+  <p>You can use a PUT statement to specify one or more data set variables to be examined for that
+     iteration of the DATA step.
+  </p>
+
+  <pre>
+  put 'MY NOTE: invalid value: '
+       code type;</pre>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: invalid value: V FIXED
+  NOTE: The data set WORK.TEST has 9 observations
+        and 6 variables.</pre>
+
+  <p>When you specify a variable in the PUT statement, only the value of the variable is written to the
+     log. To write both the variable name and its value in the log, add an equal sign (=) to the variable
+     name.
+  </p>
+
+  <pre>
+  put 'MY NOTE: invalid value: '
+       code= type=;</pre>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: invalid value: Code=V type=FIXED
+  NOTE: The data set WORK.TEST has 9 observations
+        and 6 variables.</pre>
+
+  <h4>Automatic Variables</h4>
+
+  <p>You can use a PUT statement to display the values of the automatic variables <i>_N_</i> and <i>_ERROR_</i>.
+     In some cases, knowing the value of <i>_N_</i> can help you locate an observation in the data set.
+  </p>
+
+  <pre>
+  put 'MY NOTE: invalid value: '
+      code= _n_= _error_=;</pre>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: invalid value: Code=V N=4 ERROR=0
+  NOTE: The data set WORK.TEST has 9 observations
+        and 6 variables.</pre>
+
+  <p>You can also use a PUT statement to write all variable names and variable values, including
+     automatic variables, to the log. Use the <i>_ALL_</i> specification.
+  </p>
+
+  <pre>put 'MY NOTE: invalid value: ' _all_ ;</pre>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  MY NOTE: invalid value: Account=101-3144
+           Amount=$3,500 Rate=10.50% Months=1
+           Code=V type=C ERROR=0 N=4
+  NOTE: The data set WORK.TEST has 9 observations
+        and 6 variables.</pre>
+
+  <h4>Conditional Processing</h4>
+
+  <p>You can use a PUT statement with conditional processing (that is, with IF-THEN/ELSE
+     statements) to flag program errors or data that is out of range. In the example below, the PUT
+     statement is used to flag any missing or zero values for the variable <i>Rate</i>.
+  </p>
+
+  <pre>
+  data finance.newcalc;
+     infile newloans;
+     input LoanID $ 1-4 Rate 5-8 Amount 9-19;
+     if rate>0 then
+        Interest=amount*(rate/12);
+     else put 'DATA ERROR ' rate= _n_=;
+  run;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The PUT statement can accomplish a wide variety of tasks. This chapter
+          shows a few ways to use the PUT statement to help you debug a program or
+          examine variable values.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Summary</h2>
+
+  <!-- Topic 8 Subtopic 1 -->
+  <h3 class="subtopic" id="topic8_subtopic1">Text Summary</h3>
+
+  <h4>How SAS Processes Programs</h4>
+  <p>A SAS DATA step is processed in two distinct phases. During the <strong>compilation phase</strong>, each
+     statement is scanned for syntax errors. During the <strong>execution phase</strong>, the DATA step writes
+     observations to the new data set.
+  </p>
+  <br/>
+
+  <h4>Compilation Phase</h4>
+  <p>At the beginning of the compilation phase, the input buffer and the <strong>program data vector</strong> are
+     created. The program data vector is the area of memory where data sets are built, one
+     observation at a time. Two automatic variables are also created: <i>_N_</i> counts the number of DATA
+     step executions, and <i>_ERROR_</i> signals the occurrence of an error. DATA step statements are
+     checked for syntax errors, such as invalid options or misspellings.
+  </p>
+  <br/>
+
+  <h4>Execution Phase</h4>
+  <p>During the execution phase, each record in the input file is processed, stored in the program data
+     vector, and then written to the new data set as an observation. The DATA step executes once for
+     each record in the input file, unless otherwise directed.
+  </p>
+  <br/>
+
+  <h4>Diagnosing Errors in the Compilation Phase</h4>
+  <p>Missing semicolons, misspelled keywords, and invalid options cause syntax errors in the
+     compilation phase. Detected errors are underlined and are identified with a number and message
+     in the log. If SAS can interpret a syntax error, then the DATA step compiles and executes; if SAS
+     cannot interpret the error, then the DATA step compiles but doesn't execute.
+  </p>
+  <br/>
+
+  <h4>Diagnosing Errors in the Execution Phase</h4>
+  <p>Illegal mathematical operations or processing a character variable as numeric causes errors in
+     the execution phase. Depending on the type of error, the log might show a warning and might
+     include invalid data from the program data vector, and the DATA step either stops or continues.
+  </p>
+  <br/>
+
+  <h4>Testing Your Programs</h4>
+  <p>To detect common errors and save development time, compile and execute your program without
+     creating observations. Specify the keyword <strong>_NULL_</strong> as the data set name to view compilation or 
+     execution errors without creating a data set. Or use the <strong>OBS= option</strong> in the INFILE statement to
+     limit the number of observations that are read or created during the DATA step. You can also use
+     the <strong>PUT statement</strong> to examine variable values and to generate your own message in the log.
+  </p>
+  <br/>
+
+  <!-- Topic 8 Subtopic 2 -->
+  <h3 class="subtopic" id="topic8_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>Making, diagnosing, and resolving errors is part of the process of writing programs.
+        However, checking for common errors will save you time and trouble. Ensure that
+       <ul>
+           <li>each SAS statement ends with a semicolon.</li>
+           <li>filenames are spelled correctly.</li>
+           <li>keywords are spelled correctly.</li>
+       </ul>
+    </li>
+    <li>In SAS output, missing numeric values are represented by periods, and missing
+        character values are left blank.
+    </li>
+    <li>The order in which variables are defined in the DATA step determines the order in which
+        the variables are stored in the data set.
+    </li>
+    <li>Standard character values can include numbers, but numeric values cannot include
+        characters.
+    </li>
+  </ul>
+
+
+
+
+ 
+
+  
+
+
+
+  
+  
+
+
+    
+
+  
+
+  
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+</div> <!-- end of div content -->

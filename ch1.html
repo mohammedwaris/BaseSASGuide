@@ -34,9 +34,10 @@
 
 <div id="content">
 
-
+  <!-- TOpic 1 -->
   <h2 class="topic" id="topic1">Overview</h2>
 
+  <!-- TOpic 1 Subtopic 1 -->
   <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
   <p>To program effectively using SAS, you need to understand basic concepts about <b>SAS programs</b>
      and the <b>SAS files</b> that they process. in particular, you need to be familiar with <b>SAS data sets</b>.
@@ -50,7 +51,9 @@
   </p>
 
   <img src="images/ch1_image1.png"/>
- 
+
+
+  <!-- TOpic 1 Subtopic 2--> 
   <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
   <p>In this chapter, you will learn about</p>
   <ul>
@@ -91,6 +94,7 @@
     proc print data = clinic.admit2;
     run;</pre>
   <p>These two types of steps, alone or combined, form most SAS programs.</p>
+
   <table>
     <tr>
        <td><img src="images/ch1_image2.png" /></td>
@@ -153,6 +157,8 @@
     sample program contains <b>(1)</b> a DATA statement, <b>(2)</b> a SET statement, 
     <b>(3)</b> a RUN statement, <b>(4)</b> a PROC PRINT statement and <b>(5)</b> another RUN statement.
   </p>
+
+  <div class="div-scroll-content">
   <table border="1">
     <tr>
       <th class="color-red">Statements</th>
@@ -179,6 +185,7 @@
       <td><pre>run;</pre></td>
     </tr>
   </table>
+  </div>
   
   <!-- Topic 2 Subtopic 3 -->
   <h3 class="subtopic" id="topic2_subtopic3">Layout for SAS Programs</h3>
@@ -192,9 +199,10 @@
   <p>
      Blanks or special characters separate "words" in a SAS statement.
      <br/>
-     <table>
+
+     <table class="note-table">
         <tr>
-          <td class="color-blue">Note</td>
+          <th class="color-blue">Note</th>
           <td>You can specify SAS statements in uppercase or lowercase. in most situations, text that is enclosed in quotation marks is case sensitive</td>
         </tr>
      </table>
@@ -220,9 +228,10 @@
      proc print data = clinic.admit2;
      run;
   </pre>
-  <table>
+
+  <table class="note-table">
     <tr>
-      <td class="color-blue">Note</td>
+      <th class="color-blue">Note</th>
       <td>The begining of a new step(DATA or PROC) implies the end of the previous step. Though the RUN statement is not always required between steps in a SAS programs, using it can make the SAS program easier to read and debug, and it makes the SAS log easier to read.</td>
     </tr>
   </table>
@@ -271,6 +280,8 @@
     <li>creates the SAS data set <b>Clinic.Admit2</b> in the DATA step. The DATA step produces messages in the SAS log, but it does not create a report or other output.</li>
     <li>creates the following HTML report of the SAS data set Clinic.Admit2:</li>
   </ul>
+
+  <div class="div-scroll-content">
   <table border="1">
      <tr>
        <th class="color-red">Obs</th>
@@ -393,8 +404,8 @@
         <td>172 LOW</td>
         <td>124.80</td>
      </tr>
-
   </table>
+  </div>
 
   <!-- Page 12 -->
   <p>You've seen the results of submitting our sample program. For other SAS programs, the results of processing might vary:</p>
@@ -465,9 +476,9 @@
         cpu time    0.08 seconds
   </pre>
 
-  <table>
+  <table class="note-table">
     <tr>
-      <td class="color-blue">Note</td>
+      <th class="color-blue">Note</th>
       <td>You can turn off log messages by using system options, which you can learn about in chapter, <b>Refrencing Files and Setting Options</b></td>
     </tr>
   </table>
@@ -497,6 +508,8 @@
   <p>
     The table below summarizes the implementation of SAS libraries in various operating environments.
   </p>
+
+  <div class="div-scroll-content">
   <table border="1">
      <tr>
         <th class="color-red">Environment</th>
@@ -522,6 +535,7 @@
         <td>a specially formatted host data set in which only SAS files are stored.</td>
      </tr>
   </table>
+  </div>
 
   <!-- Page 14 -->
 
@@ -552,7 +566,8 @@
      For example, by specifying the library name Clinic when you create a file, you specify that the file
      is to be stored in a permanent SAS data library until you delete it.
   </p>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can learn how to set up permanent SAS libraries in Chapter,
@@ -596,7 +611,8 @@
      the temporary SAS library <strong>Work</strong>.
   </p>
   <img src="images/ch1_image10.png" style="max-width:100%;"/>
-  <table>
+
+  <table class="info-table">
     <tr>
       <th class="color-blue">Info</th>
       <td>If the USER library is assigned, SAS uses the <strong>User</strong> library rather than the 
@@ -763,6 +779,8 @@
     <li>For character variables such as Name, a <strong>blank</strong> represents a missing value</li>
     <li>For numeric variables such as Age, a <strong>period</strong> represents a missing value</li>
   </ul>
+
+  <div class="div-scroll-content">
   <table border="1">
     <tr>
       <th>Name</th>
@@ -795,6 +813,7 @@
       <td>170.1</td>
     </tr>
   </table>
+  </div>
 
   <!-- Page 19 -->
 

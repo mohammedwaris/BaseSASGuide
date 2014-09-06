@@ -1,0 +1,2805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>In SAS programming, a common task is to combine observations from two or more data sets into
+     a new data set. By using the DATA step, you can combine data sets in several ways, including
+     the following:
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Method of Combining</th>
+      <th class="color-red">Illustration</th>
+    </tr>
+    <tr>
+      <td><p><strong>One-to-one reading</strong> <br/> <br/>
+             Creates observations that contain all
+             of the variables from each
+             contributing data set. <br/><br/>
+             Combines observations based on
+             their relative position in each data
+             set. <br/><br/>
+             Statement: SET
+         </p>
+      </td>
+      <td><img src="images/ch13_image1.png" class="diagram"/></td>
+    </tr>
+    <tr>
+      <td><strong>Concatenating</strong> <br/><br/>
+          Appends the observations from one
+          data set to another. <br/><br/>
+          Statement: SET
+      </td>
+      <td><img src="images/ch13_image2.png" class="diagram"/></td>
+    </tr>
+    <tr>
+      <td><strong>Interleaving</strong> <br/> <br/>
+          Intersperses observations from two or
+          more data sets, based on one or
+          more common variables. <br/><br/>
+          Statements: SET, BY
+      </td>
+      <td><img src="images/ch13_image3.png" class="diagram"/></td>
+    </tr>
+    <tr>
+      <td><strong>Match-merging</strong> <br/> <br/>
+          Matches observations from two or
+          more data sets into a single
+          observation in a new data set
+          according to the values of a common
+          variable. <br/><br/>
+          Statements: MERGE, BY
+      </td>
+      <td><img src="images/ch13_image4.png" class="diagram"/></td>
+    </tr>
+  </table>
+  <br/>
+
+  <table>
+    <tr>
+       <th class="color-blue">Note</th>
+       <td>You can also use PROC SQL to
+           join data sets according to
+           common values. PROC SQL
+           enables you to perform many
+           other types of data set joins
+       </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>This chapter shows you how to combine SAS data sets by using one-to-one reading,
+     concatenating, interleaving, and match-merging. When you use the DATA step to combine data
+     sets, you have a high degree of control in creating and manipulating data sets.
+  </p>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>perform one-to-one reading of data sets</li>
+    <li>concatenate data sets</li>
+    <li>interleave data sets</li>
+    <li>match-merge data sets</li>
+    <li>predict the results by understanding match-merge processing</li>
+    <li>re-name any like-named variables to avoid overwriting values</li>
+    <li>select only matched observations, if desired</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">One-to-One Reading</h2>
+
+  <p>In Chapter, <strong>Reading SAS Data Sets</strong>, you learned how to use the SET statement to read an
+     existing SAS data set. You can also use multiple SET statements in a DATA step to combine
+     data sets. This is called one-to-one reading. In one-to-one reading, you can read different data
+     sets, or you can read the same data set more than once, as if you were reading from separate
+     data sets.
+  </p>
+  <hr/>
+  <p><strong>General form, basic DATA step for one-to-one reading:</strong></p>
+  <p><strong>DATA</strong> output-SAS-data-set;
+     &nbsp;&nbsp;<strong>SET</strong> SAS-data-set-1;
+     &nbsp;&nbsp;<strong>SET</strong> SAS-data-set-2;
+     <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li><i>output-SAS-data-set</i> names the data set to be created</li>
+    <li><i>SAS-data-set-1</i> and <i>SAS-data-set-2</i> specify the data sets to be read.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can specify any number of data sets in the SET statement.</td>
+    </tr>
+  </table>
+  <hr/>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">How One-to-One Reading Selects Data</h3>
+
+  <p>When you perform one-to-one reading,</p>
+  <ul>
+    <li>the new data set contains <strong>all the variables</strong> from all the input data sets. If the data sets
+        contain variables that have the same names, the values that are read in from the last data
+        set overwrite the values that were read in from earlier data sets
+    </li>
+    <li>the number of observations in the new data set is the <strong>number of observations in the
+        smallest original data set</strong>. Observations are combined based on their relative position in
+        each data set; that is, the first observation in one data set is joined with the first observation
+        in the other, and so on. The DATA step stops after it has read the last observation from the
+        smallest data set
+    </li>
+  </ul>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">How One-to-One Reading Works</h3>
+
+  <p>Let's look at a simple case of one-to-one reading.</p>
+
+  <pre>
+  data one2one;
+     set c;
+     set d;
+  run;</pre>
+
+  <img src="images/ch13_image5.png" class="diagram"/>
+
+  <ol>
+    <li>The first SET statement reads one observation from data set C.
+        <table border="1">
+          <tr>
+            <th class="color-red">Num</th>
+            <th class="color-red">VarA</th>
+            <th class="color-red">VarB</th>
+          </tr>
+          <tr>
+             <td>1</td>
+             <td>A1</td>
+             <td>&nbsp;</td>
+          </tr>
+        </table>
+    </li>
+    <li>Then the second SET statement reads one observation from data set D. The value for
+        Num in data set D overwrites the value for Num in data set C.
+        <table border="1">
+          <tr>
+            <th class="color-red">Num</th>
+            <th class="color-red">VarA</th>
+            <th class="color-red">VarB</th>
+          </tr>
+          <tr>
+             <td>2</td>
+             <td>A1</td>
+             <td>B1</td>
+          </tr>
+        </table>
+    </li>
+    <li>Next, the first SET statement reads the second observation from data set C. 
+        <table border="1">
+          <tr>
+            <th class="color-red">Num</th>
+            <th class="color-red">VarA</th>
+            <th class="color-red">VarB</th>
+          </tr>
+          <tr>
+             <td>2</td>
+             <td>A1</td>
+             <td>B1</td>
+          </tr>
+          <tr>
+             <td>3</td>
+             <td>A2</td>
+             <td>&nbsp;</td>
+          </tr>
+        </table>
+    </li>
+    <li>Finally, the second SET statement reads the second observation from data set D,
+        overwriting the value for Num in data set C. Because this is the last observation in the
+        smallest data set, processing stops. The DATA step does not read the third observation in
+        data set C.
+        <table border="1">
+          <tr>
+            <th class="color-red">Num</th>
+            <th class="color-red">VarA</th>
+            <th class="color-red">VarB</th>
+          </tr>
+          <tr>
+             <td>2</td>
+             <td>A1</td>
+             <td>B1</td>
+          </tr>
+          <tr>
+             <td>4</td>
+             <td>A2</td>
+             <td>B2</td>
+          </tr>
+        </table>
+    </li>
+  </ol>
+  <br/>
+ 
+  <p>The following section shows how you might use one-to-one reading.</p>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>Suppose you have basic patient data (ID, sex, and age) in the data set <strong>Clinic.Patients</strong> and want 
+     to combine it with other patient data (height and weight) for patients under age 60. The height and
+     weight data is stored in the data set Clinic.Measure. Both data sets are sorted by the variable
+     <i>ID</i>.
+  </p>
+
+  <p>Notice that <strong>Clinic.Patients</strong> contains 7 observations in which the patient age is less than 60, and
+     <strong>Clinic.Measure</strong> contains 6 observations.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Clinic.Patients</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Age</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1129</td>
+      <td>F</td>
+      <td>48</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1387</td>
+      <td>F</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2304</td>
+      <td>F</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2486</td>
+      <td>F</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>4759</td>
+      <td>F</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>5438</td>
+      <td>F</td>
+      <td>42</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>6488</td>
+      <td>F</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>9012</td>
+      <td>F</td>
+      <td>39</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>9125</td>
+      <td>F</td>
+      <td>56</td>
+    </tr>
+  </table>
+  <br/>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">SAS Data Set Clinic.Measure</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1129</td>
+      <td>61</td>
+      <td>137</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1387</td>
+      <td>63</td>
+      <td>142</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2304</td>
+      <td>61</td>
+      <td>102</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5438</td>
+      <td>62</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>6488</td>
+      <td>64</td>
+      <td>154</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>9012</td>
+      <td>63</td>
+      <td>157</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To subset observations from the first data set and combine them with observations from the
+     second data set, you can submit the following program:
+  </p>
+  <pre>
+  data clinic.one2one;
+     set clinic.patients;
+     if age<60;
+     set clinic.measure;
+  run;</pre>
+
+  <p>The resulting data set, <strong>Clinic.One2one</strong>, contains 6 observations (the number of observations
+     read from the smallest data set, here <strong>Clinic.Measure</strong>). The last observation in <strong>Clinic.Patients</strong> is
+     not read.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">SAS Data Set Clinic.One2one</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1129</td>
+      <td>F</td>
+      <td>48</td>
+      <td>61</td>
+      <td>137</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1387</td>
+      <td>F</td>
+      <td>57</td>
+      <td>64</td>
+      <td>142</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2304</td>
+      <td>F</td>
+      <td>16</td>
+      <td>61</td>
+      <td>102</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5438</td>
+      <td>F</td>
+      <td>42</td>
+      <td>62</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>6488</td>
+      <td>F</td>
+      <td>59</td>
+      <td>64</td>
+      <td>154</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>9012</td>
+      <td>F</td>
+      <td>39</td>
+      <td>63</td>
+      <td>157</td>
+    </tr>
+  </table>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Concatenating</h2>
+
+  <p>Another way to combine SAS data sets with the SET statement is <strong>concatenating</strong>, which
+     appends the observations from one data set to another data set. To concatenate SAS data sets,
+     you specify a list of data set names in the SET statement.
+  </p>
+  <hr/>
+  <p><strong>General form, basic DATA step for concatenating:</strong></p>
+  <p><strong>DATA</strong> output-SAS-data-set; <br/>
+     &nbsp;&nbsp;<strong>SET</strong> SAS-data-set-1 SAS-data-set-2; <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>output-SAS-data-set names the data set to be created</li>
+    <li>SAS-data-set-1 and SAS-data-set-2 specify the data sets to be read.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can specify any number of data sets in the SET statement</td>
+    </tr>
+  </table>
+  <hr/>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">How Concatenating Selects Data</h3>
+
+  <p>When a program concatenates data sets, all of the observations are read from the first data set
+     that is listed in the SET statement. Then all of the observations are read from the second data set
+     that is listed, and so on, until all of the listed data sets have been read. The new data set contains
+     all of the variables and observations from all of the input data sets.
+  </p>
+
+  <pre>
+  data concat;
+    set a b;
+  run;</pre>
+
+  <img src="images/ch13_image6.png" class="diagram"/>
+
+  <p>Notice that A and C contain a common variable named Num:</p>
+  <ul>
+    <li>Both instances of Num (or any common variable) must have the same <strong>type</strong> attribute, or
+        SAS stops processing the DATA step and issues an error message stating that the variables
+        are incompatible
+    </li>
+    <li>However, if the <strong>length</strong> attribute is different, SAS takes the length from the first data set
+        that contains the variable. In this case, the length of Num in A determines the length of Num in
+        Concat
+    </li>
+    <li>The same is true for the <strong>label, format</strong>, and <strong>informat</strong> attributes: If any of these attributes
+        are different, SAS takes the attribute from the first data set that contains the variable with
+        that attribute
+    </li>
+  </ul>
+  <br/>
+  <h4>Example</h4>
+
+  <p>The following DATA step creates <strong>Clinic.Concat</strong> by concatenating <strong>Clinic.Therapy1999</strong> and
+     <strong>Clinic.Therapy2000</strong>.
+  </p>
+
+  <pre>
+  data clinic.concat;
+     set clinic.therapy1999 clinic.therapy2000;
+  run;</pre>
+
+  <p>The listing of <strong>Clinic.Concat</strong> follows. The first 12 observations were read from
+     <strong>Clinic.Therapy1999</strong>, and the last 12 observations were read from <strong>Clinic.Therapy2000</strong>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">SAS Data Set Clinic.Concat</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Month</th>
+      <th class="color-red">Year</th>
+      <th class="color-red">AerClass</th>
+      <th class="color-red">WalkJogRun</th>
+      <th class="color-red">Swim</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>01</td>
+      <td>1999</td>
+      <td>26</td>
+      <td>78</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>02</td>
+      <td>1999</td>
+      <td>32</td>
+      <td>109</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>03</td>
+      <td>1999</td>
+      <td>15</td>
+      <td>106</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>04</td>
+      <td>1999</td>
+      <td>47</td>
+      <td>115</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>05</td>
+      <td>1999</td>
+      <td>95</td>
+      <td>121</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>06</td>
+      <td>1999</td>
+      <td>61</td>
+      <td>114</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>07</td>
+      <td>1999</td>
+      <td>67</td>
+      <td>102</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>08</td>
+      <td>1999</td>
+      <td>24</td>
+      <td>76</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>09</td>
+      <td>1999</td>
+      <td>78</td>
+      <td>77</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>10</td>
+      <td>1999</td>
+      <td>81</td>
+      <td>62</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>11</td>
+      <td>1999</td>
+      <td>84</td>
+      <td>31</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>12</td>
+      <td>1999</td>
+      <td>92</td>
+      <td>44</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>01</td>
+      <td>2000</td>
+      <td>37</td>
+      <td>91</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>02</td>
+      <td>2000</td>
+      <td>41</td>
+      <td>102</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>03</td>
+      <td>2000</td>
+      <td>52</td>
+      <td>98</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>04</td>
+      <td>2000</td>
+      <td>61</td>
+      <td>118</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>05</td>
+      <td>2000</td>
+      <td>49</td>
+      <td>88</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>06</td>
+      <td>2000</td>
+      <td>24</td>
+      <td>101</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>07</td>
+      <td>2000</td>
+      <td>45</td>
+      <td>91</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>08</td>
+      <td>2000</td>
+      <td>63</td>
+      <td>65</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>09</td>
+      <td>2000</td>
+      <td>60</td>
+      <td>49</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>10</td>
+      <td>2000</td>
+      <td>78</td>
+      <td>70</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>11</td>
+      <td>2000</td>
+      <td>82</td>
+      <td>44</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>12</td>
+      <td>2000</td>
+      <td>93</td>
+      <td>57</td>
+      <td>47</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Interleaving</h2>
+
+  <p>If you use a BY statement when you concatenate data sets, the result is <strong>interleaving</strong>.
+     Interleaving intersperses observations from two or more data sets, based on one or more
+     common variables.
+  </p>
+
+  <p>To interleave SAS data sets, specify a list of data set names in the SET statement, and specify
+     one or more BY variables in the BY statement.
+   </p>
+  <hr/>
+  <p><strong>General form, basic DATA step for interleaving:</strong></p>
+  <p><strong>DATA</strong> output-SAS-data-set; <br/>
+     &nbsp;&nbsp; <strong>SET</strong> SAS-data-set-1 SAS-data-set-2; <br/>
+     &nbsp;&nbsp; <strong>BY</strong> variable(s); <br/>
+     RUN;
+  </p>
+  <p>where</p>
+  <ul>
+    <li><i>output-SAS-data-set</i> names the data set to be created</li>
+    <li><i>SAS-data-set-1</i> and <i>SAS-data-set-2</i> specify the data sets to be read</li>
+    <li><i>variable(s)</i> specifies one or more variables that are used to interleave observations</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can specify any number of data sets in the SET statement. Each input
+          data set <strong>must</strong> be sorted or indexed in ascending order based on the BY
+          variable(s).
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <!-- Topic 4 SUbtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">How Interleaving Selects Data</h3>
+
+  <p>When SAS interleaves data sets, observations in each BY group in each data set in the SET
+     statement are read sequentially, in the order in which the data sets and BY variables are listed,
+     until all observations have been processed. The new data set includes all the variables from all
+     the input data sets, and it contains the total number of observations from all input data sets.
+  </p>
+
+  <pre>
+  data interlv;
+     set c d;
+     by num;
+  run;</pre>
+
+  <img src="images/ch13_image7.png" class="diagram"/>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>The following DATA step creates Clinic.Interlv by interleaving <strong>Clinic.Therapy1999</strong> and
+     <strong>Clinic.Therapy2000 </strong>:
+  </p>
+  <pre>
+  data clinic.interlv;
+     set clinic.therapy1999 clinic.therapy2000;
+     by month;
+  run;</pre>
+  <p>Below is the listing of Clinic.Interlv. Notice that, unlike the previous example, observations are
+     interleaved by month instead of being concatenated.
+  </p>
+
+  <table border="1">
+    <tr> 
+      <th class="color-red" colspan="6">SAS Data Set Clinic.Interlv</th>
+    </tr>
+    <tr> 
+      <th class="color-red">Obs</th>
+      <th class="color-red">Month</th>
+      <th class="color-red">Year</th>
+      <th class="color-red">AerClass</th>
+      <th class="color-red">WalkJogRun</th>
+      <th class="color-red">Swim</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>01</td>
+      <td>1999</td>
+      <td>26</td>
+      <td>78</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>01</td>
+      <td>2000</td>
+      <td>37</td>
+      <td>91</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>02</td>
+      <td>1999</td>
+      <td>32</td>
+      <td>109</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>02</td>
+      <td>2000</td>
+      <td>41</td>
+      <td>102</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>03</td>
+      <td>1999</td>
+      <td>15</td>
+      <td>106</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>03</td>
+      <td>2000</td>
+      <td>52</td>
+      <td>98</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>04</td>
+      <td>1999</td>
+      <td>47</td>
+      <td>115</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>04</td>
+      <td>2000</td>
+      <td>61</td>
+      <td>118</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>05</td>
+      <td>1999</td>
+      <td>95</td>
+      <td>121</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>05</td>
+      <td>2000</td>
+      <td>49</td>
+      <td>88</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>06</td>
+      <td>1999</td>
+      <td>61</td>
+      <td>114</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>06</td>
+      <td>2000</td>
+      <td>24</td>
+      <td>101</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>07</td>
+      <td>1999</td>
+      <td>67</td>
+      <td>102</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>07</td>
+      <td>2000</td>
+      <td>45</td>
+      <td>91</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>08</td>
+      <td>1999</td>
+      <td>24</td>
+      <td>76</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>08</td>
+      <td>2000</td>
+      <td>63</td>
+      <td>65</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>09</td>
+      <td>1999</td>
+      <td>78</td>
+      <td>77</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>09</td>
+      <td>2000</td>
+      <td>60</td>
+      <td>49</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>10</td>
+      <td>1999</td>
+      <td>81</td>
+      <td>62</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>10</td>
+      <td>2000</td>
+      <td>78</td>
+      <td>70</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>11</td>
+      <td>1999</td>
+      <td>84</td>
+      <td>31</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>11</td>
+      <td>2000</td>
+      <td>82</td>
+      <td>44</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>12</td>
+      <td>1999</td>
+      <td>92</td>
+      <td>44</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>12</td>
+      <td>2000</td>
+      <td>93</td>
+      <td>57</td>
+      <td>47</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Simple Match-Merging</h2>
+
+  <p>So far in this chapter, you've learned how to combine data sets based on the order of the
+     observations in the input data sets. But sometimes you need to combine observations from two or
+     more data sets into a single observation in a new data set according to the values of a common
+     variable. This is called <strong>match-merging</strong>.
+  </p>
+
+  <p>When you match-merge, you use a MERGE statement rather than a SET statement to combine
+     data sets.
+  </p>
+  <hr/>
+  <p><strong>General form, basic DATA step for match-merging:</strong></p>
+  <p><strong>DATA</strong> output-SAS-data-set; <br/>
+     &nbsp;&nbsp; <strong>MERGE</strong> SAS-data-set-1 SAS-data-set-2; <br/>
+     &nbsp;&nbsp; <strong>BY &lt;DESCENDING&gt;</strong> variable(s);  <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li><i>output-SAS-data-set</i> names the data set to be created</li>
+    <li><i>SAS-data-set-1</i> and <i>SAS-data-set-2</i> specify the data sets to be read</li>
+    <li><i>variable(s)</i> in the BY statement specifies one or more variables whose values are used to
+        match observations
+    </li>
+    <li>DESCENDING indicates that the input data sets are sorted in descending order (largest
+        to smallest numerically, or reverse alphabetical for character variables) by the variable that is
+        specified. If you have more than one variable in the BY statement, DESCENDING applies
+        only to the variable that immediately follows it.
+    </li>
+  </ul>
+  <table>
+    <tr> 
+      <th class="color-blue">Note</th>
+      <td>Each input data set in the MERGE statement must be sorted in order of the
+          values of the BY variable(s), or it must have an appropriate index. Each BY
+          variable must have the same type in all data sets to be merged.
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr> 
+      <th class="color-blue">Note</th>
+      <td>You cannot use the DESCENDING option with indexed data sets because
+          indexes are always stored in ascending order.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <!-- Topic 5 SUbtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">How Match-Merging Selects Data</h3>
+
+  <p>Generally speaking, during match-merging SAS sequentially checks each observation of each
+     data set to see whether the BY values match, then writes the combined observation to the new
+     data set.
+  </p>
+  <pre>
+  data merged;
+     merge a b;
+     by num;
+  run;</pre>
+
+  <img src="images/ch13_image8.png" class="diagram"/>
+
+  <p>Basic DATA step match-merging produces an output data set that contains values from <strong>all
+     observations in all input data sets</strong>. (You can add statements and options to select only
+     observations that match for two or more specific input data sets.)
+  </p>
+  <p>If an input data set doesn’t have any observations for a particular value of the same-named
+     variable, then the observation in the output data set <strong>contains missing values</strong> for the variables
+     that are unique to that input data set.
+  </p>
+
+  <img src="images/ch13_image9.png" class="diagram"/>
+  <table>
+    <tr> 
+      <th class="color-blue">Note</th>
+      <td>In match-merging, often one data set contains unique values for the samenamed
+          variable and other data sets contain multiple values for the samenamed
+          variable.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Example: Merging Data Sets That Are Sorted in Ascending Order</h4>
+  <p>Suppose you have sorted the data sets <strong>Clinic.Demog</strong> and <strong>Clinic.Visit</strong> as follows:</p>
+  <pre>
+  proc sort data=clinic.demog;
+     by id;
+  run;
+  proc print data=clinic.demog;
+  run;</pre>
+  
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red back-color-grey">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Date</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td class="back-color-grey">A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>06/15/63</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="back-color-grey">A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="back-color-grey">A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/27/69</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td class="back-color-grey">A007</td>
+      <td>39</td>
+      <td>m</td>
+      <td>11/11/57</td>
+    </tr>
+  </table>
+  <br/>
+
+  <pre>
+  proc sort data=clinic.visit;
+     by id;
+  run;
+  proc print data=clinic.visit;
+  run;</pre>
+  
+  <table border="1">
+     <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red back-color-grey">ID</th>
+       <th class="color-red">Visit</th>
+       <th class="color-red">SysBP</th>
+       <th class="color-red">DiasBP</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Date</th>
+     </tr>
+     <tr>
+       <td>1</td>
+       <td class="back-color-grey">A001</td>
+       <td>1</td>
+       <td>140</td>
+       <td>85</td>
+       <td>195</td>
+       <td>11/05/98</td>
+     </tr>
+     <tr>
+       <td>2</td>
+       <td class="back-color-grey">A001</td>
+       <td>2</td>
+       <td>138</td>
+       <td>90</td>
+       <td>198</td>
+       <td>10/13/98</td>
+     </tr>
+     <tr>
+       <td>3</td>
+       <td class="back-color-grey">A001</td>
+       <td>3</td>
+       <td>145</td>
+       <td>95</td>
+       <td>200</td>
+       <td>07/04/98</td>
+     </tr>
+     <tr>
+       <td>4</td>
+       <td class="back-color-grey">A002</td>
+       <td>1</td>
+       <td>121</td>
+       <td>75</td>
+       <td>168</td>
+       <td>04/14/98</td>
+     </tr>
+     <tr>
+       <td>5</td>
+       <td class="back-color-grey">A003</td>
+       <td>1</td>
+       <td>118</td>
+       <td>68</td>
+       <td>125</td>
+       <td>08/12/98</td>
+     </tr>
+     <tr>
+       <td>6</td>
+       <td class="back-color-grey">A003</td>
+       <td>2</td>
+       <td>112</td>
+       <td>65</td>
+       <td>123</td>
+       <td>08/21/98</td>
+     </tr>
+     <tr>
+       <td>7</td>
+       <td class="back-color-grey">A004</td>
+       <td>1</td>
+       <td>143</td>
+       <td>86</td>
+       <td>204</td>
+       <td>03/30/98</td>
+     </tr>
+     <tr>
+       <td>8</td>
+       <td class="back-color-grey">A005</td>
+       <td>1</td>
+       <td>132</td>
+       <td>76</td>
+       <td>174</td>
+       <td>02/27/98</td>
+     </tr>
+     <tr>
+       <td>9</td>
+       <td class="back-color-grey">A005</td>
+       <td>2</td>
+       <td>132</td>
+       <td>78</td>
+       <td>175</td>
+       <td>07/11/98</td>
+     </tr>
+     <tr>
+       <td>10</td>
+       <td class="back-color-grey">A005</td>
+       <td>3</td>
+       <td>134</td>
+       <td>78</td>
+       <td>176</td>
+       <td>04/16/98</td>
+     </tr>
+     <tr>
+       <td>11</td>
+       <td class="back-color-grey">A008</td>
+       <td>1</td>
+       <td>126</td>
+       <td>80</td>
+       <td>182</td>
+       <td>05/22/98</td>
+     </tr>
+  </table>
+  <br/>
+
+  <p>You can then submit this DATA step to create <strong>Clinic.Merged</strong> by merging <strong>Clinic.Demog</strong> and
+     <strong>Clinic.Visit</strong> according to values of the variable <i>ID</i>:
+  </p>
+  <pre>
+  data clinic.merged;
+     merge clinic.demog clinic.visit;
+     by id;
+  run;
+  proc print data=clinic.merged;
+  run;</pre>
+
+  <p>Notice that all observations, including unmatched observations and observations that have
+     missing data, are written to the output data set.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red back-color-grey">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">Weight</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>11/05/98</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>195</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>10/13/98</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>198</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>07/04/98</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="back-color-grey">A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>04/14/98</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td class="back-color-grey">A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/12/98</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td class="">A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/21/98</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>123</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td class="back-color-grey">A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/30/98</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/27/98</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>174</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>07/11/98</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>175</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>04/16/98</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>176</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td class="back-color-grey">A007</td>
+      <td>39</td>
+      <td>m</td>
+      <td>11/11/57</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td class="back-color-grey">A008</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>05/22/98</td>
+      <td>1</td>
+      <td>126</td>
+      <td>80</td>
+      <td>182</td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Example: Sorting and Merging Data Sets in Descending Order</h4>
+
+  <p>The example above illustrates merging two data sets that are sorted in ascending order of the BY
+     variable <i>ID</i>. To sort the data sets in <strong>descending</strong> order and then merge them, you can submit the
+     following program:
+  </p>
+
+  <pre>
+  proc sort data=clinic.demog;
+     by descending id;
+  run;
+  proc sort data=clinic.visit;
+     by descending id;
+  run;
+  data clinic.merged;
+     merge clinic.demog clinic.visit;
+     by descending id;
+  run;
+  proc print data=clinic.merged;
+  run;</pre>
+
+  <p>Notice that you specify the DESCENDING option in the BY statements in both the PROC SORT
+     steps and the DATA step. If you omit the DESCENDING option in the DATA step, you generate
+     error messages about improperly sorted BY variables.
+  </p>
+  <p>Now the data sets are merged in descending order of the BY variable <i>ID</i>.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red back-color-grey">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">Weight</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td class="back-color-grey">A008</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>05/22/98</td>
+      <td>1</td>
+      <td>126</td>
+      <td>80</td>
+      <td>182</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td class="back-color-grey">A007</td>
+      <td>39</td>
+      <td>m</td>
+      <td>11/11/57</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/27/98</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>174</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>07/11/98</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>175</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td class="back-color-grey">A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>04/16/98</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>176</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td class="back-color-grey">A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/30/98</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td class="back-color-grey">A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/12/98</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td class="back-color-grey">A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/21/98</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>123</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td class="back-color-grey">A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>04/14/98</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>11/05/98</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>195</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>10/13/98</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>198</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td class="back-color-grey">A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>07/04/98</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>200</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Match-Merge Processing</h2>
+
+  <!-- Topic 6 Subtopic 1-->
+  <h3 class="subtopic" id="topic6_subtopic1">Introduction</h3>
+
+  <p>The match-merging examples in this chapter are straightforward. However, match-merging can
+     be more complex, depending on your data and on the output data set that you want to create. To
+     predict the results of match-merges correctly, you need to understand how the DATA step
+     performs match- merges.
+  </p>
+
+  <p>When you submit a DATA step, it is processed in two phases:</p>
+  <ul>
+    <li>the <strong>compilation phase</strong>, in which SAS checks the syntax of the SAS statements and
+        compiles them (translates them into machine code). During this phase, SAS also sets up
+        descriptor information for the output data set and creates the <strong>program data vector</strong> (PDV),
+        an area of memory where SAS builds your data set, one observation at a time.<br/>
+        <img src="images/ch13_image10.png" class="diagram" />
+    </li>
+    <li>the <strong>execution phase</strong>, in which the DATA step reads data and executes any subsequent
+        programming statements. When the DATA step executes, data values are read into the
+        appropriate variables in the program data vector. From here, the variables are written to the
+        output data set as a single observation.<br/>
+        <img src="images/ch13_image11.png" class="diagram" />
+    </li>
+  </ul>
+
+  <p>The following sections cover match-merge processing in greater detail. In those sections, you
+     learn
+  </p>
+  <ul>
+    <li>how the DATA step sets up the new output data set</li>
+    <li>what happens when variables in different data sets have the same name</li>
+    <li>how the DATA step matches observations in input data sets</li>
+    <li>what happens when observations don't match</li>
+    <li>how missing values are handled</li>
+  </ul>
+
+  <!-- Topic 6 Subtopic 2-->
+  <h3 class="subtopic" id="topic6_subtopic2">The Compilation Phase: Setting Up the New Data Set</h3>
+
+  <p>To prepare to merge data sets, SAS</p>
+  <ol> 
+    <li>reads the descriptor portions of the data sets that are listed in the MERGE statement</li>
+    <li>reads the rest of the DATA step program</li>
+    <li>creates the program data vector (PDV) for the merged data set</li>
+    <li>assigns a tracking pointer to each data set that is listed in the MERGE statement</li>
+  </ol>
+
+  <p>If variables that have the same name appear in more than one data set, then the variable from
+     the first data set that contains the variable (in the order listed in the MERGE statement)
+     determines the length of the variable. (Recall that the value of the variable is the value in the last
+     data set that contains it.)
+  </p>
+
+  <img src="images/ch13_image12.png" class="diagram" />
+  
+  <p>The illustration above shows match-merging during the compilation phase. After reading the
+     descriptor portions of the data sets <strong>Clients</strong> and <strong>Amounts</strong>, SAS
+  </p>
+
+  <ol>
+    <li>creates a program data vector for the new <strong>Claims</strong> data set. The program data vector
+        contains all variables from the two data sets. Note that although <i>Name</i> appears in both
+        input data sets, it appears in the program data vector only once
+    </li>
+    <li>assigns tracking pointers to <strong>Clients</strong> and <strong>Amounts</strong></li>
+  </ol>
+
+  <!-- Topic 6 Subtopic 3-->
+  <h3 class="subtopic" id="topic6_subtopic3">The Execution Phase: Match-Merging Observations</h3>
+
+  <p>After compiling the DATA step, SAS sequentially match-merges observations by moving the
+     pointers down each observation of each data set and checking to see <strong>whether the BY values
+     match</strong>.
+  </p>
+  <ul>
+    <li>If <strong>Yes</strong>, the observations are written to the PDV in the order in which the data sets appear
+        in the MERGE statement. Values of any same-named variable are overwritten by values of
+        the same-named variable in subsequent data sets. SAS writes the combined observation to
+        the new data set and retains the values in the PDV until the BY value changes in all the data
+        sets.<br/>
+        <img src="images/ch13_image13.png" class="diagram" />
+    </li>
+    <li>If <strong>No</strong>, SAS determines which of the values comes first and writes the observation that
+        contains this value to the PDV. Then the contents of the PDV are written to the new data set.<br/>
+        <img src="images/ch13_image14.png" class="diagram" /> <br/>
+        <p>When the BY value changes in all the input data sets, the PDV is initialized to missing.</p>
+        <img src="images/ch13_image15.png" class="diagram" /> <br/>
+        <p>The DATA step continues to process every observation in each data set until it has processed all
+           observations in all data sets.
+        </p>
+    </li>
+  </ul>
+
+  <!-- Topic 6 Subtopic 4-->
+  <h3 class="subtopic" id="topic6_subtopic4">Handling Unmatched Observations and Missing Values</h3>
+
+  <p>By default, <strong>all observations</strong> that are written to the PDV, including observations that have missing
+     data and no matching BY values, are written to the output data set. (If you specify a subsetting IF
+     statement to select observations, then only those that meet the IF condition are written.)
+  </p>
+
+  <ul>
+    <li>If an observation contains <strong>missing values for a variable</strong>, then the observation in the
+        output data set contains the missing values as well. Observations that have missing values
+        for the BY variable appear at the top of the output data set.<br/>
+        <img src="images/ch13_image16.png" class="diagram" />
+    </li>
+    <li>If an input data set <strong>doesn't have a matching BY value</strong>, then the observation in the
+        output data set contains missing values for the variables that are unique to that input data
+        set.<br/>
+        <img src="images/ch13_image17.png" class="diagram" />
+    </li>
+  </ul>
+
+  <!-- Topic 6 Subtopic 5-->
+  <h3 class="subtopic" id="topic6_subtopic5">Summary of Match-Merge Processing</h3>
+
+  <p>Now that you've learned the basics of match-merge processing, you can review the compilation
+     and execution phases step by step.
+  </p>
+  <ol>
+    <li>First, SAS sets up the new data set by reading the descriptor portions of the data sets
+        and creating the program data vector
+    </li>
+    <li>Next, SAS sequentially match-merges observations and writes the new observation to
+        the PDV, then to the new data set
+    </li>
+    <li>When the BY value changes in all the input data sets, the PDV is initialized to missing
+    </li>
+    <li>Missing values for variables, as well as missing values resulting form unmatched
+        observations, are written to the new data set
+    </li>
+  </ol>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Renaming Variables</h3>
+
+  <p>Sometimes you might have same-named variables in more than one input data set. In this case,
+     DATA step match-merging <strong>overwrites values</strong> of the like-named variable in the first data set in
+     which it appears with values of the like-named variable in subsequent data sets.
+  </p>
+  <p>For example, <strong>Clinic.Demog</strong> contains the variable <i>Date</i> (date of birth), and <strong>Clinic.Visit</strong> also
+     contains <i>Date</i> (date of the clinic visit in 1998). The DATA step below overwrites the date of birth
+     with the date of the clinic visit.
+  </p>
+
+  <pre>
+  data clinic.merged;
+     merge clinic.demog clinic.visit;
+  by id;
+  run;
+     proc print data=clinic.merged;
+  run;</pre>
+
+  <p>The following output shows the effects of overwriting the values of a variable in the
+     <strong>Clinic.Merged</strong> data set. In most observations, the date is now the date of the clinic visit. In
+     observation 11, the date is still the birth date because <strong>Clinic.Visit</strong> did not contain a matching ID
+     value and did not contribute to the observation.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">Weight</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>11/05/98</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>195</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>10/13/98</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>198</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>07/04/98</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>04/14/98</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>168</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/12/98</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/21/98</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>123</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/30/98</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/27/98</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>174</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>07/11/98</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>175</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>04/16/98</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>176</td>
+    </tr>
+    <tr class="back-color-grey">
+      <td>11</td>
+      <td>A007</td>
+      <td>39</td>
+      <td>m</td>
+      <td>11/11/57</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>A008</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>05/22/98</td>
+      <td>1</td>
+      <td>126</td>
+      <td>80</td>
+      <td>182</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You now have a data set with values for Date that mean two different things: date of birth and
+     date of clinic visit.
+  </p>
+  <p>To prevent overwriting, you can rename variables by using the <strong>RENAME= data set option</strong> in the
+     MERGE statement.
+  </p>
+
+  <hr/>
+  <p><strong>General form, RENAME= data set option:</strong></p>
+  <p>(<strong>RENAME</strong>=(old-variable-name=new-variable-name))</p>
+  <p>where</p>
+  <ul>
+    <li>the <strong>RENAME</strong>= option, in parentheses, follows the name of each data set that contains
+        one or more variables to be renamed
+    </li>
+    <li><i>old-variable-name</i> specifies the variable to be renamed</li>
+    <li><i>new-variable-name</i> specifies the new name for the variable</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can rename any number of variables in each occurrence of the
+          RENAME= option. <br/>
+          You can also use RENAME= to rename variables in the SET statement or in
+          the output data set that is specified in the DATA statement.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>In the following example, the RENAME= option renames the variable <i>Date</i> in <strong>Clinic.Demog</strong> to
+     <i>BirthDate</i>, and it renames the variable <i>Date</i> in <strong>Clinic.Visit</strong> to <i>VisitDate</i>.
+  </p>
+
+  <pre>
+  data clinic.merged;
+     merge clinic.demog(rename=(date=BirthDate))
+           clinic.visit(rename=(date=VisitDate));
+     by id;
+  run;
+  proc print data=clinic.merged;
+  run;</pre>
+
+  <p>The following output shows the effect of the RENAME= option.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red back-color-grey">BirthDate</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red back-color-grey">VisitDate</th>
+    </tr>
+    <tr>  
+      <td>1</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>195</td>
+      <td>11/05/98</td>
+    </tr>
+    <tr>  
+      <td>2</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>198</td>
+      <td>10/13/98</td>
+    </tr>
+    <tr>  
+      <td>3</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>200</td>
+      <td>07/04/98</td>
+    </tr>
+    <tr>  
+      <td>4</td>
+      <td>A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>06/15/63</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>168</td>
+      <td>04/14/98</td>
+    </tr>
+    <tr>  
+      <td>5</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>125</td>
+      <td>8/12/98</td>
+    </tr>
+    <tr>  
+      <td>6</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>123</td>
+      <td>08/21/98</td>
+    </tr>
+    <tr>  
+      <td>7</td>
+      <td>A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/27/69</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>204</td>
+      <td>03/30/98</td>
+    </tr>
+    <tr>  
+      <td>8</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>174</td>
+      <td>02/27/98</td>
+    </tr>
+    <tr>  
+      <td>9</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>175</td>
+      <td>07/11/98</td>
+    </tr>
+    <tr>  
+      <td>10</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>176</td>
+      <td>04/16/98</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>A007</td>
+      <td>39</td>
+      <td>m</td>
+      <td>11/11/57</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>A008</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+      <td>1</td>
+      <td>126</td>
+      <td>80</td>
+      <td>182</td>
+      <td>05/22/98</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Excluding Unmatched Observations</h3>
+
+  <p>By default, DATA step match-merging combines all observations in all input data sets. However,
+     you might want to select only observations that match for two or more specific input data sets.
+  </p>
+  <img src="images/ch13_image18.png" class="diagram"/>
+
+  <p>To exclude unmatched observations from your output data set, you can use the <strong>IN= data set
+     option</strong> and the <strong>subsetting IF statement</strong> in your DATA step. In this case, you use
+  </p>
+  <ul>
+    <li>the IN= data set option to create and name a variable that indicates whether the data set
+        contributed data to the current observation.
+    </li>
+    <li>the subsetting IF statement to check the IN= values and to write to the merged data set
+        only those observations that appear in the data sets for which IN= is specified.
+    </li>
+  </ul>
+
+  <!-- Topic 8 Subtopic 1-->
+  <h3 class="subtopic" id="topic8_subtopic1">Creating Temporary IN= Variables</h3>
+
+
+  <p>Suppose you want to match-merge the data sets <strong>Clinic.Demog</strong> and <strong>Clinic.Visit</strong> and select only
+     observations that appear in both data sets.
+  </p>
+  <p>First, you use IN= to create two temporary variables, <i>indemog</i> and <i>invisit</i>. The IN= variable is
+     a temporary variable that is available to program statements during the DATA step, but it is not
+     included in the SAS data set that is being created.
+  </p>
+
+  <hr/>
+  <p><strong>General form, IN= data set option:</strong></p>
+  <p>(<strong>IN</strong>=variable)</p>
+  <p>where</p>
+  <ul>
+    <li>the <strong>IN</strong>= option, in parentheses, follows the data set name</li>
+    <li>variable names the variable to be created</li>
+  </ul>
+  <p>Within the DATA step, the value of the variable is 1 if the data set contributed data to the current
+     observation. Otherwise, its value is 0.
+  </p>
+  <hr/>
+
+  <p>The DATA step that contains the IN= options appears below. The first IN= creates the temporary
+     variable <i>indemog</i>, which is set to 1 when an observation from <strong>Clinic.Demog</strong> contributes to the
+     current observation; otherwise, it is set to 0. Likewise, the value of <i>invisit</i> depends on whether
+     <strong>Clinic.Visit</strong> contributes to an observation or not.  
+  </p>
+  <pre>
+  data clinic.merged;
+     merge clinic.demog(in=indemog)
+           clinic.visit(in=invisit
+                        rename=(date=BirthDate));
+     by id;
+  run;</pre>
+  <table>
+    <tr>
+      <th class="color-red">Note</th> 
+      <td>When you specify multiple data set options for a given data set, enclose them
+          in a single set of parentheses.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 8 Subtopic 2-->
+  <h3 class="subtopic" id="topic8_subtopic2">Selecting Matching Observations</h3>
+
+  <p>Next, to select only observations that appear in both <strong>Clinic.Demog</strong> and <strong>Clinic.Visit</strong>, you specify
+     a subsetting IF statement in the DATA step.
+  </p>
+  <p>In the DATA step below, the subsetting IF statement checks the values of indemog and
+     invisit and continues processing only those observations that meet the condition of the
+     expression. Here the condition is that both <strong>Clinic.Demog</strong> and <strong>Clinic.Visit</strong> contribute to the 
+     observation. If the condition is met, the new observation is written to <strong>Clinic.Merged</strong>. Otherwise,
+     the observation is deleted.
+  </p>
+
+  <pre>
+  data clinic.merged;
+     merge clinic.demog(in=indemog
+                        rename=(date=BirthDate))
+           clinic.visit(in=invisit
+                        rename=(date=VisitDate));
+     by id;
+     if indemog=1 and invisit=1;
+  run;
+  proc print data=clinic.merged;
+  run;</pre>
+
+  <p>In previous examples, <strong>Clinic.Merged</strong> contained 12 observations. In the output below, notice that
+     only 10 observations met the condition in the IF expression.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">BirthDate</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">VisitDate</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>195</td>
+      <td>11/05/98</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>198</td>
+      <td>10/13/98</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>A001</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>200</td>
+      <td>07/04/98</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>A002</td>
+      <td>32</td>
+      <td>m</td>
+      <td>06/15/63</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>168</td>
+      <td>04/14/98</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>125</td>
+      <td>08/12/98</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>A003</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>123</td>
+      <td>08/21/98</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>A004</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/27/69</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>204</td>
+      <td>03/30/98</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>174</td>
+      <td>02/27/98</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>175</td>
+      <td>07/11/98</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>A005</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>176</td>
+      <td>04/16/98</td>
+    </tr>
+  </table>
+  <br/>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>SAS evaluates the expression within an IF statement to produce a result that is either
+          nonzero, zero, or missing. A nonzero or nonmissing result causes the expression to be
+          true; a zero or missing result causes the expression to be false. <br/><br/>
+          Thus, you can specify the subsetting IF statement from the previous example in either
+          of the following ways. The first IF statement checks specifically for a value of 1. The
+          second IF statement checks for a value that is neither missing nor 0 (which for IN=
+          variables is always 1). <br/><br/>
+          if indemog=1 and invisit=1; <br/>
+          if indemog and invisit;
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Selecting Variables</h3>
+
+  <p>As with reading raw data or reading SAS data sets, you can specify the variables that you want to
+     drop or keep by using the <strong>DROP= and KEEP= data set options</strong>.
+  </p>
+  <p>For example, the DATA step below reads all variables from <strong>Clinic.Demog</strong> and all variables
+     except <i>Weight</i> from <strong>Clinic.Visit</strong>. It then excludes the variable <i>ID</i> from <strong>Clinic.Merged</strong> after the
+     merge processing is complete.
+  </p>
+  <pre>
+  data clinic.merged(drop=id);
+     merge clinic.demog(in=indemog
+                        rename=(date=BirthDate))
+           clinic.visit(drop=weight in=invisit
+                        rename=(date=VisitDate)) ;
+     by id;
+     if indemog and invisit;
+  run;
+  proc print data=clinic.merged;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">BirthDate</th>
+      <th class="color-red">Visit</th>
+      <th class="color-red">SysBP</th>
+      <th class="color-red">DiasBP</th>
+      <th class="color-red">VisitDate</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>1</td>
+      <td>140</td>
+      <td>85</td>
+      <td>11/05/98</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>2</td>
+      <td>138</td>
+      <td>90</td>
+      <td>10/13/98</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>21</td>
+      <td>m</td>
+      <td>05/22/75</td>
+      <td>3</td>
+      <td>145</td>
+      <td>95</td>
+      <td>07/04/98</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>32</td>
+      <td>m</td>
+      <td>06/15/63</td>
+      <td>1</td>
+      <td>121</td>
+      <td>75</td>
+      <td>04/14/98</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>1</td>
+      <td>118</td>
+      <td>68</td>
+      <td>08/12/98</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>24</td>
+      <td>f</td>
+      <td>08/17/72</td>
+      <td>2</td>
+      <td>112</td>
+      <td>65</td>
+      <td>08/21/98</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+      <td>03/27/69</td>
+      <td>1</td>
+      <td>143</td>
+      <td>86</td>
+      <td>03/30/98</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>1</td>
+      <td>132</td>
+      <td>76</td>
+      <td>02/27/98</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>2</td>
+      <td>132</td>
+      <td>78</td>
+      <td>07/11/98</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>44</td>
+      <td>f</td>
+      <td>02/24/52</td>
+      <td>3</td>
+      <td>134</td>
+      <td>78</td>
+      <td>04/16/98</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 9 Subtopic 1-->
+  <h3 class="subtopic" id="topic9_subtopic1">Where to Specify the DROP= and KEEP= Options</h3> 
+
+  <p>As you've seen in previous chapters, you can specify the DROP= and KEEP= options wherever
+     you specify a SAS data set. When match-merging, you can specify these options in either the
+     <strong>DATA statement</strong> or the <strong>MERGE statement</strong>, depending on whether or not you want to process
+     values of the variables in that DATA step:
+  </p>
+
+  <ul>
+    <li>If you <strong>don't</strong> process certain variables and you don't want them to appear in the new data
+        set, then specify them in the DROP= option in the <strong>MERGE statement</strong>. <br/>
+        <pre>
+        merge clinic.demog(in=indemog
+                           rename=(date=BirthDate))
+              clinic.visit(drop=weight in=invisit
+                           rename=(date=VisitDate));
+        </pre>
+    </li>
+    <li>If you <strong>do</strong> need to process a variable in the original data set (in a subsetting IF statement,
+        for example), then you must specify the variable in the DROP= option in the <strong>DATA
+        statement</strong>. Otherwise, the statement that uses the variable for processing causes an
+        error.<br/>
+        <pre>data clinic.merged(drop=id);</pre>
+    </li>
+  </ul>
+  <p>When used in the DATA statement, the DROP= option simply drops the variables from the new
+     data set. However, they are still read from the original data set and are available for processing
+     within the DATA step.
+  </p>
+
+  <!-- Topic 10 -->
+  <h2 class="topic" id="topic10">Additional Features</h2>
+
+  <p>The DATA step provides a large number of other programming features for manipulating data
+     when you combine data sets. For example, you can</p>
+  <ul>
+    <li>use IF-THEN/ELSE logic to control processing based on one or more conditions.</li>
+    <li>specify additional data set options.</li>
+    <li>perform calculations.</li>
+    <li>create new variables.</li>
+    <li>process variables in arrays.</li>
+    <li>use SAS functions.</li>
+    <li>use special variables such as <i>FIRST.</i> and <i>LAST.</i> to control processing.</li>
+  </ul>
+
+  <p>You can also combine SAS data sets in other ways:</p>
+  <ul>
+    <li>You can perform <strong>one-to-one merging</strong>, which creates a data set that contains all of the
+        variables and observations from each contributing data set. Observations are combined
+        based on their relative position in each data set. <br/><br/>
+        One-to-one merging is the same as one-to-one reading, with two exceptions:
+        <ul>
+          <li>You use the MERGE statement instead of multiple SET statements.</li>
+          <li>The DATA step reads all observations from all data sets.</li>
+        </ul>
+        <pre>
+        data work.onemerge;
+           merge clinic.demog clinic.visit;
+        run;</pre>
+    </li>
+    <li>You can perform a <strong>conditional merge</strong>, using DO loops or other conditional statements:
+        <pre>
+        data work.combine;
+           set sales.pounds;
+           do while(not(begin le date le last));
+              set sales.rate;
+           end;
+           Dollars=(sales*1000)*rate;
+        run;</pre>
+        <table>
+          <tr>
+             <th class="color-blue">Note</th>
+             <td>You can learn about DO loops in Chapter, <strong>Generating Data with DO Loops</strong>.</td>
+          </tr>
+        </table>
+    </li>
+    <li>You can read the same data set in more than one SET statement:
+        <pre>
+        data work.combine(drop=totpay);
+           if _n_=1 then do until(last);
+              set sales.budget(keep=payroll) end=last;
+           end;
+           set sales.budget;
+           Percent=payroll/totpay;
+        run;</pre>
+        
+    </li>
+  </ul>
+  <br/>
+
+  <!-- Topic 11 -->
+  <h2 class="topic" id="topic11">Summary</h2>
+
+  <!-- Topic 11 Subtopic 1-->
+  <h3 class="subtopic" id="topic11_subtopic1">Text Summary</h3> 
+
+  <h4>One-to-One Reading</h4>
+  <br/>
+
+  <p>You can combine data sets with <strong>one-to-one reading</strong> by including multiple SET statements in a
+     DATA step. When you perform one-to-one reading, the new data set contains all the variables
+     from all the input data sets. If the data sets contain same-named variables, the values that are
+     read in from the last data set replace those that were read in from earlier ones. The number of
+     observations in the new data set is the number of observations in the smallest original data set.
+  </p>
+  <br/>
+
+  <h4>Concatenating</h4>
+  <p>To append the observations from one data set to another data set, you <strong>concatenate</strong> them by
+     specifying the data set names in the SET statement. When SAS concatenates, data sets in the
+     SET statement are read sequentially, in the order in which they are listed. The new data set
+     contains all the variables and the total number of observations from all input data sets.
+  </p>
+  <br/>
+
+  <h4>Interleaving</h4>
+  <p>If you use a BY statement when you concatenate data sets, the result is <strong>interleaving</strong>.
+     Interleaving intersperses observations from two or more data sets, based on one or more
+     common variables. Each input data set must be sorted or indexed in ascending order based on
+     the BY variable(s). Observations in each BY group in each data set in the SET statement are
+     read sequentially, in the order in which the data sets and BY variables are listed, until all
+     observations have been processed. The new data set contains all the variables and the total
+     number of observations from all input data sets.
+  </p>
+  <br/>
+
+  <h4>Simple Match-Merging</h4>
+  <p>Sometimes you need to combine observations from two or more data sets into a single
+     observation in a new data set according to the values of a same-named variable. This is matchmerging,
+     which uses a MERGE statement rather than a SET statement to combine data sets.
+     Each input data set must be sorted or indexed in ascending order based on the BY variable(s).
+     During match-merging, SAS sequentially checks each observation of each data set to see
+     whether the BY values match, then writes the combined observation to the new data set.
+  </p>
+  <br/>
+
+  <h4>Match-Merge Processing</h4>
+  <p>To predict the results of match-merging correctly, you need to understand how the DATA step
+     processes data in match-merges.
+  </p>
+  <br/>
+
+  <h4>Compiling</h4>
+  <p>To prepare to merge data sets, SAS</p>
+  <ol>
+    <li>reads the descriptor portions of the data sets that are listed in the MERGE statement.</li>
+    <li>reads the rest of the DATA step program.</li>
+    <li>creates the program data vector (PDV), an area of memory where SAS builds your data
+        set one observation at a time.
+    </li>
+    <li>assigns a tracking pointer to each data set that is listed in the MERGE statement.</li>
+  </ol>
+  <p>If variables with the same name appear in more than one data set, then the variable from the first
+     data set that contains the variable (in the order listed in the MERGE statement) determines the
+     length of the variable.
+  </p>
+  <br/>
+
+  <h4>Executing</h4>
+  <p>After compiling the DATA step, SAS sequentially match-merges observations by moving the
+     pointers down each observation of each data set and checking to see <strong>whether the BY values
+     match</strong>.
+  </p>
+  <ul>
+    <li>If <strong>Yes</strong>, the observations are written to the PDV in the order in which the data sets appear
+        in the MERGE statement. Values of any same-named variable are overwritten by values of
+        the same-named variable in subsequent data sets. SAS writes the combined observation to
+        the new data set and retains the values in the PDV until the BY value changes in all the data
+        sets.
+    </li>
+    <li>If <strong>No</strong>, SAS determines which of the values comes first and writes the observation that
+        contains this value to the PDV. Then the observation is written to the new data set.
+    </li>
+  </ul>
+  <p>When the BY value changes in all the input data sets, the PDV is initialized to missing. The DATA
+     step merge continues to process every observation in each data set until it has processed all
+     observations in all data sets.
+  </p>
+  <br/>
+
+  <h4></h4>
+  <p></p>
+  <br/>
+
+  <h4>Handling Unmatched Observations and Missing Values</h4>
+  <p>All observations that are written to the PDV, including observations that have missing data and no
+     matching BY values, are written to the output data set.
+  </p>
+  <ul>
+    <li>If an observation contains missing values for a variable, then the observation in the
+        output data set contains the missing values as well. Observations that have missing values
+        for the BY variable appear at the top of the output data set.
+    </li>
+    <li>If an input data set doesn't have a matching BY value, then the observation in the output
+        data set contains missing values for the variables that are unique to that input data set.
+    </li>
+  </ul>
+  <br/>
+
+  <h4>Renaming Variables</h4>
+  <p>Sometimes you might have same-named variables in more than one input data set. In this case,
+     match-merging overwrites values of the same-named variable in the first data set with values of
+     the same-named variable in subsequent data sets. To prevent overwriting, use the RENAME=
+     data set option in the MERGE statement to rename variables.
+  </p>
+  <br/>
+
+  <h4>Excluding Unmatched Observations</h4>
+  <p>By default, match-merging combines all observations in all input data sets. However, you might
+     want to select only observations that match for two or more input data sets. To exclude
+     <strong>unmatched observations</strong>, use the IN= data set option and the subsetting IF statement in your
+     DATA step. The IN= data set option creates a variable to indicate whether the data set
+     contributed data to the current observation. The subsetting IF statement then checks the IN=
+     values and writes to the merged data set only observations that appear in the data sets for which
+     IN= is specified.
+  </p>
+  <br/>
+
+  <h4>Selecting Variables</h4>
+  <p>You can specify the variables you want to drop or keep by using the <strong>DROP</strong>= and <strong>KEEP</strong>= data set
+     options. When match-merging, you can specify these options in either the DATA statement or the
+     MERGE statement, depending on whether or not you want to process values of the variables in
+     that DATA step. When used in the DATA statement, the DROP= option simply drops the
+     variables from the new data set. However, they are still read from the original data set and are
+     available within the DATA step.
+  </p>
+  <br/>
+
+  <!-- Topic 11 Subtopic 2-->
+  <h3 class="subtopic" id="topic11_subtopic2">Points to Remember</h3> 
+
+  <ul>
+    <li>You can rename any number of variables in each occurrence of the RENAME= option.</li>
+    <li>In match-merging, the IN= data set option can apply to any data set in the MERGE
+        statement. The RENAME=, DROP=, and KEEP= options can apply to any data set in the
+        DATA or MERGE statements.
+    </li>
+    <li>Use the KEEP= option instead of the DROP= option if more variables are dropped than
+        kept.
+    </li>
+    <li>When you specify multiple data set options for a particular data set, enclose them in a
+        single set of parentheses.
+    </li>
+  </ul>
+
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+
+
+
+
+
+</div><!-- end of div content -->
+</body>
+</html>

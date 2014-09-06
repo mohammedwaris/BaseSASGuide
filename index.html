@@ -6,13 +6,150 @@
 <script src="js/jquery-2.1.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery-scrollto.js"></script>
+<script src="cordova.js"></script>
 <script type="text/javascript">
 
+var androidInAppBillingInitStatus = -1;
+var unlockAllChaptersStatus = -1;
 var currentPage = '';
 
-$(document).ready(function(){
-	$('#page-data').load('chapters.html' + ' #content', {}, function(){});
+document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady(){
+	alert(getPlatform());
+	
+	$('#page-data').load('chapters.html' + ' #content', {}, function(){
+	    for(i=1;i<=21;i++) {
+	       $("#chapter" + i + "-topics").addClass('display-none');
+	    }
+	});
 	currentPage = 'chapters';
+	
+	document.addEventListener('backbutton', onBackButtonPressed, false);
+	
+	
+	initializeInAppBilling();
+		
+	
+}
+
+function initializeInAppBilling(){
+	if(getPlatform() == 'android'){
+		
+		//this is a android device initialize android in-app billing plugin
+		
+		inappbilling.init(function(){
+							//success
+							checkIfAlreadyUnlocked();
+						  }, function(){
+							  //fail
+						  },{},"all_chapters");
+						  
+						  
+	}else if(getPlatform() == 'ios'){
+		
+		//this is a ios device initialize ios in-app- billing plugin
+	}else if(getPlatform() == 'unknown'){
+		
+		alert('Error: In-app-billing plugin cannot be initialized');
+		
+	}
+	
+}
+
+function checkIfAlreadyUnlocked(){
+	if(getPlatform() == 'android'){
+		//this is a android device
+		inappbilling.getPurchases(function(data){
+									//success
+									if(data.length == 0){
+										unlockAllChaptersStatus = 0;
+										$('#unlock-all-chapters-button').removeClass('display-none');
+									}else{
+										purchasedItem = data[0];
+										if(purchasedItem.productId == "all_chapters"){
+											//chapters already unlocked
+											unlockFeatures();
+											/*unlockAllChaptersStatus = 1;
+											$('#unlock-all-chapters-button').addClass('display-none');
+										    for(i=1;i<=21;i++) {
+										       $("#chapter" + i + "-topics ul").removeClass('subtopic-grey');
+										    }*/
+										}
+									}
+								}, function(){
+									//fail
+									alert('Error: Cannot retrieve purchase information');
+								}
+	   );
+	}else if(getPlatform() == 'ios'){
+		//this is a ios device
+	}
+}
+
+function unlockAllChapters(){
+	//alert('unlocked.');
+	//unlockFeatures();
+	if(getPlatform() == 'android'){
+		//this is a android device
+		inappbilling.buy(function(){
+							// success
+							alert("Thanks for purchasing, All chapters are unlocked now.");
+							unlockFeatures();
+							/*unlockAllChaptersStatus = 1;
+							$('#unlock-all-chapters-button').addClass('display-none');
+						    for(i=1;i<=21;i++) {
+						       $("#chapter" + i + "-topics ul").removeClass('subtopic-grey');
+						    }*/
+						}, function(){
+							//fail
+							//alert("buy fail");
+						}, "all_chapters");
+	}else if(getPlatform() == 'ios'){
+		//this is a ios device
+	}else if(getPlatform() == 'unknown'){
+		alert('Error: Cannot initiate a purchase now');
+	}
+}
+
+function getPlatform(){
+	outPlatform = 'unknown';
+	
+	/*inPlatform = device.platform;
+	
+	if(inPlatform == 'Android'){
+		outPlatform = 'android';
+	}else if(inPlatform == 'iOS'){
+		outPlatform = 'ios';
+	}else{
+		outPlatform = 'unknown';
+	}*/
+	outPlatform = 'android';
+	
+	return outPlatform;
+}
+
+
+function onBackButtonPressed(){
+	if(currentPage == 'chapters'){
+		//ask for exit
+		navigator.app.exitApp();
+		/*navigator.notification.confirm(
+		        'Exit ?', // message
+		         exitApp,            // callback to invoke with index of button pressed
+		        'Confirm',           // title
+		        'Yes,No'         // buttonLabels
+		    );*/
+		
+	}else{
+		loadChapters();
+	}
+}
+	
+
+
+$(document).ready(function(){
+	
 });
 
 function loadChapters(){
@@ -37,20 +174,35 @@ function loadPage(ch, topic, subtopic){
         }
      });
   }else{
-     chapters_page_data = $('#page-data').html();
-	 currentPage = ch;
-	 $('#index-button').removeClass('display-none');
-	 updateHeaderContent();
-     $('#page-data').load(ch + '.html' + ' #content', {}, function(){
-        if(subtopic == ''){
-           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
-        }else{
-           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top - 100) + 'px'});
-        }
-     });   
+	 if(unlockAllChaptersStatus == 1){ //user has purchased all chapters
+     	chapters_page_data = $('#page-data').html();
+	 	currentPage = ch;
+	 	$('#index-button').removeClass('display-none');
+	 	updateHeaderContent();
+     	$('#page-data').load(ch + '.html' + ' #content', {}, function(){
+        	if(subtopic == ''){
+           	 	$('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
+        	}else{
+           	 	$('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top - 100) + 'px'});
+        	}
+     	});   
+ 	}else if(unlockAllChaptersStatus == 0){ //user has not purchased all chapters
+		alert("Please click the buy button to unlock all chapters.");
+ 		
+ 	}else if(unlockAllChaptersStatus == 1) { //user purchase information is not known
+ 		alert('Your purchase information is not available, Please try again.')
+ 	}
   }
 
 }// end of loadPage()
+
+function unlockFeatures(){
+	unlockAllChaptersStatus = 1;
+	$('#unlock-all-chapters-button').addClass('display-none');
+    for(i=1;i<=21;i++) {
+       $("#chapter" + i + "-topics ul").removeClass('subtopic-grey');
+    }
+}
 
 function showHideChapterTopics(id){
     //alert(id);
@@ -72,12 +224,74 @@ function updateHeaderContent(){
 	}else if(currentPage == 'ch1'){
 		$('#sub-title').html('(Basic Concepts)');
 		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch2'){
+		$('#sub-title').html('(Referencing Files and Settings Options)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch3'){
+		$('#sub-title').html('(Editing and Debugging SAS Programs)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch4'){
+		$('#sub-title').html('(Creating List Reports)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch5'){
+		$('#sub-title').html('(Creating SAS Data Sets from Raw Data)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch6'){
+		$('#sub-title').html('(Understanding Data Step Processing)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch7'){
+		$('#sub-title').html('(Creating and Applying User Defined Formats)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch8'){
+		$('#sub-title').html('(Creating Enhanced List and Summary Reports)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch9'){
+		$('#sub-title').html('(Producing Descriptive Statistics)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch10'){
+		$('#sub-title').html('(Producing HTML Output)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch11'){
+		$('#sub-title').html('(Creating and Managing Variables)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch12'){
+		$('#sub-title').html('(Reading SAS Data Sets)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch13'){
+		$('#sub-title').html('(Combining SAS Data Sets)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch14'){
+		$('#sub-title').html('(Transforming Data with SAS Functions)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch15'){
+		$('#sub-title').html('(Generating Data with DO Loops)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch16'){
+		$('#sub-title').html('(Processing Variables with Arrays)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch17'){
+		$('#sub-title').html('(Reading Raw Data in Fixed Fields)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch18'){
+		$('#sub-title').html('(Reading Free-Format Data)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch19'){
+		$('#sub-title').html('(Reading Date and Time Values)');
+		$('#index-button').removeClass('display-none');
+	}else if(currentPage == 'ch20'){
+		$('#sub-title').html('(Creating a Single Observation from Multiple Records)');
+		$('#index-button').removeClass('display-none');
 	}else if(currentPage == 'ch21'){
 		$('#sub-title').html('(Creating Multiple Observations from a Single Record)');
 		$('#index-button').removeClass('display-none');
 	}
 	
-	if(currentPage == 'ch1' || currentPage == 'ch2' || currentPage == 'ch3' || currentPage == 'ch21'){
+	if(currentPage == 'ch1' || currentPage == 'ch2' || currentPage == 'ch3' || currentPage == 'ch4' ||
+       currentPage == 'ch5' || currentPage == 'ch6' || currentPage == 'ch7' || currentPage == 'ch8' ||
+       currentPage == 'ch9' || currentPage == 'ch10' || currentPage == 'ch11' || currentPage == 'ch12' ||
+       currentPage == 'ch13' || currentPage == 'ch14' || currentPage == 'ch15' || currentPage == 'ch16' ||
+       currentPage == 'ch17' || currentPage == 'ch18' || currentPage == 'ch19' || currentPage == 'ch20' ||
+       currentPage == 'ch21'){
 		//if(unlockAllChaptersStatus == 0){
 			$('#unlock-all-chapters-button').addClass('display-none');
 			//}
@@ -85,81 +299,108 @@ function updateHeaderContent(){
 }
 </script>
 <style>
-    body{
-        margin-top: 100px;
-        margin-left:10px;
-        margin-right:10px;
-     }
-     td,th{
-       padding: 3px;
-     }
-     .color-red{
-       color: #cc0000;
-     }
-     .color-blue{
-       color: blue;
-     }
-     .topic{
-        color: #236B8E;
-        background-color: #87CEEB;
-        border-radius: 5px;
-        padding:12px;
-        text-align:center;
-     }
-     .subtopic{
-        color: #F2473F;
-        background-color: #FFC1C1;
-        border-radius: 5px;
-        padding:8px;
-        margin-right: 10%;
-        margin-left: 10%;
-     }
-     .underline{ text-decoration: underline;}
+body{
+    margin-top: 100px;
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+ }
+ #page-data{
+   
+ }
+ td,th{
+   padding: 3px;
+ }
+ .color-red{
+   color: #cc0000;
+ }
+ .color-blue{
+   color: blue;
+ }
+ .topic{
+    color: #236B8E;
+    background-color: #87CEEB;
+    border-radius: 5px;
+    padding:8px;
+    text-align:center;
+    font-size: 1.5em;
+    margin-top: 50px;
+    margin-bottom: 50px;
+ }
+ .subtopic{
+    color: #F2473F;
+    background-color: #FFC1C1;
+    border-radius: 5px;
+    padding:8px;
+    margin-right: 10%;
+    margin-left: 10%;
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+ }
+ .underline{ text-decoration: underline;}
 
-     .chapters-ul{
-       list-style-type: none;
-     }
-     .back-color-grey{
-       background-color: #cccccc;
-     }
-     .chapters-heading{
-       font-weight: bold;
-       font-size: 1em;
-       
-       
-     }
-     .chapters-heading p{
-       background-color: #dddddd;
-       border-radius: 5px;
-       padding:10px;
-       
-     }
-     .chapters-heading:hover{
-        text-decoration: none;
-     }
-     .chapters-heading:active {
-       background-color: grey;
-       text-decoration: none;
-     }
-     .chapters-heading:visited {
-       text-decoration: none;
-     }
-     .display-none{
-       display: none;
-     }
+ .chapters-ul{
+   list-style-type: square;
+ }
 
-     .subtopic-grey a{
-       color:grey;
-     }
-     .visibility-hidden{
-   	  visibility: hidden;
-     }
-     .display-none{
-   	  display: none;
-     }
-     .color-green{
-   	  color: green;
-     }
+ .chapters-ul ul{
+   list-style-type: circle;
+ }
+
+ .chapters-ul li {
+   color: #00688B;
+ }
+ .back-color-grey{
+   background-color: #cccccc;
+ }
+ .chapters-heading{
+   font-weight: bold;
+ }
+ .chapters-heading p{
+   background-color: #D1EEEE;
+   border-radius: 5px;
+   padding:10px;
+   color: #00688B;
+   
+ }
+ .chapters-heading:hover{
+    text-decoration: none;
+ }
+ .chapters-heading:active {
+   background-color: grey;
+   text-decoration: none;
+ }
+ .chapters-heading:visited {
+   text-decoration: none;
+ }
+ .display-none{
+   display: none;
+ }
+
+ .subtopic-grey a{
+   color:grey;
+ }
+
+ h4{
+   text-decoration: underline;
+   margin-top: 10px;
+ }
+ .div-scroll-content{ 
+   overflow-y: scroll;
+ }
+ .warning-table, .note-table, .info-table {
+   border: 1px solid #000000;
+   border-collapse: collapse;
+ }
+
+ .warning-table td, .note-table td, .info-table td{
+   border: 1px solid #000000;
+ }
+ .color-green{
+	 color: green;
+ }
 </style>
 
 </head>
@@ -170,7 +411,7 @@ function updateHeaderContent(){
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
  <table style="width:100%;" border="0">
    <tr>
-     <td><div class="container"><h4 >Base SAS Exam Guide</h4><p class="color-green" id="sub-title">(Chapters)</p></div></td>
+     <td><div class="container"><h4 style="text-decoration:none;" >Base SAS Exam Guide</h4><p class="color-green" id="sub-title">(Chapters)</p></div></td>
      <td>
          <button id="unlock-all-chapters-button" type="button" class="btn btn-primary display-none" onclick="unlockAllChapters()">Buy</button>
 		  <button id="index-button" type="button" class="btn btn-primary display-none" onclick="loadChapters();">Index</button>

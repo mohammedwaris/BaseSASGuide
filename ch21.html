@@ -24,20 +24,15 @@
 </head>
 <body>
 
-<div data-role="page">
-  <div data-role="header">
-     <h1>Base SAS Exam Guide</h1>
-      <a href="index.html" class="ui-btn-right">Index</a>
-      <div data-role="navbar">
-         <p style="text-align:center;color:green;font-weight:normal">(Creating Multiple Observations from a Single Record)</p>
-      </div>
-  </div>
-  <div data-role="content">
+<div id="content">
 
   <!-- Page 535 -->
 
-  <h3 class="color-blue">Overview</h3>
-  <h3 class="color-red">Introduction</h3>
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
 
   <p>Sometimes raw data files contain data for several observations in one record. Data is stored in
      this manner to reduce the size of the entire data file.
@@ -48,22 +43,25 @@
     <li>
         <strong>repeating blocks</strong> of data that represent separate observations
         <br/>
-        <img src="images/ch21_image1.png" style="max-width:100%"/>
+        <img src="images/ch21_image1.png" class="diagram"/>
     </li>
     <li>
         an ID field followed by an equal number of repeating fields that represent separate
         observations<br/>
-        <img src="images/ch21_image2.png" style="max-width:100%"/>
+        <img src="images/ch21_image2.png" class="diagram"/>
     </li>
     <li>
         an ID field followed by a varying number of repeating fields that represent separate
         observations<br/>
-        <img src="images/ch21_image3.png" style="max-width:100%"/>
+        <img src="images/ch21_image3.png" class="diagram"/>
     </li>
   </ul>
   <p>This chapter shows you several ways of creating multiple observations from a single record.</p>
 
-  <h3 class="color-red">Objectives</h3>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
   <p>In this chapter, you learn to</p>
   <ul>
     <li>create multiple observations from a single record that contains repeating blocks of data</li>
@@ -1013,8 +1011,10 @@ the next record.</p>
      <li>Use an END statement to complete DO loops and DO WHILE loops</li>
   </ul>
 
-<div> <!-- end of content -->
-<div> <!-- end of page -->
+
+
+</div> <!-- end of content -->
+
 
 </body>
 </html>

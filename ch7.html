@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>In the Chapter 4, <strong>Creating List Reports</strong>, you learned to associate formats with variables either
+     temporarily or permanently.
+  </p>
+
+  <img src="images/ch7_image1.png" class="diagram" />
+
+  <p>But sometimes you might want to create custom formats for displaying variable values. For
+     example, you can format a product number so that it is displayed as descriptive text, as shown
+     below.
+  </p>
+  <img src="images/ch7_image2.png" class="diagram" />
+
+  <p>Using the FORMAT procedure, you can define your own formats for variables. You can store your
+     formats temporarily or permanently, and you can display a list of all your formats and descriptions
+     of their values.
+  </p>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>create your own formats for displaying variable values.</li>
+    <li>permanently store the formats that you create.</li>
+    <li>associate your formats with variables.</li>
+  </ul>
+
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Introduction to PROC FORMAT</h2>
+
+  <p>Sometimes variable values are stored according to a code. For example, when the PRINT
+     procedure displays the data set <strong>Perm.Empinfo</strong>, notice that the values for <i>JobTitle</i> are coded,
+     and they are not easily interpreted.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">112</td>
+      <td>29996.63</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">105</td>
+      <td>18567.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">111</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">113</td>
+      <td>32696.78</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">112</td>
+      <td>28945.89</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">103</td>
+      <td>35099.50</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Judy</td>
+      <td>Riley</td>
+      <td class="back-color-grey">111</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Neal</td>
+      <td>Ryan</td>
+      <td class="back-color-grey">112</td>
+      <td>28180.00</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You can display more descriptive values for these variables. Here is how a report that contains
+     formatted values for the variable <i>JobTitle</i> might look. The predefined SAS formats cannot help
+     here.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>29996.63</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">text processor</td>
+      <td>18567.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">assoc. technical writer</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">senior technical writer</td>
+      <td>32696.78</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>28945.89</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">manager</td>
+      <td>35099.50</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Judy</td>
+      <td>Riley</td>
+      <td class="back-color-grey">assoc. technical writer</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Neal</td>
+      <td>Ryan</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>28180.00</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>However, you can use the <strong>FORMAT</strong> procedure to define your own formats for displaying values
+     of variables.
+  </p>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Invoking PROC FORMAT</h2>
+
+  <p>To begin a PROC FORMAT step, you use a PROC FORMAT statement.</p>
+
+  <hr/>
+  <p><strong>General form, PROC FORMAT statement:</strong></p>
+  <p><strong>PROC FORMAT</strong> &lt;options&gt;;</p>
+  <p>where options includes</p>
+  <ul>
+    <li><strong>LIBRARY</strong>=libref specifies the libref for a SAS data library that contains a permanent
+        catalog in which user-defined formats are stored.
+    </li>
+    <li><strong>FMTLIB</strong> prints the contents of a format catalog.</li>
+  </ul>
+  <hr/>
+
+  <p>Any time you use PROC FORMAT to create a format, the format is stored in a format catalog. If
+     the SAS data library does not already contain a format catalog, SAS automatically creates one. If
+     you do not specify the LIBRARY= option, then the formats are stored in a default format catalog
+     named <strong>Work.Formats</strong>.
+  </p>
+  <p>As the libref <strong>Work</strong> implies, any format that is stored in <strong>Work.Formats</strong> is a temporary format that
+     exists only for the current SAS session. At the end of the current session, the catalog is erased.
+  </p>
+  <br/>
+
+  <h4>Permanently Storing Your Formats</h4>
+
+  <p>You can store your formats in a <strong>permanent format catalog named Formats</strong> when you specify
+     the LIBRARY= option in the PROC FORMAT statement.
+  </p>
+  <p>PROC FORMAT LIBRARY=libref;</p>
+  <p>But first, you need a LIBNAME statement that associates the libref with the permanent SAS data
+     library in which the format catalog is to be stored. It is recommended, but not required, that you
+     use the word Library as the libref when creating your own permanent formats.
+  </p>
+
+  <pre>
+  libname library 'c:\sas\formats\lib';
+  libname library 'c:\data\setup\library';
+  libname library 'c:\sales\ancillary\libset';</pre>
+
+  <p>When you associate a permanent format with a variable in a subsequent DATA or PROC step,
+     you use the Library libref to reference the location of the format catalog.
+  </p>
+  <p>We'll discuss the use of permanent user-defined formats later, after you learn how to create them.</p>
+  <p>Now, any format that you create in this PROC FORMAT step is stored in a permanent format
+     catalog called <strong>Library.Formats</strong>.
+  </p>
+
+  <pre>
+  libname library 'c:\sas\formats\lib';
+  proc format library=library;
+     ... ;
+  run;</pre>
+
+  <p>In the program above, the catalog <strong>Library.Formats</strong> is located in the SAS data library
+     <strong>C:\Sas\Formats\Lib</strong>, which is referenced by the libref <strong>Library</strong>.
+  </p>
+
+  <p>You can use LIB= as an abbreviation for the LIBRARY= option.</p>
+  <p>proc format lib=library;</p>
+
+  <p>You can specify a catalog name in the LIBRARY= option, and you can store formats in any
+     catalog. The catalog name must conform to SAS naming conventions.
+  </p>
+
+  <p>proc format lib=library.catalog;</p>
+  <p>Now that you know how to store your own formats, let's learn how to create them.</p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Defining a Unique Format</h2>
+
+  <p>You can use the VALUE statement to define a format for displaying one or more values.</p>
+
+  <hr/>
+  <p><strong>General form, VALUE statement:</strong></p>
+  <p><strong>VALUE</strong> format-name
+     range1='label1'
+     range2='label2'
+     ...;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>format-name names the format that you are creating. The format name
+        <ul>
+          <li>must begin with a dollar sign ($) if the format applies to character data.</li>
+          <li>cannot be longer than eight characters.</li>
+          <li>cannot be the name of an existing SAS format.</li>
+          <li>cannot end with a number.</li>
+          <li>does not end in a period when specified in a VALUE statement.</li>
+        </ul>
+    </li>
+    <li>range specifies one or more variable values and a character string or an existing format.</li>
+    <li>label is a text string enclosed in quotation marks.</li>
+  </ul>
+  <hr/>
+
+  <p>Notice that the statement begins with the keyword VALUE and ends with a semicolon after all the
+     labels have been defined. The following VALUE statement creates the JOBFMT format to specify
+     descriptive labels that will later be assigned to the variable <i>JobTitle</i>:
+  </p>
+
+  <pre>
+  proc format lib=library;
+     value jobfmt
+           103='manager'
+           105='text processor'
+           111='assoc. technical writer'
+           112='technical writer'
+           113='senior technical writer';
+  run;</pre>
+
+  <p>The VALUE range specifies</p>
+  <ul>
+    <li>a <strong>single value</strong>, such as 24 or 'S'.</li>
+    <li>a <strong>range of numeric values</strong>, such as 0-1500.</li>
+    <li>a <strong>range of character values</strong> enclosed in quotation marks, such as 'A'-'M'.</li>
+    <li>a <strong>list of unique values</strong> separated by commas, such as 90,180,270 or 'B','D','F'. These
+        values can be character values or numeric values, but not a combination of character and
+        numeric values (because formats themselves are either character or numeric).
+    </li>
+  </ul>
+
+  <p>When the specified values are <strong>character values</strong>, they must be enclosed in quotation marks and
+     must match the case of the variable's values. The format's name must also start with a dollar sign
+     ($). For example, the VALUE statement below defines the $GRADE format, which displays the
+     character values as text labels.
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value $grade
+             'A'='Good'
+             'B'-'D'='Fair'
+             'F'='Poor'
+             'I','U'='See Instructor';
+  run;</pre>
+
+  <p>When the specified values are <strong>numeric values</strong>, they are not enclosed in quotation marks, and
+     the format's name should not begin with a dollar sign ($). The VALUE statement that defines the
+     format JOBFMT assigns labels to numeric values.
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value jobfmt
+             103='manager'
+             105='text processor'
+             111='assoc. technical writer'
+             112='technical writer'
+             113='senior technical writer';
+  run;</pre>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Specifying Value Ranges</h3>
+
+  <p>You can specify a non-inclusive range of numeric values by using the "less than" symbol (<) to
+     avoid any overlapping. In this example, the range of values from 0 to less than 13 is labeled as
+     <strong>child</strong>. The next range begins at 13, so the label <strong>teenager</strong> would be assigned to the values 13 to
+     19.
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value agefmt
+             0-&lt;13='child'
+             13-&lt;20='teenager'
+             20-&lt;65='adult'
+             65-100='senior citizen';
+  run;</pre>
+
+  <p>You can also use the keywords <strong>LOW</strong> and <strong>HIGH</strong> to specify the lower and upper limits of a
+     variable's value range. The keyword LOW does not include missing numeric values. The keyword
+     OTHER can be used to label missing values as well as any values that are not specifically
+     addressed in a range.
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value agefmt
+             low-&lt;13='child'
+             13-&lt;20='teenager'
+             20-&lt;65='adult'
+             65-high='senior citizen'
+             other='unknown';
+  run;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If applied to a character format, the keyword LOW includes missing character
+          values.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>When specifying a label for displaying each range, remember to</p>
+  <ul>
+    <li>enclose the label in quotation marks.</li>
+    <li>limit the label to 256 characters.</li>
+    <li>use double quotation marks if you want an apostrophe to appear in the label, as in this example: <br/><br/>
+        000="employee's jobtitle unknown";
+    </li>
+  </ul>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Defining Multiple Formats</h3>
+
+  <p>To define several formats, you can use multiple VALUE statements in a single PROC FORMAT
+     step. In this example, each VALUE statement defines a different format.
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value jobfmt
+             103='manager'
+             105='text processor'
+             111='assoc. technical writer'
+             112='technical writer'
+             113='senior technical writer';
+       value $respnse
+             'Y'='Yes'
+             'N'='No'
+             'U'='Undecided'
+             'NOP'='No opinion';
+  run;</pre>
+
+  <p>The SAS log prints notes informing you that the formats have been created.</p>
+
+  <p class="color-red">SAS Log (Partial Listing)</p>
+
+  <hr/>
+  <p>
+  01 proc format lib=library; <br/>
+  02 &nbsp;&nbsp; value jobfmt <br/>
+  03 &nbsp;&nbsp;&nbsp;&nbsp; 103='manager' <br/>
+  04 &nbsp;&nbsp;&nbsp;&nbsp; 105='text processor' <br/>
+  05 &nbsp;&nbsp;&nbsp;&nbsp; 111='assoc. technical writer' <br/>
+  06 &nbsp;&nbsp;&nbsp;&nbsp; 112='technical writer' <br/>
+  07 &nbsp;&nbsp;&nbsp;&nbsp; 113='senior technical writer'; <br/><br/>
+  NOTE: Format JOBFMT has been written to LIBRARY.FORMATS.
+  </p>
+  <hr/>
+
+  <p>Because you have defined the JOBFMT format for displaying the values of <i>JobTitle</i>, the format
+     can be used with PROC PRINT for more legible output.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">(Without Format)</th>
+    </tr>
+    <tr>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">112</td>
+      <td>29996.63</td>
+    </tr>
+    <tr>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">105</td>
+      <td>18567.23</td>
+    </tr>
+    <tr>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">111</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">113</td>
+      <td>32696.78</td>
+    </tr>
+    <tr>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">112</td>
+      <td>28945.89</td>
+    </tr>
+    <tr>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">103</td>
+      <td>35099.50</td>
+    </tr>
+
+
+
+
+
+    <tr>
+      <th class="color-red" colspan="4">(With Format)</th>
+    </tr>
+    <tr>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>29996.63</td>
+    </tr>
+    <tr>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">text processor</td>
+      <td>18567.23</td>
+    </tr>
+    <tr>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">assoc. technical writer</td>
+      <td>25309.00</td>
+    </tr>
+    <tr>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">senior technical writer</td>
+      <td>32696.78</td>
+    </tr>
+    <tr>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>28945.89</td>
+    </tr>
+    <tr>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">manager</td>
+      <td>35099.50</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The next section shows how to apply your formats to variables.</p>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Associating User-Defined Formats with Variables</h2>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Referencing Your Formats</h3>
+
+  <p>Remember that permanent, user-defined formats are stored in a format catalog. For example, the
+     program below stores the format JOBFMT in a catalog named <strong>Library.Formats</strong>, which is located
+     in the directory <strong>C:\Sas\Formats\Lib</strong> in the Windows environment.
+  </p>
+
+  <pre>
+  libname library 'c:\sas\formats\lib';
+  proc format lib=library;
+       value jobfmt
+             103='manager'
+             105='text processor'
+             111='assoc. technical writer'
+             112='technical writer'
+             113='senior technical writer';
+  run;</pre>
+
+  <p>To use the JOBFMT format in a subsequent SAS session, you must assign the libref <strong>Library</strong>
+     again.
+  </p>
+
+  <pre>
+  libname library 'c:\sas\formats\lib';
+  data ... ;</pre>
+
+  <p>SAS searches for the format JOBFMT in two libraries, in this order:</p>
+  <ul>
+    <li>the temporary library referenced by the libref <strong>Work</strong>.</li>
+    <li>a permanent library referenced by the libref <strong>Library</strong>.</li>
+  </ul>
+  
+  <p>SAS uses the first instance of a specified format that it finds.</p>
+  <table>
+    <tr>
+      <th class="color-blue">Info</th>
+      <td>You can delete formats by using PROC CATALOG or the SAS Explorer
+          window.
+      </td>  
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Assigning Your Formats to Variables</h3>
+
+  <p>Just as with SAS formats, you associate a user-defined format with a variable in a <strong>FORMAT
+     statement</strong>.
+  </p>
+
+  <pre>
+  data perm.empinfo;
+     infile empdata;
+     input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+           @19 Salary comma9.;
+     format salary comma9.2 jobtitle jobfmt.;
+  run;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Don't worry about @ pointer controls in programs in this chapter (as in
+          @9FirstName), because they don't affect the behavior of formats. To learn
+          more about using @ pointer controls in SAS programs, see Chapter,
+          <strong>Reading Raw Data in Fixed Fields</strong>.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Remember, you can place the FORMAT statement in either a DATA step or a PROC step. By
+     placing the FORMAT statement in a DATA step, you can permanently associate a format with a
+     variable. Note that you do not have to specify a width value when using a user-defined format.
+  </p>
+
+  <p>When you submit the PRINT procedure, the output for <strong>Perm.Empinfo</strong> now shows commas in the
+     values for <i>Salary</i>, and it shows descriptive labels in place of the values for <i>JobTitle</i>.
+  </p>
+  <pre>
+  proc print data=perm.empinfo;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">technical writer</td>
+      <td class="back-color-grey">29,996.63</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">text processor</td>
+      <td class="back-color-grey">18,567.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">assoc. technical writer</td>
+      <td class="back-color-grey">25,309.00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">senior technical writer</td>
+      <td class="back-color-grey">32,696.78</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">technical writer</td>
+      <td class="back-color-grey">28,945.89</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">manager</td>
+      <td class="back-color-grey">35,099.50</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Judy</td>
+      <td>Riley</td>
+      <td class="back-color-grey">assoc. technical writer</td>
+      <td class="back-color-grey">25,309.00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Neal</td>
+      <td>Ryan</td>
+      <td class="back-color-grey">technical writer</td>
+      <td class="back-color-grey">28,180.00</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>When associating a format with a variable, remember to</p>
+  <ul>
+    <li>use the <strong>same format name</strong> in the FORMAT statement that you specified in the VALUE statement.</li>
+    <li>place <strong>a period</strong> at the end of the format name when it is used in the FORMAT statement.
+        <pre>
+        libname library 'c:\sas\formats\lib';
+        proc format lib=library;
+             value jobfmt
+                   103='manager'
+                   105='text processor'
+                   111='assoc. technical writer'
+                   112='technical writer'
+                   113='senior technical writer';
+        run; <br/><br/>
+
+        libname perm 'c:\data\perm';
+        filename empdata 'c:\data\temp\newhires.txt';
+        data perm.empinfo;
+           infile empdata;
+           input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
+                 @19 Salary comma9.;
+           format salary comma9.2 jobtitle jobfmt.;
+        run;</pre>
+    </li>
+  </ul>
+
+  <p>Notice that a period is not required at the end of the SAS format COMMA9.2 in the FORMAT
+     statement. The period in this format occurs between the width specification and the decimal place
+     specification. All formats contain periods, but only user-defined formats invariably require periods
+     at the end of the name.
+  </p>
+
+  <p>If you do not format all of a variable's values, then those values that are not listed in the VALUE
+     statement are printed as they appear in the SAS data set, as shown in the following example:
+  </p>
+
+  <pre>
+  proc format lib=library;
+       value jobfmt
+             103='manager'
+             105='text processor';
+             112='technical writer';
+  run;
+  proc print data=perm.empinfo;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">FirstName</th>
+      <th class="color-red">LastName</th>
+      <th class="color-red">JobTitle</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Donny</td>
+      <td>Evans</td>
+      <td class="back-color-grey">112</td>
+      <td>29,996.63</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Lisa</td>
+      <td>Helms</td>
+      <td class="back-color-grey">text processor</td>
+      <td>18,567.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>John</td>
+      <td>Higgins</td>
+      <td class="back-color-grey">111</td>
+      <td>25,309.00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Amy</td>
+      <td>Larson</td>
+      <td class="back-color-grey">113</td>
+      <td>32,696.78</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Mary</td>
+      <td>Moore</td>
+      <td class="back-color-grey">112</td>
+      <td>28,945.89</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jason</td>
+      <td>Powell</td>
+      <td class="back-color-grey">manager</td>
+      <td>35,099.50</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Judy</td>
+      <td>Riley</td>
+      <td class="back-color-grey">111</td>
+      <td>25,309.00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Neal</td>
+      <td>Ryan</td>
+      <td class="back-color-grey">technical writer</td>
+      <td>28,180.00</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Displaying a List of Your Formats</h3>
+
+  <p>When you build a large catalog of permanent formats, it can be easy to forget the exact spelling
+     of a specific format name or its range of values. Adding the keyword <strong>FMTLIB</strong> to the PROC
+     FORMAT statement displays a list of all the formats in your catalog, along with descriptions of
+     their values.
+  </p>
+
+  <pre>
+  libname library 'c:\sas\formats\lib';
+  proc format library=library fmtlib;
+  run;</pre>
+
+  <p>When you submit this PROC step, a description of each format in your permanent catalog is
+     displayed as output.
+  </p>
+  
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Output</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="3" style="text-align:center;">Format Name: JobFmt Length: 23 Number of Values: 5 Min Length: 1 Max Length: 40 Default Length: 23 Fuzz: Std</th>
+    </tr>
+    <tr>
+      <th class="color-red">START</th>
+      <th class="color-red">END</th>
+      <th class="color-red">LABEL (VER. 9.00 29AUG2002:11:13:14)</th>
+    </tr>
+    <tr>
+      <td>103</td>
+      <td>103</td>
+      <td>manager</td>
+    </tr>
+    <tr>
+      <td>105</td>
+      <td>105</td>
+      <td>text processor</td>
+    </tr>
+    <tr>
+      <td>111</td>
+      <td>111</td>
+      <td>assoc. technical writer</td>
+    </tr>
+    <tr>
+      <td>112</td>
+      <td>112</td>
+      <td>technical writer</td>
+    </tr>
+    <tr>
+      <td>113</td>
+      <td>113</td>
+      <td>senior technical writer</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>In addition to the name, range, and label, the format description includes the</p>
+  <ul>
+    <li>length of the longest label.</li>
+    <li>number of values defined by this format.</li>
+    <li>version of SAS that this format is compatible with.</li>
+    <li>date and time of creation.</li>
+  </ul>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Summary</h2>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Text Summary</h3>
+
+  <h4>Invoking PROC FORMAT</h4>
+  <p>The <strong>FORMAT</strong> procedure enables you to substitute descriptive text values for the values of
+     variables. The <strong>LIBRARY</strong>= option stores the new formats in a specified format catalog. Otherwise,
+     they are stored in a default catalog named <strong>Work.Formats</strong>. The keyword <strong>FMTLIB</strong> displays the 
+     formats and values that are currently stored in the catalog. The <strong>VALUE</strong> statement defines a new
+     format for the values of a variable.
+  </p>
+  <br/>
+
+  <h4>Defining a Unique Format</h4>
+  <p>Formats can be specified for a single value, a range of numeric values, or a list of unique values.
+     Unique values must be separated by commas. When character values are specified, the values
+     must be enclosed in quotation marks, and the format name must begin with a dollar sign ($). You
+     can specify non-inclusive numeric ranges by using the "less than" sign (&lt;). The keywords HIGH,
+     LOW, and OTHER can be used to label values that are not specifically addressed in a range.
+  </p>
+  <br/>
+
+  <h4>Associating User-Defined Formats with Variables</h4>
+  <p>To access the permanent, user-defined formats in a <strong>format catalog</strong>, you'll need to use a
+     LIBNAME statement to reference the catalog library. To associate user-defined formats with
+     variables in the FORMAT statement, use the same format names in both the FORMAT and
+     VALUE statements, but place a period at the end of the format name when it is used in the
+     FORMAT statement.
+  </p>
+  <br/>
+
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>Formats- even permanently associated ones- do not affect the values of variables in a
+        SAS data set. Only the appearance of the values is changed.
+    </li>
+    <li>A user-defined format name must begin with a dollar sign ($) when it is assigned to
+       character variables. A user-defined format name cannot end with a number.
+    </li>
+    <li>Use two double quotation marks when you want an apostrophe to appear in a label.</li>
+    <li>Place a period at the end of the format name when you use the format name in the FORMAT statement.</li>
+  </ul>
+
+ 
+
+
+
+
+</div> <!-- end of div content -->

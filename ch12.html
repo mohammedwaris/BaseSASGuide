@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>You've learned about creating a SAS data set from raw data. However, you might want to create
+     a new data set from an existing SAS data set. To create the new data set, you can read a data
+     set using the DATA step. As you read the data set, you can use all the programming features of
+     the DATA step to manipulate your data.
+  </p>
+
+  <img src="images/ch12_image1.png" class="diagram" />
+
+  <p>This chapter shows you how to use the DATA step to read an existing SAS data set. When you
+     create your new data set, you can choose variables, select observations based on one or more
+     conditions, and assign values conditionally. You can also assign variable attributes such as
+     formats and labels.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can also <strong>merge, concatenate</strong>, or <strong>interleave</strong> two or more data sets. For
+          details, see Chapter, <strong>Combining SAS Data Sets</strong>.
+      </td>
+    </tr> 
+  </table>
+  <br/>
+
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>create a new data set from an existing data set.</li>
+    <li>use BY groups to process observations.</li>
+    <li>read observations by observation number.</li>
+    <li>stop processing when necessary.</li>
+    <li>explicitly write observations to output.</li>
+    <li>detect the last observation in a data set.</li>
+    <li>identify differences in DATA step processing for raw data and DATA step processing for existing data sets.</li>
+  </ul>
+
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Reading a Single Data Set</h2>
+
+  <p>Suppose you want to create a small data set, <strong>Lab23.Drug1H</strong>, from the <strong>Research.CLTrials</strong> data
+     set, which contains information about treadmill test time and relative tolerance levels.
+  </p>
+  <p>To create the data set, you must first reference the library in which <strong>CLTrials</strong> is stored and then
+     the library in which you want to store <strong>Drug1H</strong>. Then you write a DATA step to read your data and
+     create a new data set.
+  </p>
+
+  <hr/>
+  <p><strong>General form, basic DATA step for reading a single data set:</strong></p>
+  <p><strong>DATA</strong> SAS-data-set; <br/>
+     &nbsp;&nbsp; <strong>SET</strong> SAS-data-set; <br/>
+     <strong>RUN</strong>;</p>
+  <p>where</p>
+  <ul>
+    <li><i>SAS-data-set</i> in the DATA statement is the name (libref.filename) of the SAS data set to
+        be created.
+    </li>
+    <li><i>SAS-data-set</i> in the SET statement is the name (libref.filename) of the SAS data set to be
+        read.
+    </li>
+  </ul>
+  <hr/>
+
+  <p>You write a DATA step to name the SAS data set to be created. Then, you specify the data set
+     that will be read in the SET statement. The DATA statement below creates the permanent SAS
+     data set <strong>Drug1H</strong>, which will be stored in a SAS data library to which the libref <strong>Lab23</strong> has been
+     assigned. The SET statement below reads the permanent SAS data set <strong>Research.CLTrials</strong>.
+  </p>
+
+  <pre>
+  libname lab23 'c:\drug\allergy\labtests';
+  libname research 'c:\drug\allergy';
+  data lab23.drug1h;
+     setresearch.cltrials;
+  run;</pre>
+
+  <p>The DATA step above reads all observations and variables from the existing data set into the new
+     data set. When you submit this DATA step, the following messages appear in the log, confirming
+     that the new data set was created:
+  </p>
+
+  <p class="color-red"></p>
+  <hr/>
+  8 data lab23.drug1h; <br/>
+  9 set research.cltrials; <br/>
+  10 run; <br/><<br/>
+  NOTE: The data set LAB23.DRUG1H has 21 <br/>
+  observations and 8 variables.
+  <hr/>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Manipulating Data</h2>
+
+  <p>In the previous section of this chapter, the example program created a data set that was identical
+     to the existing data set, <strong>Research.CLTrials</strong>. But you usually don't want an exact duplicate of the
+     existing data set. When you read a data set, you can use any of the programming features of the
+     DATA step to manipulate your data.
+  </p>
+
+  <p>For example, you can use any of the statements and data set options that you learned in previous
+     chapters.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This Type of Statement</th>
+    </tr>
+    <tr>
+      <td>Subset data</td>
+      <td><pre>
+          if resthr<70 then delete;
+          if tolerance='D';</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>Drop unwanted variables</td>
+      <td><pre>drop timemin timesec;</pre></td>
+    </tr>
+    <tr>
+      <td>Create or modify a variable</td>
+      <td><pre>TotalTime=(timemin*60)+timesec;</pre></td>
+    </tr>
+    <tr>
+      <td>Initialize a sum variable
+          Sum accumulated values
+      </td>
+      <td><pre>
+          retain SumSec 5400;
+          sumsec+totaltime;</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>Specify a variable's length</td>
+      <td><pre>length TestLength $ 6;</pre></td>
+    </tr>
+    <tr>
+      <td>Execute statements conditionally</td>
+      <td><pre>
+          if totaltime>800 then TestLength='Long';
+          else if 750<=totaltime<=800 
+               then TestLength='Normal'; 
+          else if totaltime<750 <br/>
+               then TestLength='Short';</pre> 
+      </td>
+    </tr>
+    <tr>
+      <td>Label a variable <br/>
+          Format a variable
+      </td>
+      <td><pre>
+          label sumsec='Cumulative Total Seconds';
+          format sumsec comma6.;</pre>
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>The following DATA step reads the data set <strong>Research.CLTrials</strong>, selects observations and
+     variables, and creates new variables.
+  </p>
+
+  <pre>
+  data lab23.drug1h(drop=placebo uric);
+     set research.cltrials(drop=triglyc);
+     if sex='M' then delete;
+     if placebo='YES';
+     TestDate='22MAY1999'd;
+     retain Days 30;
+     days+1;
+     length Retest $ 5;
+     if cholesterol>190 then retest='YES';
+     else if 150<=cholesterol<=190 then retest='CHECK';
+     else if cholesterol<150 then retest='NO';
+     label retest='Perform Cholesterol Test 2?';
+     format enddate mmddyy10.;
+  run;</pre>
+
+  <h4>Where to Specify the DROP= and KEEP= Data Set Options</h4>
+
+  <p>You've learned that you can specify the DROP= and KEEP= data set options anywhere you
+     name a SAS data set. However, using DROP= and KEEP= when reading an existing data set
+     requires that you decide where to specify these options. You can specify DROP= and KEEP= in
+     either the <strong>DATA statement</strong> or the <strong>SET statement</strong>, depending on whether or not you want to
+     process values of the variables in that DATA step:
+  </p>
+
+  <ul>
+    <li>If you <strong>don't</strong> process certain variables and you don't want them to appear in the new data
+        set, then specify them in the DROP= option in the SET statement. <br/><br/>
+        In the DATA step shown below, the DROP= option in the SET statement prevents the
+        variables <i>Triglycerides</i> and <i>UricAcid</i> from being read. These variables won't appear
+        in the <strong>Lab23.Drug1H</strong> data set.
+        <pre>
+        data lab23.drug1h(drop=placebo);
+           set research.cltrials(drop=triglycerides uricacid);
+           if placebo='YES';
+        run;</pre>
+    </li>
+    <li>If you <strong>do</strong> need to process a variable in the original data set (in a subsetting IF statement,
+        for example), you must specify the variable in the DROP= option in the DATA statement.
+        Otherwise, the statement that is using the variable for processing causes an error. <br/><br/>
+        This DATA step uses the variable <i>Placebo</i> to select observations. To drop <i>Placebo</i> from
+        the new data set, the DROP= option must appear in the DATA statement.
+        <pre>
+        data lab23.drug1h(drop=placebo);
+           set research.cltrials(drop=triglycerides uricacid);
+           if placebo='YES';
+        run;</pre>
+    </li>
+  </ul>
+
+  <p>When used in the DATA statement, the DROP= option simply drops the variables from the new
+     data set. However, the variables are still read from the original data set and are available within
+     the DATA step.
+  </p>
+
+  <ul>
+    <li>Remember, in either situation, you can use the KEEP= option instead of the DROP=
+        option if more variables are dropped than kept.
+    </li>
+  </ul>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Using BY-Group Processing</h2>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Finding the First and Last Observations in a Group</h3>
+
+  <p>In Chapter, <strong>Creating List Reports</strong>, you learned to use a BY statement in PROC SORT to sort
+     observations and in PROC PRINT to group observations for subtotals. You can also use the BY
+     statement in the DATA step to group observations for processing.
+  </p>
+
+  <pre>
+  data temp;
+     set salary;
+     by dept;
+  run;</pre>
+
+  <p>When you use the BY statement with the SET statement,</p>
+  <ul>
+    <li>the data sets that are listed in the SET statement must be sorted by the values of the BY
+        variable(s), or the data sets must have an appropriate index.
+    </li>
+    <li>the DATA step creates two temporary variables for each BY variable. One is named
+        <strong>FIRST.variable</strong>, where variable is the name of the BY variable, and the other is
+        named <strong>LAST.variable</strong>. Their values are either 1 or 0. <i>FIRST.variable</i> and
+        <i>LAST.variable</i> identify the first and last observation in each BY group.
+        <table border="1">
+          <tr>
+            <th class="color-red">This variable</th>
+            <th class="color-red">Equals</th>
+          </tr>
+          <tr>
+            <td>FIRST.variable</td>
+            <td>1 for the first observation in a BY group <br/>
+                0 for any other observation in a BY group
+            </td>
+          </tr>
+          <tr>
+            <td>LAST.variable</td>
+            <td>1 for the last observation in a BY group <br/>
+                0 for any other observation in a BY group
+            </td>
+          </tr>
+        </table>
+    </li>
+  </ul>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>To work with <i>FIRST.variable</i> and <i>LAST.variable</i>, let's look at a different set of data. The
+     <strong>Company.USA</strong> data set contains payroll information for individual employees. Suppose you want 
+     to compute the annual payroll by department. Assume 2,000 work hours per year for hourly
+     employees.
+  </p>
+
+  <p>Before computing the annual payroll, you need to group observations by values of the variable
+     <i>Dept</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">SAS Data Set Company.USA (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Dept</th>
+      <th class="color-red">WageCat</th>
+      <th class="color-red">WageRate</th>
+    </tr>
+    <tr>
+      <td>ADM20</td>
+      <td>S</td>
+      <td>3392.50</td>
+    </tr>
+    <tr>
+      <td>ADM30</td>
+      <td>S</td>
+      <td>5093.75</td>
+    </tr>
+    <tr>
+      <td>CAM10</td>
+      <td>S</td>
+      <td>1813.30</td>
+    </tr>
+    <tr>
+      <td>CAM10</td>
+      <td>S</td>
+      <td>1572.50</td>
+    </tr>
+    <tr>
+      <td>CAM10</td>
+      <td>H</td>
+      <td>13.48</td>
+    </tr>
+    <tr>
+      <td>ADM30</td>
+      <td>S</td>
+      <td>2192.25</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The following program computes the annual payroll by department. Notice that the variable name
+     <i>Dept</i> has been appended to <i>FIRST.</i> and <i>LAST.</i>
+  </p>
+
+  <pre>
+  proc sort data=company.usa out=work.temp;
+     by dept;
+  run;
+  data company.budget(keep=dept payroll);
+    set work.temp;
+    by dept;
+    if wagecat='S' then Yearly=wagerate*12;
+    else if wagecat='H' then Yearly=wagerate*2000;
+    if first.dept then Payroll=0;
+    payroll+yearly;
+    if last.dept;
+  run;</pre>
+
+  <p>If you could look behind the scenes at the program data vector (PDV) as the <strong>Company.Budget</strong>
+     data set is being created, you would see the following. Notice the values for <i>FIRST.Dept</i> and
+     <i>LAST.Dept</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">Selected PDV Variables</th>
+    </tr>
+    <tr>
+      <th class="color-red">_N_</th>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Payroll</th>
+      <th class="color-red">FIRST.Dept</th>
+      <th class="color-red">LAST.Dept</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM10</td>
+      <td>70929.0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADm10</td>
+      <td>119479.2</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM10</td>
+      <td>173245.2</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM10</td>
+      <td>255516.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM10</td>
+      <td>293472.0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM20</td>
+      <td>40710.0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM20</td>
+      <td>68010.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM20</td>
+      <td>94980.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM20</td>
+      <td>136020.0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM20</td>
+      <td>177330.0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="5">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>ADM30</td>
+      <td>61125.0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </table>
+  <br/>
+  
+  <p>When you print the new data set, you can now list and sum the annual payroll by department.</p>
+  <pre>
+  proc print data=company.budget noobs;
+     sum payroll;
+     format payroll dollar12.2;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">Dept Payroll</th>
+    </tr>
+    <tr>
+      <th class="color-red">Dept</th>
+      <th class="color-red">Payroll</th>
+    </tr>
+    <tr>
+      <td>ADM10</td>
+      <td>$293,472.00</td>
+    </tr>
+    <tr>
+      <td>ADM20</td>
+      <td>$177,330.00</td>
+    </tr>
+    <tr>
+      <td>ADM30</td>
+      <td>$173,388.00</td>
+    </tr>
+    <tr>
+      <td>CAM10</td>
+      <td>$130,709.60</td>
+    </tr>
+    <tr>
+      <td>CAM20</td>
+      <td>$156,731.20</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <th>$931,630.80</th>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic2">Finding the First and Last Observations in Subgroups</h3>
+
+  <p>When you specify multiple BY variables,</p>
+  <ul>
+    <li><i>FIRST.variable</i> for each variable is set to 1 at the first occurrence of a new value for
+        the variable.
+    </li>
+    <li>a change in the value of a primary BY variable forces <i>LAST.variable</i> to equal 1 for the
+        secondary BY variables.
+    </li>
+  </ul>
+
+  <h4>Example</h4>
+
+  <p>Suppose you now want to compute the annual payroll by job type for each manager. In your
+     program, you specify two BY variables, <i>Manager</i> and <i>JobType</i>.
+  </p>
+
+  <pre>
+  proc sort data=company.usa out=work.temp2;
+     by manager jobtype;
+  data company.budget2(keep=manager jobtype payroll);
+     set work.temp2;
+     by manager jobtype;
+     if wagecat='S' then Yearly=wagerate*12;
+     else if wagecat='H' then Yearly=wagerate*2000;
+     if first.jobtype then Payroll=0;
+     payroll+yearly;
+     if last.jobtype;
+  run;</pre>
+
+  <p>If you could look at the PDV now, you would see the following. Notice that the values for
+     <i>FIRST.JobType</i> and <i>LAST.JobType</i> change according to values of <i>FIRST.Manager</i> and
+     <i>LAST.Manager</i>.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="8">Selected PDV Variables</th>
+    </tr>
+    <tr>
+      <th class="color-red">_N_</th>
+      <th class="color-red">Manager</th>
+      <th class="color-red">JobType</th>
+      <th class="color-red">Payroll</th>
+      <th class="color-red">FIRST.Manager</th>
+      <th class="color-red">LAST.Manager</th>
+      <th class="color-red">First.JobType</th>
+      <th class="color-red">LAST.JobType</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Coxe</td>
+      <td>3</td>
+      <td>40710.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Coxe</td>
+      <td>50</td>
+      <td>41040.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Coxe</td>
+      <td>50</td>
+      <td>82350.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Coxe</td>
+      <td>240</td>
+      <td>27300.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Coxe</td>
+      <td>240</td>
+      <td>54270.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="8">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Delgado</td>
+      <td>240</td>
+      <td>35520.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Delgado</td>
+      <td>240</td>
+      <td>63120.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Delgado</td>
+      <td>420</td>
+      <td>18870.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Delgado</td>
+      <td>420</td>
+      <td>45830.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Delgado</td>
+      <td>440</td>
+      <td>21759.6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="8">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>Overby</td>
+      <td>1</td>
+      <td>82270.8</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>Overby</td>
+      <td>5</td>
+      <td>48550.2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Overby</td>
+      <td>10</td>
+      <td>53766.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Overby</td>
+      <td>20</td>
+      <td>70929.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Overby</td>
+      <td>20</td>
+      <td>108885.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Now you can sum the annual payroll by job type for each manager. In the following output, the
+     payroll for only two managers (Coxe and Delgado) is listed. Remember, neither the
+     <i>FIRST.variable</i> nor the <i>LAST.variable</i> is stored in the new data set.
+  </p>
+  <pre>
+  proc print data=company.budget2 noobs;;
+     by manager;
+     var jobtype;
+     sum payroll;
+     where manager in ('Coxe','Delgado');
+     format payroll dollar12.2;
+  run;</pre>
+  <br/>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">Manager=Coxe</th>
+    </tr>
+    <tr>
+      <th class="color-red">JobType</th>
+      <th class="color-red">Payroll</th>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>$40,710.00</td>
+    </tr>
+    <tr>
+      <td>50</td>
+      <td>$123,390.00</td>
+    </tr>
+    <tr>
+      <td>240</td>
+      <td>$81,570.00</td>
+    </tr>
+    <tr>
+      <th>Manager</th>
+      <th>$245,670.00</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="2">Manager=Delgado</th>
+    </tr>
+    <tr>
+      <th class="color-red">JobType</th>
+      <th class="color-red">Payroll</th>
+    </tr>
+    <tr>
+      <td>240</td>
+      <td>$98,640.00</td>
+    </tr>
+    <tr>
+      <td>420</td>
+      <td>$64,700.00</td>
+    </tr>
+    <tr>
+      <td>440</td>
+      <td>$21,759.00</td>
+    </tr>
+    <tr>
+      <th>Manager</th>
+      <th>$185,099.00</th>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Reading Observations Using Direct Access</h2>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">The POINT= Option</h3>
+
+  <p>So far in this chapter, you've read the observations in an input data set <strong>sequentially</strong>. That is, you
+     have accessed observations in the order in which they appear in the physical file. However, you
+     can also access observations directly, by going straight to an observation in a SAS data set
+     without having to process each observation that precedes it.
+  </p>
+
+  <p>To access observations directly by their observation number, you use the <strong>POINT= option</strong> in the
+     SET statement.
+  </p>
+  <hr/>
+  <p><strong>General form, POINT= option:</strong></p>
+  <p><strong>POINT</strong>=variable;</p>
+  <p>where variable</p>
+  <ul>
+    <li>specifies a temporary numeric variable that contains the <strong>observation number</strong> of the
+        observation to be read.
+    </li>
+    <li>must be given a value before the SET statement is executed.</li>
+  </ul>
+  <hr/>
+
+  <h4>Example</h4>
+  <p>Let's suppose you want to read only the fifth observation from a data set. In the following DATA
+     step, the value 5 is assigned to the variable ObsNum. The POINT= option reads the value of
+     ObsNum to determine which observation to read from the data set <strong>Company.USA</strong>.
+  </p>
+
+  <pre>
+  data work.getobs5;
+     obsnum=5;
+     set company.usa(keep=manager payroll) point=obsnum;
+  run;
+  </pre>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Preventing Continuous Looping with the POINT= Option</h3>
+
+  <p>As you learned in a previous chapter, the DATA step continues to read observations until it
+     reaches the end-of-file marker in the input data. However, because the POINT= option reads only
+     specified observations, SAS cannot read an end-of-file indicator as it would if the file were being
+     read sequentially. So submitting the following program would cause <strong>continuous looping</strong>:
+  </p>
+  <pre>
+  data work.getobs5(drop=obsnum);
+     obsnum=5;
+     set company.usa(keep=manager payroll) point=obsnum;
+  run;</pre>
+  <p>Because there is no end-of-file condition when you use direct access to read data, you must take
+     either or both of the following precautions:
+  </p>
+  <ul>
+    <li>Use a <strong>STOP statement</strong> to prevent continuous looping. The STOP statement causes
+        SAS to stop processing the current DATA step immediately and to resume processing
+        statements after the end of the current DATA step.
+    </li>
+    <li>Use programming logic that checks for an <strong>invalid value of the POINT= variable</strong>. If SAS
+        reads an invalid value for the POINT= variable, it sets the automatic variable <i>_ERROR_</i> to 1.
+        You can use this information to check for conditions that cause continuous processing.
+    </li>
+  </ul>
+
+  <hr/>
+  <p><strong>General form, STOP statement:</strong></p>
+  <p><strong>STOP</strong>;</p>
+  <hr/>
+
+  <p>So if you add a STOP statement, your program no longer loops continuously.</p>
+  <pre>
+  data work.getobs5(drop=obsnum);
+     obsnum=5;
+     set company.usa(keep=manager payroll) point=obsnum;
+     stop;
+  run;</pre>
+
+  <p>But your program doesn’t write any observations to output, either. Remember from Chapter,
+     <strong>Understanding DATA Step Processing</strong>, that the DATA step writes observations to output at the
+     end of the DATA step. However, in this program, the STOP statement immediately stops
+     processing before the end of the DATA step.
+  </p>
+
+  <p>The following section shows you how to write the observation to output before processing stops.</p>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Writing Observations Explicitly</h3>
+
+  <p>To override the default way in which the DATA step writes observations to output, you can use an
+     OUTPUT statement in the DATA step. Placing an explicit OUTPUT statement in a DATA step 
+     overrides the automatic output, so that observations are added to a data set only when the
+     explicit OUTPUT statement is executed.
+  </p>
+
+  <hr/>
+  <p><strong>General form, OUTPUT statement:</strong></p>
+  <p><strong>OUTPUT</strong> &lt;SAS-data-set(s)&gt;;</p>
+  <p>where <i>SAS-data-set(s)</i> names the data set(s) to which the observation is written. All data set
+     names that are specified in the OUTPUT statement must also appear in the DATA statement.
+  </p>
+  <p>Using an OUTPUT statement without a following data set name causes the current observation to
+     be written to all data sets that are named in the DATA statement.
+  </p>
+  <hr/>
+
+  <p>With an OUTPUT statement, your program now writes a single observation to output-
+     observation 5.
+  </p>
+
+  <pre>
+  data work.getobs5(drop=obsnum);
+     obsnum=5;
+     set company.usa(keep=manager payroll) point=obsnum;
+     output;
+     stop;
+  run;
+  proc print data=work.getobs5 noobs;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Manager</th>
+      <th class="color-red">Payroll</th>
+    </tr>
+    <tr>
+      <td>Delgado</td>
+      <td>45830</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Suppose your DATA statement contains two data set names, and you include an OUTPUT
+     statement that only references one of the data sets. The DATA step will create both data sets, but
+     only the data set that is named in the OUTPUT statement will contain output. For example, the
+     program below creates two temporary data sets, <strong>Empty</strong> and <strong>Full</strong>. The result of this DATA step is
+     that the data set <strong>Empty</strong> is created but contains no observations, and the data set <strong>Full</strong> contains all
+     of the observations from <strong>Company.Usa</strong>.
+  </p>
+  <pre>
+  data empty full;
+     set company.use;
+     output full;
+  run;</pre>
+  <br/>
+
+  <!-- Topic 5 Subtopic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">More Complex Ways of Using Direct Access</h3>
+
+  <p>To convey concepts clearly, the examples in this section have been as simple as possible.
+     However, most uses of the POINT= option are more complex. For example, POINT= is commonly
+     used in combining data sets, not simply in reading a single data set.
+  </p>
+  <p>You can see more complex examples of using POINT= in Chapter, <strong>Generating Data with DO
+     Loops</strong>.
+  </p>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Detecting the End of a Data Set</h2>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">The END= Option</h3>
+
+  <p>Instead of reading specific observations, you might want to determine when the last observation
+     in an input data set has been read, so that you can perform specific processing. For example, you
+     might want to write to output only an observation that contains totals for variables in all
+     observations in the data set.
+  </p>
+  <p>To create a temporary numeric variable whose value is used to detect the last observation, you
+     can use the END= option in the SET statement.
+  </p>
+  <hr/>
+  <p><strong>General form, END= option:</strong></p>
+  <p><strong>END</strong>=variable</p>
+  <p>where variable creates and names a temporary variable that contains an end-of-file marker. The
+     variable, which is initialized to 0, is set to 1 when the SET statement reads the last observation of
+     the data set.
+  </p>
+  <p>This variable is not added to the data set.</p>
+  <table>
+    <tr>
+      <th class="color-red"></th>
+      <td>Do not specify END= with POINT=. POINT= reads only a specific
+          observation, so the last observation in the data set is not encountered.
+      </td>    
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Examples</h4>
+  <p>Suppose you want to sum the number of seconds for treadmill stress tests. If you submit the
+     following program, you produce a new data set that contains cumulative totals for each of the
+     values of <i>TotalTime</i>.
+  </p>
+  <pre>
+  data work.addtoend(drop=timemin timesec);
+     set clinic.stress2(keep=timemin timesec);
+     TotalMin+timemin;
+     TotalSec+timesec;
+     TotalTime=totalmin*60+timesec;
+  run;
+  proc print data=work.addtoend noobs;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">TotalMin</th>
+      <th class="color-red">TotalSec</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>38</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>43</td>
+      <td>1325</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>56</td>
+      <td>1993</td>
+    </tr>
+    <tr>
+      <td>42</td>
+      <td>98</td>
+      <td>2562</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>144</td>
+      <td>3226</td>
+    </tr>
+    <tr>
+      <td>65</td>
+      <td>170</td>
+      <td>3926</td>
+    </tr>
+    <tr>
+      <td>80</td>
+      <td>211</td>
+      <td>4841</td>
+    </tr>
+    <tr>
+      <td>93</td>
+      <td>224</td>
+      <td>5593</td>
+    </tr>
+    <tr>
+      <td>103</td>
+      <td>246</td>
+      <td>6202</td>
+    </tr>
+    <tr>
+      <td>119</td>
+      <td>295</td>
+      <td>7189</td>
+    </tr>
+    <tr>
+      <td>134</td>
+      <td>297</td>
+      <td>8042</td>
+    </tr>
+    <tr>
+      <td>146</td>
+      <td>308</td>
+      <td>8771</td>
+    </tr>
+    <tr>
+      <td>160</td>
+      <td>317</td>
+      <td>9609</td>
+    </tr>
+    <tr>
+      <td>171</td>
+      <td>343</td>
+      <td>10286</td>
+    </tr>
+    <tr>
+      <td>185</td>
+      <td>370</td>
+      <td>11127</td>
+    </tr>
+    <tr>
+      <td>198</td>
+      <td>389</td>
+      <td>11899</td>
+    </tr>
+    <tr>
+      <td>214</td>
+      <td>396</td>
+      <td>12847</td>
+    </tr>
+    <tr>
+      <td>231</td>
+      <td>431</td>
+      <td>13895</td>
+    </tr>
+    <tr>
+      <td>246</td>
+      <td>472</td>
+      <td>14801</td>
+    </tr>
+    <tr>
+      <td>260</td>
+      <td>529</td>
+      <td>15657</td>
+    </tr>
+    <tr>
+      <td>272</td>
+      <td>539</td>
+      <td>16330</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>But what if you want only the <strong>final</strong> total (the last observation) in the new data set? The following
+     program uses the END= variable last to select only the last observation of the data set. You
+     specify END= in the SET statement and last wherever you need it in processing (here, in the
+     subsetting IF statement).
+  </p>
+  <pre>
+  data work.addtoend(drop=timemin timesec);
+     set clinic.stress2(keep=timemin timesec)end=last;
+     TotalMin+timemin;
+     TotalSec+timesec;
+     TotalTime=totalmin*60+timesec;
+     if last;
+  run;
+  proc print data=work.addtoend noobs;
+  run;</pre>
+
+  <p>Now the new data set has one observation:</p>
+  <table border="1">
+    <tr>
+      <th class="color-red">TotalMin</th>
+      <th class="color-red">TotalSec</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>272</td>
+      <td>539</td>
+      <td>16330</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Understanding How Data Sets Are Read</h2>
+
+  <p>In a previous chapter, you learned about the compilation and execution phases of the DATA step
+     as they pertain to reading raw data. DATA step processing for reading existing SAS data sets is
+     very similar. The main difference is that while reading an existing data set with the SET
+     statement, SAS retains the values of the variables from one observation to the next.
+  </p>
+  <p>Let's briefly look at the compilation and execution phases of DATA steps that use a SET
+     statement. In this example, the DATA step reads the data set <strong>Finance.Loans</strong>, creates the
+     variable <i>Interest</i>, and creates the new data set <strong>Finance.DueJan</strong>.
+  </p>
+  <pre>
+  data finance.duejan;
+     set finance.loans;
+     Interest=amount*(rate/12);
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Finance.Loans</th>
+    </tr>
+    <tr>
+      <th class="color-red">Account</th>
+      <th class="color-red">Amount</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Months</th>
+      <th class="color-red">Payment</th>
+    </tr>
+    <tr>
+      <td>101-1092</td>
+      <td>22000</td>
+      <td>0.100</td>
+      <td>60</td>
+      <td>467.43</td>
+    </tr>
+    <tr>
+      <td>101-1731</td>
+      <td>114000</td>
+      <td>0.095</td>
+      <td>360</td>
+      <td>958.57</td>
+    </tr>
+    <tr>
+      <td>101-1289</td>
+      <td>10000</td>
+      <td>0.105</td>
+      <td>36</td>
+      <td>325.02</td>
+    </tr>
+    <tr>
+      <td>101-3144</td>
+      <td>3500</td>
+      <td>0.105</td>
+      <td>12</td>
+      <td>308.52</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Compilation Phase</h3>
+
+  <p>The compilation phase includes the following steps:</p>
+  <ol>
+    <li>The program data vector is created and contains the automatic variables _N_ and
+        _ERROR_. <br/>
+        <img src="images/ch12_image2.png" class="diagram"/>
+    </li>
+    <li>SAS also scans each statement in the DATA step, looking for syntax errors.</li>
+    <li>When the SET statement is compiled, a slot is added to the program data vector for each
+        variable in the input data set. The input data set supplies the variable names, as well as
+        attributes such as type and length. <br/>
+        <img src="images/ch12_image3.png" class="diagram"/>
+    </li>
+    <li>Any variables that are created in the DATA step are also added to the program data
+        vector. The attributes of each of these variables are determined by the expression in the
+        statement. <br/>
+        <img src="images/ch12_image4.png" class="diagram"/>
+    </li>
+    <li>At the bottom of the DATA step, the compilation phase is complete, and the descriptor
+        portion of the new SAS data set is created. There are no observations because the
+        DATA step has not yet executed.
+    </li>
+  </ol>
+
+  <p>When the compilation phase is complete, the execution phase begins.</p>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Execution Phase</h3>
+
+  <p>The execution phase includes the following steps:</p>
+  <ol>
+    <li>The DATA step executes once for each observation in the input data set. For example,
+        this DATA step will execute four times because there are four observations in the input
+        data set <strong>Finance.Loans</strong>.
+    </li>
+    <li>At the beginning of the execution phase, the value of <i>_N_</i> is 1. Because there are no data
+        errors, the value of <i>_ERROR_</i> is 0. The remaining variables are initialized to missing.
+        Missing numeric values are represented by a period, and missing character values are
+        represented by a blank. <br/>
+        <img src="images/ch12_image5.png" class="diagram"/>
+    </li>
+    <li>The SET statement reads the first observation from the input data set and writes the
+        values to the program data vector. <br/>
+        <img src="images/ch12_image6.png" class="diagram"/>
+    </li>
+    <li>Then, the assignment statement executes to compute the value for <i>Interest</i>. <br/>
+        <img src="images/ch12_image7.png" class="diagram"/>
+    </li>
+    <li>At the end of the first iteration of the DATA step, the values in the program data vector
+        are written to the new data set as the first observation. <br/>
+        <img src="images/ch12_image8.png" class="diagram"/>
+    </li>
+    <li>The value of _N_ is set to 2, and control returns to the top of the DATA step. Remember,
+        the automatic variable _N_ keeps track of how many times the DATA step has begun to
+        execute. <br/>
+        <img src="images/ch12_image9.png" class="diagram"/>
+    </li>
+    <li>SAS retains the values of variables that were read from a SAS data set with the SET
+        statement, or that were created by a Sum statement. All other variable values, such as
+        the values of the variable <i>Interest</i>, are set to missing. <br/>
+        <img src="images/ch12_image10.png" class="diagram"/>
+        <table>
+          <tr>
+            <th class="color-blue">Note</th>
+            <td>When SAS reads <strong>raw data</strong>, the situation is different. In that case, SAS
+                sets the value of each variable in the DATA step to missing at the
+                beginning of each iteration, with these exceptions:
+            </td>
+          </tr>
+        </table>
+        <ul>
+            <li>variables named in a RETAIN statement.</li>
+            <li>variables created in a Sum statement.</li>
+            <li>data elements in a _TEMPORARY_ array.</li>
+            <li>any variables created by using options in the FILE or INFILE statements.</li>
+            <li>automatic variables.</li>
+        </ul>
+    </li>
+    <li>At the beginning of the second iteration, the value of _N_ is set to 2, and the value of
+        _ERROR_ is re-set to 0. Remember, the automatic variable _N_ keeps track of how
+        many times the DATA step has begun to execute. <br/>
+        <img src="images/ch12_image11.png" class="diagram"/>
+    </li>
+    <li>As the SET statement executes, the values from the second observation are written to
+        the program data vector. <br/>
+        <img src="images/ch12_image12.png" class="diagram"/>
+    </li>
+    <li>The assignment statement executes again to compute the value for Interest for the
+        second observation. <br/>
+        <img src="images/ch12_image13.png" class="diagram"/>
+    </li>
+    <li>At the bottom of the DATA step, the values in the program data vector are written to the
+        data set as the second observation. <br/>
+        <img src="images/ch12_image14.png" class="diagram"/>
+    </li>
+    <li>The value of _N_ is set to 3, and control returns to the top of the DATA step. SAS
+        retains the values of variables that were read from a SAS data set with the SET
+        statement, or that were created by a Sum statement. All other variable values, such as
+        the values of the variable <i>Interest</i>, are set to missing. <br/>
+        <img src="images/ch12_image15.png" class="diagram"/>
+    </li>
+  </ol>
+  <p>This process continues until all of the observations are read.</p>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Additional Features</h2>
+
+  <p>The DATA step provides many other programming features for manipulating data sets. For
+     example, you can
+  </p>
+  <ul>
+    <li>use IF-THEN/ELSE logic with DO groups and DO loops to control processing that is
+        based on one or more conditions.
+    </li>
+    <li>specify additional data set options.</li>
+    <li>process variables in arrays.</li>
+    <li>use SAS functions.</li>
+  </ul>
+  <p>You can also combine SAS data sets in several ways, including match merging, interleaving, oneto-
+     one merging, and updating. You will learn how to do these tasks in later chapters.
+  </p>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Summary</h2>
+
+  <!-- Topic 9 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+
+  <h4>Setting Up</h4>
+  <p>Before you can create a new data set, you must assign a libref to the SAS data library that will
+     store the data set.
+  </p>
+  <br/>
+
+  <h4>Reading a Single Data Set</h4>
+  <p>After you have referenced the library in which your data set is stored, you can write a DATA step
+     to name the SAS data set to be created. You then specify the data set to be read in the SET
+     statement.
+  </p>
+  <br/>
+
+  <h4>Selecting Variables</h4>
+  <p>You can select the variables that you want to drop or keep by using the DROP= and KEEP= data
+     set options in parentheses after a SAS data set name. For convenience, use DROP= if more
+     variables are kept than dropped.
+  </p>
+  <br/>
+
+  <h4>BY-Group Processing</h4>
+  <p>Use the BY statement in the DATA step to group observations for processing. When you use the
+     BY statement with the SET statement, the DATA step automatically creates two temporary
+     variables, <i>FIRST.</i> and <i>LAST.</i> When you specify multiple BY variables, a change in the value of a
+     primary BY variable forces <i>LAST.variable</i> to equal 1 for the secondary BY variables.
+  </p>
+  <br/>
+
+  <h4>Reading Observations Using Direct Access</h4>
+  <p>In addition to reading input data sequentially, you can access observations directly by using the
+     POINT= option to go directly to a data set observation. There is no end-of-file condition when you
+     use direct access, so include an explicit <strong>OUTPUT statement</strong> and then the <strong>STOP statement</strong> to
+     prevent continuous looping.
+  </p>
+  <br/>
+
+  <h4>Detecting the End of a Data Set</h4>
+  <p>To determine when the last observation in an input data set has been read, use the END= option
+     in the SET statement. The specified variable is initialized to 0, then set to 1 when the SET
+     statement reads the last observation of the data set.
+  </p>
+  <br/>
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
+  <ul>
+    <li>When you perform BY-group processing, the data sets that are listed in the SET
+        statement must either be sorted by the values of the BY variable(s), or they must have an
+        appropriate index.
+    </li>
+    <li>When using direct access to read data, you must prevent continuous looping. Add a
+        STOP statement to the DATA step, or use programming logic that checks for an invalid value
+        of the POINT= variable.
+    </li>
+    <li>Do not specify the END= option with the POINT= option in a SET statement.</li>
+  </ul>
+
+
+  
+
+
+  
+  
+
+
+  
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</div> <!-- end of div content -->

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.jlojic.basesasguide" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.jlojic.basesasguide" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Base SAS Exam Guide</name>
     <description>
         A Practical guide for Base SAS certification.
@@ -7,8 +7,16 @@
     <author email="jlojic.apps@gmail.com" href="http://www.jlojic.com">
         JLojic Team
     </author>
+	
+    <preference name="phonegap-version" value="3.5.0" /> 
+    <preference name="orienation" value="default" />
+    <preference name="exit-on-suspend" value="true" />
+    <feature name="http://api.phonegap.com/1.0/network"/>
+	
     <content src="index.html" />
     <access origin="*" />
+	
+	<gap:plugin name="com.leonid.smartmobilesoftware.inappbilling" version="3.0.0" />
 	
 	<platform name="android">
 	              <icon src="res/android/icons/icon36x36.png" density="ldpi" />

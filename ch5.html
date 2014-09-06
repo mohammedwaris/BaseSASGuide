@@ -1,0 +1,2367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>In order to create reports with SAS procedures, your data must be in the form of a SAS data set.
+     If your data is not stored in the form of a SAS data set, then you need to create a SAS data set by
+     entering data, by reading raw data, or by accessing external files (files that were created by other
+     software).
+  </p>
+  <p>This shows you how to design and write a DATA step program to create a SAS data set from <strong>raw
+     data</strong> that is stored in an external file. It also shows you how to read data from a SAS data set and
+     write observations out to a raw data file.
+  </p>
+
+  <img src="images/ch5_image1.png" class="diagram" />
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+
+  <ul>
+    <li>reference a SAS library.</li>
+    <li>reference a raw data file.</li>
+    <li>name a SAS data set to be created.</li>
+    <li>specify a raw data file to be read.</li>
+    <li>read standard character and numeric values in fixed fields.</li>
+    <li>create new variables and assign values.</li>
+    <li>select observations based on conditions.</li>
+    <li>read instream data.</li>
+    <li>submit and verify a DATA step program.</li>
+    <li>read a SAS data set and write the observations out to a raw data file.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Raw Data Files</h2>
+
+  <p>A raw data file is an external text file whose records contain data values that are organized in
+     fields. Raw data files are non-proprietary and can be read by a variety of software programs. The
+     sample raw data files in this book are shown with a ruler to help you identify where individual
+     fields begin and end. The ruler is not part of the raw data file.
+  </p>
+
+  <img src="images/ch5_image2.png" class="diagram" />
+
+  <p>The table below describes the record layout for a raw data file that contains readings from
+     exercise stress tests that have been performed on patients at a health clinic. Exercise
+     physiologists in the clinic use the test results to prescribe various exercise therapies. The file
+     contains <strong>fixed fields</strong>; that is, values for each variable are in the same location in all records.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Field Name</th>
+      <th class="color-red">Starting Column</th>
+      <th class="color-red">Ending Column</th>
+      <th class="color-red">Description</th>
+    </tr>
+    <tr>
+      <td>ID</td>
+      <td>1</td>
+      <td>4</td>
+      <td>patient ID number</td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>6</td>
+      <td>25</td>
+      <td>patient name</td>
+    </tr>
+    <tr>
+      <td>RestHR</td>
+      <td>27</td>
+      <td>29</td>
+      <td>resting heart rate</td>
+    </tr>
+    <tr>
+      <td>MaxHR</td>
+      <td>31</td>
+      <td>33</td>
+      <td>maximum heart rate during test</td>
+    </tr>
+    <tr>
+      <td>RecHR</td>
+      <td>35</td>
+      <td>37</td>
+      <td>recovery heart rate after test</td>
+    </tr>
+    <tr>
+      <td>TimeMin</td>
+      <td>39</td>
+      <td>40</td>
+      <td>time, complete minutes</td>
+    </tr>
+    <tr>
+      <td>TimeSec</td>
+      <td>42</td>
+      <td>43</td>
+      <td>time, seconds</td>
+    </tr>
+    <tr>
+      <td>Tolerance</td>
+      <td>45</td>
+      <td>45</td>
+      <td>comparison of stress test tolerance between this test and the last test (I=increased, D=decreased, S=same, N=no previous test)</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Steps to Create a SAS Data Set</h2> 
+
+  <p>Let's take a look at the steps for creating a SAS data set from a raw data file. In the first part of
+     this chapter, you will learn the steps to create a SAS data set from a raw data file that contains
+     fixed fields. The examples shown use a raw data file that contains data from exercise stress tests,
+     which was introduced on the previous page.
+  </p>
+
+  <p>Before reading the raw data from the file, you must first reference the SAS library in which you
+     will store the data set. Then you can write a DATA step program to read the raw data file and
+     create a SAS data set.
+  </p> 
+
+  <p>To read the raw data file, the DATA step must provide the following instructions to SAS:</p>
+
+  <ul>
+    <li>the location or name of the external text file.</li>
+    <li>a name for the new SAS data set.</li>
+    <li>a reference that identifies the external file.</li>
+    <li>a description of the data values to be read.</li>
+  </ul>
+
+  <p>After using the DATA step to read the raw data, you can use a PROC PRINT step to produce a
+     list report that displays the data values that are in the new data set.
+  </p>
+  <p>The table below outlines the basic statements that you'll use to construct your program.
+     Throughout this chapter, you'll see similar tables that show sample SAS statements for reading
+     raw data in fixed fields.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+    </tr>
+    <tr>
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+    </tr>
+    <tr>
+      <td>Name a SAS data set</td>
+      <td>DATA statement</td>
+    </tr>
+    <tr>
+      <td>Identify an external file</td>
+      <td>INFILE statement</td>
+    </tr>
+    <tr>
+      <td>Describe data</td>
+      <td>INPUT statement</td>
+    </tr>
+    <tr>
+      <td>Execute the DATA step</td>
+      <td>RUN statement</td>
+    </tr>
+    <tr>
+      <td>List the data</td>
+      <td>PROC PRINT statement</td>
+    </tr>
+    <tr>
+      <td>Execute the final program step</td>
+      <td>RUN statement</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You can also use additional SAS statements to perform tasks that customize your data for your
+     needs. For example, you might want to create new variables from the values of existing variables.
+  </p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Referencing a SAS Library</h2> 
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Using a LIBNAME Statement</h3>
+
+  <p>As you begin to write the program, remember that you use a LIBNAME statement to reference
+     the permanent SAS library in which the data set will be stored.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>For example, the LIBNAME statement below assigns the libref <strong>Taxes</strong> to the SAS library
+     <strong>C:\Users\Acct\Qtr1\Report</strong> in the Windows environment.
+  </p>
+
+  <pre>libname taxes 'c:\users\acct\qtr1\report';</pre>
+
+  <p>You do not need to use a LIBNAME statement in all situations. For example, you do not need to
+     use a LIBNAME statement if you are storing the data set in a temporary SAS data set or if SAS
+     has automatically assigned the libref for the permanent library that you are using.
+  </p>
+  
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Referencing a Raw Data File</h2> 
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Using a FILENAME Statement</h3>
+
+  <p>Before you can read your raw data, you must point to the location of the external file that contains
+     the data. You use the FILENAME statement to point to this location.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr> 
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+    <tr> 
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+      <td><i>filename tests 'c:\users\tmill.dat';</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Just as you assign a libref by using a LIBNAME statement, you assign a fileref by using a
+     FILENAME statement.
+  </p>
+
+  <p>Filerefs perform the same function as librefs: they temporarily point to a storage location for data.
+     However, librefs reference SAS data libraries, whereas filerefs reference external files.
+  </p>
+
+  <img src="images/ch5_image3.png" class="diagram"/>
+
+  <hr/>
+  <p><strong>General form, FILENAME statement:</strong></p>
+  <p><strong>FILENAME</strong> fileref 'filename';</p>
+  <p>where</p>
+  <ul>
+    <li><i>fileref</i> is a name that you associate with an external file. The name must be 1 to 8
+        characters long, begin with a letter or underscore, and contain only letters, numbers, or
+        underscores.
+    </li>
+    <li><i>filename</i> is the fully qualified name or location of the file.</li>
+  </ul>
+  <hr/>
+  <br/>
+
+  <h4>Defining a Fully Qualified Filename</h4>
+
+  <p>The following FILENAME statement temporarily associates the fileref <strong>Tests</strong> with the external file
+     that contains the data from the exercise stress tests. The complete filename is specified as
+     <strong>C:\Users\Tmill.dat</strong> in the Windows environment.
+  </p>
+
+  <pre>filename tests 'c:\users\tmill.dat';</pre>
+  <img src="images/ch5_image4.png" class="diagram"/>
+  <br/><br/>
+
+  <h4>Defining an Aggregate Storage Location</h4>
+
+  <p>You can also use a FILENAME statement to associate a fileref with an aggregate storage
+     location, such as a directory that contains multiple external files.
+  </p>
+  <img src="images/ch5_image5.png" class="diagram"/>
+
+  <p>This FILENAME statement temporarily associates the fileref <strong>Finance</strong> with the aggregate storage
+     directory <strong>C:\Users\Personal\Finances</strong>:
+  </p>
+  <pre>filename finance 'c:\users\personal\finances';</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Both the LIBNAME and FILENAME statements are global. In other words, they
+          remain in effect until you change them, cancel them, or end your SAS session.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Referencing a Fully Qualified Filename</h3>
+
+  <p>When you associate a fileref with an individual external file, you specify the fileref in subsequent
+     SAS statements and commands.
+  </p>
+  <img src="images/ch5_image6.png" class="diagram"/>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Referencing a File in an Aggregate Storage Location</h3>
+
+  <p>To reference an external file with a fileref that points to an aggregate storage location, you specify
+     the fileref followed by the individual filename in parentheses:
+  </p>
+
+  <img src="images/ch5_image7.png" class="diagram"/>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>In the Windows operating environment, you can omit the filename extension
+          but you will need to add quotation marks when referencing the external file, as
+          in 
+          <pre>infile tax('refund');</pre>
+          For details about referencing external files stored in aggregate storage
+          locations, see the SAS documentation for your operating environment.
+      </td>
+    </tr>
+  </table>
+  <br/>
+  
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Writing a DATA Step Program</h2> 
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Naming the Data Set</h3>
+
+  <p>The DATA statement indicates the beginning of the DATA step and names the SAS data set to
+     be created.
+  </p>
+  
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+    <tr>
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+      <td><i>filename tests 'c:\users\tmill.dat';</i></td>
+    </tr>
+    <tr>
+      <td>Name a SAS data set</td>
+      <td>DATA statement</td>
+      <td><i>data clinic.stress;</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <hr/>
+  <p><strong>General form, basic DATA statement:</strong></p>
+  <p><strong>DATA</strong> SAS-data-set-1 &lt;...SAS-data-set-n&gt;;</p>
+  <p>where SAS-data-set names (in the format libref.filename) the data set or data sets to be created.</p>
+  <hr/>
+
+  <p>In the following example, the two-level name <strong>Clinic.Admit</strong> specifies that the file Admit is stored
+     in the permanent SAS library to which the libref <strong>Clinic</strong> has been assigned.
+  </p>
+
+  <img src="images/ch5_image8.png" class="diagram"/>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">Specifying the Raw Data File</h3>
+
+  <p>When reading raw data, use the INFILE statement to indicate which file the data is in.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+    <tr>
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+      <td><i>filename tests 'c:\users\tmill.dat';</i></td>
+    </tr>
+    <tr>
+      <td>Name a SAS data set</td>
+      <td>DATA statement</td>
+      <td><i>data clinic.stress;</i></td>
+    </tr>
+    <tr>
+      <td>Identify an external file</td>
+      <td>INFILE statement</td>
+      <td><i>infile tests obs=10;</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <hr/>
+  <p><strong>General form, INFILE statement:</strong></p>
+  <p><strong>INFILE</strong> file-specification &lt;options&gt;;</p>
+  <p>where</p>
+  <ul>
+    <li><i>file-specification</i> can take the form fileref to name a previously defined file reference or
+       'filename' to point to the actual name and location of the file.
+    </li>
+    <li><i>options</i> describes the input file's characteristics and specifies how it is to be read with the
+        INFILE statement.
+    </li>
+  </ul>
+  <hr/>
+
+  <p>To read the raw data file to which the fileref <strong>Tests</strong> has been assigned, you write the following
+     INFILE statement:
+  </p>
+  <pre>infile tests;</pre>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Instead of using a FILENAME statement, you can choose to identify the raw
+          data file by specifying the entire filename and location in the INFILE statement.
+          For example, the following statement points directly to the
+          <strong>C:\Irs\Personal\Refund.dat</strong> file:
+          <pre>infile 'c:\irs\personal\refund.dat';</pre>
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 3 -->
+  <h3 class="subtopic" id="topic6_subtopic3">Column Input</h3>
+
+  <p>In this chapter, you'll be working with column input, the most common input style. Column input
+    specifies actual column locations for values. However, column input is appropriate only in certain
+    situations. When you use column input, your data <strong>must</strong> be
+  </p>
+  <ul>
+    <li>standard character or numeric values.</li>
+    <li>in fixed fields.</li>
+  </ul>
+  <br/>
+
+  <h4>Standard and Nonstandard Numeric Data</h4>
+  <p>Standard numeric data values can contain only</p>
+  <ul>
+    <li>numbers.</li>
+    <li>decimal points.</li>
+    <li>numbers in scientific or E-notation (2.3E4, for example).</li>
+    <li>plus or minus signs..</li>
+  </ul>
+
+  <p>Nonstandard numeric data includes</p>
+  <ul>
+    <li>values that contain special characters, such as percent signs (%), dollar signs ($), and
+        commas (,).
+    </li>
+    <li>date and time values.</li>
+    <li>data in fraction, integer binary, real binary, and hexadecimal forms.</li>
+  </ul>
+
+  <p>The external file that is referenced by the fileref <strong>Staff</strong> contains the personnel information for a
+     technical writing department of a small computer manufacturer. The fields contain values for each
+     employee's last name, first name, job title, and annual salary.
+  </p>
+
+  <p>Notice that the values for <i>Salary</i> contain commas. The values for <i>Salary</i> are considered to be
+     nonstandard numeric values. You cannot use column input to read these values.
+  </p>
+
+  <img src="images/ch5_image9.png" class="diagram"/>
+  <br/>
+
+  <h4>Fixed-Field Data</h4>
+  <p>Raw data can be organized in several different ways.</p>
+  <p>This external file contains data that is in free format, meaning data that is not arranged in
+     columns. Notice that the values for a particular field do not begin and end in the same columns.
+     You cannot use column input to read this file.
+  </p>
+  <img src="images/ch5_image10.png" class="diagram"/>
+  <p>This external file contains data that is arranged in columns or fixed fields. You can specify a
+     beginning and ending column for each field. Let's look at how column input can be used to read
+     this data.
+  </p>
+
+  <img src="images/ch5_image11.png" class="diagram"/>
+
+  <!-- Topic 6 Subtopic 4 -->
+  <h3 class="subtopic" id="topic6_subtopic4">Describing the Data</h3>
+
+  <p>The INPUT statement describes the fields of raw data to be read and placed into the SAS data
+     set.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+    <tr>
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+      <td><i>filename tests 'c:\users\tmill.dat';</i></td>
+    </tr>
+    <tr>
+      <td>Name a SAS data set</td>
+      <td>DATA statement</td>
+      <td><i>data clinic.stress;</i></td>
+    </tr>
+    <tr>
+      <td>Identify an external file</td>
+      <td>INFILE statement</td>
+      <td><i>infile tests obs=10;</i></td>
+    </tr>
+    <tr>
+      <td>Describe data</td>
+      <td>INPUT statement</td>
+      <td><i>input ID 1-4 Age 6-7 ...;</i></td>
+    </tr>
+    <tr>
+      <td>Execute the DATA step</td>
+      <td>RUN statement</td>
+      <td><i>run;</i></td>
+    </tr>
+  </table>
+  <br/>
+  
+  <hr/>
+  <p><strong>General form, INPUT statement using column input</strong>:</p>
+  <p><strong>INPUT</strong> variable ;<strong>&lt;$&gt;</strong> startcol-endcol ...</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> is the SAS name that you assign to the field.</li>
+    <li>the dollar sign ($) identifies the variable type as character (if the variable is numeric, then nothing appears here).</li>
+    <li>startcol represents the starting column for this variable.</li>
+    <li><i>endcol</i> represents the ending column for this variable.</li>
+  </ul>
+  <hr/>
+
+  <p>Look at the small data file shown below. For each field of raw data that you want to read into your
+     SAS data set, you must specify the following information in the INPUT statement:
+  </p>
+
+  <ul>
+    <li>a valid SAS variable name.</li>
+    <li>a type (character or numeric).</li>
+    <li>a range (starting column and ending column).</li>
+  </ul>
+
+  <img src="images/ch5_image12.png" class="diagram"/>
+
+  <p>The INPUT statement below assigns the character variable <i>ID</i> to the data in columns 1-4, the
+     numeric variable <i>Age</i> to the data in columns 6-7, the character variable <i>ActLevel</i> to the data in
+     columns 9-12, and the character variable <i>Sex</i> to the data in column 14.
+  </p>
+  <pre>
+  filename exer 'c:\users\exer.dat';
+  data exercise;
+     infile exer;
+     input ID $ 1-4 Age 6-7 ActLevel $ 9-12 Sex $ 14;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">SAS Data Set Work.Exercise</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Sex</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2810</td>
+      <td>61</td>
+      <td>MOD</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2804</td>
+      <td>38</td>
+      <td>HIGH</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2807</td>
+      <td>42</td>
+      <td>LOW</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2816</td>
+      <td>26</td>
+      <td>HIGH</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2833</td>
+      <td>32</td>
+      <td>MOD</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2823</td>
+      <td>29</td>
+      <td>HIGH</td>
+      <td>M</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>When you use column input, you can</p>
+  <ul>
+    <li>read any or all fields from the raw data file.</li>
+    <li>read the fields in any order.</li>
+    <li>specify only the starting column for values that occupy only one column.</li>
+  </ul>
+
+  <pre>input ActLevel $ 9-12 Sex $ 14 Age 6-7;</pre>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Remember, when you create a new variable, you must specify it in the exact
+          case that you want it stored. An example is NewBalance. Thereafter, you can specify the variable in lowercase.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Specifying Variable Names</h4>
+  <p>Each variable has a name that conforms to SAS naming conventions. Variable names</p>
+  <ul>
+    <li>must be 1 to 32 characters in length.</li>
+    <li>must begin with a letter (A-Z) or an underscore (_).</li>
+    <li>can continue with any combination of numbers, letters, or underscores.</li>
+  </ul>
+  
+  <p>Let's look at an INPUT statement that uses column input to read the three data fields in the raw
+     data file below.
+  </p>
+
+  <img src="images/ch5_image13.png" class="diagram"/>
+
+  <p>The values for the variable that you are naming <i>Age</i> are located in columns 1-2. Because <i>Age</i> is
+     a numeric variable, you do not specify a dollar sign ($) after the variable name.
+  </p>
+  <pre>input Age 1-2</pre>
+
+  <p>The values for the variable <i>ActLevel</i> are located in columns 3-6. You specify a $ to indicate
+     that <i>ActLevel</i> is a character variable.
+  </p>
+  <pre>input Age 1-2 ActLevel $ 3-6</pre>
+
+  <p>The values for the character variable Sex are located in column 7. Notice that you specify only a
+     single column.
+  </p>
+  <pre>input Age 1-2 ActLevel $ 3-6 Sex $ 7;</pre>
+  <br/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Submitting the DATA Step Program</h2> 
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Verifying the Data</h3>
+
+  <p>To verify your data, it is a good idea to use the <strong>OBS= option</strong> in the INFILE statement. Adding
+     OBS=n to the INFILE statement enables you to process only records 1 through n, so you can
+     verify that the correct fields are being read before reading the entire data file.
+  </p>
+
+  <p>The program below reads the first 10 records in the raw data file referenced by the fileref Tests.
+     The data is stored in a permanent SAS data set named <strong>Clinic.Stress</strong>. Don't forget a RUN
+     statement, which tells SAS to execute the previous SAS statements.
+  </p>
+
+  <pre>
+  data clinic.stress;
+     infile tests obs=10;
+     input ID 1-4 Name $ 6-25
+           RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40
+           TimeSec 42-43 Tolerance $ 45;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>79</td>
+      <td>187</td>
+      <td>136</td>
+      <td>12</td>
+      <td>26</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+      <td>13</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>71</td>
+      <td>159</td>
+      <td>116</td>
+      <td>10</td>
+      <td>22</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>72</td>
+      <td>182</td>
+      <td>122</td>
+      <td>16</td>
+      <td>49</td>
+      <td>N</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Checking DATA Step Processing</h3>
+
+  <p>After submitting the previous program, messages in the log verify that the raw data file was read
+     correctly. The notes in the log indicate that
+  </p>
+  <ul>
+    <li>10 records were read from the raw data file.</li>
+    <li>the SAS data set <strong>Clinic.Stress</strong> was created with 10 observations and 8 variables.</li>
+  </ul>
+
+  <p class="color-red">SAS Log</p>
+  <pre>
+  NOTE: The infile TESTS is:
+        File Name=C:\My SAS Files\tests.dat,
+        RECFM=V,LRECL=256
+
+  NOTE: 10 records were read from the infile TESTS.
+        The minimum record length was 80.
+        The maximum record length was 80.
+  NOTE: The data set CLINIC.STRESS has 10 observations
+        and 8 variables.
+  NOTE: DATA statement used 0.07 seconds</pre>
+
+
+  <!-- Topic 7 Subtopic 3 -->
+  <h3 class="subtopic" id="topic7_subtopic3">Listing the Data Set</h3>
+
+  <p>The messages in the log seem to indicate that the DATA step program correctly accessed the
+     raw data file. But it is a good idea to look at the ten observations in the new data set before
+     reading the entire raw data file. You can submit a PROC PRINT step to view the data.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">To Do This</th>
+      <th class="color-red">Use This SAS Statement</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>Reference a SAS data library</td>
+      <td>LIBNAME statement</td>
+      <td><i>libname libref 'SAS-datalibrary';</i></td>
+    </tr>
+    <tr>
+      <td>Reference an external file</td>
+      <td>FILENAME statement</td>
+      <td><i>filename tests 'c:\users\tmill.dat';</i></td>
+    </tr>
+    <tr>
+      <td>Name a SAS data set</td>
+      <td>DATA statement</td>
+      <td><i>data clinic.stress;</i></td>
+    </tr>
+    <tr>
+      <td>Identify an external file</td>
+      <td>INFILE statement</td>
+      <td><i>infile tests obs=10;</i></td>
+    </tr>
+    <tr>
+      <td>Describe data</td>
+      <td>INPUT statement</td>
+      <td><i>input ID 1-4 Name $ 6-25 ...;</i></td>
+    </tr>
+    <tr>
+      <td>Execute the DATA step</td>
+      <td>RUN statement</td>
+      <td><i>run;</i></td>
+    </tr>
+    <tr>
+      <td>List the data</td>
+      <td>PROC PRINT statement</td>
+      <td><i>proc print data=clinic.stress;</i></td>
+    </tr>
+    <tr>
+      <td>Execute the final program step</td>
+      <td>RUN statement</td>
+      <td><i>run;</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The following PROC PRINT step lists the <strong>Clinic.Stress</strong> data set.</p>
+
+  <pre>
+  proc print data=clinic.stress;
+  run;</pre>
+
+  <p>The PROC PRINT output indicates that the variables in the <strong>Clinic.Stress</strong> data set were read
+     correctly for the first 10 records.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>79</td>
+      <td>187</td>
+      <td>136</td>
+      <td>12</td>
+      <td>26</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+      <td>13</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>71</td>
+      <td>159</td>
+      <td>116</td>
+      <td>10</td>
+      <td>22</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>72</td>
+      <td>182</td>
+      <td>122</td>
+      <td>16</td>
+      <td>49</td>
+      <td>N</td>
+    </tr>
+  </table>
+  <br/>
+
+
+  <!-- Topic 7 Subtopic 4 -->
+  <h3 class="subtopic" id="topic7_subtopic4">Reading the Entire Raw Data File</h3>
+
+  <p>Now that you've checked the log and verified your data, you can modify the DATA step to read
+     the entire raw data file. To do so, remove the OBS= option from the INFILE statement and resubmit
+     the program.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25
+           RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40
+           TimeSec 42- 43 Tolerance $ 45;
+  run;</pre>
+
+  <br/>
+
+  <!-- Topic 7 Subtopic 5 -->
+  <h3 class="subtopic" id="topic7_subtopic5">Invalid Data</h3>
+
+  <p>When you submit the revised DATA step and check the log, you see a note indicating that invalid
+     data appears for the variable <i>RecHR</i> in line 14 of the raw data file, columns 35-37.
+  </p>
+  <p>This note is followed by a column ruler and the actual data line that contains the invalid value for
+     <i>RecHR</i>.
+  </p>
+  <pre>
+  NOTE: Invalid data for RecHR in line 14 35-37.
+  RULE: ----+----1----+----2----+----3----+----4----+----5---
+  14    2575 Quigley, M            74 152 Q13 11 26 I 45
+  ID=2575 Name=Quigley, M RestHR=74 MaxHR=152 RecHR=. TimeMin=11
+  TimeSec=26 Tolerance=I _ERROR_=1
+  _N_=14
+  NOTE: 21 records were read from the infile TESTS.
+        The minimum record length was 80.
+        The maximum record length was 80.
+  NOTE: The data set CLINIC.STRESS has 21 observations
+        and 8 variables.
+  NOTE: DATA statement used 0.13 seconds</pre>
+
+
+  <p>The value Q13 is a data-entry error. It was entered incorrectly for the variable <i>RecHR</i>.</p>
+  <p><i>RecHR</i> is a numeric variable, but Q13 is not a valid number. So <i>RecHR</i> is assigned a missing
+     value, as indicated in the log. Because <i>RecHR</i> is numeric, the missing value is represented with a
+     period.
+  </p>
+  <p>Notice, though, that the DATA step does not fail as a result of the invalid data but continues to
+     execute. Unlike syntax errors, invalid data errors do not cause SAS to stop processing a program.
+  </p>
+  <p>Assuming you have a way to edit the file and can justify a correction, you can correct the invalid
+     value and re-run the DATA step. If you did this, the log would then show that the data set
+     <strong>Clinic.Stress</strong> was created with 21 observations, 8 variables, and no messages about invalid
+     data. 
+  </p>
+
+  <pre>
+  NOTE: The infile TESTS2 is:
+        File Name=C:\My SAS Files\tests2.dat,
+        RECFM=V,LRECL=256
+  NOTE: 21 records were read from the infile TESTS2.
+        The minimum record length was 80.
+        The maximum record length was 80.
+  NOTE: The data set CLINIC.STRESS has 21 observations
+        and 8 variables.
+  NOTE: DATA statement used 0.14 seconds</pre>
+
+  <p>After correcting the raw data file, you can list the data again to verify that it is correct.</p>
+  <pre>
+  proc print data=clinic.stress;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>79</td>
+      <td>187</td>
+      <td>136</td>
+      <td>12</td>
+      <td>26</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+      <td>13</td>
+      <td>13</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>71</td>
+      <td>159</td>
+      <td>116</td>
+      <td>10</td>
+      <td>22</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>72</td>
+      <td>182</td>
+      <td>122</td>
+      <td>16</td>
+      <td>49</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2571</td>
+      <td>Nunnelly, A</td>
+      <td>65</td>
+      <td>181</td>
+      <td>141</td>
+      <td>15</td>
+      <td>2</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>12</td>
+      <td>11</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2574</td>
+      <td>peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>14</td>
+      <td>9</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>2575</td>
+      <td>Quigley, M</td>
+      <td>74</td>
+      <td>152</td>
+      <td>113</td>
+      <td>11</td>
+      <td>26</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>2578</td>
+      <td>Cameron, L</td>
+      <td>75</td>
+      <td>158</td>
+      <td>108</td>
+      <td>14</td>
+      <td>27</td>
+      <td>I</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Whenever you use the DATA step to read raw data, remember the steps that you followed in this
+     chapter, which help ensure that you don't waste resources when accessing data:
+  </p>
+
+  <ul>
+    <li>Write the DATA step using the OBS= option in the INFILE statement.</li>
+    <li>Submit the DATA step.</li>
+    <li>Check the log for messages.</li>
+    <li>View the resulting data set.</li>
+    <li>Remove the OBS= option and re-submit the DATA step.</li>
+    <li>Check the log again.</li>
+    <li>View the resulting data set again.</li>
+  </ul>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Creating and Modifying Variables</h2> 
+
+  <p>So far, you've read existing data. But sometimes existing data doesn't provide the
+     information that you need. To modify existing values or to create new variables, you can use an
+     <strong>assignment statement</strong> in any DATA step.
+  </p>
+  <hr/>
+  <p><strong>General form, assignment statement:</strong></p>
+  <p>variable=expression;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> names a new or existing variable.</li>
+    <li><i>expression</i> is any valid SAS expression.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The assignment statement is one of the few SAS statements that doesn't begin
+          with a keyword.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <p>For example, here is an assignment statement that assigns the character value <i>Toby
+     Witherspoon</i> to the variable <i>Name</i>:
+  </p>
+  <pre>Name='Toby Witherspoon';</pre>
+
+  <!-- Topic 8 Subtopic 1 -->
+  <h3 class="subtopic" id="topic8_subtopic1">SAS Expressions</h3>
+  
+  <p>You use SAS expressions in assignment statements and many other SAS programming
+     statements to
+  </p>
+  <ul>
+    <li>transform variables.</li>
+    <li>create new variables.</li>
+    <li>conditionally process variables.</li>
+    <li>calculate new values.</li>
+    <li>assign new values.</li>
+  </ul>
+
+  <p>An expression is a sequence of operands and operators that form a set of instructions. The
+     instructions are performed to produce a new value:
+  </p>
+  <ul>
+    <li><strong>Operands</strong> are variable names or constants. They can be numeric, character, or both.</li>
+    <li><strong>Operators</strong> are special-character operators, grouping parentheses, or functions. You can
+        learn about functions in the Chapter, <strong>Transforming Data with SAS Functions</strong>.
+    </li>
+  </ul>
+  <br/>
+
+  <!-- Topic 8 Subtopic 2 -->
+  <h3 class="subtopic" id="topic8_subtopic2">Using Operators in SAS Expressions</h3>
+
+  <p>To perform a calculation, you use <strong>arithmetic operators</strong>. The table below lists arithmetic
+     operators.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Operator</th>
+      <th class="color-red">Action</th>
+      <th class="color-red">Example</th>
+      <th class="color-red">Priority</th>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>negative prefix</td>
+      <td>negative=-x;</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>**</td>
+      <td>exponentiation</td>
+      <td>raise=x**y;</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>*</td>
+      <td>multiplication</td>
+      <td>mult=x*y;</td>
+      <td>II</td>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td>division</td>
+      <td>divide=x/y;</td>
+      <td>II</td>
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>addition</td>
+      <td>sum=x+y;</td>
+      <td>III</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>subtraction</td>
+      <td>diff=x-y;</td>
+      <td>III</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>When you use more than one arithmetic operator in an expression,</p>
+  <ul>
+    <li>operations of priority I are performed before operations of priority II, and so on.</li>
+    <li>consecutive operations that have the same priority are performed
+      <ul>
+          <li>from right to left within priority I.</li>
+          <li>from left to right within priorities II and III.</li>
+      </ul>
+    </li>
+    <li>you can use parentheses to control the order of operations.</li>
+  </ul>
+  <br/>
+
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>When a value that is used with an arithmetic operator is missing, the
+          result of the expression is missing. The assignment statement
+          assigns a <strong>missing value</strong> to a variable if the result of the expression is
+          missing.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>You use the following comparison operators to express a condition.</p>
+  <table border="1">
+    <tr>
+      <th class="color-red">Operator</th>
+      <th class="color-red">Meaning</th>
+      <th class="color-red">Example</th>
+    </tr>
+    <tr> 
+      <td>= or eq</td>
+      <td>equal to</td>
+      <td><i>name='Jones, C.'</i></td>
+    </tr>
+    <tr> 
+      <td>^= or ne</td>
+      <td>not equal to</td>
+      <td><i>temp ne 212</i></td>
+    </tr>
+    <tr> 
+      <td>&gt; or gt</td>
+      <td>greater than</td>
+      <td><i>income&gt;20000</i></td>
+    </tr>
+    <tr> 
+      <td>&lt; or lt</td>
+      <td>less than</td>
+      <td><i>partno lt "BG05"</i></td>
+    </tr>
+    <tr> 
+      <td>&gt;= or ge</td>
+      <td>greater than or equal to</td>
+      <td><i>id&gt;='1543'</i></td>
+    </tr>
+    <tr> 
+      <td>&lt;= or le</td>
+      <td>less than or equal to</td>
+      <td><i>pulse le 85</i></td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>To link a sequence of expressions into compound expressions, you use logical operators,
+     including the following.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Operator</th>
+      <th class="color-red">Meaning</th>     
+    </tr>
+    <tr>
+      <td>AND or &</td>
+      <td>and, both. If both expressions are true, then the compound expression is true.</td>
+    </tr>
+    <tr>
+      <td>OR or |</td>
+      <td>or, either. If either expression is true, then the compound expression is true.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 8 Subtopic 3 -->
+  <h3 class="subtopic" id="topic8_subtopic3">More Examples of Assignment Statements</h3>
+
+  <p>The assignment statement in the DATA step below creates a new variable, <i>TotalTime</i>, by
+     multiplying the values of <i>TimeMin</i> by 60 and then adding the values of <i>TimeSec</i>.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress (Partial Listing)</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+      <td>10</td>
+      <td>5</td>
+      <td>I</td>
+      <td>605</td>
+    </tr>
+    <tr>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+      <td>11</td>
+      <td>13</td>
+      <td>I</td>
+      <td>673</td>
+    </tr>
+    <tr>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>69</td>
+      <td>162</td>
+      <td>114</td>
+      <td>9</td>
+      <td>42</td>
+      <td>S</td>
+      <td>582</td>
+    </tr>
+    <tr>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+      <td>706</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The expression can also contain the variable name that is on the left side of the equal sign, as the
+     following assignment statement shows. This statement re-defines the values of the variable
+     <i>RestHR</i> as 10 percent higher.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     resthr=resthr+(resthr*.10);
+  run;</pre>  
+  
+  <p>When a variable name appears on both sides of the equal sign, the original value on the right
+     side is used to evaluate the expression. The result is assigned to the variable on the left side of
+     the equal sign.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     resthr=resthr+(resthr*.10);
+  run; ^          ^
+      result original value</pre>
+  <br/>
+
+  <!-- Topic 8 Subtopic 4 -->
+  <h3 class="subtopic" id="topic8_subtopic4">Date Constants</h3>
+
+  <p>You can assign date values to variables in assignment statements by using <strong>date constants</strong>. To
+     represent a constant in SAS date form, specify the date as <i>'ddmmmyy'</i> or <i>'ddmmmyyyy'</i>, followed
+     by a D.
+  </p>
+
+  <hr/>
+  <p>General form, date constant:</p>
+  <p>'ddmmm<yy>yy' D</p>
+  <p>or</p>
+  <p>"ddmmm<yy>yy" D</p>
+  <p>where</p>
+  <ul>
+    <li><i>dd</i> is a one- or two-digit value for the day.</li>
+    <li><i>mmm</i> is a three-letter abbreviation for the month (JAN, FEB, and so on).</li>
+    <li><i>yy</i> or <i>yyyy</i> is a two- or four-digit value for the year, respectively.</li>
+  </ul>
+  <table>
+    <tr>
+      <th class="color-blue>Note</th>
+      <td>Be sure to enclose the date in quotation marks.</td
+    </tr>
+  </table>
+  <hr/>
+  <br/>
+
+
+  <h4>Example</h4>
+  <p>In the following program, the second assignment statement assigns a date value to the variable
+     <i>TestDate</i>.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     TotalTime=(timemin*60)+timesec;
+     TestDate='01jan2000'd;
+  run;</pre>
+  
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can also use SAS <strong>time constants</strong> and <strong>SAS datetime</strong> constants in
+          assignment statements.
+          <pre>
+          Time='9:25't;
+          DateTime='18jan2005:9:27:05'dt;</pre>
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Subsetting Data</h2> 
+
+  <p>As you read your data, you can subset it by processing only those observations that meet a
+     specified condition. To do this, you can use a <strong>subsetting IF statement</strong> in any DATA step.
+  </p>
+  <p>The subsetting IF statement causes the DATA step to continue processing only those raw data
+     records or observations that meet the condition of the expression specified in the IF statement.
+     The resulting SAS data set or data sets contain a subset of the original external file or SAS data
+     set.
+  </p>
+
+  <hr/>
+  <p><strong>General form, subsetting IF statement:</strong></p>
+  <p><strong>IF</strong> expression;</p>
+  <p>where expression is any valid SAS expression.</p>
+  <ul>
+    <li>If the expression is <strong>true</strong>, the DATA step continues to process that record or observation.</li>
+    <li>If the expression is <strong>false</strong>, no further statements are processed for that record or
+        observation, and control returns to the top of the DATA step.
+    </li>
+  </ul>
+  <hr/>
+
+  <p>For example, the subsetting IF statement below selects only observations whose values for
+     <i>Tolerance</i> are D. The IF statement is positioned in the DATA step so that other statements do
+     not need to process unwanted observations.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+  run;</pre>
+
+  <p>Because <i>Tolerance</i> is a character variable, the value D must be enclosed in quotation marks,
+     and it must be the same case as in the data set.
+  </p>
+  <table>
+    <tr>
+      <th class="color-red">Note</th>
+      <td>See the SAS documentation for your operating environment for a comparison
+          of the WHERE and subsetting IF statements when they are used in the DATA
+          step. 
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 10 -->
+  <h2 class="topic" id="topic10">Reading Instream Data</h2> 
+
+  <p>Throughout this chapter, our program has contained an INFILE statement that identifies an
+     external file to read.
+  </p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+  run;</pre>
+
+  <p>However, you can also read <strong>instream data lines</strong> that you enter directly in your SAS program,
+     rather than data that is stored in an external file. Reading instream data is extremely helpful if you
+     want to create data and test your programming statements on a few observations that you can
+     specify according to your needs.
+  </p>
+  <p>To read instream data, you use</p>
+  <ul>
+    <li>a <strong>DATALINES statement</strong> as the last statement in the DATA step (except for the RUN
+        statement) and immediately preceding the data lines.
+    </li>
+    <li>a <strong>null statement</strong> (a single semicolon) to indicate the end of the input data.</li>
+  </ul>
+  <pre>
+  data clinic.stress;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     datalines;
+     .
+     .
+     .
+     data lines go here
+     .
+     .
+     .
+     ;</pre>
+  <br/>
+
+  <hr/>
+  <p><strong>General form, DATALINES statement:</strong></p>
+  <p><strong>DATALINES</strong>;</p>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can use only one DATALINES statement in a DATA step. Use separate
+          DATA steps to enter multiple sets of data.
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can also use <strong>CARDS</strong>; as the last statement in a DATA step (except for
+          the RUN statement) and immediately preceding the data lines. The CARDS
+          statement is an alias for the DATALINES statement.
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If your data contains semicolons, use the DATALINES4 statement plus a null
+          statement that consists of four semicolons (;;;;) to indicate the end of the input
+          data.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+  <br/>
+
+  <h4>Example</h4>
+  <p>To read the data for the treadmill stress tests as instream data, you can submit the following
+     program:
+  </p>
+  <pre>
+  data clinic.stress;
+     input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+     datalines;
+    2458 Murray, W 72 185 128 12 38 D
+    2462 Almers, C 68 171 133 10 5 I
+    2501 Bonaventure, T 78 177 139 11 13 I
+    2523 Johnson, R 69 162 114 9 42 S
+    2539 LaMance, K 75 168 141 11 46 D
+    2544 Jones, M 79 187 136 12 26 N
+    2552 Reberson, P 69 158 139 15 41 D
+    2555 King, E 70 167 122 13 13 I
+    2563 Pitts, D 71 159 116 10 22 S
+    2568 Eberhardt, S 72 182 122 16 49 N
+    2571 Nunnelly, A 65 181 141 15 2 I
+    2572 Oberon, M 74 177 138 12 11 D
+    2574 Peterson, V 80 164 137 14 9 D
+    2575 Quigley, M 74 152 113 11 26 I
+    2578 Cameron, L 75 158 108 14 27 I
+    2579 Underwood, K 72 165 127 13 19 S
+    2584 Takahashi, Y 76 163 135 16 7 D
+    2586 Derber, B 68 176 119 17 35 N
+    2588 Ivan, H 70 182 126 15 41 N
+    2589 Wilcox, E 78 189 138 14 57 I
+    2595 Warren, C 77 170 136 12 10 S
+    ;</pre>
+
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Notice that you do not need a RUN statement following the null statement
+          (the semicolon after the data lines). The null statement functions as a step
+          boundary when the DATALINES statement is used, so the DATA step is
+          executed as soon as SAS encounters it. If you do place a RUN statement
+          after the null statement, any statements between the null statement and the
+          RUN statement are not executed as part of the DATA step.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 11 -->
+  <h2 class="topic" id="topic11">Steps to Create a Raw Data File</h2>
+
+  <p>Look at the SAS program and SAS data set created earlier in this chapter.</p>
+  <pre>
+  data clinic.stress;
+     infile tests;
+     input ID 1-4 Name $ 6-25 RestHR 27-29 MaxHR 31-33
+           RecHR 35-37 TimeMin 39-40 TimeSec 42-43
+           Tolerance $ 45;
+     if tolerance='D';
+     TotalTime=(timemin*60)+timesec;
+  run;</pre> 
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+      <td>706</td>
+    </tr>
+    <tr>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+      <td>941</td>
+    </tr>
+    <tr>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>12</td>
+      <td>11</td>
+      <td>D</td>
+      <td>731</td>
+    </tr>
+    <tr>
+      <td>2574</td>
+      <td>peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>14</td>
+      <td>9</td>
+      <td>D</td>
+      <td>849</td>
+    </tr>
+    <tr>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>76</td>
+      <td>163</td>
+      <td>135</td>
+      <td>16</td>
+      <td>7</td>
+      <td>D</td>
+      <td>967</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>As you can see, the data set has been modified with SAS statements. If you wanted to write the
+     new observations to a raw data file, you could reverse the process that you’ve been following and
+     write out the observations from a SAS data set as records or lines to a new raw data file.
+  </p>
+
+  <!-- Topic 11 Subtopic 1 -->
+  <h3 class="subtopic" id="topic11_subtopic1">Using the_NULL_ Keyword</h3>
+
+  <p>Because the goal of your SAS program is to create a raw data file and not a SAS data set, it is
+     inefficient to list a data set name in the DATA statement. Instead, use the keyword _NULL_,
+     which enables you to use the DATA step without actually creating a SAS data set. A SET
+     statement specifies the SAS data set that you want to read from.
+  </p>
+  <pre>
+  data _null_;
+     set clinic.stress;</pre>
+  <p>The next step is to specify the output file.</p>
+
+  <!-- Topic 11 Subtopic 2 -->
+  <h3 class="subtopic" id="topic11_subtopic2">Specifying the Raw Data File</h3>
+
+  <p>You use the FILE and PUT statements to write the observations from a SAS data set to a raw
+     data file, just as you used the INFILE and INPUT statements to create a SAS data set. These two
+     sets of statements work almost identically.
+  </p>
+  <p>When writing observations to a raw data file, use the FILE statement to specify the output file.</p>
+  
+  <hr/>
+  <p><strong>General form, FILE statement:</strong></p>
+  <p><strong>FILE</strong> file-specification;</p>
+  <p>where file-specification can take the form <i>fileref</i> to name a previously defined file reference or
+     'filename' to point to the actual name and location of the file.
+  </p>
+  <hr/>  
+
+  <p>For example, if you want to read the <strong>Clinic.Stress</strong> data set to a raw data file that is referenced by
+     the fileref <strong>Newdat</strong>, you would begin your program with the following SAS statements.
+  </p>
+  <pre>
+  data _null_;
+     set clinic.stress;
+     file newdat;</pre>
+
+  <p>Instead of identifying the raw data file with a SAS fileref, you can choose to specify the entire
+     filename and location in the FILE statement. For example, the following FILE statement points
+     directly to the <strong>C:\Clinic\Patients\Stress.dat</strong> file. Note that the path specifying the filename and
+     location must be enclosed in quotation marks.
+  </p>
+  <pre>
+  data _null_;
+     set clinic.stress;
+     file 'c:\clinic\patients\stress.dat';</pre>
+
+  <!-- Topic 11 Subtopic 3 -->
+  <h3 class="subtopic" id="topic11_subtopic3">Describing the Data</h3>
+
+  <p>Whereas the FILE statement specifies the output file, the PUT statement describes the lines to
+     write to the raw data file.
+  </p>
+
+  <hr/>
+  <p><strong>General form, PUT statement using column output:</strong></p>
+  <p><strong>PUT</strong> variable startcol-endcol . . .;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> is the name of the variable whose value is written.</li>
+    <li><i>startcol</i> indicates where in the line to begin writing the value.</li>
+    <li><i>endcol</i> indicates where in the line to end the value.</li>
+  </ul>
+  <hr/>
+
+  <p>In general, the PUT statement mirrors the capabilities of the INPUT statement. In this case you
+     are working with column output. Therefore, you need to specify the variable name, starting
+     column, and ending column for each field that you want to create. Because you are creating raw
+     data, you don't need to follow character variable names with a dollar sign ($).
+  </p>
+
+  <pre>
+  data _null_;
+     set clinic.stress;
+     file 'c:\clinic\patients\stress.dat';
+     put id 1-4 name 6-25 resthr 27-29 maxhr 31-33
+         rechr 35-37 timemin 39-40 timesec 42-43
+         tolerance 45 totaltime 47-49;
+  run;</pre>
+
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
+    </tr>
+    <tr>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+      <th class="color-red">TimeMin</th>
+      <th class="color-red">TimeSec</th>
+      <th class="color-red">Tolerance</th>
+      <th class="color-red">TotalTime</th>
+    </tr>
+    <tr>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>72</td>
+      <td>185</td>
+      <td>128</td>
+      <td>12</td>
+      <td>38</td>
+      <td>D</td>
+      <td>758</td>
+    </tr>
+    <tr>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>75</td>
+      <td>168</td>
+      <td>141</td>
+      <td>11</td>
+      <td>46</td>
+      <td>D</td>
+      <td>706</td>
+    </tr>
+    <tr>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>69</td>
+      <td>158</td>
+      <td>139</td>
+      <td>15</td>
+      <td>41</td>
+      <td>D</td>
+      <td>941</td>
+    </tr>
+    <tr>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>74</td>
+      <td>177</td>
+      <td>138</td>
+      <td>12</td>
+      <td>11</td>
+      <td>D</td>
+      <td>731</td>
+    </tr>
+    <tr>
+      <td>2574</td>
+      <td>peterson, V</td>
+      <td>80</td>
+      <td>164</td>
+      <td>137</td>
+      <td>14</td>
+      <td>9</td>
+      <td>D</td>
+      <td>849</td>
+    </tr>
+    <tr>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>76</td>
+      <td>163</td>
+      <td>135</td>
+      <td>16</td>
+      <td>7</td>
+      <td>D</td>
+      <td>967</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>The resulting raw data file would look like this:</p>
+
+  <img src="images/ch5_image14.png" class="diagram"/>
+
+  <p>In later chapters you'll learn how to use INPUT and PUT statements to read and write raw data in
+     other forms and record types.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If you do not execute a FILE statement before a PUT statement in the current
+          iteration of the DATA step, then SAS writes the lines to the SAS log. If you
+          specify the PRINT option in the FILE statement, before the PUT statement,
+          then SAS writes the lines to the procedure output file.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 12 -->
+  <h2 class="topic" id="topic12">Additional Features</h2>
+
+  <p>In this chapter, you learned to read raw data by writing an INPUT statement that uses column
+     input. You also learned how to write to a raw data file by using the FILE statement with column
+     input. However, column input is appropriate only in certain situations. When you use column
+     input, your data must be
+  </p>
+  <ul>
+    <li><strong>standard character</strong> and <strong>numeric values</strong>. If the raw data file contains nonstandard
+        values, then you need to use formatted input, another style of input. To learn about formatted
+        input, see Chapter, <strong>Reading Raw Data in Fixed Fields</strong>.
+    </li>
+    <li><strong>in fixed fields</strong>. That is, values for a particular variable must be in the same location in all
+        records. If your raw data file contains values that are not in fixed fields, then you need to use
+        list input. To learn about list input, see Chapter, <strong>Reading Free-Format Data</strong>.
+    </li>
+  </ul>
+
+  <p>Other forms of the INPUT statement enable you to read</p>
+  <ul>
+    <li>nonstandard data values such as hexadecimal, packed decimal, SAS date values, and
+        monetary values that contain dollar signs and commas.
+    </li>
+    <li>free-format data (data that is not in fixed fields).</li>
+    <li>implied decimal points.</li>
+    <li>variable-length data values.</li>
+    <li>variable-length records.</li>
+    <li>different record types.</li>
+  </ul>
+
+  <!-- Topic 13 -->
+  <h2 class="topic" id="topic13">Summary</h2>
+
+  <!-- Topic 13 Subtopic 1 -->
+  <h3 class="subtopic" id="topic13_subtopic1">Text Summary</h3>
+
+  <h4>Raw Data Files</h4>
+  <p>A <strong>raw data file</strong> is an external file whose records contain data values that are organized in fields.
+     The raw data files in this chapter contain fixed fields.
+  </p>
+  <br/>
+
+  <h4>Steps to Create a SAS Data Set</h4>
+  <p>You need to follow several steps to create a SAS data set using raw data.</p>
+  <ol>
+    <li>Reference the raw data file to be read.</li>
+    <li>Name the SAS data set.</li>
+    <li>Identify the location of the raw data.</li>
+    <li>Describe the data values to be read.</li>
+  </ol>
+  <br/>
+
+  <h4>Referencing a SAS Library</h4>
+  <p>To begin your program, you might need to use a LIBNAME statement to reference the SAS
+     library in which your data set will be stored.
+  </p>
+  <br/>
+
+  <h4>Referencing a Raw Data File</h4>
+  <p>Before you can read your raw data, you must reference the raw data file by creating a fileref. Just
+     as you assign a libref by using a LIBNAME statement, you assign a fileref by using a FILENAME
+     statement.
+  </p>
+  <br/>
+
+  <h4>Writing a DATA Step Program</h4>
+  <p>The DATA statement indicates the beginning of the DATA step and names the SAS data set(s) to
+     be created.
+  </p>
+  <p>Next, you specify the raw data file by using the INFILE statement. The OBS= option in the INFILE
+     statement enables you to process a specified number of observations.
+  </p>
+  <p>This chapter teaches column input, the most common input style. Column input specifies actual
+     column locations for data values. The INPUT statement describes the raw data to be read and
+     placed into the SAS data set.
+  </p>
+  <br/>
+
+  <h4>Submitting the DATA Step Program</h4>
+  <p>When you submit the program, you can use the OBS= option with the INFILE statement to verify
+     that the correct data is being read before reading the entire data file.
+  </p>
+  <p>After you submit the program, view the log to check the DATA step processing. You can then list
+     the data set by using the PROC PRINT procedure.
+  </p>
+  <p>After you've checked the log and verified your data, you can modify the DATA step to read the
+     entire raw data file by removing the OBS= option from the INFILE statement.
+  </p>
+  <p>If you are working with a raw data file that contains invalid data, the DATA step continues to
+     execute. Unlike syntax errors, invalid data errors do not cause SAS to stop processing a program.
+     If you have a way to edit the invalid data, it's best to correct the problem and re-run the DATA
+     step.
+  </p>
+  <br/>
+
+  <h4>Creating and Modifying Variables</h4>
+  <p>To modify existing values or to create new variables, you can use an <strong>assignment statement</strong> in
+     any DATA step. Within assignment statements, you can specify any <strong>SAS expression</strong>.
+  </p>
+  <p>You can use <strong>date constants</strong> to assign dates in assignment statements. You can also use SAS
+     time constants and SAS datetime constants in assignment statements.
+  </p>
+  <br/>
+
+  <h4>Subsetting Data</h4>
+  <p>To process only observations that meet a specified condition, use a <strong>subsetting IF statement</strong> in
+     the DATA step.
+  </p>
+  <br/>
+
+  <h4>Reading Instream Data</h4>
+  <p>To read instream data lines instead of an external file, use a <strong>DATALINES statement</strong> or a
+     CARDS statement and enter data directly in your SAS program. Omit the RUN statement at the
+     end of the DATA step.
+  </p>
+  <br/>
+
+  <h4>Creating a Raw Data File</h4>
+  <p>When the goal of your SAS program is to create a raw data file and not a SAS data set, it is
+     inefficient to list a data set name in the DATA statement. Instead use the keyword <strong>_NULL_</strong>, which
+     allows the power of the DATA step without actually creating a SAS data set. A SET statement
+     specifies the SAS data set that you want to read from.
+  </p>
+  <p>You can use the <strong>FILE</strong> and <strong>PUT</strong> statements to write out the observations from a SAS data set to a
+     raw data file the same way you used the INFILE and INPUT statements to create a SAS data set.
+     These two sets of statements work almost identically.
+  </p>
+  <br/>
+
+
+
+  <!-- Topic 13 Subtopic 2 -->
+  <h3 class="subtopic" id="topic13_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>LIBNAME and FILENAME statements are global. Librefs and filerefs remain in effect
+        until you change them, cancel them, or end your SAS session.
+    </li>
+    <li>For each field of raw data that you read into your SAS data set, you must specify the
+        following in the INPUT statement: a valid SAS <strong>variable name</strong>, a <strong>type</strong> (character or numeric),
+        a <strong>starting column</strong>, and if necessary, an <strong>ending column</strong>.
+    </li>
+    <li>When you use column input, you can read any or all fields from the raw data file, read the
+        fields in any order, and specify only the starting column for variables whose values occupy
+        only one column.
+    </li>
+    <li>Column input is appropriate only in some situations. When you use column input, your
+        data must be <strong>standard character</strong> and <strong>numeric values</strong>, and these values must be in <strong>fixed
+        fields</strong>. That is, values for a particular variable must be in the same location in all records.
+    </li>
+  </ul>
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+</div><!-- end of div content -->

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>Now that you're familiar with the basics, you can learn how to correct errors in your programs and
+     resolve common problems effectively.
+  </p>
+
+  <img src="images/ch3_image1.png" class="diagram"/>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>enhance the readability of your SAS programs.</li>
+    <li>interpret error messages in the SAS log.</li>
+    <li>correct errors.</li>
+    <li>resolve common problems.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">SAS Program Layout</h2>
+
+  <p>Before discussing how to edit and debug programs, let's review the characteristics of SAS
+     statements and look at enhancing the readability of your SAS programs.
+  </p>
+  <p>Remember that SAS programs consist of SAS statements.</p>
+  <p><strong>SAS statements.....</strong></p>
+  <img src="images/ch3_image2.png" class="diagram"/>
+
+  <p>Although you can write SAS statements in almost any format, a consistent layout enhances
+     readability and helps you understand the program's purpose. It's a good idea to
+  </p>
+  <ul>
+    <li>begin DATA and PROC steps in column one.</li>
+    <li>indent statements within a step.</li>
+    <li>begin RUN statements in column one.</li>
+    <li>include a RUN statement after every DATA step or PROC step.</li>
+  </ul>
+
+  <pre>
+  data work.bankacct;
+     infile records;
+     input Name $ 1-10 AccountType $ 12-20
+           Deposit 22-25 Withdrawal 27-30;
+  run;
+  proc print data=work.bankacct;
+  run;
+  proc means mean;
+     var deposit withdrawal;
+  run;</pre>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Interpreting Error Messages</h2>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Error Types</h3>
+
+  <p>So far, the programs that you've seen in this book have been error free, but programming errors
+     do occur. SAS can detect several types of errors. The most common are
+  </p>
+  <ul>
+    <li><strong>syntax errors</strong> that occur when program statements do not conform to the rules of the
+        SAS language
+    </li>
+    <li><strong>data errors</strong> that occur when some data values are not appropriate for the SAS
+        statements that are specified in a program.
+    </li>
+  </ul>
+  <p>This chapter focuses on identifying and correcting <strong>syntax errors</strong>.</p>
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Syntax Errors</h3>
+
+  <p>When you submit a program, SAS scans each step for syntax errors, then processes the step (if
+     no syntax errors are found). SAS then goes to the next step and repeats the process. Syntax
+     errors, such as misspelled words, generally cause SAS to stop processing the step in which the
+     error occurred.
+  </p>
+  <p>You already know that information is written to the SAS log while a SAS program is executing.
+     When a program that contains an error is submitted, messages regarding the problem also
+     appear in the SAS log. When a syntax error is detected, the SAS log
+  </p>
+  <ul>
+    <li>displays the word ERROR.</li>
+    <li>identifies the possible location of the error.</li>
+    <li>gives an explanation of the error.</li>
+  </ul>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>The program below contains a syntax error. The DATA step copies the SAS data set
+     <strong>Clinic.Admit</strong> into a new data set named <strong>Clinic.Admitfee</strong>. The PROC step should print the
+     values for the variables <i>ID</i>, <i>Name</i>, <i>Actlevel</i>, and <i>Fee</i> in the new data set. However, <i>print</i> is
+     misspelled in the PROC PRINT statement.
+  </p>
+
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc prin data=clinic.admitfee;
+     var id name actlevel fee;
+  run;</pre>
+
+  <p>When the program is submitted, messages in the SAS log indicate that the procedure PRIN was
+     not found and that SAS stopped processing the PRINT step due to errors. No output is produced
+     by the PRINT procedure, because the second step fails to execute.
+  </p>
+
+  <img src="images/ch3_image3.png" class="diagram"/>
+
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Problems with your statements or data might not be evident when you look
+          at results. Therefore, it's important to review the messages in the log each
+          time you submit a SAS program.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Correcting Errors</h2>
+
+  <p>To modify programs that contain errors, you can edit them in the Editor window. You can correct
+     simple errors, such as the spelling error in the following program, by typing over the incorrect text,
+     deleting text, or inserting text.
+  </p>
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc prin data=clinic.admitfee;
+     var id name actlevel fee;
+  run;</pre>
+
+  <p>In the program below, the missing t has been inserted into the PRINT keyword that is specified in
+     the PROC PRINT statement.
+  </p>
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc print data=clinic.admitfee;
+     var id name actlevel fee;
+  run;</pre>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Resubmitting a Revised Program</h3>
+
+  <p>After correcting your program, you can submit it again.</p>
+  <p>Previously, because there was an error in the PRINT procedure, the code that contained the error
+     did not produce output. This time, the PRINT procedure executes and produces output.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">ID</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2571</td>
+      <td>Nunnelly, A</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>2575</td>
+      <td>Quigley, M</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>2578</td>
+      <td>Cameron, L</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>2579</td>
+      <td>Underwood, K</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>2586</td>
+      <td>Derber, B</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>2588</td>
+      <td>Ivan, H</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>2589</td>
+      <td>Wilcox, E</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>2595</td>
+      <td>Warren, C</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Remember to check the SAS log again to verify that your program ran correctly.</p>
+  <p class="color-red">SAS Log</p>
+  
+  <pre>
+  54 data clinic.: admitfee;
+  55 set clinic.admit;
+  56 run;
+
+  NOTE: The data set CLINIC.ADMITFEE has
+        21 observations and 9 variables.
+  NOTE: DATA statement used:
+        real time 0.09 seconds
+        cpu time 0.03 seconds
+
+  57 proc print data=clinic.admitfee;
+  58 var id name actlevel fee;
+  59 run;
+
+  NOTE: PROCEDURE PRINT used;
+        real time 1.78 seconds
+        cpu time 0.03 seconds</pre>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Resolving Common Problems</h2>
+
+  <p>In addition to correcting spelling mistakes, you might need to resolve several other types of
+     common syntax errors. These errors include
+  </p>
+  <ul>
+    <li>omitting semicolons.</li>
+    <li>leaving quotation marks unbalanced.</li>
+    <li>specifying invalid options.</li>
+  </ul>
+  <p>Another common problem is omitting a RUN statement at the end of a program. Although this is
+     not technically an error, it can produce unexpected results. For the sake of convenience, we'll
+     consider it together with syntax errors.
+  </p>
+  <p>The table below lists these problems and their symptoms.</p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Problem</th>
+      <th class="color-red">Symptom</th>      
+    </tr>
+    <tr>
+      <td>missing RUN statement</td>
+      <td>"PROC (or DATA) step running" at top of active window</td>
+    </tr>
+    <tr>
+      <td>missing semicolon</td>
+      <td>log message indicating an error in a statement that seems to be valid</td>
+    </tr>
+    <tr>
+      <td>unbalanced quotation marks</td>
+      <td>log message indicating that a text string enclosed in quotation marks has become too long or that a statement is ambiguous</td>
+    </tr>
+    <tr>
+      <td>invalid option</td>
+      <td>log message indicating that an option is invalid or not recognized</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Missing RUN Statement</h3>
+
+  <p>Each step in a SAS program is compiled and executed independently from every other step. As a
+     step is compiled, SAS recognizes the end of the current step when it encounte
+  </p>
+  <ul>
+    <li>a DATA or PROC statement, which indicates the beginning of a new step.</li>
+    <li>a RUN or QUIT statement, which indicates the end of the current step.</li>
+  </ul>
+
+  <p>When the program below is submitted, the DATA step executes, but the PROC step does not.
+     The PROC step does not execute because there is no following DATA or PROC step to indicate
+     the beginning of a new step, nor is there a following RUN statement to indicate the end of the
+     step.
+  </p>
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc print data=clinic.admitfee;
+     var id name actlevel fee;</pre>
+  <br/>
+
+  <h4>Resolving the Problem</h4>
+  <p>To correct the error, submit a RUN statement to complete the PROC step.</p>
+  <pre>run;</pre>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Missing Semicolon</h3>
+
+  <p>One of the most common errors is the omission of a semicolon at the end of a statement. The
+     program below is missing a semicolon at the end of the PROC PRINT statement.
+  </p>
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc print data=clinic.admitfee
+     var id name actlevel fee;
+  run;</pre>
+
+  <p>When you omit a semicolon, SAS reads the statement that lacks the semicolon, plus the following
+     statement, as one long statement. The SAS log then lists errors that relate to the combined
+     statement, not the actual mistake (the missing semicolon).
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  1832 proc print data: =clinic.admitfee
+  1833 var id name actlevel fee;
+           ---
+           22
+           76
+  ERROR 22-322:Syntax error, expecting one of the following:
+               ;, (, DATA, DOUBLE, HEADING, LABEL,
+               N, NOOBS, OBS, ROUND, ROWS, SPLIT, UNIFORM, WIDTH.
+  ERROR 76-322:Syntax error, statement will be ignored.
+  1834 run;
+
+  NOTE: The SAS System stopped processing this step
+        because of errors.
+
+  NOTE: PROCEDURE PRINT used:
+        real time 0.35 seconds
+        cpu time 0.03 seconds</pre>
+  <br/>
+
+
+  <h4>Resolving the Problem</h4>
+
+  <p>To correct the error, do the following:</p>
+
+  <ol>
+    <li>Find the statement that lacks a semicolon. You can usually locate the statement that
+        lacks the semicolon by looking at the underscored keywords in the error message and
+        working backwards.
+    </li>
+    <li>Add a semicolon in the appropriate location.</li>
+    <li>Resubmit the corrected program.</li>
+    <li>Check the SAS log again to make sure there are no other errors.</li>
+  </ol>
+  <br/>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Unbalanced Quotation Marks</h3>
+
+  <p>Some syntax errors, such as the missing quotation mark after <i>HIGH</i> in the program below, cause
+     SAS to misinterpret the statements in your program.
+  </p>
+
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+     where actlevel= 'HIGH;
+  run;
+  proc print data=clinic.admitfee;
+     var id name actlevel fee;
+  run;</pre>
+
+  <p>When you have unbalanced quotation marks, SAS is often unable to detect the end of the
+     statement in which the error occurs. When the program above is submitted, SAS is unable to
+     resolve the DATA step, and a "DATA STEP running" message appears at the top of the active
+     window.
+  </p>
+  <p>In addition, when unbalanced quotation marks appear in a program that contains TITLE or
+     FOOTNOTE statements, there is sometimes a warning in the SAS log which indicates that
+  </p>
+
+  <ul>
+    <li>a text string enclosed in quotation marks has become too long.</li>
+    <li>a statement that contains quotation marks (such as a TITLE or FOOTNOTE statement) is
+        ambiguous due to invalid options or unquoted text.
+    </li>
+  </ul>
+
+  <p class="color-red">SAS Log (PROC PRINT Running)</p>
+  <pre>
+  93 proc print data=clinic.admitfee;
+  94 var id name actlevel fee;
+  95 title 'Patient Billing;
+  96 title2 'January 1998';
+  WARNING: The TITLE statement is ambiguous due to
+  invalid options or unquoted text.
+  97 run;</pre>
+  <br/>
+
+  <p>Simply adding a quotation mark and resubmitting your program usually does not solve the
+     problem. SAS still considers the quotation marks to be unbalanced.
+  </p>
+
+  <table>
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>If you do not resolve this problem when it occurs, it is likely that any
+          subsequent programs that you submit in the current SAS session will
+          generate errors.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4></h4>
+
+  <table>
+    <tr>
+      <th class="color-blue">SAS Enterprise Guide</th>
+      <td>When you submit a program with unbalanced quotation
+          marks, you might not receive an error message. This is
+          because SAS Enterprise Guide automatically submits an
+          ending quotation mark for you. However, you will not get
+          valid results.  <br/><br/>
+          Because there might be no visual indicator in the Project
+          window that there is an error in your program, you should
+          learn to detect this syntax error before you submit your
+          program. The Code Editor window uses color coding to help
+          you recognize errors.
+      </td>
+    </tr>
+  </table>
+  <br/><br/>
+  <table>
+    <tr>
+      <th class="color-blue">SAS Windowing Environment</th>
+      <td>In the SAS windowing environment, you must cancel
+          the program before you recall, correct, and resubmit
+          the code. To submit a line of SAS code that cancels
+          the program, complete the following steps:
+          <ol>
+            <li>Submit an asterisk followed by a quotation
+                mark, a semicolon, and a RUN statement. <br/>
+                <i>*'; run;</i>
+            </li>
+            <li>Delete the line that contains the asterisk
+                followed by the quotation mark, the semicolon,
+                and the RUN statement.
+            </li>
+            <li>Insert the missing quotation mark in the
+                appropriate place in your program.
+            </li>
+            <li>Submit the corrected program.</li>
+          </ol>
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p class="color-red">SAS Log</p>
+  <pre>
+  98 *';: run;
+
+  NOTE: There were 7 observations read from the data set
+        CLINIC.ADMITFEE.
+
+  NOTE: PROCEDURE PRINT used (Total process time):
+        real time 31.38 seconds
+        cpu time 1.21 seconds
+
+  99 proc print data=clinic.admitfee;
+  99 var id name actlevel fee;
+  100 title 'Patient Billing';
+  101 title2 'January 1998';
+  102 run;
+
+  NOTE: There were 7 observations read from the data set
+        CLINIC.ADMITFEE.
+  NOTE: PROCEDURE PRINT used (Total process time):
+        real time 0.16 seconds
+        cpu time 0.15 seconds</pre>
+
+
+  <!-- Topic 5 Subtopic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">Invalid Option</h3>
+
+  <p>An <strong>invalid option</strong> error occurs when you specify an option that is not valid in a particular
+     statement. In the program below, the KEYLABEL option is not valid when used with the PROC
+     PRINT statement.
+  </p>
+
+  <pre>
+  data clinic.admitfee;
+     set clinic.admit;
+  run;
+  proc print data=clinic.admitfee keylabel;
+     label actlevel='Activity Level';
+  run;</pre>
+
+  <p>When a SAS statement that contains an invalid option is submitted, a message appears in the
+     SAS log indicating that there is a syntax error. The message lists the options that are valid in the
+     statement.
+  </p>
+
+  <p class="color-red">SAS Log</p>
+
+  <pre>
+  12 proc print data: =clinic.admitfee keylabel;
+
+                                        22 200
+  ERROR 22-322: Syntax error, expecting one of the following: ;,
+                (,
+                N, NOOBS, OBS, ROUND, ROWS, SPLIT, STYLE,
+                UNIFORM,
+  ERROR 200-322: The symbol is not recognized and will be ignored.
+
+  13 label actlevel='Activity Level';
+  14 run;
+
+  NOTE: The SAS System stopped processing this step
+        because of errors.
+  NOTE: PROCEDURE PRINT used:
+        real time 0.23 seconds
+        cpu time 0.04 seconds</pre>
+
+  <br/>
+
+  <h4>Resolving the Problem</h4>
+  <p>To correct the error:</p>
+  <ol>
+    <li>Remove or replace the invalid option, and check your statement syntax as needed.</li>
+    <li>Resubmit the corrected program.</li>
+    <li>Check the SAS log again to make sure there are no other errors.</li>
+  </ol>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Additional Features</h2>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Comments in SAS Programs</h3>
+
+  <p>You can insert comments into a SAS program to document the purpose of the program, to
+     explain segments of the program, or to describe the steps in a complex program or calculation. A
+     comment statement begins and ends with a comment symbol. There are two forms of comment
+     statements:
+  </p>
+  <pre>*text;</pre>
+
+  <p>or</p>
+  <pre>/*text*/</pre>
+
+  <p>SAS ignores text in comments during processing.</p>
+  <p>The following program shows some of the ways comments can be used to describe a SAS
+     program.
+  </p>
+
+  <pre>
+  /* Read national sales data for vans */
+  /* from an external raw data file */
+  data perm.vansales;
+     infile vandata;
+     input @1 Region $9.
+           @13 Quarter 1. /* Values are 1, 2, 3, or 4 */
+           @16 TotalSales comma11.;
+  /* Print the entire data set */
+  proc print data=perm.vansales;
+  run;</pre>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">SAS System Options</h3>
+
+  <p>SAS includes several system options that enable you to control error handling and SAS log
+     messages. The table shown below contains brief descriptions of some of these options. You can
+     use the OPTIONS statement to specify these options.
+  </p>
+
+  <table border="1">
+    <tr>
+      <th class="color-red">Options</th>
+      <th class="color-red">Description</th>
+    </tr>
+    <tr>
+      <td>ERRORS=n</td>
+      <td>Specifies the maximum number of observations for which complete data error messages are printed.</td>
+    </tr>
+    <tr>
+      <td>FMTERR | NOFMTERR</td>
+      <td>Controls whether SAS generates an error message when a format of
+          a variable cannot be found. NOFMTERR results in a warning instead
+          of an error. FMTERR is the default.
+      </td>
+    </tr>
+    <tr>
+      <td>SOURCE | NOSOURCE</td>
+      <td>Controls whether SAS writes source statements to the SAS log. SOURCE is the default.</td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Summary</h2>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+
+
+  <h4>SAS Program Layout</h4>
+  <p>SAS programs consist of SAS statements. Although you can write SAS statements in almost any
+     format, a consistent layout enhances readability and enables you to understand the program's
+     purpose.
+  </p>
+  <br/>
+
+  <h4>Interpreting Error Messages</h4>
+  <p>When a SAS program that contains errors is submitted, error messages appear in the SAS log.
+     SAS can detect several types of errors, including syntax and data errors. This chapter focuses on
+     identifying and resolving common syntax errors.
+  </p>
+  <br/>
+
+  <h4>Correcting Errors</h4>
+  <p>To modify a program that contains syntax errors, you can correct the errors in the Editor window
+     and then resubmit the revised program. You can delete any error-free steps from a revised
+     program before resubmitting it.
+  </p>
+  <br/>
+
+  <h4>Detecting and Resolving Common Problems</h4>
+  <p>You might need to resolve several types of common problems: missing RUN statements, missing
+     semicolons, unbalanced quotation marks, and invalid options.
+  </p>
+  <br/>
+
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>It's a good idea to begin DATA steps, PROC steps, and RUN statements on the left and to indent statements within a step.</li>
+    <li>End each step with a RUN statement.</li>
+    <li>Review the messages in the SAS log each time you submit a SAS program.</li>
+  </ul>
+  
+  
+  
+  
+  
+
+
+</div> <!-- end of div content -->
