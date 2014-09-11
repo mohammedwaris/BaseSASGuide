@@ -40,9 +40,11 @@ function initializeInAppBilling(){
 		
 		inappbilling.init(function(){
 							//success
+							alert('init success');
 							checkIfAlreadyUnlocked();
 						  }, function(){
 							  //fail
+							  alert('Error: IAP cannot be initialized');
 						  },{},"all_chapters");
 						  
 						  
@@ -62,6 +64,7 @@ function checkIfAlreadyUnlocked(){
 		//this is a android device
 		inappbilling.getPurchases(function(data){
 									//success
+									//alert('purchase success');
 									if(data.length == 0){
 										unlockAllChaptersStatus = 0;
 										$('#unlock-all-chapters-button').removeClass('display-none');
@@ -430,6 +433,25 @@ body{
 
 </div><!-- end of pagedata -->
 
+<script type="text/javascript">
+
+/*
+
+onDeviceReady();
+
+window.inappbilling = {};
+inappbilling.init = function(success, fail){
+						success();
+					}
+					
+inappbilling.getPurchases = function(success, fail){
+								data = [];
+								//data = [{productId:"all_chapters"}]
+								success(data);
+							}
+	*/
+					
+</script>
 
 </body>
 </html>
