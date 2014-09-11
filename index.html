@@ -151,7 +151,7 @@ $(document).ready(function(){
 
 function loadChapters(){
 	$('#page-data').html(chapters_page_data);
-	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'}, 500);
+	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'}, 2000);
 	$('#index-button').addClass('display-none');
 	currentPage = 'chapters';
 	updateHeaderContent();
@@ -167,9 +167,9 @@ function loadPage(ch, topic, subtopic){
 	 updateHeaderContent();
      $('#page-data').load(ch + '.html' + ' #content', {}, function(){
         if(subtopic == ''){
-           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'}, 500);
+           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'}, 2000);
         }else{
-           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top) - 100 + 'px'}, 500);
+           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top) - 100 + 'px'}, 2000);
         }
      });
   }else{
@@ -181,9 +181,9 @@ function loadPage(ch, topic, subtopic){
 	 	updateHeaderContent();
      	$('#page-data').load(ch + '.html' + ' #content', {}, function(){
         	if(subtopic == ''){
-           	 	$('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
+           	 	$('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'}, 2000);
         	}else{
-           	 	$('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top - 100) + 'px'});
+           	 	$('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top - 100) + 'px'}, 2000);
         	}
      	});   
  	}else if(unlockAllChaptersStatus == 0){ //user has not purchased all chapters
@@ -338,6 +338,9 @@ body{
     font-size: 1.1em;
     margin-top: 20px;
     margin-bottom: 20px;
+ }
+ .diagram{
+	 max-width: 100%;
  }
  .underline{ text-decoration: underline;}
 
