@@ -89,8 +89,8 @@ function checkIfAlreadyUnlocked(){
 
 function unlockAllChapters(){
 	//alert('unlocked.');
-	unlockFeatures();
-	/*if(getPlatform() == 'android'){
+	//unlockFeatures();
+	if(getPlatform() == 'android'){
 		//this is a android device
 		inappbilling.buy(function(){
 							// success
@@ -106,7 +106,7 @@ function unlockAllChapters(){
 		//this is a ios device
 	}else if(getPlatform() == 'unknown'){
 		alert('Error: Cannot initiate a purchase now');
-	}*/
+	}
 }
 
 function getPlatform(){
@@ -151,7 +151,7 @@ $(document).ready(function(){
 
 function loadChapters(){
 	$('#page-data').html(chapters_page_data);
-	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'}, 2000);
+	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'});
 	$('#index-button').addClass('display-none');
 	currentPage = 'chapters';
 	updateHeaderContent();
