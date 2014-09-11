@@ -151,7 +151,7 @@ $(document).ready(function(){
 
 function loadChapters(){
 	$('#page-data').html(chapters_page_data);
-	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'});
+	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'}, 200);
 	$('#index-button').addClass('display-none');
 	currentPage = 'chapters';
 	updateHeaderContent();
