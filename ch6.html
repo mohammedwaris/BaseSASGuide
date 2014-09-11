@@ -81,6 +81,7 @@
   <img src="images/ch6_image2.png" class="diagram"/>
   <br/><br/>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests obs = 8;
@@ -89,6 +90,7 @@
            TimeMin 39-40 TimeSec 42-43
            Tolerance $ 45;
   run;</pre>
+  </div>
 
   <p>You learned how to submit the DATA step and how to check the log to see whether the step ran
      successfully.
@@ -96,6 +98,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: The infile TESTS is:
         FILENAME=may/t1/rawdata.dat
@@ -103,15 +106,19 @@
   NOTE: The data set CLINIC.STRESS has 8
         observations and 8 variables.
   NOTE: The DATA statement used 0:00:07.00 real
-        0:00:07.10 cpu.
-  </pre>
+        0:00:07.10 cpu.</pre>
+  </div>
 
 
   <p>You also learned how to display the contents of the data set with the PRINT procedure.</p>
+
+  <div class="scrolling-div">
   <pre>
   proc print data=clinic.stress;  
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
@@ -216,6 +223,7 @@
       <td>I</td>
     </tr>
   </table>
+  </div>
   <br>
 
   <!-- Topic 3 -->
@@ -304,6 +312,7 @@
      time a variable is encountered.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -311,6 +320,7 @@
            InStock 21-22 BackOrd 24-25;
            Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image7.png" class="diagram"/>
 
@@ -322,6 +332,7 @@
      the default length of 8.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -329,6 +340,7 @@
            InStock 21-22 BackOrd 24-25;
            Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image8.png" class="diagram"/>
 
@@ -347,6 +359,7 @@
 
   <p class="color-red">Data Set Descriptor</p>
 
+  <div class="scrolling-div">
   <pre>
   Data Set Name: PERM.UPDATE                       Observations: 0
   Member Type:   DATA                              Variables: 5
@@ -377,6 +390,7 @@
                           3 InStock  Num  8   0
                           1 Item     Char 13  24
                           5 Total    Num  8   16</pre>
+  </div>
 
 
   <p>At this point, the data set contains the five variables that are defined in the input data set and in
@@ -390,6 +404,7 @@
 
   <p>Let's review the compilation phase.</p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -397,6 +412,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <p>During the compilation phase, the input buffer is created to hold a record from the external file.</p>
 
@@ -408,6 +424,7 @@
 
   <p class="color-red">Data Set Descriptor (Partial)</p>
 
+  <div class="scrolling-div">
   <pre>
   Data Set Name:      PERM.UPDATE
   Member Type:        DATA
@@ -417,6 +434,7 @@
   Variables:          5
   Indexes:            0
   Observation Length: 30</pre>
+  </div>
 
   <!-- Topic 5 -->
   <h2 class="topic" id="topic5">Execution Phase</h2>
@@ -443,6 +461,7 @@
   <img src="images/ch6_image13.png" class="diagram"/>
   <br/><br/>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -450,6 +469,7 @@
            InStock 21-22 BackOrd 24-25;
            Total=instock+backord;
   run;</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 1 -->
   <h3 class="subtopic" id="topic5_subtopic1">Initializing Variables</h3>
@@ -458,6 +478,7 @@
      the value of <i>_ERROR_</i> is 0.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -465,6 +486,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
   <br/>
 
   <img src="images/ch6_image14.png" class="diagram"/>
@@ -478,6 +500,7 @@
 
   <p>Next, the INFILE statement identifies the location of the raw data.</p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -485,6 +508,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 3 -->
   <h3 class="subtopic" id="topic5_subtopic3">Input Pointer</h3>
@@ -499,6 +523,7 @@
      program data vector.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -506,6 +531,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image15.png" class="diagram"/>
 
@@ -524,14 +550,15 @@
      processing, the input pointer is in column 26.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
      input Item $ 1-13 IDnum $ 15-19
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
-  run;
-  </pre>
+  run;</pre>
+  </div>
 
   <img src="images/ch6_image18.png" class="diagram"/>
 
@@ -541,6 +568,7 @@
      produce the values for <i>Total</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -548,6 +576,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image20.png" class="diagram"/>
 
@@ -558,6 +587,7 @@
      are written to the output data set as the first observation.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -565,7 +595,9 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
@@ -585,12 +617,15 @@
       <td>23</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Next, the value of _N_ is set to 2 and control returns to the top of the DATA step. Finally, the
      variable values in the program data vector are re-set to missing. Notice that the automatic
      variable _ERROR_ retains its value.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -598,6 +633,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image21.png" class="diagram"/>
 
@@ -607,7 +643,7 @@
 
   <img src="images/ch6_image22.png" class="diagram"/>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>When reading variables from raw data, SAS sets the value of each variable in
@@ -654,6 +690,7 @@
      held in the input buffer and then read into the program data vector.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -661,6 +698,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image26.png" class="diagram"/>
 
@@ -676,6 +714,7 @@
      as the second observation.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
@@ -702,6 +741,7 @@
       <td>18</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Next, the value of _N_ is set to 3, control returns to the top of the DATA step, and the values for
@@ -722,6 +762,7 @@
   <img src="images/ch6_image31.png" class="diagram"/>  
   <br/>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
@@ -797,12 +838,15 @@
       <td>12</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Remember, the order in which variables are defined in the DATA step determines the order in
      which the variables are stored in the data set. The DATA step below, which reverses the order of
      <i>Item</i> and <i>IDnum</i>, produces a different data set from the same raw data.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -810,8 +854,9 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
-
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Perm.Update</th>
@@ -887,6 +932,7 @@
       <td>12</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p><strong>--reversed--</strong></p>
@@ -928,17 +974,22 @@
  
   <p class="color-red">SAS Log (Partial)</p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: 9 records were read from the infile INVENT.
   NOTE: The data set PERM.UPDATE has 9 observations
         and 5 variables.</pre>
+  </div>
 
   <p>You already know how to display the data set with the PRINT procedure.</p>
 
+  <div class="scrolling-div">
   <pre>
   proc print data=perm.update;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1021,6 +1072,7 @@
       <td>12</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 -->
@@ -1048,9 +1100,11 @@
     <li>prints the word ERROR followed by an error message in the log</li>
     <li>compiles but does not execute the step where the error occurred, and prints the following
         message to warn you:
+        <div class="scrolling-div">
         <pre>
         NOTE: The SAS System stopped processing this step because of
               errors.</pre>
+        </div>
     </li>
   </ul>
 
@@ -1079,6 +1133,8 @@
      because SAS does not validate the file that you reference until the execution phase. During the
      compilation phase, the fileref <strong>Invnt</strong> is assumed to reference some external raw data file.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invnt;
@@ -1086,6 +1142,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <p>This error is not detected until the execution phase begins. Because there is no external file that
      is referenced by the fileref Invnt, the DATA step stops processing.
@@ -1093,6 +1150,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   7 data perm.: update;
   08 infile invnt;
@@ -1107,6 +1165,7 @@
   WARNING: The data set PERM.UPDATE may be incomplete.
            When this step was stopped there were
            0 observations and 5 variables.</pre>
+  </div>
 
   <p>Because <strong>Invent</strong> is misspelled as Invnt, the statement in the DATA step that identifies the raw
      data is incorrect. Note, however, that the correct number of variables was defined in the
@@ -1119,6 +1178,7 @@
      verify <i>IDnum's</i> type until the data values for <i>IDnum</i> are read.
   </p>
  
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile invent;
@@ -1126,6 +1186,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <img src="images/ch6_image33.png" class="diagram"/>  
 
@@ -1135,6 +1196,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: Invalid data for IDnum in line 7 15-19.
   RULE: ----+----1----+----2----+----3----+----4--
@@ -1153,6 +1215,7 @@
   NOTE: 9 records were read from the infile INVENT.
   NOTE: The data set PERM.UPDATE has 9 observations
         and 5 variables.</pre>
+  </div>
 
 
   <p>Each note identifies the location of the invalid data for each observation. In this example, the
@@ -1165,6 +1228,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: Invalid data for IDnum in line 7 15-19.
   RULE: ----+----1----+----2----+----3----+----4--
@@ -1183,6 +1247,7 @@
   NOTE: 9 records were read from the infile INVENT.
   NOTE: The data set PERM.UPDATE has 9 observations
         and 5 variables.</pre>
+  </div>
 
   <p>The third and fourth lines display the values that are stored in the program data vector. Here, the
      values for <i>IDnum</i> are missing, although the other values have been correctly assigned to their
@@ -1192,6 +1257,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: Invalid data for IDnum in line 7 15-19.
   RULE: ----+----1----+----2----+----3----+----4--
@@ -1210,16 +1276,20 @@
   NOTE: 9 records were read from the infile INVENT.
   NOTE: The data set PERM.UPDATE has 9 observations
         and 5 variables.</pre>
+  </div>
 
   <p>The PRINT procedure displays the data set, showing that the values for IDnum are missing. In
      this example, the periods indicate that IDnum is a numeric variable, although it should be defined
      as a character variable.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc print data=perm.update;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1302,6 +1372,7 @@
       <td>12</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>When you read raw data with the DATA step, it's important to check the SAS log to verify that
@@ -1310,10 +1381,12 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   WARNING: The data set PERM.UPDATE may be incomplete.
            When this step was stopped there were
            0 observations and 5 variables.</pre>
+  </div>
 
   <p>When no observations are written to the data set, you should check to see whether your DATA
      step was completely executed. Most likely, a syntax error or another error is being detected at the
@@ -1327,7 +1400,9 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>NOTE: Invalid data for IDnum in line 7 15-19.</pre>
+  </div>
 
   <!-- Topic 7 -->
   <h2 class="topic" id="topic7">Testing Your Programs</h2>
@@ -1343,6 +1418,7 @@
      DATA statement.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data _null_;
      infile invent;
@@ -1350,6 +1426,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
 
   <p>When you submit the DATA step, no data set is created, but any compilation or execution errors
      are written to the log after the values of the variables are read and verified. After correcting any
@@ -1363,6 +1440,7 @@
      observations that are read or created during the execution of the DATA step.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.update;
      infile inventobs=10;
@@ -1370,6 +1448,7 @@
            InStock 21-22 BackOrd 24-25;
      Total=instock+backord;
   run;</pre>
+  </div>
   
   <p>When processed, this DATA step creates the <strong>Perm.Update</strong> data set with variables but with only
      10 observations.
@@ -1384,6 +1463,7 @@
      statements in detail in the Chapter, <strong>Creating and Managing Variables</strong>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data work.test;
      infile loan;
@@ -1394,6 +1474,7 @@
      else put 'MY NOTE: invalid value: '
      code=;
   run;</pre>
+  </div>
 
   <p>In this example, if <i>CODE</i> does not have the expected values of 1 or 2, the PUT statement writes a
      message to the log:
@@ -1401,10 +1482,12 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: invalid value: Code=V
   NOTE: The data set WORK.TEST has 9 observations
   and 6 variables.</pre>
+  </div>
 
   <hr/>
   <p><strong>General form, simple PUT statement:</strong></p>
@@ -1427,14 +1510,19 @@
   <p>You can use a PUT statement to specify a character string to identify your message in the log.
      The character string must be enclosed in quotation marks.
   </p>
+
+  <div class="scrolling-div">
   <pre>put 'MY NOTE: The condition was met.';</pre>
+  </div>
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: The condition was met.
   NOTE: The data set WORK.TEST has 9 observations
         and 6 variables.</pre>
+  </div>
 
   
   <h4>Data Set Variables</h4>
@@ -1443,16 +1531,20 @@
      iteration of the DATA step.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   put 'MY NOTE: invalid value: '
        code type;</pre>
+  </div>
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: invalid value: V FIXED
   NOTE: The data set WORK.TEST has 9 observations
         and 6 variables.</pre>
+  </div>
 
   <p>When you specify a variable in the PUT statement, only the value of the variable is written to the
      log. To write both the variable name and its value in the log, add an equal sign (=) to the variable
@@ -1465,10 +1557,12 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: invalid value: Code=V type=FIXED
   NOTE: The data set WORK.TEST has 9 observations
         and 6 variables.</pre>
+  </div>
 
   <h4>Automatic Variables</h4>
 
@@ -1476,31 +1570,39 @@
      In some cases, knowing the value of <i>_N_</i> can help you locate an observation in the data set.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   put 'MY NOTE: invalid value: '
       code= _n_= _error_=;</pre>
+  </div>
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: invalid value: Code=V N=4 ERROR=0
   NOTE: The data set WORK.TEST has 9 observations
         and 6 variables.</pre>
+  </div>
 
   <p>You can also use a PUT statement to write all variable names and variable values, including
      automatic variables, to the log. Use the <i>_ALL_</i> specification.
   </p>
 
+  <div class="scrolling-div">
   <pre>put 'MY NOTE: invalid value: ' _all_ ;</pre>
+  </div>
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   MY NOTE: invalid value: Account=101-3144
            Amount=$3,500 Rate=10.50% Months=1
            Code=V type=C ERROR=0 N=4
   NOTE: The data set WORK.TEST has 9 observations
         and 6 variables.</pre>
+  </div>
 
   <h4>Conditional Processing</h4>
 
@@ -1509,6 +1611,7 @@
      statement is used to flag any missing or zero values for the variable <i>Rate</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.newcalc;
      infile newloans;
@@ -1517,8 +1620,9 @@
         Interest=amount*(rate/12);
      else put 'DATA ERROR ' rate= _n_=;
   run;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The PUT statement can accomplish a wide variety of tasks. This chapter
@@ -1534,6 +1638,7 @@
 
   <!-- Topic 8 Subtopic 1 -->
   <h3 class="subtopic" id="topic8_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>How SAS Processes Programs</h4>
   <p>A SAS DATA step is processed in two distinct phases. During the <strong>compilation phase</strong>, each

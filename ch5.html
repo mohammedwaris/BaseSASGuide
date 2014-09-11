@@ -87,6 +87,7 @@
      contains <strong>fixed fields</strong>; that is, values for each variable are in the same location in all records.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Field Name</th>
@@ -143,6 +144,7 @@
       <td>comparison of stress test tolerance between this test and the last test (I=increased, D=decreased, S=same, N=no previous test)</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 3 -->
@@ -176,6 +178,7 @@
      raw data in fixed fields.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -214,6 +217,7 @@
       <td>RUN statement</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can also use additional SAS statements to perform tasks that customize your data for your
@@ -230,6 +234,7 @@
      the permanent SAS library in which the data set will be stored.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -242,13 +247,16 @@
       <td><i>libname libref 'SAS-datalibrary';</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>For example, the LIBNAME statement below assigns the libref <strong>Taxes</strong> to the SAS library
      <strong>C:\Users\Acct\Qtr1\Report</strong> in the Windows environment.
   </p>
 
+  <div class="scrolling-div">
   <pre>libname taxes 'c:\users\acct\qtr1\report';</pre>
+  </div>
 
   <p>You do not need to use a LIBNAME statement in all situations. For example, you do not need to
      use a LIBNAME statement if you are storing the data set in a temporary SAS data set or if SAS
@@ -266,6 +274,7 @@
      the data. You use the FILENAME statement to point to this location.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -283,6 +292,7 @@
       <td><i>filename tests 'c:\users\tmill.dat';</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Just as you assign a libref by using a LIBNAME statement, you assign a fileref by using a
@@ -316,7 +326,10 @@
      <strong>C:\Users\Tmill.dat</strong> in the Windows environment.
   </p>
 
+  <div class="scrolling-div">
   <pre>filename tests 'c:\users\tmill.dat';</pre>
+  </div>
+
   <img src="images/ch5_image4.png" class="diagram"/>
   <br/><br/>
 
@@ -330,9 +343,12 @@
   <p>This FILENAME statement temporarily associates the fileref <strong>Finance</strong> with the aggregate storage
      directory <strong>C:\Users\Personal\Finances</strong>:
   </p>
-  <pre>filename finance 'c:\users\personal\finances';</pre>
 
-  <table>
+  <div class="scrolling-div">
+  <pre>filename finance 'c:\users\personal\finances';</pre>
+  </div>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Both the LIBNAME and FILENAME statements are global. In other words, they
@@ -359,7 +375,8 @@
 
   <img src="images/ch5_image7.png" class="diagram"/>
 
-  <table>
+  <div class="scrolling-div">
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>In the Windows operating environment, you can omit the filename extension
@@ -371,6 +388,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
   
 
@@ -384,6 +402,7 @@
      be created.
   </p>
   
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -406,6 +425,7 @@
       <td><i>data clinic.stress;</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <hr/>
@@ -425,6 +445,7 @@
 
   <p>When reading raw data, use the INFILE statement to indicate which file the data is in.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -452,6 +473,7 @@
       <td><i>infile tests obs=10;</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <hr/>
@@ -471,8 +493,13 @@
   <p>To read the raw data file to which the fileref <strong>Tests</strong> has been assigned, you write the following
      INFILE statement:
   </p>
+
+  <div class="scrolling-div">
   <pre>infile tests;</pre>
-  <table>
+  </div>
+
+  <div class="scrolling-div">
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Instead of using a FILENAME statement, you can choose to identify the raw
@@ -483,6 +510,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 3 -->
@@ -549,6 +577,7 @@
      set.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -586,6 +615,7 @@
       <td><i>run;</i></td>
     </tr>
   </table>
+  </div>
   <br/>
   
   <hr/>
@@ -616,13 +646,17 @@
      numeric variable <i>Age</i> to the data in columns 6-7, the character variable <i>ActLevel</i> to the data in
      columns 9-12, and the character variable <i>Sex</i> to the data in column 14.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   filename exer 'c:\users\exer.dat';
   data exercise;
      infile exer;
      input ID $ 1-4 Age 6-7 ActLevel $ 9-12 Sex $ 14;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Work.Exercise</th>
@@ -677,6 +711,7 @@
       <td>M</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>When you use column input, you can</p>
@@ -686,9 +721,11 @@
     <li>specify only the starting column for values that occupy only one column.</li>
   </ul>
 
+  <div class="scrolling-div">
   <pre>input ActLevel $ 9-12 Sex $ 14 Age 6-7;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Remember, when you create a new variable, you must specify it in the exact
@@ -715,17 +752,26 @@
   <p>The values for the variable that you are naming <i>Age</i> are located in columns 1-2. Because <i>Age</i> is
      a numeric variable, you do not specify a dollar sign ($) after the variable name.
   </p>
+
+  <div class="scrolling-div">
   <pre>input Age 1-2</pre>
+  </div>
 
   <p>The values for the variable <i>ActLevel</i> are located in columns 3-6. You specify a $ to indicate
      that <i>ActLevel</i> is a character variable.
   </p>
+
+  <div class="scrolling-div">
   <pre>input Age 1-2 ActLevel $ 3-6</pre>
+  </div>
 
   <p>The values for the character variable Sex are located in column 7. Notice that you specify only a
      single column.
   </p>
+
+  <div class="scrolling-div">
   <pre>input Age 1-2 ActLevel $ 3-6 Sex $ 7;</pre>
+  </div>
   <br/>
 
   <!-- Topic 7 -->
@@ -744,6 +790,7 @@
      statement, which tells SAS to execute the previous SAS statements.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests obs=10;
@@ -752,7 +799,9 @@
            RecHR 35-37 TimeMin 39-40
            TimeSec 42-43 Tolerance $ 45;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
@@ -868,6 +917,7 @@
       <td>N</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 7 Subtopic 2 -->
@@ -882,6 +932,8 @@
   </ul>
 
   <p class="color-red">SAS Log</p>
+
+  <div class="scrolling-div">
   <pre>
   NOTE: The infile TESTS is:
         File Name=C:\My SAS Files\tests.dat,
@@ -893,6 +945,7 @@
   NOTE: The data set CLINIC.STRESS has 10 observations
         and 8 variables.
   NOTE: DATA statement used 0.07 seconds</pre>
+  </div>
 
 
   <!-- Topic 7 Subtopic 3 -->
@@ -903,6 +956,7 @@
      reading the entire raw data file. You can submit a PROC PRINT step to view the data.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -950,18 +1004,22 @@
       <td><i>run;</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The following PROC PRINT step lists the <strong>Clinic.Stress</strong> data set.</p>
 
+  <div class="scrolling-div">
   <pre>
   proc print data=clinic.stress;
   run;</pre>
+  </div>
 
   <p>The PROC PRINT output indicates that the variables in the <strong>Clinic.Stress</strong> data set were read
      correctly for the first 10 records.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="8">SAS Data Set Clinic.Stress</th>
@@ -1088,6 +1146,7 @@
       <td>N</td>
     </tr>
   </table>
+  </div>
   <br/>
 
 
@@ -1098,6 +1157,8 @@
      the entire raw data file. To do so, remove the OBS= option from the INFILE statement and resubmit
      the program.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1106,6 +1167,7 @@
            RecHR 35-37 TimeMin 39-40
            TimeSec 42- 43 Tolerance $ 45;
   run;</pre>
+  </div>
 
   <br/>
 
@@ -1118,6 +1180,8 @@
   <p>This note is followed by a column ruler and the actual data line that contains the invalid value for
      <i>RecHR</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   NOTE: Invalid data for RecHR in line 14 35-37.
   RULE: ----+----1----+----2----+----3----+----4----+----5---
@@ -1131,6 +1195,7 @@
   NOTE: The data set CLINIC.STRESS has 21 observations
         and 8 variables.
   NOTE: DATA statement used 0.13 seconds</pre>
+  </div>
 
 
   <p>The value Q13 is a data-entry error. It was entered incorrectly for the variable <i>RecHR</i>.</p>
@@ -1147,6 +1212,7 @@
      data. 
   </p>
 
+  <div class="scrolling-div">
   <pre>
   NOTE: The infile TESTS2 is:
         File Name=C:\My SAS Files\tests2.dat,
@@ -1157,12 +1223,17 @@
   NOTE: The data set CLINIC.STRESS has 21 observations
         and 8 variables.
   NOTE: DATA statement used 0.14 seconds</pre>
+  </div>
 
   <p>After correcting the raw data file, you can list the data again to verify that it is correct.</p>
+
+  <div class="scrolling-div">
   <pre>
   proc print data=clinic.stress;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
@@ -1344,6 +1415,7 @@
       <td>I</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Whenever you use the DATA step to read raw data, remember the steps that you followed in this
@@ -1375,7 +1447,8 @@
     <li><i>variable</i> names a new or existing variable.</li>
     <li><i>expression</i> is any valid SAS expression.</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The assignment statement is one of the few SAS statements that doesn't begin
@@ -1388,7 +1461,10 @@
   <p>For example, here is an assignment statement that assigns the character value <i>Toby
      Witherspoon</i> to the variable <i>Name</i>:
   </p>
+
+  <div class="scrolling-div">
   <pre>Name='Toby Witherspoon';</pre>
+  </div>
 
   <!-- Topic 8 Subtopic 1 -->
   <h3 class="subtopic" id="topic8_subtopic1">SAS Expressions</h3>
@@ -1422,6 +1498,7 @@
      operators.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Operator</th>
@@ -1466,6 +1543,7 @@
       <td>III</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>When you use more than one arithmetic operator in an expression,</p>
@@ -1481,7 +1559,7 @@
   </ul>
   <br/>
 
-  <table>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>When a value that is used with an arithmetic operator is missing, the
@@ -1494,6 +1572,8 @@
   <br/>
 
   <p>You use the following comparison operators to express a condition.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Operator</th>
@@ -1531,12 +1611,14 @@
       <td><i>pulse le 85</i></td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To link a sequence of expressions into compound expressions, you use logical operators,
      including the following.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Operator</th>
@@ -1551,6 +1633,7 @@
       <td>or, either. If either expression is true, then the compound expression is true.</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 8 Subtopic 3 -->
@@ -1559,6 +1642,8 @@
   <p>The assignment statement in the DATA step below creates a new variable, <i>TotalTime</i>, by
      multiplying the values of <i>TimeMin</i> by 60 and then adding the values of <i>TimeSec</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1567,7 +1652,9 @@
            Tolerance $ 45;
      TotalTime=(timemin*60)+timesec;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Clinic.Stress (Partial Listing)</th>
@@ -1639,12 +1726,15 @@
       <td>706</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The expression can also contain the variable name that is on the left side of the equal sign, as the
      following assignment statement shows. This statement re-defines the values of the variable
      <i>RestHR</i> as 10 percent higher.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1652,12 +1742,15 @@
            RecHR 35-37 TimeMin 39-40 TimeSec 42-43
            Tolerance $ 45;
      resthr=resthr+(resthr*.10);
-  run;</pre>  
+  run;</pre> 
+  </div> 
   
   <p>When a variable name appears on both sides of the equal sign, the original value on the right
      side is used to evaluate the expression. The result is assigned to the variable on the left side of
      the equal sign.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1667,6 +1760,7 @@
      resthr=resthr+(resthr*.10);
   run; ^          ^
       result original value</pre>
+  </div>
   <br/>
 
   <!-- Topic 8 Subtopic 4 -->
@@ -1678,20 +1772,21 @@
   </p>
 
   <hr/>
-  <p>General form, date constant:</p>
-  <p>'ddmmm<yy>yy' D</p>
+  <p><strong>General form, date constant:</strong></p>
+  <p>'ddmmm&lt;yy&gt;yy' D</p>
   <p>or</p>
-  <p>"ddmmm<yy>yy" D</p>
+  <p>"ddmmm&lt;yy&gt;yy" D</p>
   <p>where</p>
   <ul>
     <li><i>dd</i> is a one- or two-digit value for the day.</li>
     <li><i>mmm</i> is a three-letter abbreviation for the month (JAN, FEB, and so on).</li>
     <li><i>yy</i> or <i>yyyy</i> is a two- or four-digit value for the year, respectively.</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
-      <th class="color-blue>Note</th>
-      <td>Be sure to enclose the date in quotation marks.</td
+      <th class="color-blue">Note</th>
+      <td>Be sure to enclose the date in quotation marks.</td>
     </tr>
   </table>
   <hr/>
@@ -1702,6 +1797,8 @@
   <p>In the following program, the second assignment statement assigns a date value to the variable
      <i>TestDate</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1711,8 +1808,10 @@
      TotalTime=(timemin*60)+timesec;
      TestDate='01jan2000'd;
   run;</pre>
+  </div>
   
-  <table>
+  <div class="scrolling-div">
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can also use SAS <strong>time constants</strong> and <strong>SAS datetime</strong> constants in
@@ -1723,6 +1822,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 9 -->
@@ -1753,6 +1853,8 @@
      <i>Tolerance</i> are D. The IF statement is positioned in the DATA step so that other statements do
      not need to process unwanted observations.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1762,11 +1864,13 @@
      if tolerance='D';
      TotalTime=(timemin*60)+timesec;
   run;</pre>
+  </div>
 
   <p>Because <i>Tolerance</i> is a character variable, the value D must be enclosed in quotation marks,
      and it must be the same case as in the data set.
   </p>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-red">Note</th>
       <td>See the SAS documentation for your operating environment for a comparison
@@ -1783,6 +1887,8 @@
   <p>Throughout this chapter, our program has contained an INFILE statement that identifies an
      external file to read.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1792,6 +1898,7 @@
      if tolerance='D';
      TotalTime=(timemin*60)+timesec;
   run;</pre>
+  </div>
 
   <p>However, you can also read <strong>instream data lines</strong> that you enter directly in your SAS program,
      rather than data that is stored in an external file. Reading instream data is extremely helpful if you
@@ -1805,6 +1912,8 @@
     </li>
     <li>a <strong>null statement</strong> (a single semicolon) to indicate the end of the input data.</li>
   </ul>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
@@ -1819,12 +1928,14 @@
      .
      .
      ;</pre>
+  </div>
   <br/>
 
   <hr/>
   <p><strong>General form, DATALINES statement:</strong></p>
   <p><strong>DATALINES</strong>;</p>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can use only one DATALINES statement in a DATA step. Use separate
@@ -1832,7 +1943,9 @@
       </td>
     </tr>
   </table>
-  <table>
+  <br/>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can also use <strong>CARDS</strong>; as the last statement in a DATA step (except for
@@ -1841,7 +1954,9 @@
       </td>
     </tr>
   </table>
-  <table>
+  <br/>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If your data contains semicolons, use the DATALINES4 statement plus a null
@@ -1857,6 +1972,8 @@
   <p>To read the data for the treadmill stress tests as instream data, you can submit the following
      program:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      input ID 1-4 Name $ 6-25 RestHr 27-29 MaxHR 31-33
@@ -1887,8 +2004,9 @@
     2589 Wilcox, E 78 189 138 14 57 I
     2595 Warren, C 77 170 136 12 10 S
     ;</pre>
+  </div>
 
-  <table>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Notice that you do not need a RUN statement following the null statement
@@ -1906,6 +2024,8 @@
   <h2 class="topic" id="topic11">Steps to Create a Raw Data File</h2>
 
   <p>Look at the SAS program and SAS data set created earlier in this chapter.</p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.stress;
      infile tests;
@@ -1915,7 +2035,9 @@
      if tolerance='D';
      TotalTime=(timemin*60)+timesec;
   run;</pre> 
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
@@ -1998,6 +2120,7 @@
       <td>967</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>As you can see, the data set has been modified with SAS statements. If you wanted to write the
@@ -2013,9 +2136,13 @@
      which enables you to use the DATA step without actually creating a SAS data set. A SET
      statement specifies the SAS data set that you want to read from.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set clinic.stress;</pre>
+  </div>
+
   <p>The next step is to specify the output file.</p>
 
   <!-- Topic 11 Subtopic 2 -->
@@ -2038,20 +2165,26 @@
   <p>For example, if you want to read the <strong>Clinic.Stress</strong> data set to a raw data file that is referenced by
      the fileref <strong>Newdat</strong>, you would begin your program with the following SAS statements.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set clinic.stress;
      file newdat;</pre>
+  </div>
 
   <p>Instead of identifying the raw data file with a SAS fileref, you can choose to specify the entire
      filename and location in the FILE statement. For example, the following FILE statement points
      directly to the <strong>C:\Clinic\Patients\Stress.dat</strong> file. Note that the path specifying the filename and
      location must be enclosed in quotation marks.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set clinic.stress;
      file 'c:\clinic\patients\stress.dat';</pre>
+  </div>
 
   <!-- Topic 11 Subtopic 3 -->
   <h3 class="subtopic" id="topic11_subtopic3">Describing the Data</h3>
@@ -2077,6 +2210,7 @@
      data, you don't need to follow character variable names with a dollar sign ($).
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set clinic.stress;
@@ -2085,7 +2219,9 @@
          rechr 35-37 timemin 39-40 timesec 42-43
          tolerance 45 totaltime 47-49;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Clinic.Stress</th>
@@ -2168,6 +2304,7 @@
       <td>967</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The resulting raw data file would look like this:</p>
@@ -2178,7 +2315,7 @@
      other forms and record types.
   </p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If you do not execute a FILE statement before a PUT statement in the current
@@ -2226,6 +2363,7 @@
 
   <!-- Topic 13 Subtopic 1 -->
   <h3 class="subtopic" id="topic13_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>Raw Data Files</h4>
   <p>A <strong>raw data file</strong> is an external file whose records contain data values that are organized in fields.

@@ -16,7 +16,7 @@ var currentPage = '';
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady(){
-	alert(getPlatform());
+	//alert(getPlatform());
 	
 	$('#page-data').load('chapters.html' + ' #content', {}, function(){
 	    for(i=1;i<=21;i++) {
@@ -187,9 +187,9 @@ function loadPage(ch, topic, subtopic){
         	}
      	});   
  	}else if(unlockAllChaptersStatus == 0){ //user has not purchased all chapters
-		alert("Please click the buy button to unlock all chapters.");
+		alert("Please click the unlock button to unlock all chapters.");
  		
- 	}else if(unlockAllChaptersStatus == 1) { //user purchase information is not known
+ 	}else if(unlockAllChaptersStatus == -1) { //user purchase information is not known
  		alert('Your purchase information is not available, Please try again.')
  	}
   }
@@ -387,7 +387,7 @@ body{
    text-decoration: underline;
    margin-top: 10px;
  }
- .div-scroll-content{ 
+ .scrolling-div{ 
    overflow-y: scroll;
  }
  .warning-table, .note-table, .info-table {
@@ -413,7 +413,7 @@ body{
    <tr>
      <td><div class="container"><h4 style="text-decoration:none;" >Base SAS Exam Guide</h4><p class="color-green" id="sub-title">(Chapters)</p></div></td>
      <td>
-         <button id="unlock-all-chapters-button" type="button" class="btn btn-primary display-none" onclick="unlockAllChapters()">Buy</button>
+         <button id="unlock-all-chapters-button" type="button" class="btn btn-primary display-none" onclick="unlockAllChapters()">Unlock</button>
 		  <button id="index-button" type="button" class="btn btn-primary display-none" onclick="loadChapters();">Index</button>
      </td>
    </tr>

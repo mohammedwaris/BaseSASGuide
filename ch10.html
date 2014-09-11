@@ -54,7 +54,7 @@
      apply styles to ODS output.
   </p>
 
-  <table> 
+  <table class="warning-table"> 
     <tr>
       <th class="color-red">Warning</th>
       <td>By default, all code that you submit to SAS Enterprise Guide has ODS
@@ -96,6 +96,7 @@
   </p>
   <ul>
     <li>HTML output
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">Obs</th>
@@ -140,9 +141,11 @@
              <td>124.80</td>
           </tr>
         </table>
+        </div>
         <br/><br/>
     </li>
     <li>An output data set of procedure results
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">VarName</th>
@@ -189,11 +192,13 @@
              <td>10%</td>
              <td>68</td>
           </tr>
-        </table>  
+        </table> 
+        </div> 
         <br/>   <br/>  
     </li>
     <li>Traditional SAS listing output
         <hr/>
+        <div class="scrolling-div">
         <table>
           <tr>
              <td style="text-align:center;" colspan="4">The SAS System</td>
@@ -244,6 +249,7 @@
              <td>124.80</td>
           </tr>
         </table>
+        </div>
         <hr/>
     </li>
   </ul>
@@ -287,6 +293,7 @@
      supported.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">This destination...</th>
@@ -324,9 +331,10 @@
       <td>Rich Text Format output for use with Microsoft Word</td>
     </tr>
   </table>
+  </div>
   <br/>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>In this chapter, we will discuss the Listing destination and the HTML destination.</td>
@@ -374,6 +382,7 @@
      default. No other ODS destinations are open, so no other output formats are produced.
   </p>
   
+  <div class="scrolling-div">
   <pre>
   proc print data=sasuser.mydata;
   run;</pre>
@@ -383,9 +392,10 @@
   proc print data=sasuser.mydata;
   run;
   ods html close;</pre>
+  </div>
   <br/>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>This example is meant to demonstrate how you open and close ODS
@@ -403,15 +413,24 @@
      system resources, it's a good idea to close the Listing destination at the <strong>beginning</strong> of your
      program if you don't want to produce listing output. Here is an example:
   </p>
+
+  <div class="scrolling-div">
   <pre>ods listing close;</pre>
+  </div>
+
   <p>The Listing destination remains closed until you end your current SAS session or until you reopen
      the destination. It's a good programming practice to re-set ODS to listing output (the default
      setting) at the end of your programs. Here is an example:
   </p>
+
+  <div class="scrolling-div">
   <pre>ods listing;</pre>
+  </div>
 
   <h4>Example</h4>
   <p>The following program produces only HTML output:</p>
+
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html body='c:\mydata.html';
@@ -419,6 +438,7 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <!-- Topic 3 Subtopic 4 -->
   <h3 class="subtopic" id="topic3_subtopic4">Closing Multiple ODS Destinations Concurrently</h3>
@@ -436,6 +456,7 @@
      ODS destinations at the end of the program:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods html file='HTML-file-pathname';
   ods pdf file='PDF-file-pathname';
@@ -443,6 +464,7 @@
   run;
   ods _all_ close;
   ods listing;</pre>
+  </div>
 
   <p>Notice that the last ODS statement re-opens the Listing destination so that ODS returns to
      producing listing output for subsequent DATA or PROC steps in the current session.
@@ -464,7 +486,8 @@
     <li>a fileref (file shortcut) that has been assigned to an HTML file.</li>
     <li>a SAS catalog entry in the form entry-name.html.</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>FILE= can also be used to specify the file that contains the HTML output. <br/>
@@ -481,6 +504,7 @@
      PRINT results.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html body='f:\admit.html';
@@ -490,6 +514,7 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <p>Notice that ODS statements close the Listing destination and open the HTML destination. Then,
      after the RUN statement, you close the HTML destination and open the Listing destination.
@@ -499,6 +524,8 @@
      statement and ODS HTML CLOSE statement.
   </p>
 
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -677,6 +704,7 @@
       <td>MOD</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 4 Subtopic 1 -->
@@ -690,6 +718,7 @@
      system).
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html body='c:\records\data.html';
@@ -703,11 +732,14 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <p>The following is a representation of the HTML file containing the results from the program above.
      Notice that the results from each procedure are appended.
   </p>
 
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">The SAS System</th>
@@ -911,6 +943,10 @@
       <td>MOD</td>
     </tr>
   </table>
+  </div>
+  <br/>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">The SAS System</th>
@@ -934,6 +970,7 @@
       <td>128.95</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 -->
@@ -963,7 +1000,7 @@
         and the body file. If you specify FRAME=, you must also specify CONTENTS=.
     </li>
   </ul>  
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>To direct the HTML output to a specific storage location, specify the complete
@@ -986,6 +1023,8 @@
     <li>the FRAME= option creates <strong>frame.html</strong> in the <strong>c:\records</strong> directory. The frame file
         integrates the table of contents and the body file.
         <img src="images/ch10_image5.png" class="diagram" />
+
+        <div class="scrolling-div">
         <pre>
         ods listing close;
         ods html body='c:\records\data.html'
@@ -999,8 +1038,8 @@
            var id resthr maxhr rechr;
         run;
         ods html close;
-        ods listing;
-        </pre>
+        ods listing;</pre>
+        </div>
 
         <p>The frame file, frame.html, is shown below.</p>
         <img src="images/ch10_image6.png" class="diagram" />
@@ -1029,10 +1068,12 @@
      <strong>C:\Records\data.html</strong>, and a contents file that has links to <strong>C:\Records\data.html</strong>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods html body='c:\records\data.html'
            contents='c:\records\toc.html'
            frame='c:\records\frame.html';</pre>
+  </div>
 
   <p>A portion of the source code for the HTML file frame.html is shown below. Notice that the links
      have the complete pathnames specified in the file specifications for the contents and body files.
@@ -1067,7 +1108,7 @@
      ODS uses this URL instead of the filename in all the links and references that it creates that point
      to the file.
   </p>
-  <table>
+  <table class="info-table">
     <tr>
       <th class="color-blue">Info</th>
       <td>The URL= suboption is useful for building HTML files that can be moved from
@@ -1085,10 +1126,13 @@
      most common style of linking between files because maintenance is easier and the files can be
      moved as long as they all remain in the same directory or storage location.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   ods html body='c:\records\data.html' (url='data.html')
            contents='c:\records\toc.html' (url='toc.html')
            frame='c:\records\frame.html';</pre>
+  </div>
 
   <p>The source code for <strong>frame.html</strong> has only the HTML filename as specified in the URL=
      suboptions for the body and contents files.
@@ -1107,12 +1151,15 @@
   <p>Alternatively, in this ODS HTML statement, the URL= suboptions specify complete URLs by using
      HyperText Transfer Protocol (HTTP). These files can be stored in the same or different locations.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   ods html body='c:\records\data.html'
            (url='http://mysite.com/myreports/data.html')
            contents='c:\records\toc.html'
            (url='http://mysite.com/mycontents/toc.html')
            frame='c:\records\frame.html';</pre>
+  </div>
 
   <p>As you would expect, the source code for <strong>frame.html</strong> has the entire HTTP addresses that you
      specified in the URL= suboptions for the body and contents files.
@@ -1127,7 +1174,7 @@
             NAME="body" SCROLLING=auto&gt;
   </p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>When you use the URL= suboption to specify a complete URL, you might need
@@ -1177,6 +1224,8 @@
      the <strong>C:\Records</strong> directory in the Windows operating environment. The links from the frame file to
      the body and contents files contain only the HTML filenames <strong>data.html</strong> and <strong>toc.html</strong>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html path='c:\records' (url=none)
@@ -1189,13 +1238,14 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <p>This program generates the same files and links as the previous example in which you learned to
-     use the URL= suboption with the BODY= and CONTENTS= file specifications. However, it’s a bit
+     use the URL= suboption with the BODY= and CONTENTS= file specifications. However, it's a bit
      simpler to specify the path only once in the PATH= option and to specify URL=NONE.
   </p>
 
-  <table>
+  <table class="info-table">
     <tr>
       <th class="color-blue">Info</th>
       <td>If you plan to move your HTML files, you should specify <strong>URL=NONE</strong> with the
@@ -1214,6 +1264,7 @@
      <strong>c:\records\toc.html</strong>:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html path='c:\records'
@@ -1226,6 +1277,7 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
   <br/>
 
   <h4>Example: PATH= Option with a Specified URL</h4>
@@ -1236,6 +1288,7 @@
      and http://mysite.com/myreports/toc.html:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html path='c:\records'(url='http://mysite.com/myreports/')
@@ -1248,6 +1301,7 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <!-- Topic 7 -->
   <h2 class="topic" id="topic7">Changing the Appearance of HTML Output</h2>
@@ -1262,7 +1316,7 @@
   <p><strong>General form, STYLE= option:</strong></p>
   <p><strong>STYLE</strong>=style-name</p>
   <p>where <i>style-name</i> is the name of a valid SAS or user-defined style definition.</p>
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Don't enclose <i>style-name</i> in quotation marks.</td>
@@ -1276,6 +1330,7 @@
      Brick style to the output for both PROC PRINT steps.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   ods listing close;
   ods html body='c:\records\data.html'(url='data.html')
@@ -1291,11 +1346,12 @@
   run;
   ods html close;
   ods listing;</pre>
+  </div>
 
   <p>The following example shows PROC PRINT output with the Brick style applied.</p>
 
   <img src="images/ch10_image8.png" class="diagram"/>
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Your site might have its own customized style definitions.</td>
@@ -1308,6 +1364,7 @@
 
   <!-- Topic 8 Subtopic 1 -->
   <h3 class="subtopic" id="topic8_subtopic1">Customizing HTML Output</h3>
+  <br/>
 
   <p>You've seen that you can use the STYLE= option to apply predefined styles to your HTML output.
      However, you might want to further customize your results.
@@ -1378,7 +1435,7 @@
   <!-- Topic 9 Subtopic 2 -->
   <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>
   <ul> 
-    <li>An open destination uses system resources. Therefore, it’s a good idea to close the
+    <li>An open destination uses system resources. Therefore, it's a good idea to close the
         Listing destination before you create HTML output and re-open the Listing destination after
         you close the HTML destination.
     </li>

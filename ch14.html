@@ -48,6 +48,7 @@
      values, and to manipulate the values of character variables.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Function</th>
@@ -80,6 +81,7 @@
        <td>5</td>
     </tr>
   </table>
+  </div>
 
   <!-- Topic 1 Subtopic 2-->
   <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
@@ -104,6 +106,7 @@
      character functions, probability functions</strong>, and more.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">Categories of SAS Functions</th>
@@ -157,6 +160,7 @@
       <td>Web Tools</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <p>Some functions provide results that can also be obtained by using a SAS procedure. For
@@ -164,6 +168,7 @@
      through the MEANS procedure.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Functions That Compute Descriptive Statistics</th>
@@ -204,6 +209,7 @@
       <td>standard deviation of the values</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <p>Despite the similarity of certain SAS functions and procedures, don't assume that they can be
@@ -252,7 +258,7 @@
      and <i>Exam3</i>. The function calculates the mean of the three variables that are listed as arguments.
   </p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Some functions require a specific number of arguments, whereas other
@@ -282,7 +288,8 @@
     <li>constants P H D Q <i>456,502,612,498</i></li>
     <li>expressions P H D Q <i>37*2,192/5 mean(22,34,56)</i></li>
   </ul>
-  <table>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Even if the function does not require arguments, the function name
@@ -362,6 +369,7 @@
      character to numeric.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -411,12 +419,16 @@
       <td>208</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Salary=payrate*hours;
   run;</pre>
+  </div>
 
   <p>In such cases, you should use the <strong>INPUT</strong> function before attempting the calculation. The INPUT
      function converts character data values to numeric values. The <strong>PUT</strong> function converts numeric
@@ -451,11 +463,13 @@
      numeric variable Hours to create a new variable named <i>Salary</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Salary=payrate*hours;
   run;</pre>
+  </div>
 
   <p>When this step is executed, SAS automatically converts the character values of <i>PayRate</i> to
      numeric values so that the calculation can occur. This conversion is completed by creating a
@@ -514,6 +528,7 @@
     </li>
   </ul>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Character Value</th>
@@ -541,6 +556,8 @@
       <td>&nbsp;</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 4 Subtopic 5 -->
   <h3 class="subtopic" id="topic4_subtopic5">Restriction for WHERE Expressions</h3>
@@ -551,6 +568,7 @@
      a character value, but the two WHERE statements specify the wrong data type.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data work.convtest;
      Number=4;
@@ -562,6 +580,7 @@
   proc print data=work.convtest;
      where number='4';
   run;</pre>
+  </div>
 
   <p>This mismatch of character and numeric variables and values prevents the program from
      processing the WHERE statements. Automatic conversion is not performed. Instead, the program
@@ -600,6 +619,7 @@
      employee salaries by multiplying the character variable <i>PayRate</i> by the numeric variable <i>Hours</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -660,16 +680,20 @@
       <td class="back-color-grey">80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To calculate salaries, you write the following DATA step. It creates a new data set,
      <strong>Hrd.Newtemp</strong>, to contain the original data plus the new variable <i>Salary</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Salary=payrate*hours;
   run;</pre>
+  </div>
 
   <p>However, you know that submitting this DATA step would cause an automatic character-tonumeric
      conversion, because the character variable <i>PayRate</i> is used in a numeric context. You
@@ -692,6 +716,8 @@
   <p>When choosing the informat, be sure to select a numeric informat that can read the form of the
      values.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Character Value</th>
@@ -706,6 +732,7 @@
       <td>COMMA9.</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <p>Here's an example of the INPUT function:</p>
@@ -720,20 +747,25 @@
      2, you choose the numeric informat 2. to read the values of the variable.
   </p>
 
+  <div class="scrolling-div">
   <pre>input(payrate,2.)</pre>
+  </div>
 
   <p>Finally, you add the function to the assignment statement in your DATA step.</p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Salary=input(payrate,2.)*hours;
   run;</pre>
+  </div>
 
   <p>After the DATA step is executed, the new data set (which contains the variable Salary) is
      created.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="10">SAS Data Set Hrd.Temp</th>
@@ -775,6 +807,7 @@
       <td>5757</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Notice that no conversion messages appear in the SAS log when you use the INPUT function.</p>
@@ -870,6 +903,7 @@
      <i>Dept</i>- for example, <i>26/DP</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Hrd.Temp</th>
@@ -910,17 +944,22 @@
       <td>57</td>
     </tr>
   </table>
+  </div>
   <br/>
+
 
   <p>You write an assignment statement that contains the concatenation operator (||) to indicate that
      <i>Site</i> should be concatenated with <i>Dept</i>,using a slash as a separator. Note that the slash is enclosed
      in quotation marks. All character constants must be enclosed in quotation marks.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Assignment=site||'/'||dept;
   run;</pre>
+  </div>
 
   <p>You know that submitting this DATA step will cause SAS to automatically convert the numeric
      values of <i>Site</i> to character values, because <i>Site</i> is used in a character context. The variable
@@ -943,7 +982,7 @@
     </li>
   </ul>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>
@@ -974,12 +1013,15 @@
      assignment statement, the DATA step creates the new data set that contains <i>Assignment</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Assignment=put(site,2.)||'/'||dept;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">SAS Data Set Hrd.Newtemp</th>
@@ -1012,6 +1054,7 @@
       <td class="back-color-grey">57/PURH</td>
     </tr>
   </table>
+  </div>
 
   <br/>
 
@@ -1070,12 +1113,15 @@
      computations. You can use SAS date values as you use any other numeric values.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data test(keep=name totday);
      set hrd.temp;
      TotDay=enddate-startdate;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -1114,6 +1160,7 @@
       <td>200</td>
     </tr>    
   </table>
+  </div>
   <br/>
 
   <p>You can display SAS date values in a variety of forms by associating a SAS format with the
@@ -1123,11 +1170,14 @@
      below.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc print data=hrd.temp;
      format startdate enddate date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">Days Hours</th>
@@ -1188,6 +1238,7 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>SAS date values are valid for dates that are based on the Gregorian calendar from A.D. 1582
@@ -1196,7 +1247,7 @@
 
   <img src="images/ch14_image4.png" class="diagram" />
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Use caution when working with historical dates. The Gregorian calendar was
@@ -1213,6 +1264,7 @@
      create these values.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Function</th>
@@ -1235,11 +1287,13 @@
       <td>current time as a SAS time</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>TIME <i>curtime=time();</i> current time as a SAS time</p>
   <p>You use other functions to extract months, quarters, days, and years from SAS date values.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Function</th>
@@ -1296,6 +1350,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
   
   <p>In the following pages, you will see several SAS date functions, showing how they are used to
@@ -1329,6 +1384,7 @@
      and form.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Function</th>
@@ -1361,6 +1417,7 @@
       <td>5</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <h4>Finding the Year</h4>
@@ -1373,6 +1430,7 @@
      there is no year variable.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -1433,6 +1491,7 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To determine the year in which employees were hired, you can apply the YEAR function to the
@@ -1446,17 +1505,20 @@
      function extracts a value of 1998 are placed in the new data set.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.temp98;
      set hrd.temp;
      if year(startdate)=1998;
   run;</pre>
+  </div>
 
   <p>Finally, you add a PROC PRINT step to the program so that you can view the new data set.
      Notice that the PROC PRINT step includes a FORMAT statement to display the variables
      StartDate and EndDate with the DATE9. format.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.temp98;
      set hrd.temp;
@@ -1464,11 +1526,13 @@
   proc print data=hrd.temp98;
      format startdate enddate date9.;
   run;</pre>
+  </div>
 
   <p>Here is a portion of the PROC PRINT output that is created by your program. Notice that the new
      data set contains information about those employees who were hired in 1998.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -1507,6 +1571,7 @@
       <td>40</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <h4>Finding the Year and Month</h4>
@@ -1518,6 +1583,7 @@
      and ending dates for staff employment, but there are no month or year variables in the data set.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -1578,6 +1644,7 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To determine the year in which employees were hired, you can apply the YEAR function to the
@@ -1598,17 +1665,20 @@
      extracts a value of 11 (for November).
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.nov99;
      set hrd.temp;
      if year(startdate)=1999 and month(startdate)=11;
   run;</pre>
+  </div>
 
   <p>Finally, you add a PROC PRINT step to the program so that you can view the new data set.
      Notice that the PROC PRINT step includes a FORMAT statement to display the variables
      <i>StartDate</i> and <i>EndDate</i> with the DATE9. format.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.nov99;
      set hrd.temp;
@@ -1616,11 +1686,13 @@
   proc print data=hrd.nov99;
      format startdate enddate date9.;
   run;</pre>
+  </div>
 
   <p>Here is a portion of the PROC PRINT output that is created by your program. Notice that the new
      data set contains information about only those employees who were hired in November 1999.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">City</th>
@@ -1678,6 +1750,8 @@
       <td>64</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 5 Subtopic 4-->
   <h3 class="subtopic" id="topic5_subtopic4">WEEKDAY Function</h3>
@@ -1694,6 +1768,7 @@
      the week.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Value</th>
@@ -1736,6 +1811,7 @@
       <td>Saturday</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>For example, suppose the data set <strong>Radio.Sch</strong> contains a broadcast schedule. The variable
@@ -1744,11 +1820,13 @@
      observations in which the value of <i>AirDate</i> corresponds to a Saturday or Sunday.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data radio.schwkend;
      set radio.sch;
      if weekday(airdate)=7 or weekday(airdate)=1;
   run;</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 5-->
   <h3 class="subtopic" id="topic5_subtopic5">MDY Function</h3>
@@ -1758,6 +1836,7 @@
      numeric variables, <i>Month, Day</i>, and <i>Year</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="10">SAS Data Set Hrd.Temp</th>
@@ -1823,6 +1902,7 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Having the start date in three variables makes it difficult to perform calculations that are based on
@@ -1851,14 +1931,17 @@
      date values.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=month day year);
      set hrd.temp;
      Date=mdy(month,day,year);
   run;</pre>
+  </div>
 
   <p>Here is the new data set that contains the variable <i>Date</i>.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="8">SAS Data Set Hrd.Newtemp</th>
@@ -1914,6 +1997,7 @@
       <td class="back-color-grey">14527</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Remember, to display SAS date values in a more readable form, you can associate a SAS format
@@ -1922,11 +2006,14 @@
      below.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc print data=hrd.newtemp;
      format date date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">City</th>
@@ -1979,12 +2066,15 @@
       <td class="back-color-grey">10OCT1999</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The MDY function can also add the same SAS date to every observation. This might be useful if
      you want to compare a fixed beginning date with differing end dates. Just use numbers instead of
      data set variables when providing values to the MDY function.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
@@ -1992,7 +2082,9 @@
      proc print data=hrd.newtemp;
      format datecons date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">City</th>
@@ -2045,9 +2137,10 @@
       <td class="back-color-grey">17JUN2002</td>
     </tr>
   </table>
+  </div>
   <br/>
 
-  <table>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Be careful when entering and formatting year values. The MDY
@@ -2073,10 +2166,11 @@
   </p>
 
   <p>Let's look at another example of the MDY function. The data set Dec.Review contains a variable
-     named Day. This variable contains the day of the month for each employee’s performance
+     named Day. This variable contains the day of the month for each employee's performance
      appraisal. The appraisals were all completed in December 1998.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Dec.Review</th>
@@ -2106,18 +2200,22 @@
       <td>Smith, A</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The following DATA step uses the MDY function to create a new variable named ReviewDate.
      This variable contains the SAS date value for the date of each performance appraisal.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data dec.review98;
      set dec.review;
      ReviewDate=mdy(12,day,1998);
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Dec.Review98</th>
@@ -2151,9 +2249,10 @@
       <td class="back-color-grey">14230</td>
     </tr>
   </table>
+  </div>
   <br/>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If you specify an invalid date in the MDY function, SAS assigns a missing
@@ -2163,13 +2262,16 @@
   </table>
   <br/>
   
+  <div class="scrolling-div">
   <pre>
   data dec.review98;
      set dec.review;
      ReviewDate=mdy(15,day,1998);
   run;</pre>
+  </div>
 
- <table border="1">
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Dec.Review98</th>
     </tr>
@@ -2202,6 +2304,7 @@
       <td class="back-color-grey">.</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 Subtopic 6-->
@@ -2225,13 +2328,16 @@
   <p>After this statement is added to a DATA step and the step is submitted, the data set that contains
      EditDate is created.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      EditDate=date();
   run;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>For this example, the SAS date values shown below were created by
@@ -2241,6 +2347,7 @@
   </table>
   <br/>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">SAS Data Set Hrd.Newtemp</th>
@@ -2262,6 +2369,7 @@
       <td class="back-color-grey">14624</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Remember, to display these SAS date values in a different form, you can associate a SAS format
@@ -2269,11 +2377,15 @@
      the variable <i>EditDate</i>. A portion of the output that is created by this PROC PRINT step appears
      below.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc print data=hrd.newtemp;
      format editdate date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">SAS Data Set Hrd.Newtemp</th>
@@ -2295,6 +2407,7 @@
       <td class="back-color-grey">15JAN2000</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The DATE and TODAY functions can also create a SAS date value from the current date.</p>
@@ -2359,7 +2472,7 @@
     <li><i>to</i> specifies a SAS date, time, or datetime value that identifies the end of the time span</li>
   </ul>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The type of interval (date, time, or datetime) must match the type of value
@@ -2380,6 +2493,7 @@
      <i>Months</i>, and <i>Years</i> are based on consecutive days.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">SAS Statement</th>
@@ -2398,6 +2512,7 @@
       <td>1</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Because December 31, 2000, is a Sunday, no WEEK interval is crossed between that day and
@@ -2409,7 +2524,7 @@
   </p>
   <p><strong>Years=intck('year','15jun1999'd,'15jun2001'd);</strong></p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>As shown here, the from and to dates are often specified as date constants.
@@ -2441,6 +2556,7 @@
      which the program is run.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data work.anniv20;
      set flights.mechanics
@@ -2450,8 +2566,11 @@
   proc print data=work.anniv20;
      title '20-Year Anniversaries This Month';
   run;</pre>
+  </div>
 
   <p>The following output is created when the program is run in December 1999.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="6">20-Year Anniversaries This Month</th>
@@ -2489,6 +2608,7 @@
       <td>20</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 Subtopic 8-->
@@ -2513,7 +2633,7 @@
     </li>
   </ul>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The type of interval (date, time, or datetime) must match the type of value
@@ -2595,6 +2715,7 @@
      <i>alignment</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">SAS Statement</th>
@@ -2613,6 +2734,7 @@
       <td>12964 (June 30, 1995)</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>These statements count five months from January, but the returned value depends on whether
@@ -2648,6 +2770,7 @@
      are listed in the table below.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Character String</th>
@@ -2680,6 +2803,7 @@
       <td>yes</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 -->
@@ -2703,6 +2827,7 @@
   </p>
   <ul>
     <li>separating the values of one variable into multiple variables
+        <div class="scrolling-div">
         <table border="1">
            <tr>
              <th class="color-red">Name</th>
@@ -2723,9 +2848,11 @@
               <td>LEE</td>
            </tr>
         </table>
+        </div>
         <br/>
     </li>
     <li>replacing a portion of a character variable's values
+        <div class="scrolling-div">
         <table border="1">
            <tr>
              <th class="color-red">Phone</th>
@@ -2740,9 +2867,11 @@
               <td>4333251</td>
            </tr>
         <table>
+        </div>
         <br/>
     </li>
     <li>searching for a specific string within a variable's values
+        <div class="scrolling-div">
         <table border="1">
            <tr>
              <th class="color-red">Job</th>
@@ -2754,11 +2883,14 @@
              <td>bookkeeping, word processing, accounting</td>
            </tr>
         </table>
+        </div>
     </li>
   </ul>
   <br/>
 
   <p>The character functions listed below can help you complete these tasks.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Function</th>
@@ -2811,6 +2943,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 2-->
@@ -2823,6 +2956,7 @@
      Name variable contains the employees's first, middle, and last names.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
@@ -2843,6 +2977,7 @@
        <th class="back-color-grey">BENINCASA, HANNAH LEE</th> 
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>However, suppose you want to separate the value of <i>Name</i> into three variables: one variable to
@@ -2850,6 +2985,7 @@
      the SCAN function to create these new variables.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
@@ -2876,6 +3012,7 @@
        <th class="back-color-grey">LEE</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <h4>Specifying Delimiters</h4>
@@ -2941,6 +3078,7 @@
      name appears first, then the first name, and then the middle name.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Hrd.Temp</th>
@@ -2971,6 +3109,7 @@
       <th class="back-color-grey">HODNOFF, RICHARD LEE</th>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To create the <i>LastName</i> variable to store the employee's last name, you write an assignment
@@ -2987,6 +3126,7 @@
      appears below. Notice that the original <i>Name</i> variable is dropped from the new data set.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=name);
      set hrd.temp;
@@ -2994,6 +3134,7 @@
      FirstName=scan(name,2);
      MiddleName=scan(name,3);
   run;</pre>
+  </div>
 
 
   <h4>Specifying Variable Length</h4>
@@ -3010,6 +3151,7 @@
      before the assignment statements that contain the SCAN function.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=name);
      set hrd.temp;
@@ -3018,6 +3160,7 @@
      firstname=scan(name,2);
      middlename=scan(name,3);
   run;</pre>
+  </div>
 
   <!-- Topic 6 Subtopic 3-->
   <h3 class="subtopic" id="topic6_subtopic3">SUBSTR Function</h3>
@@ -3033,6 +3176,7 @@
      and <i>MiddleName</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Hrd.Newtemp</th>
@@ -3073,6 +3217,7 @@
       <td class="back-color-grey">LEE</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>However, suppose you want to modify the data set to store only the middle initial instead of the
@@ -3080,6 +3225,7 @@
      these values to the new variable <i>MiddleInitial</i>.
   </p>
 
+  <div class="scrolling-div">
    <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Work.Newtemp</th>
@@ -3120,6 +3266,7 @@
       <td class="back-color-grey">L</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The SUBSTR function enables you to extract any number of characters from a character string,
@@ -3142,6 +3289,7 @@
      the new variable <i>MiddleInitial</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Hrd.Newtemp</th>
@@ -3182,6 +3330,7 @@
       <td class="back-color-grey">LEE</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You write the SUBSTR function as:</p>
@@ -3191,16 +3340,20 @@
      string to be extracted begins in position 1 and contains one character. Then, you place this
      function in an assignment statement in your DATA step.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data work.newtemp(drop=middlename);
      set hrd.newtemp;
      MiddleInitial=substr(middlename,1,1);
   run;</pre>
+  </div>
 
   <p>The new <i>MiddleInitial</i> variable is given the same length as <i>MiddleName</i>. <i>The MiddleName</i>
      variable is then dropped from the new data set.
   </p>
 
+  <div class="scrolling-div">
    <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Work.Newtemp</th>
@@ -3241,6 +3394,7 @@
       <td class="back-color-grey">L</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can use the SUBSTR function to extract a substring from any character value if you know the
@@ -3272,6 +3426,7 @@
 
   <p><strong>substr(test,4,2)='92';</strong></p>
 
+
   <table>
     <tr>
       <td>Test</td>
@@ -3301,7 +3456,7 @@
      reflect this change.
   </p>
 
-
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -3362,10 +3517,11 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can use the SUBSTR function to complete this modification. The syntax of the SUBSTR
-     function, when used to replace a variable’s values, is identical to the syntax for extracting a
+     function, when used to replace a variable's values, is identical to the syntax for extracting a
      substring.
   </p>
 
@@ -3383,16 +3539,20 @@
   <p>Now let's use the SUBSTR function to replace the 622 exchange in the variable <i>Phone</i>. You
      begin by writing this assignment statement:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.temp2;
      set hrd.temp;
      substr(phone,1,3)='433';
   run;</pre>
+  </div>
 
   <p>This statement specifies that the new exchange 433 should be placed in the variable Phone,
      starting at character position 1 and replacing three characters.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -3453,6 +3613,7 @@
       <td>80</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>But executing this DATA step places the value 433 into all values of Phone. You only need to
@@ -3461,26 +3622,31 @@
      function is used on the right side of the assignment statement.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.temp2(drop=exchange);
      set hrd.temp;
      Exchange=substr(phone,1,3);
      substr(phone,1,3)='433';
   run;</pre>
+  </div>
 
   <p>Now the DATA step needs an <strong>IF-THEN statement</strong> to verify the value of the variable Exchange. If
      the exchange is 622, the assignment statement executes to replace the value of <i>Phone</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.temp2(drop=exchange);
      set hrd.temp;
      Exchange=substr(phone,1,3);
      if exchange='622' then substr(phone,1,3)='433';
   run;</pre>
+  </div>
 
   <p>After the DATA step is executed, the appropriate values of <i>Phone</i> contain the new exchange.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="9">SAS Data Set Hrd.Temp</th>
@@ -3530,6 +3696,7 @@
       <td>208</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Once again, remember the rules for using the SUBSTR function. If the SUBSTR function is on the
@@ -3560,6 +3727,7 @@
      The position of these characters does not vary within the values of <i>ID</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">SAS Data</th>
@@ -3577,6 +3745,7 @@
       <td class="back-color-grey">SR32881</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The SUBSTR function is the best choice to extract class level information from ID. By contrast,
@@ -3598,6 +3767,7 @@
   <p>The data set <strong>Hrd.Temp</strong> contains four address variables: <i>Address, City, State</i>, and <i>Zip</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">SAS Data Set Hrd.Temp (Selected Variables)</th>
@@ -3630,6 +3800,7 @@
       <td class="back-color-grey">27513</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You need to create one address variable that contains the values of the three variables <i>Address,
@@ -3637,6 +3808,7 @@
      need to be included in the new variable.)
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.NewTemp</th>
@@ -3660,17 +3832,20 @@
       <td class="back-color-grey">11 SUN DR, CARY, 27513</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Writing a DATA step to create this new variable is easy. You include an assignment statement
      that contains the concatenation operator (||), as shown below.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=address city state zip);
      set hrd.temp;
      NewAddress=address || ', ' || city || ', ' || zip;
   run;</pre>
+  </div>
 
   <p>The concatenation operator (||) enables you to concatenate character values. In this assignment
      statement, the character values of <i>Address, City</i>, and <i>Zip</i> are concatenated with two
@@ -3684,6 +3859,7 @@
      expected. The values of the new variable contain embedded blanks.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Hrd.NewTemp</th>
@@ -3712,6 +3888,7 @@
       <td>, 27612</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>These blanks appear in the values of <i>NewAddress</i> because the values of the original address
@@ -3719,6 +3896,7 @@
      the length of the variable, SAS pads the value with trailing blanks.
   </p>
   
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Address length=32</th>
@@ -3741,6 +3919,7 @@
       <td>27514</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>So, when the original address values are concatenated to create NewAddress, the trailing blanks
@@ -3748,6 +3927,7 @@
      one that does not contain trailing blanks.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">NewAddress length=56</th>
@@ -3762,6 +3942,7 @@
       <td>712 HARTWICK STREET.........., CHAPEL HILL...., 27514</td>
     </tr>
   </table>
+  </div>
   <br/>
   
   <p>The TRIM function enables you to remove trailing blanks from character values.</p>
@@ -3778,14 +3959,18 @@
   <p>To remove the blanks from the variable <i>NewAddress</i>, include the TRIM function in your
      assignment statement. Trim the values of <i>Address</i> and <i>City</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=address city state zip);
     set hrd.temp;
     NewAddress=trim(address)||', '||trim(city)||', '||zip;
   run;</pre>
+  </div>
 
   <p>The revised DATA step creates the values that you expect for <i>NewAddress</i>.</p>
   
+  <div class="scrolling-div">
   <table border="1">
      <tr>
        <th class="color-red">SAS Data Set Hrd.Newtemp</th>
@@ -3806,6 +3991,7 @@
        <td>5372 WHITEBUD ROAD, RALEIGH, 27612</td>
      </tr>
   </table>
+  </div>
   <br/>
   <br/>
 
@@ -3821,14 +4007,16 @@
      to the value to match the length of 20.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data temp;
      set hrd.temp;
      length Street $ 20;
      Street=trim(address);
   run;</pre>
+  </div>
 
-
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Address length=32</th>
@@ -3847,6 +4035,7 @@
       <td>712 HARTWICK STREET.</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 6 -->
@@ -3863,11 +4052,13 @@
      <i>Zip</i>, and to remove extra blanks from the new values. You used the DATA step shown below.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=address city state zip);
      set hrd.temp;
      NewAddress=trim(address)||', '||trim(city)||', '||zip;
   run;</pre>
+  </div>
 
   <p>You can accomplish the same concatenation using only the CATX function.</p>
   <hr/>
@@ -3888,14 +4079,18 @@
      old variable values and separate the variable values with a comma. The DATA step below uses
      the CATX function to create <i>NewAddress</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp(drop=address city state zip);
      set hrd.temp;
      NewAddress=catx(', ',address,city,zip);
   run;</pre>
+  </div>
 
   <p>The revised DATA step creates the values that you expect for <i>NewAddress</i>.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">SAS Data Set Hrd.Newtemp</th>
@@ -3916,6 +4111,7 @@
       <td>5372 WHITEBUD ROAD, RALEIGH, 27612</td>
     </tr>
   </table>
+  </div>
   <br/>
   
   
@@ -3931,6 +4127,7 @@
      experience.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -3960,6 +4157,7 @@
       <td>34</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The INDEX function can complete this search.</p>
@@ -3981,13 +4179,18 @@
      those observations in which the function locates the string and returns a value greater than 0 are
      written to the data set.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.datapool;
      set hrd.temp;
      if index(job,'word processing') > 0;
   run;</pre>
+  </div>
 
   <p>Here's your data set that shows the temporary employees who have word processing experience.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
@@ -4047,6 +4250,7 @@
       <td>90</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Note that the INDEX function is <strong>case sensitive</strong>, so the character string that you are searching for
@@ -4056,6 +4260,7 @@
 
   <p><strong>index(job,'WORD PROCESSING')</strong></p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
@@ -4091,6 +4296,7 @@
       <td>57</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <h4>Finding a String Regardless of Case</h4>
@@ -4117,7 +4323,9 @@
      to search the values of the variable <i>Job</i> in <strong>Hrd.Temp</strong> in order to create a data set that contains
      the names of all temporary employees who have word processing experience.
   </p>
- <table border="1">
+
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Datapool</th>
     </tr>
@@ -4146,6 +4354,7 @@
       <td>34</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can also use the FIND function to complete this search.</p>
@@ -4167,7 +4376,8 @@
         direction of the search
     </li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If string or substring is a character literal, you must enclose it in quotation marks</td>
@@ -4183,7 +4393,8 @@
     </li>
     <li>The modifier t trims trailing blanks from string and substring</li>
   </ul>
- <table>
+
+ <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If string or substring is a character literal, you must enclose it in quotation marks</td>
@@ -4212,11 +4423,14 @@
      those observations in which the function locates the string and returns a value greater than 0 are
      written to the data set.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.datapool;
      set hrd.temp;
      if find(job,'word processing','t') > 0;
   run;</pre>
+  </div>
 
   <!-- Topic 6 Subtopic 9 -->
   <h3 class="subtopic" id="topic6_subtopic9">UPCASE Function</h3> 
@@ -4233,6 +4447,7 @@
      values of the variable <i>Job</i> appear in lowercase letters.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -4268,21 +4483,26 @@
       <td>57</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To convert the values of Job to uppercase, you write the UPCASE function as follows:</p>
   <p><strong>upcase(job)</strong></p>
 
   <p>Then place the function in an assignment statement in a DATA step.</p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Job=upcase(job);
   run;</pre>
+  </div>
 
   <p>Here's the new data set that contains the converted values of <i>Job</i>.</p>
 
- <table border="1">
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
     </tr>
@@ -4317,6 +4537,7 @@
       <td>57</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 10 -->
@@ -4339,6 +4560,7 @@
      lowercase.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -4374,18 +4596,22 @@
       <td>57</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Contact=lowcase(contact);
   run;</pre>
+  </div>
 
   <p>After this DATA step is executed, the new data set is created. Notice the converted values of the
      variable <i>Contact</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -4415,6 +4641,7 @@
       <td>34</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 11 -->
@@ -4433,7 +4660,8 @@
         default delimiters are blank, forward slash, hyphen, open parenthesis, period, and tab
     </li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If you specify <i>delimiter(s)</i>, then the default delimiters are no longer in
@@ -4456,6 +4684,7 @@
      proper case.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -4485,18 +4714,22 @@
       <td>34</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.newtemp;
      set hrd.temp;
      Contact=propcase(contact);
   run;</pre>
+  </div>
 
   <p>After this DATA step is executed, the new data set is created. Notice the converted values of the
      variable <i>Contact</i>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Hrd.Temp</th>
@@ -4526,6 +4759,7 @@
       <td>34</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 Subtopic 12 -->
@@ -4543,7 +4777,8 @@
     <li><i>target</i> specifies the string that SAS searches for in source</li>
     <li><i>replacement</i> specifies the string that replaces target</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>target and replacement can be specified as variables or as character
@@ -4562,6 +4797,7 @@
      statements use the TRANWRD function to change all occurrences of Miss or Mrs. to Ms.
   </p>
  
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">SAS Data Set Work.Before</th>
@@ -4582,20 +4818,24 @@
       <td>Miss Sylvia Pankhurst</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <pre>
   data work.after;
      set work.before;
      name=tranwrd(name,'Miss','Ms.');
      name=tranwrd(name,'Mrs.','Ms.');
   run;</pre>
+  </div>
   
   <p>After this DATA step is executed, the new data set is created. Notice the changed strings within
      the variable <i>Name</i>.
   </p>
 
- <table border="1">
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red">SAS Data Set Work.Before</th>
     </tr>
@@ -4615,6 +4855,7 @@
       <td>Ms. Sylvia Pankhurst</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 7 -->
@@ -4697,7 +4938,7 @@
   </p>
   <p><strong>Years=intck('year','15jun1999'd,today());</strong></p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can nest any function as long as the function that is used as the argument
@@ -4719,6 +4960,7 @@
      Arguments can include variables, constants, or expressions. Although arguments are typically
      separated by commas, they can also be specified as variable lists or arrays.
   </p>
+  <br/>
 
   <h4>Automatic Character-to-Numeric Conversion</h4>
   <p>When character variables are used in a numeric context, SAS tries to convert the character
@@ -4727,12 +4969,14 @@
      values are not changed. The conversion creates temporary numeric values and places a note in
      the SAS log.
   </p>
+  <br/>
 
   <h4>Explicit Character-to-Numeric Conversion</h4>
   <p>The <strong>INPUT function</strong> provides direct, controlled conversion of character values to numeric values.
      When a character variable is specified in a numeric informat, the INPUT function generates
      numeric values without placing a note in the SAS log.
   </p>
+  <br/>
 
   <h4>Automatic Numeric-to-Character Conversion</h4>
   <p>When numeric variables are used in a character context, SAS tries to convert the numeric values
@@ -4741,18 +4985,21 @@
      original numeric values are not changed; the conversion creates temporary character values and
      places a note in the SAS log.
   </p>
+  <br/>
 
   <h4>Explicit Numeric-to-Character Conversion</h4>
   <p>The <strong>PUT function</strong> provides direct, controlled conversion of numeric values to character values.
      The format specified in a PUT function must match the source, so use an appropriate numeric
      format to create the new character values. No note will appear in the SAS log.
   </p>
+  <br/>
 
   <h4>SAS Date and Time Values</h4>
   <p>SAS <strong>date values</strong> are stored as the number of days from January 1, 1960; time values are stored
      as the number of seconds since midnight. These values can be displayed in a variety of forms by
      associating them with SAS formats.
   </p>
+  <br/>
 
   <h4>YEAR, QTR, MONTH, and DAY Functions</h4>
   <p>To extract the year, quarter, month, or day value from a SAS date value, specify the YEAR, QTR,
@@ -4760,12 +5007,14 @@
      returns a four-digit number; QTR returns a value of 1, 2, 3, or 4; MONTH returns a number from 1
      to 12; and DAY returns 1 to 31.
   </p>
+  <br/>
 
   <h4>WEEKDAY Function</h4>
   <p>To extract the day of the week from a SAS date value, specify the function WEEKDAY followed
      by the SAS date value in parentheses. The function returns a numeric value from 1 to 7,
      representing the day of the week.
   </p>
+  <br/>
 
   <h4>MDY Function</h4>
   <p>To create a SAS date value for a month, day, and year, specify the MDY function followed by the
@@ -4773,11 +5022,13 @@
      interprets two-digit values according to the 100-year span that is set by the YEARCUTOFF=
      system option. The default value of YEARCUTOFF= is 1920.
   </p>
+  <br/>
 
   <h4>DATE and TODAY Functions</h4>
   <p>To convert the current date to a SAS date value, specify the DATE or TODAY function without
      arguments. The DATE and TODAY functions can be used interchangeably.
   </p>
+  <br/>
 
   <h4>INTCK Function</h4>
   <p>To count the number of time intervals that occur in a time span, use the INTCK function and
@@ -4785,18 +5036,21 @@
      INTCK function counts intervals from fixed interval beginnings, not in multiples of an interval unit.
      Partial intervals are not counted.
   </p>
+  <br/>
 
   <h4>INTNX Function</h4>
   <p>To apply multiples of an interval to a date value, use the INTNX function and specify the interval
      constant or variable, the start-from date value, and the increment. Include the alignment option to
      specify whether the date returned should be at the beginning, middle, or end of the interval.
   </p>
+  <br/>
 
   <h4>DATDIF and YRDIF Functions</h4>
   <p>To calculate the difference between dates as a number of days or as a number of years, use the
      DATDIF or YRDIF function. These functions accept SAS date values and return a difference
      between the date values calculated according to the basis that you specify in the function.
   </p>
+  <br/>
 
   <h4>SCAN Function</h4>
   <p>The SCAN function separates a character string to return a word based on its position. It defines
@@ -4804,6 +5058,7 @@
      of the function is followed, in parentheses, by the name of the character variable, the number of
      delimiters to count, and the specified delimiters enclosed in quotation marks.
   </p>
+  <br/>
 
   <h4>SUBSTR Function</h4>
   <p>The SUBSTR function can be used to extract or replace any portion of a character string. To
@@ -4813,12 +5068,14 @@
     statement and specify, in parentheses, the name of the variable being modified, the starting
     character position, and the number of characters to replace.
   </p>
+  <br/>
 
   <h4>SCAN Function versus SUBSTR Function</h4>
   <p>relies on delimiters, whereas SUBSTR reads values from specified locations. Use SCAN when
      you know the delimiter and the order of words. Use SUBSTR when the positions of the characters
      don't vary.
   </p>
+  <br/>
 
   <h4>TRIM Function</h4>
   <p>Because SAS pads the length of character values, unwanted spaces can sometimes appear after
@@ -4826,6 +5083,7 @@
      function with the name of a character variable. Remember that trimmed values will be padded
      with blanks again if they are shorter than the length of the new variable.
   </p>
+  <br/>
 
   <h4>CATX Function</h4>
   <p>You can concatenate character strings, remove leading and trailing blanks, and insert separators
@@ -4833,6 +5091,7 @@
      to those that are produced by a combination of the concatenation operator and the TRIM and
      LEFT functions.
   </p>
+  <br/>
 
   <h4>INDEX Function</h4>
   <p>To test character values for the presence of a string, use the INDEX function and specify, in
@@ -4841,6 +5100,7 @@
      observations in which the function finds the string and returns a value greater than 0 are written to
      the new data set.
   </p>
+  <br/>
 
   <h4>FIND Function</h4>
   <p>You can also use the FIND function to search for a specific substring of characters within a
@@ -4848,45 +5108,53 @@
      function enables you to ignore character case in your search and to trim trailing blanks. The FIND
      function can also begin the search at any position that you specify in the string.
   </p>
+  <br/>
 
   <h4>UPCASE Function</h4>
   <p>The UPCASE function converts all letters in a character expression to uppercase. Include the
      function in an assignment statement, and specify the variable name in parentheses.
   </p>
+  <br/>
 
   <h4>LOWCASE Function</h4>
   <p>Uppercase letters in character values can be converted to lowercase by using the LOWCASE
      function. Include the function in an assignment statement, and specify the variable name in
      parentheses.
   </p>
+  <br/>
 
   <h4>PROPCASE Function</h4>
   <p>Character values can be converted to proper case by using the PROPCASE function. Include the
      function in an assignment statement, and specify the variable name in parentheses. Remember
      that you can specify delimiters or use the default delimiters.
   </p>
+  <br/>
 
   <h4>TRANWRD Function</h4>
   <p>You can replace or remove patterns of characters in the values of character variables by using
      the TRANWRD function. Use the function in an assignment statement, and specify the source,
      target, and replacement strings or variables in parentheses.
   </p>
+  <br/>
 
   <h4>INT Function</h4>
   <p>To return the integer portion of a numeric value, use the INT function. Any decimal portion of the
      INT function argument is discarded.
   </p>
+  <br/>
 
   <h4>ROUND Function</h4>
   <p>To round values to the nearest specified unit, use the ROUND function. If a round-off unit is not
      provided, the argument is rounded to the nearest integer.
   </p>
+  <br/>
 
   <h4>Nesting SAS Functions</h4>
   <p>To write more efficient programs, you can nest functions as appropriate. You can nest any
      functions as long as the function that is used as the argument meets the requirements for the
      argument.
   </p>
+  <br/>
 
   <!-- Topic 9 Subtopic 2 -->
   <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3> 

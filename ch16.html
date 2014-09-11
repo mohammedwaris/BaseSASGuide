@@ -43,6 +43,8 @@
      separate programming statements to convert the daily temperature from Fahrenheit to Celsius for
      the year.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data work.report (drop=i);
      set master.temps;
@@ -51,6 +53,7 @@
         daytemp{i}=5*(daytemp{i}-32)/9;
      end;
   run;</pre>
+  </div>
 
   <p>You can use arrays to simplify the code needed to</p>
   <ul>
@@ -91,6 +94,8 @@
      processing variables. For example, in the DATA step below, the values of seven data set
      variables are converted from Fahrenheit to Celsius temperatures.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data work.report;
      set master.temps;
@@ -102,6 +107,7 @@
      sat=5*(sat-32)/9;
      sun=5*(sun-32)/9;
   run;</pre>
+  </div>
   
   <p>As you can see, the assignment statements perform the same calculation on each variable in this
      series of statements. Only the name of the variable changes in each statement.
@@ -110,6 +116,8 @@
      loop. You use fewer statements, and the DATA step program is more easily modified or
      corrected.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data work.report(drop=i);
      set master.temps;
@@ -118,6 +126,8 @@
         wkday{i}=5*(wkday{i}-32)/9;
      end;
   run;</pre>
+  </div>
+
   <p>You will learn other uses for arrays in this chapter.</p>
 
   <!-- Topic 2 Subtopic2 -->
@@ -137,7 +147,8 @@
         names
     </li>
   </ul>
-  <table>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Do not give an array the same name as a variable in the same DATA step.
@@ -147,7 +158,9 @@
       </td>
     </tr>
   </table>
-  <table>
+  <br/>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>You cannot use array names in LABEL, FORMAT, DROP, KEEP, or
@@ -161,6 +174,8 @@
   <p>For example, in the data set <strong>Finance.Sales91</strong>, you might want to process the variables <i>Qtr1,
      Qtr2, Qtr3,</i> and <i>Qtr4</i> in the same way.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">Description of Finance.Sales91</th>
@@ -196,13 +211,17 @@
       <td>8</td>
     </tr>
   </table>
+  </div>
 
   <br/><br/>
   <h4>Specifying the Array Name</h4>
   <p>To group the variables in the array, first give the array a name. In this example, make the array
      name <i>sales</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{4} qtr1 qtr2 qtr3 qtr4;</pre>
+  </div>
 
   <h4>Specifying the Dimension</h4>
   <p>Following the array name, you must specify the dimension of the array. The dimension describes
@@ -215,7 +234,7 @@
         in the DATA step.
     </li>
     <li>array sales{4} qtr1 qtr2 qtr3 qtr4;</li>
-    <li>The dimension of an array doesn’t have to be the number of array elements. You can
+    <li>The dimension of an array doesn't have to be the number of array elements. You can
         specify a range of values for the dimension when you define the array. For example, you can
         define the array sales as follows:<br/>
         array sales{96:99} totals96 totals97 totals98 totals99;
@@ -235,12 +254,19 @@
      include in the array. When listing elements, separate each element with a space. As with all SAS
      statements, you end the ARRAY statement with a semicolon (;).
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{4} qtr1 qtr2 qtr3 qtr4;</pre>
+  </div>
+
   <p>You can also specify array elements as a variable list. Here is an example of an ARRAY
      statement that groups the variables Qtr1 through Qtr4 into a one-dimensional array, using a
      variable list.
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{4} qtr1-qtr4;</pre>
+  </div>
 
   <p>Let's look more closely at array elements that are specified as variable lists.</p>
 
@@ -249,6 +275,8 @@
   <p>You can specify variable lists in the forms shown below. Each type of variable list is explained in
      more detail following the table.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Variables</th>
@@ -271,7 +299,9 @@
       <td>_ALL_</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
+
   <h4>Specifying a Numbered Range of Variables</h4>
   
   <p>Qtr1 Qtr2 Qtr3 Qtr4 -> Qtr1-Qtr4</p>
@@ -281,38 +311,55 @@
     <li>the last character of each variable must be numeric</li>
     <li>the variables must be numbered consecutively</li>
   </ul>
+
+  <div class="scrolling-div">
   <pre>array sales{4} qtr1-qtr4;</pre>
+  </div>
   <p>In the preceding example, you would use <i>sales{4}</i> to reference <i>Qtr4</i>. However, the index of an
      array doesn't have to range from one to the number of array elements. You can specify a range
      of values for the index when you define the array. For example, you can define the array <i>sales</i>
      as follows:
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{96:99} totals96-totals99;</pre>
+  </div>
   
   <h4>Specifying All Numeric Variables</h4>
   <p>Amount Rate Term -> _NUMERIC_</p>
   <p><i>_NUMERIC_</i> specifies all numeric variables that have already been defined in the current DATA
      step.
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{*} _numeric_;</pre>
+  </div>
 
   <h4>Specifying All Character Variables</h4>
   <p>FrstName LastName Address -> _CHARACTER_</p>
   <p><i>_CHARACTER_</i> specifies all character variables that have already been defined in the current
      DATA step.
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{*} _character_;</pre>
+  </div>
 
   <h4>Specifying All Variables</h4>
   <p>FrstName LastName Address Amount Rate Term -> _ALL_</p>
   <p><i>_ALL_</i> specifies all variables of the same type (all character or all numeric) that have been
      defined in the current DATA step.
   </p>
+
+  <div class="scrolling-div">
   <pre>array sales{*} _all_;</pre>
+  </div>
   
   <!-- Topic 2 Subtopic 4 -->
   <h3 class="subtopic" id="topic2_subtopic4">Referencing Elements of an Array</h3>
   <p>Now let's look at some ways you can use arrays to process variables in the DATA step.</p>
+
+  <div class="scrolling-div">
   <pre>
   data work.report(drop=i);
      set master.temps;
@@ -321,7 +368,9 @@
         if wkday{i}>95 then output;
      end;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <pre>
   data work.weights(drop=i);
      set master.class;
@@ -330,7 +379,9 @@
         wt{i}=wt{i}*2.2;
      end;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <pre>
   data work.new(drop=i);
      set master.synyms;
@@ -339,28 +390,33 @@
         if term{i} ne ' ' then output;
      end;
   run;</pre>
+  </div>
 
   <p>The ability to reference the elements of an array by an index value is what gives arrays their
      power. Typically, arrays are used with DO loops to process multiple variables and to perform
      repetitive calculations.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   array quarter{4} jan apr jul oct;
   do i=1 to 4;
      YearGoal=quarter{i}*1.2;
   end;</pre>
+  </div>
 
   <p>When you define an array in a DATA step, an index value is assigned to each array element. The
      index values are assigned in the order of the array elements.
   </p>
 
+  <div class="scrolling-div">
   <pre>
                     1   2   3   4
   array quarter{4} jan apr jul oct;
   do i=1 to 4;
      YearGoal=quarter{i}*1.2;
   end;</pre>
+  </div>
 
   <p>You use an <strong>array reference</strong> to perform an action on an array element during execution. To
      reference an array element in the DATA step, specify the name of the array, followed by an index
@@ -381,15 +437,20 @@
   <p>When used in a DO loop, the index variable of the iterative DO statement can reference each
      element of the array.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   array quarter {4} jan apr jul oct;
   do i=1 to 4;
      YearGoal=qtr{i}*1.2;
   end;</pre>
+  </div>
 
   <p>For example, the DO loop above increments the index variable <i>i</i> from the lower bound of the
      <i>quarter</i> array, <i>1</i>, to the upper bound, <i>4</i>. The following sequence illustrates this process:
   </p>
+
+  <div class="scrolling-div">
   <pre>
                     1
   array quarter{4} jan apr jul oct;
@@ -414,6 +475,7 @@
   do i=1 to 4;
      YearGoal=quarter{4}*1.2;
   end;</pre>
+  </div>
 
   <p>During each iteration of the DO loop, <i>quarter{i}</i> refers to an element of the array <i>quarter</i> in
      the order listed.
@@ -427,6 +489,8 @@
      participants are weighed so that they can monitor their progress. The weight data, currently
      stored in kilograms, needs to be converted to pounds.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red" colspan="7">SAS Data Set Hrd.Fitclass</th>
@@ -495,11 +559,14 @@
       <td>67.0</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <p>You can use a DO loop to update the variables Weight1 through Weight6 for each observation
      in the <strong>Hrd.Fitclass</strong> data set.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.convert;
      set hrd.fitclass;
@@ -508,7 +575,9 @@
         wt{i}=wt{i}*2.2046;
      end;
   run;</pre>
-  <table>
+  </div>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The <i>wt{i}</i> that appears on the right side of the equal sign (=) is an array
@@ -535,6 +604,8 @@
   <p>During the first iteration of the DATA step, the first observation in Hrd.Fitclass is read into the
      program data vector.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.convert;
      set hrd.fitclass;
@@ -543,6 +614,7 @@
         wt{i}=wt{i}*2.2046;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image3.png" class="diagram"/>
   <p>Because the ARRAY statement is a compile-time only statement, it is ignored during execution.
@@ -553,6 +625,7 @@
      the value of <i>Weight1</i> is converted from kilograms to pounds.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.convert;
      set hrd.fitclass;
@@ -561,6 +634,8 @@
         wt{i}=wt{i}*2.2046;
      end;
   run;</pre>
+  </div>
+
   <img src="images/ch16_image4.png" class="diagram"/>  
   <p>As the DATA step continues its DO loop iterations, the index variable i is changed from <i>1</i> to <i>2, 3,
      4, 5,</i> and <i>6</i>, causing <i>Weight2</i> through <i>Weight6</i> to receive new values in the program data
@@ -582,6 +657,8 @@
   <hr/>
 
   <p>In this example, <i>dim(wt)</i> returns a value of 6.</p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.convert;
      set hrd.fitclass;
@@ -590,9 +667,13 @@
         wt{i}=wt{i}*2.2046;
      end;
   run;</pre>
+  </div>
+
   <p>When you use the DIM function, you do not have to re-specify the stop value of an iterative DO
      statement if you change the dimension of the array.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.convert;                   data hrd.convert;
      set hrd.fitclass;                   set hrd.fitclass;
@@ -601,6 +682,7 @@
         wt{i}=wt(i)*2.2046;                  wt{i}=wt{i}*2.2046;
      end;                                end;
   run;                                run;</pre>
+  </div>
   
 
   <!-- Topic 3 -->
@@ -629,6 +711,8 @@
   <p>For example, suppose you need to calculate the weight gain or loss from week to week for each
      member of a fitness class, as shown below.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">SAS Data Set Hrd.Convert</th>
@@ -688,26 +772,34 @@
       <td>128.3</td>
     </tr>
   </table>
-
+  </div>
   <br/><br/>
+
   <p>You'd like to create variables that contain this weekly difference. To perform the calculation, you
      first group the variables <i>Weight1</i> through <i>Weight6</i> into an array.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.diff;
      set hrd.convert;
      array wt{6} weight1-weight6;</pre>
+  </div>
+
   <p>Next, you want to create the new variables to store the differences between the six recorded
      weights. You can use an additional ARRAY statement without elements to create the new
      variables.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data hrd.diff;
      set hrd.convert;
      array wt{6} weight1-weight6;
      array WgtDiff{5};</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">SAS Data Set Hrd.Convert</th>
@@ -767,13 +859,17 @@
       <td>128.3</td>
     </tr>
   </table>
+  </div>
 
   <br/><br/>
 
   <p>Remember, when creating variables in an ARRAY statement, you do not need to specify array
      elements as long as you specify how many elements will be in the array.
   </p>
+
+  <div class="scrolling-div">
   <pre>array WgtDiff{5};</pre>
+  </div>
 
   <h4>Creating Default Variable Names</h4>
   <p>SAS creates default variable names by concatenating the array name and the numbers 1, 2, 3,
@@ -781,7 +877,8 @@
   </p>
 
   <img src="images/ch16_image6.png" class="diagram" />
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If you prefer, you can specify individual variable names. To specify variable
@@ -792,17 +889,27 @@
     </tr>
   </table>
 
+  <div class="scrolling-div">
   <pre>array WgtDiff{5} Oct12 Oct19 Oct26 Nov02 Nov09;</pre>
+  </div>
   <img src="images/ch16_image7.png" class="diagram" />
 
   <h4>Creating Arrays of Character Variables</h4>
 
   <p>To create an array of character variables, add a dollar sign ($) after the array dimension.</p>
+
+  <div class="scrolling-div">
   <pre>array firstname{5} $;</pre>
+  </div>
+
   <p>By default, all character variables that are created in an ARRAY statement are assigned a length
        of 8. You can assign your own length by specifying the length after the dollar sign.
   </p>
+
+  <div class="scrolling-div">
   <pre>array firstname{5} $ 24;</pre>
+  </div>
+
   <p>The length that you specify is automatically assigned to all variables that are created by the
      ARRAY statement.
   </p>
@@ -811,15 +918,19 @@
   <p>During the compilation of the DATA step, the variables that this ARRAY statement creates are
      added to the program data vector and are stored in the resulting data set.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.diff;
      set hrd.convert;
      array wt{6} Weight1-Weight6;
      array WgtDiff{5};</pre>
+  </div>
   
 
   <img src="images/ch16_image8.png" class="diagram" />
-  <table>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>When referencing the array elements, be careful not to confuse the array
@@ -837,6 +948,8 @@
      Notice that each value of <i>WgtDiff{i}</i> is calculated by subtracting <i>wt{i}</i> from <i>wt(i+1)</i>. By
      manipulating the index variable, you can easily reference any array element
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data hrd.diff;
      set hrd.convert;
@@ -846,9 +959,12 @@
         wgtdiff{i}=wt{i+1}-wt{i};
      end;
   run;</pre>
+  </div>
 
   <p>A portion of the resulting data set is shown below.</p>
-  <table borer="1">
+
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red" colspan="6">SAS Data Set Hrd.Diff</th>
     </tr>
@@ -885,14 +1001,23 @@
       <td>-1.32276</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
 
   <!-- Topic 3 Subtopic 2 -->
   <h3 class="subtopic" id="topic3_subtopic2">Assigning Initial Values to Arrays</h3>
   <p>Sometimes it is useful to assign initial values to elements of an array when you define the array.</p>
+
+  <div class="scrolling-div">
   <pre>array goal{4} g1 g2 g3 g4 (initial values);</pre>
+  </div>
+
   <p>Here is an example:</p>
+ 
+  <div class="scrolling-div">
   <pre>array goal{4} g1 g2 g3 g4 (9000 9300 9600 9900);</pre>
+  </div>
+
 
   <p>To assign initial values in an ARRAY statement,</p>
   <ul>
@@ -903,17 +1028,26 @@
   </ul>
 
   <p>Enclose each character value in quotation marks</p>
+
+  <div class="scrolling-div">
   <pre>array col{3} $ color1-color3 ('red','green','blue');</pre>
+  </div>
+
   <p>It's also possible to assign initial values to an array without specifying each array element. The
      following statement creates the variables <i>Var1, Var2, Var3</i>, and <i>Var4</i>, and assigns them initial
      values of <i>1, 2, 3</i>, and <i>4</i>:
   </p>
   
+  <div class="scrolling-div">
   <pre>array Var{4} (1 2 3 4);</pre>
+  </div>
+
   <p>For this example, assume that you have the task of comparing the actual sales figures in the
      <strong>Finance.Qsales</strong> data set to the sales goals for each sales representative at the beginning of the
      year. The sales goals are not recorded in <strong>Finance.Qsales</strong>.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">Description of Finance.Qsales</th>
@@ -949,28 +1083,37 @@
       <td>8</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
+
   <p>The DATA step below reads the <strong>Finance.Qsales</strong> data set to create the <strong>Finance.Report</strong> data set.
      The ARRAY statement creates an array to process sales data for each quarter.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.report;
      set finance.qsales;
      array sale{4} sales1-sales4;</pre>
+  </div>
 
   <p>To compare the actual sales to the sales goals, you must create the variables for the sales goals
      and assign values to them.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.report;
      set finance.qsales;
      array sale{4} sales1-sales4;
      array Goal{4} (9000 9300 9600 9900);</pre>
+  </div>
 
   <p>A third ARRAY statement creates the variables <i>Achieved1</i> through <i>Achieved4</i> to store the
      comparison of actual sales versus sales goals.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.report;
      set finance.qsales;
@@ -981,11 +1124,13 @@
         achieved{i}=100*sale{i}/goal{i};
      end;
   run;</pre>
+  </div>
 
   <p>A DO loop executes four times to calculate the value of each element of the <i>achieved</i> array
      (expressed as a percentage).
   </p>
   
+  <div class="scrolling-div">
   <pre>
   data finance.report;
      set finance.qsales;
@@ -996,11 +1141,14 @@
         achieved{i}=100*sale{i}/goal{i};
      end;
   run;</pre>
+  </div>
 
   <p>Before submitting this DATA step, you can drop the index variable from the new data set by
      adding a DROP= option to the DATA statement.
   </p>
 
+
+  <div class="scrolling-div">
   <pre>
   data finance.report(drop=i);
      set finance.qsales;
@@ -1011,12 +1159,14 @@
         achieved{i}=100*sale{i}/goal{i};
      end;
   run;</pre>
+  </div>
 
   <p>This is an example of a simple <i>table-lookup</i> program. The resulting data set contains the
      variables that were read from <i>Finance.Qsales</i>, plus the eight variables that were created with
      ARRAY statements.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">SAS Data Set Finance.Report</th>
@@ -1058,8 +1208,10 @@
       <td>9300</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Goal3</th>
@@ -1094,9 +1246,10 @@
       <td>111.111</td>
     </tr>
   </table>
-
+  </div>
   <br/>
-  <table>
+
+  <table class="note-table">
    <tr>
      <th class="color-blue">Note</th>
      <td>Variables to which initial values are assigned in an ARRAY
@@ -1105,6 +1258,7 @@
    </tr>
   </table>
   <br/><br/>
+
   <p>The variables <i>Goal1</i> through <i>Goal4</i> should not be stored in the data set, because they are
      needed only to calculate the values of <i>Achieved1</i> through <i>Achieved4</i>. The next example
      shows you how to create temporary array elements.
@@ -1115,6 +1269,8 @@
   <p>To create temporary array elements for DATA step processing without creating new variables,
      specify <strong>_TEMPORARY_</strong> after the array name and dimension.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.report;
      set finance.qsales;
@@ -1125,8 +1281,11 @@
         achieved{i}=100*sale{i}/goal{i};
      end;
   run;</pre>
+  </div>
 
   <p>Temporary array elements do not appear in the resulting data set.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Finance.Report</th>
@@ -1160,7 +1319,10 @@
       <td>11000</td>
     </tr>
   </table>
+  </div>
   <br/>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Achieved1</th>
@@ -1187,6 +1349,8 @@
       <td>111.111</td>
     </tr>
   </table>
+  </div>
+  <br/>
  
   <p>Temporary array elements are useful when the array is needed only to perform a calculation. You
      can improve performance time by using temporary array elements.
@@ -1238,16 +1402,31 @@
      separated by a comma. This ARRAY statement defines a two-dimensional array:
   </p>
 
+  <div class="scrolling-div">
   <pre>array new{3,4} x1-x12;</pre>
+  </div>
+
   <p>In a two-dimensional array, the two dimensions can be thought of as a table of rows and columns.</p>
+
+  <div class="scrolling-div">
   <pre>array new{r,c} x1-x12;</pre>
+  </div>
+
   <img src="images/ch16_image10.png" class="diagram" />
   
   <p>The first dimension in the ARRAY statement specifies the number of rows.</p>
+
+  <div class="scrolling-div">
   <pre>array new{3,4} x1-x12;</pre>
+  </div>
+
   <img src="images/ch16_image11.png" class="diagram" />
   <p>The second dimension specifies the number of columns.</p>  
+
+  <div class="scrolling-div">
   <pre>array new{3,4} x1-x12;</pre>
+  </div>
+
   <img src="images/ch16_image12.png" class="diagram" />
 
   <p>You can reference any element of the array by specifying the two dimensions. In the example
@@ -1255,20 +1434,30 @@
      You can easily locate the array element in the table by finding the row (2), then the column (3).
   </p>
 
+  <div class="scrolling-div">
   <pre>
   array new{3,4} x1-x12;
   new{2,3}=0;</pre>
+  </div>
 
   <img src="images/ch16_image13.png" class="diagram" />
   <p>When you define a two-dimensional array, the array elements are grouped in the order in which
      they are listed in the ARRAY statement. For example, the array elements x1 through x4 can be
      thought of as the first row of the table.
   </p>
+
+  <div class="scrolling-div">
   <pre>array new{3,4} x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12;</pre>
+  </div>
+
   <img src="images/ch16_image14.png" class="diagram" />
 
   <p>The elements x5 through x8 become the second row of the table, and so on.</p>
+
+  <div class="scrolling-div">
   <pre>array new{3,4} x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12;</pre>
+  </div>
+
   <img src="images/ch16_image15.png" class="diagram" />
 
   <!-- Topic 3 Subtopic 6 -->
@@ -1282,6 +1471,7 @@
      task is to generate a new data set of quarterly sales rather than monthly sales.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">Description of Finance.Monthly</th>
@@ -1356,11 +1546,15 @@
       <td>num</td>
       <td>8</td>
     </tr> 
-  <table>
+  </table>
+  </div>
+
   <br/><br/>
   <p>Defining the array <i>m{4,3}</i> puts the variables <i>Month1</i> through <i>Month12</i> into four groups of three
      months (yearly quarters).
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">Table Representation: of m Array</th>
@@ -1386,26 +1580,35 @@
       <td>Month12</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
+
+
+  <div class="scrolling-div">
   <pre>
   data finance.quarters;
      set finance.monthly;
      array m{4,3} month1-month12;</pre>
+  </div>
 
   <p>Defining the array <i>Qtr{4}</i> creates the numeric variables <i>Qtr1, Qtr2, Qtr3, Qtr4</i>, which will
      be used to sum the sales for each quarter.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.quarters;
      set finance.monthly;
      array m{4,3} month1-month12;
      array Qtr{4};</pre>
+  </div>
 
   <p>A nested DO loop is used to reference the values of the variables <i>Month1</i> through <i>Month12</i> and
      to calculate the values of <i>Qtr1</i> through <i>Qtr4</i>. Because the variables <i>i</i> and <i>j</i> are used only for
      loop processing, the DROP= option is used to exclude them from the <strong>Finance.Quarters</strong> data set.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1418,6 +1621,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <p>Each element in the <i>Qtr</i> array represents the sum of one row in the <i>m</i> array. The number of
      elements in the <i>Qtr</i> array should match the first dimension of the <i>m</i> array (that is, the number of 
@@ -1431,6 +1635,7 @@
      statement within the DO loop.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1443,10 +1648,13 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <p>The second DO loop executes the same number of times as the second dimension of the m array
      (that is, the number of columns in each row of the m array).
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1459,6 +1667,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <p>To see how the nested DO loop processes these arrays, let's examine the execution of this DATA
      step.
@@ -1468,6 +1677,7 @@
      the beginning and ending portions of the program data vector are represented here.)
   </p>
   
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1480,6 +1690,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image16.png" class="diagram" />
   
@@ -1487,6 +1698,8 @@
      Finance.Monthly are read into the program data vector. When the first DO loop executes the first
      time, the index variable i is set to 1.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1499,12 +1712,15 @@
           end;
        end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image17.png" class="diagram" />
 
   <p>During the first iteration of the nested DO loop, the value of <i>Month1</i>, which is referenced by
      <i>m{i,j}</i>, is added to <i>Qtr1</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1517,6 +1733,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image18.png" class="diagram" />
 
@@ -1524,6 +1741,7 @@
      <i>{i,j}</i>, is added to <i>Qtr1</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1536,6 +1754,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image19.png" class="diagram" />
 
@@ -1544,6 +1763,7 @@
      been computed.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1556,6 +1776,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image20.png" class="diagram" />
 
@@ -1563,6 +1784,7 @@
      the <i>m</i> array elements <i>Month4</i> through <i>Month6</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1575,6 +1797,7 @@
         end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image21.png" class="diagram" />
 
@@ -1582,6 +1805,7 @@
      variable values for the first observation are written to the data set <strong>Finance.Quarters</strong>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data finance.quarters(drop=i j);
      set finance.monthly;
@@ -1594,6 +1818,7 @@
              end;
      end;
   run;</pre>
+  </div>
 
   <img src="images/ch16_image22.png" class="diagram" />
 
@@ -1602,6 +1827,7 @@
      data set, which contains the sales figures grouped by quarters.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Finance.Quarters (Partial Listing)</th>
@@ -1635,6 +1861,7 @@
       <td>87800</td>
     </tr>
   </table>
+  </div>
 
   <!--  Topic 4 -->
   <h2 class="topic" id="topic4">Additional Features</h2>
@@ -1647,6 +1874,8 @@
      variables. For example, suppose you want to rotate the <strong>Finance.Funddrive</strong> data set to create
      four output observations from each input observation.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Finance.Funddrive</th>
@@ -1784,9 +2013,12 @@
       <td>25</td>
     </tr>
   </table>
+  </div>
   <br/><br/>
+
   <p>The following program rotates the data set and lists the first 16 observations in the new data set.</p>
 
+  <div class="scrolling-div">
   <pre>
   data work.rotate(drop=qtr1-qtr4);
      set finance.funddrive;
@@ -1799,7 +2031,9 @@
 
   proc print data=rotate(obs=16) noobs;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">LastName</th>
@@ -1887,29 +2121,34 @@
       <td>30</td>
     </tr>
   </table>
+  </div>
 
   <!-- Topic 5 -->
   <h2 class="topic" id="topic5">Summary</h2>
 
   <!-- Topic 5 Subtopic 1 -->
   <h3 class="subtopic" id="topic5_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>Purpose of SAS Arrays</h4>
   <p>An array is a temporary grouping of variables under a single name. This can reduce the number
      of statements that are needed to process variables and can simplify the maintenance of DATA
      step programs.
   </p>
+  <br/>
 
   <h4>Defining an Array</h4>
   <p>To group previously defined data set variables into an array, use an ARRAY statement that
      specifies the array's name, its dimension enclosed in braces, brackets, or parentheses, and the
      elements to include. For example: <i>array sales{4} qtr1 qtr2 qtr3 qtr4;</i>
   </p>
+  <br/>
 
   <h4>Variable Lists as Array Elements</h4>
   <p>You can use a variable list to specify array elements. Depending on the form of the variable list,
      it can specify all numeric or all character variables, or a numbered range of variables.
   </p>
+  <br/>
   
   <h4>Referencing Elements of an Array</h4>
   <p>When you define an array in a DATA step, an index value is assigned to each element. During
@@ -1917,12 +2156,14 @@
      used in a DO loop, for example, the index variable of the iterative DO statement can reference
      each element of the array.
   </p>
+  <br/>
 
   <h4>The DIM Function</h4>
   <p>When using DO loops to process arrays, you can also use the DIM function in the TO clause of
      the iterative DO statement. When you use the DIM function, you do not have to re-specify the
      stop value of a DO statement if you change the dimension of the array.
   </p>
+  <br/>
 
   <h4>Creating Variables with the ARRAY Statement</h4>
   <p>If you don't specify array elements in an ARRAY statement, SAS automatically creates the
@@ -1931,6 +2172,7 @@
      dimension. By default, all character variables that are created with an ARRAY statement are
      assigned a length of 8. However, you can specify a different length after the dollar sign.
   </p>
+  <br/>
 
   <h4>Assigning Initial Values to Arrays</h4>
   <p>To assign <strong>initial values</strong> in an ARRAY statement, place the values in parentheses after the array
@@ -1938,12 +2180,14 @@
      comma or blank. To assign initial values to character variables, enclose each value in quotation
      marks and separate the values with commas.
   </p>
+  <br/>
 
   <h4>Creating Temporary Array Elements</h4>
   <p>You can create temporary array elements for DATA step processing without creating additional
      variables. Just specify <strong>_TEMPORARY_</strong> after the array name and dimension. This is useful when
      the array is needed only to perform a calculation.
   </p>
+  <br/>
 
   <h4>Multidimensional Arrays</h4>
   <p>To define a multidimensional array, specify the number of elements in each dimension, separated
@@ -1951,17 +2195,20 @@
      first dimension specifying the number of rows (3) and the second dimension specifying the
      number of columns (4).
   </p>
+  <br/>
 
   <h4>Referencing Elements of a Two-Dimensional Array</h4>
   <p>Multidimensional arrays are typically used with nested DO loops. If a DO loop processes a twodimensional
      array, you can reference any element within the array by specifying the two
      dimensions.
   </p>
+  <br/>
 
   <h4>Rotating Data Sets</h4>
   <p>You can use arrays to rotate a data set. Rotating a data set changes variables to observations or
      observations to variables.
   </p>
+  <br/>
 
   <!-- Topic 5 Subtopic 2 -->
   <h3 class="subtopic" id="topic5_subtopic2">Points to Remember</h3>

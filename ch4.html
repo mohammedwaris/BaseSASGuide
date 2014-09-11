@@ -1,0 +1,4327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>To list the information in a data set, you can create a report with a PROC PRINT step. Then you
+     can enhance the report with additional statements and options to create reports like those shown
+     below.
+  </p>
+
+  <img src="images/ch4_image1.png" class="diagram"/>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter you learn to</p>
+  <ul>
+    <li>specify SAS data sets to print.</li>
+    <li>select variables and observations to print.</li>
+    <li>sort data by the values of one or more variables.</li>
+    <li>specify column totals for numeric variables.</li>
+    <li>double-space SAS listing output.</li>
+    <li>add titles and footnotes to procedure output.</li>
+    <li>assign descriptive labels to variables.</li>
+    <li>apply formats to the values of variables.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Types of Reports</h2>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Basic Report</h3>
+
+  <p>You can easily list the contents of a SAS data set by using a simple program like the one shown
+     below.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  libname clinic 'your-SAS-data-library';
+  proc print data=clinic.admit;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">ID</th>
+       <th class="color-red">Name</th>
+       <th class="color-red">Sex</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Date</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">ActLevel</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>M</td>
+      <td>27</td>
+      <td>1</td>
+      <td>72</td>
+      <td>168</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>F</td>
+      <td>34</td>
+      <td>3</td>
+      <td>66</td>
+      <td>152</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>F</td>
+      <td>31</td>
+      <td>17</td>
+      <td>61</td>
+      <td>123</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>F</td>
+      <td>43</td>
+      <td>31</td>
+      <td>63</td>
+      <td>137</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>M</td>
+      <td>51</td>
+      <td>4</td>
+      <td>71</td>
+      <td>158</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>M</td>
+      <td>29</td>
+      <td>6</td>
+      <td>76</td>
+      <td>193</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>F</td>
+      <td>32</td>
+      <td>9</td>
+      <td>67</td>
+      <td>151</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>M</td>
+      <td>35</td>
+      <td>13</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>M</td>
+      <td>34</td>
+      <td>22</td>
+      <td>73</td>
+      <td>154</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>F</td>
+      <td>49</td>
+      <td>27</td>
+      <td>64</td>
+      <td>172</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2571</td>
+      <td>Nunnelly, A</td>
+      <td>F</td>
+      <td>44</td>
+      <td>19</td>
+      <td>66</td>
+      <td>140</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>F</td>
+      <td>28</td>
+      <td>17</td>
+      <td>62</td>
+      <td>118</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>M</td>
+      <td>30</td>
+      <td>6</td>
+      <td>69</td>
+      <td>147</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>2575</td>
+      <td>Quigley, M</td>
+      <td>F</td>
+      <td>40</td>
+      <td>8</td>
+      <td>69</td>
+      <td>163</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>2578</td>
+      <td>Cameron, L</td>
+      <td>M</td>
+      <td>47</td>
+      <td>5</td>
+      <td>72</td>
+      <td>173</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>2579</td>
+      <td>Underwood, K</td>
+      <td>M</td>
+      <td>60</td>
+      <td>22</td>
+      <td>71</td>
+      <td>191</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>F</td>
+      <td>43</td>
+      <td>29</td>
+      <td>65</td>
+      <td>123</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>2586</td>
+      <td>Derber, B</td>
+      <td>M</td>
+      <td>25</td>
+      <td>23</td>
+      <td>75</td>
+      <td>188</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>2588</td>
+      <td>Ivan, H</td>
+      <td>F</td>
+      <td>22</td>
+      <td>20</td>
+      <td>63</td>
+      <td>139</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>2589</td>
+      <td>Wilicox, E</td>
+      <td>F</td>
+      <td>41</td>
+      <td>16</td>
+      <td>67</td>
+      <td>141</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>2595</td>
+      <td>Warren, C</td>
+      <td>M</td>
+      <td>54</td>
+      <td>7</td>
+      <td>71</td>
+      <td>183</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>  
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Column Totals</h3>
+
+  <p>You can produce column totals for numeric variables within your report.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  libname clinic 'your-SAS-data-library';
+  proc print data=clinic.admit;
+     sum fee;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">ID</th>
+       <th class="color-red">Name</th>
+       <th class="color-red">Sex</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Date</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">ActLevel</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2458</td>
+      <td>Murray, W</td>
+      <td>M</td>
+      <td>27</td>
+      <td>1</td>
+      <td>72</td>
+      <td>168</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2462</td>
+      <td>Almers, C</td>
+      <td>F</td>
+      <td>34</td>
+      <td>3</td>
+      <td>66</td>
+      <td>152</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2501</td>
+      <td>Bonaventure, T</td>
+      <td>F</td>
+      <td>31</td>
+      <td>17</td>
+      <td>61</td>
+      <td>123</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2523</td>
+      <td>Johnson, R</td>
+      <td>F</td>
+      <td>43</td>
+      <td>31</td>
+      <td>63</td>
+      <td>137</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2539</td>
+      <td>LaMance, K</td>
+      <td>M</td>
+      <td>51</td>
+      <td>4</td>
+      <td>71</td>
+      <td>158</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2544</td>
+      <td>Jones, M</td>
+      <td>M</td>
+      <td>29</td>
+      <td>6</td>
+      <td>76</td>
+      <td>193</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2552</td>
+      <td>Reberson, P</td>
+      <td>F</td>
+      <td>32</td>
+      <td>9</td>
+      <td>67</td>
+      <td>151</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2555</td>
+      <td>King, E</td>
+      <td>M</td>
+      <td>35</td>
+      <td>13</td>
+      <td>70</td>
+      <td>173</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2563</td>
+      <td>Pitts, D</td>
+      <td>M</td>
+      <td>34</td>
+      <td>22</td>
+      <td>73</td>
+      <td>154</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2568</td>
+      <td>Eberhardt, S</td>
+      <td>F</td>
+      <td>49</td>
+      <td>27</td>
+      <td>64</td>
+      <td>172</td>
+      <td>LOW</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2571</td>
+      <td>Nunnelly, A</td>
+      <td>F</td>
+      <td>44</td>
+      <td>19</td>
+      <td>66</td>
+      <td>140</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>2572</td>
+      <td>Oberon, M</td>
+      <td>F</td>
+      <td>28</td>
+      <td>17</td>
+      <td>62</td>
+      <td>118</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2574</td>
+      <td>Peterson, V</td>
+      <td>M</td>
+      <td>30</td>
+      <td>6</td>
+      <td>69</td>
+      <td>147</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>2575</td>
+      <td>Quigley, M</td>
+      <td>F</td>
+      <td>40</td>
+      <td>8</td>
+      <td>69</td>
+      <td>163</td>
+      <td>HIGH</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>2578</td>
+      <td>Cameron, L</td>
+      <td>M</td>
+      <td>47</td>
+      <td>5</td>
+      <td>72</td>
+      <td>173</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>2579</td>
+      <td>Underwood, K</td>
+      <td>M</td>
+      <td>60</td>
+      <td>22</td>
+      <td>71</td>
+      <td>191</td>
+      <td>LOW</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>2584</td>
+      <td>Takahashi, Y</td>
+      <td>F</td>
+      <td>43</td>
+      <td>29</td>
+      <td>65</td>
+      <td>123</td>
+      <td>MOD</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>2586</td>
+      <td>Derber, B</td>
+      <td>M</td>
+      <td>25</td>
+      <td>23</td>
+      <td>75</td>
+      <td>188</td>
+      <td>HIGH</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>2588</td>
+      <td>Ivan, H</td>
+      <td>F</td>
+      <td>22</td>
+      <td>20</td>
+      <td>63</td>
+      <td>139</td>
+      <td>LOW</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>2589</td>
+      <td>Wilicox, E</td>
+      <td>F</td>
+      <td>41</td>
+      <td>16</td>
+      <td>67</td>
+      <td>141</td>
+      <td>HIGH</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>2595</td>
+      <td>Warren, C</td>
+      <td>M</td>
+      <td>54</td>
+      <td>7</td>
+      <td>71</td>
+      <td>183</td>
+      <td>MOD</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>2686.95</th>
+    </tr>
+  </table>
+  </div>
+  <br/>  
+
+  <!-- Topic 2 Subtopic 3 -->
+  <h3 class="subtopic" id="topic2_subtopic3">Sorting and Labels</h3>
+
+  <p>You can sort data by the values of one or more variables and replace variable names with
+     descriptive labels.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  libname clinic 'your-SAS-data-library';
+  proc sort data=clinic.admit out=admit;
+     by age;
+  run;
+  proc print data=admit label;
+     var age height weight fee;
+     label fee='Admission Fee';
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Admission Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>30</td>
+      <td>69</td>
+      <td>147</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>  
+
+  <!-- Topic 2 Subtopic 4 -->
+  <h3 class="subtopic" id="topic2_subtopic4">Selected Observations and Variables</h3>
+
+  <p>You can choose the observations and variables that appear in your report. In addition, you can
+     remove the default Obs column that displays observation numbers.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  libname clinic 'your-SAS-data-library';
+  proc print data=clinic.admit noobs;
+     var age height weight fee;
+     where age>30;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Creating a Basic Report</h2>
+
+  <p>To produce a simple list report, you first reference the library in which your SAS data set is
+     stored. If you want, you can also set SAS system options to control the appearance of your
+     reports. Then you submit a basic PROC PRINT step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, basic PROC PRINT step:</strong></p>
+  <p><strong>PROC PRINT &lt;DATA</strong>=SAS-data-set&gt;; <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where <i>SAS-data-set</i> is the name of the SAS data set to be printed.</p>
+  <hr/>
+
+  <p>In the program below, the PROC PRINT statement invokes the PRINT procedure and specifies
+     the data set Therapy in the SAS data library to which the libref Patients has been assigned.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  libname patients 'c:\records\patients';
+  proc print data=patients.therapy;
+  run;</pre>
+  </div>
+
+  <p>Notice the layout of the resulting report. By default,</p>
+
+  <ul>
+    <li>all observations and variables in the data set are printed.</li>
+    <li>a column for observation numbers appears on the far left.</li>
+    <li>variables appear in the order in which they occur in the data set.</li>
+  </ul>
+
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">AerClass</th>
+      <th class="color-red">WalkJogRun</th>
+      <th class="color-red">Swim</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>JAN1999</td>
+      <td>56</td>
+      <td>78</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>FEB1999</td>
+      <td>32</td>
+      <td>109</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>MAR1999</td>
+      <td>35</td>
+      <td>106</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>APR1999</td>
+      <td>47</td>
+      <td>115</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>MAY1999</td>
+      <td>55</td>
+      <td>121</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>JUN1999</td>
+      <td>61</td>
+      <td>114</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>JUL1999</td>
+      <td>67</td>
+      <td>102</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>AUG1999</td>
+      <td>64</td>
+      <td>76</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>SEP1999</td>
+      <td>78</td>
+      <td>77</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>OCT1999</td>
+      <td>81</td>
+      <td>62</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>NOV1999</td>
+      <td>84</td>
+      <td>31</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>DEC1999</td>
+      <td>2</td>
+      <td>44</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>JAN2000</td>
+      <td>37</td>
+      <td>91</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>FEB2000</td>
+      <td>41</td>
+      <td>102</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>MAR2000</td>
+      <td>52</td>
+      <td>98</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>APR2000</td>
+      <td>61</td>
+      <td>118</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>MAY2000</td>
+      <td>49</td>
+      <td>88</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>JUN2000</td>
+      <td>24</td>
+      <td>101</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>JUL2000</td>
+      <td>45</td>
+      <td>91</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>AUG2000</td>
+      <td>63</td>
+      <td>65</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>SEP2000</td>
+      <td>60</td>
+      <td>49</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>OCT2000</td>
+      <td>78</td>
+      <td>70</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>NOV2000</td>
+      <td>82</td>
+      <td>44</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>DEC2000</td>
+      <td>93</td>
+      <td>57</td>
+      <td>47</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table class="note-table">
+  <tr>
+    <th class="color-blue">Note</th>
+    <td>Be sure to specify the equal sign in the DATA= option in SAS procedures. If
+        you omit the equal sign, your program produces an error similar to the
+        following in the SAS log.
+    </td>
+  </tr>
+  </table>
+  <br/>
+
+  <p class="color-red">SAS Log</p>
+  <div class="scrolling-div">
+  <pre>
+  1 proc print data: patients.therapy;
+  ----------------
+  73
+
+  2 run;
+  ERROR 73-322: Expecting an =.
+  NOTE: The SAS System stopped processing this step
+        because of errors.</pre>
+  </div>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Selecting Variables</h3>
+
+  <p>By default, a PROC PRINT step lists all the variables in a data set. You can select variables and
+     control the order in which they appear by using a VAR statement in your PROC PRINT step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, VAR statement:</strong></p>
+  <p><strong>VAR</strong> variable(s);</p>
+  <p>where variable(s) is one or more variable names, separated by blanks.</p>
+  <hr/>
+
+  <p>For example, the following VAR statement specifies that only the variables <i>Age, Height,
+     Weight</i>, and <i>Fee</i> be printed, in that order:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.admit;
+     var age height weight fee;
+  run;</pre>
+  </div>
+
+  <p>The procedure output from the PROC PRINT step with the VAR statement lists only the values
+     for the variables <i>Age, Height, Weight</i>, and <i>Fee</i>.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>30</td>
+      <td>69</td>
+      <td>147</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>  
+
+  <p>In addition to selecting variables, you can control the default <i>Obs</i> column that PROC PRINT
+     displays to list observation numbers. If you prefer, you can choose not to display observation
+     numbers.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>124.80</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Removing the OBS Column</h3>
+
+  <p>To remove the <i>Obs</i> column, specify the NOOBS option in the PROC PRINT statement.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=work.example noobs;
+     var age height weight fee;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>63</td>
+      <td>139</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>75</td>
+      <td>188</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>72</td>
+      <td>168</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>62</td>
+      <td>118</td>
+      <td>85.20</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>76</td>
+      <td>193</td>
+      <td>124.80</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+  
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Identifying Observations</h2>
+
+  <p>You've learned how to remove the Obs column altogether. As another alternative, you can use
+     one or more variables to replace the <i>Obs</i> column in the output.
+  </p>
+
+  <p>To specify which variables should replace the <i>Obs</i> column, use the ID statement. This technique
+     is particularly useful when observations are too long to print on one line.
+  </p>
+
+  <hr/>
+  <p><strong>General form, ID statement:</strong></p>
+  <p><strong>ID</strong> variable(s);</p>
+  <p>where <i>variable(s)</i> specifies one or more variables to print instead of the observation number at
+     the beginning of each row of the report.
+  </p>
+  <hr/>
+  
+  <h4>Example</h4>
+
+  <p>To replace the <i>Obs</i> column and identify observations based on an employee's ID number and last
+     name, you can submit the following program.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=sales.reps;
+     id idnum lastname;
+  run;</pre>
+  </div>
+
+  <p>This is HTML output from the program:</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">Lastname</th>
+      <th class="color-red">Firstname</th>
+      <th class="color-red">City</th>
+      <th class="color-red">State</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">JobCode</th>
+      <th class="color-red">Salary</th>
+      <th class="color-red">Birth</th>
+      <th class="color-red">Hired</th>
+      <th class="color-red">HomePhone</th>
+    </tr>
+    <tr>
+      <th>1269</th>
+      <th>CASTON</th>
+      <td>FRANKLIN</td>
+      <td>STAMFORD</td>
+      <td>CT</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>41690</td>
+      <td>06MAY60</td>
+      <td>01DEC80</td>
+      <td>203/781-3335</td>
+    </tr>
+    <tr>
+      <th>1935</th>
+      <th>FERNANDEZ</th>
+      <td>KATRINA</td>
+      <td>BRIDGEPORT</td>
+      <td>CT</td>
+      <td>&nbsp;</td>
+      <td>NA2</td>
+      <td>51081.00</td>
+      <td>31MAR42</td>
+      <td>19OCT69</td>
+      <td>203/675-2962</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <th>NEWKIRK</th>
+      <td>WILLIAM</td>
+      <td>PATERSON</td>
+      <td>NJ</td>
+      <td>,</td>
+      <td>NA2</td>
+      <td>52270.00</td>
+      <td>30JUN52</td>
+      <td>10MAR77</td>
+      <td>201/732-6611</td>
+    </tr>
+    <tr>
+      <th>1839</th>
+      <th>NORRIS</th>
+      <td>DIANE</td>
+      <td>NEW YORK</td>
+      <td>NY</td>
+      <td>F</td>
+      <td>NA1</td>
+      <td>43433.00</td>
+      <td>02DEC58</td>
+      <td>06JUL81</td>
+      <td>718/384-1767</td>
+    </tr>
+    <tr>
+      <th>1111</th>
+      <th>RHODES</th>
+      <td>JEREMY</td>
+      <td>PRINCETON</td>
+      <td>NJ</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>40586.00</td>
+      <td>17JUL61</td>
+      <td>03NOV80</td>
+      <td>201/812-1837</td>
+    </tr>
+    <tr>
+      <th>1352</th>
+      <th>RIVERS</th>
+      <td>SIMON</td>
+      <td>NEW YORK</td>
+      <td>NY</td>
+      <td>M</td>
+      <td>NA2</td>
+      <td>5379.80</td>
+      <td>05DEC48</td>
+      <td>19OCT74</td>
+      <td>718/383-3345</td>
+    </tr>
+    <tr>
+      <th>1332</th>
+      <th>STEPHENSON</th>
+      <td>ADAM</td>
+      <td>BRIDGEPORT</td>
+      <td>CT</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>42178.00</td>
+      <td>20SEP58</td>
+      <td>20SEP58 07JUN79</td>
+      <td>203/675-1497</td>
+    </tr>
+    <tr>
+      <th>1443</th>
+      <th>WELLS</th>
+      <td>AGNES</td>
+      <td>STAMFORD</td>
+      <td>CT</td>
+      <td>F</td>
+      <td>NA1</td>
+      <td>422.74</td>
+      <td>20NOV56</td>
+      <td>01SEP79</td>
+      <td>203/781-5546</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <div class="scrolling-div">
+  <pre>
+  IDnum LastName  FirstName City     State Sex JobCode
+
+  1269  CASTON    FRANKLIN  STAMFORD CT    M   NA1
+  1935  FERNANDEZ KATRINA   BRIDGEPO CT        NA2
+  1417  NEWKIRK   WILLIAM   PATERSON NJ    ,   NA2
+  1839  NORRIS    DIANE     NEW YORK NY    F   NA1
+  1111  RHODES    JEREMY    PRINCETO NJ    M   NA1
+  1352  RIVERS    SIMON     NEW YORK NY    M   NA2
+  1332  STEPHENS  ADAM      BRIDGEPO CT    M   NA1
+  1443  WELLS     AGNES     STAMFORD CT    F   NA1
+
+  IDnum LastName  Salary   Birth   Hired   HomePhone
+
+  1269  CASTON    41690.00 06MAY60 01DEC80 203/781-3335
+  1935  FERNANDEZ 51081.00 31MAR42 19OCT69 203/675-2962
+  1417  NEWKIRK   52270.00 30JUN52 10MAR77 201/732-6611
+  1839  NORRIS    43433.00 02DEC58 06JUL81 718/384-1767
+  1111  RHODES    40586.00 17JUL61 03NOV80 201/812-1837
+  1352  RIVERS    5379.80  05DEC48 19OCT74 718/383-3345
+  1332  STEPHENS  42178.00 20SEP58 07JUN79 203/675-1497
+  1443  WELLS     422.74   20NOV56 01SEP79 203/781-5546</pre>
+  </div>
+
+  <p>If a variable in the ID statement also appears in the VAR statement, the output contains two
+     columns for that variable. In the example below, the variable IDnum appears twice.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=sales.reps;
+     id idnum lastname;
+     var idnum sex jobcode salary;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">Lastname</th>
+      <th class="color-red">IDnum</th>
+      <th class="color-red">Sex</th>
+      <th class="color-red">JobCode</th>
+      <th class="color-red">Salary</th>
+    </tr>
+    <tr>
+      <th>1269</th>
+      <th>CASTON</th>
+      <td>1269</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>41690.00</td>
+    </tr>
+    <tr>
+      <th>1935</th>
+      <th>FERNANDEZ</th>
+      <td>1935</td>
+      <td>&nbsp;</td>
+      <td>NA2</td>
+      <td>51081.00</td>
+    </tr>
+    <tr>
+      <th>1417</th>
+      <th>NEWKIRK</th>
+      <td>1417</td>
+      <td>,</td>
+      <td>NA2</td>
+      <td>52270.00</td>
+    </tr>
+    <tr>
+      <th>1839</th>
+      <th>NORRIS</th>
+      <td>1839</td>
+      <td>F</td>
+      <td>NA1</td>
+      <td>43433.00</td>
+    </tr>
+    <tr>
+      <th>1111</th>
+      <th>RHODES</th>
+      <td>1111</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>40586.00</td>
+    </tr>
+    <tr>
+      <th>1352</th>
+      <th>RIVERS</th>
+      <td>1352</td>
+      <td>M</td>
+      <td>NA2</td>
+      <td>5379.80</td>
+    </tr>
+    <tr>
+      <th>1332</th>
+      <th>STEPHENSON</th>
+      <td>1332</td>
+      <td>M</td>
+      <td>NA1</td>
+      <td>42178.00</td>
+    </tr>
+    <tr>
+      <th>1443</th>
+      <th>WELLS</th>
+      <td>1443</td>
+      <td>F</td>
+      <td>NA1</td>
+      <td>422.74</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Selecting Observations</h2>
+
+  <p>By default, a PROC PRINT step lists all the observations in a data set. You can control which
+     observations are printed by adding a WHERE statement to your PROC PRINT step. There can
+     be only one WHERE statement in a step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, WHERE statement:</strong></p>
+  <p><strong>WHERE</strong> where-expression;</p>
+  <p>where <i>where-expression</i> specifies a condition for selecting observations. The <i>where-expression</i>
+     can be any valid SAS expression.
+  </p>
+  <hr/>
+
+  <p>For example, the following WHERE statement selects only observations for which the value of
+     Age is greater than 30:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.admit;
+     var age height weight fee;
+     where age>30;
+  run;</pre>
+  </div>
+
+  <p>Here is the procedure output from the PROC PRINT step with the WHERE statement:</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Obs</th>
+       <th class="color-red">Age</th>
+       <th class="color-red">Height</th>
+       <th class="color-red">Weight</th>
+       <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Specifying WHERE Expressions</h3>
+
+  <p>In the WHERE statement you can specify any variable in the SAS data set, not just the variables
+     that are specified in the VAR statement. The WHERE statement works for both character and
+     numeric variables. To specify a condition based on the value of a character variable, you must
+  </p>
+ 
+  <ul>
+  <li>enclose the value in quotation marks.</li>
+  <li>write the value with lowercase and uppercase letters exactly as it appears in the data set.</li>
+  </ul>
+
+  <p>You use the following <strong>comparison operators</strong> to express a condition in the WHERE statement:</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Symbol</th>
+       <th class="color-red">Meaning</th>
+       <th class="color-red">Example</th>
+    </tr>
+    <tr>
+      <td>= or eq</td>
+      <td>equal to</td>
+      <td>where name='Jones, C.';</td>
+    </tr>
+    <tr>
+      <td>^= or ne</td>
+      <td>not equal to</td>
+      <td>where temp ne 212;</td>
+    </tr>
+    <tr>
+      <td>&gt; or gt</td>
+      <td>greater than</td>
+      <td>where income&gt;20000;</td>
+    </tr>
+    <tr>
+      <td>&lt; or lt</td>
+      <td>less than</td>
+      <td>where partno lt "BG05";</td>
+    </tr>
+    <tr>
+      <td>&gt;= or ge</td>
+      <td>greater than or equal to</td>
+      <td>where id&gt;='1543';</td>
+    </tr>
+    <tr>
+      <td>&lt;= or le</td>
+      <td>less than or equal to</td>
+      <td>where pulse le 85;</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note<th>
+      <td>You can learn more about valid SAS expressions in the Chapter, Creating SAS Data Sets from Raw Data.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Using the CONTAINS Operator</h3>
+
+  <p>The CONTAINS operator selects observations that include the specified substring. The
+     mnemonic equivalent for the CONTAINS operator is ?. You can use either the CONTAINS
+     keyword or the mnemonic equivalent in your code, as shown below.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  where firstname CONTAINS 'Jon';
+  where firstname ? 'Jon';</pre>
+  </div>
+
+  <!-- Topic 5 Subtopic 3 -->
+  <h3 class="subtopic" id="topic5_subtopic3">Specifying Compound WHERE Expressions</h3>
+
+  <p>You can also use WHERE statements to select observations that meet multiple conditions. To
+     link a sequence of expressions into compound expressions, you use logical operators, including
+     the following:
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+       <th class="color-red">Operator</th>
+       <th class="color-red">Meaning</th>
+    </tr>
+    <tr>
+      <th>AND or &</th>
+      <td>and, both. If both expressions are true, then the compound expression is
+          true.
+      </td>
+    </tr>
+    <tr>
+      <th>OR or |</th>
+      <td>or, either. If either expression is true, then the compound expression is true.
+      </td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 5 Subtopic 4 -->
+  <h3 class="subtopic" id="topic5_subtopic4">Examples of WHERE Statements</h3>
+
+  <ul>
+    <li>Here are some examples of WHERE statements that use logical operators:
+        <div class="scrolling-div">
+        <pre>
+        where age<=55 and pulse>75;
+        where area='A' or region='S';
+        where ID>1050 and state='NC';</pre>
+        </div>
+    </li>
+    <li>When you test for <strong>multiple values of the same variable</strong>, you specify the variable name
+        in each expression:
+        <div class="scrolling-div">
+        <pre>
+        where actlevel='LOW' or actlevel='MOD';
+        where fee=124.80 or fee=178.20;</pre>
+        </div>
+    </li>
+    <li>You can use the <strong>IN operator</strong> as a convenient alternative:
+        <div class="scrolling-div">
+        <pre>
+        where actlevel in ('LOW','MOD');
+        where fee in (124.80,178.20);</pre>
+        </div>
+    </li>
+    <li>To control the way compound expressions are evaluated, you can use <strong>parentheses</strong>
+        (expressions in parentheses are evaluated first):
+        <div class="scrolling-div">
+        <pre>
+        where (age<=55 and pulse>75) or area='A';
+        where age<=55 and (pulse>75 or area='A');</pre>
+        </div>
+    </li>
+  </ul>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Sorting Data</h2>
+
+  <p>By default, PROC PRINT lists observations in the order in which they appear in your data set. To
+     sort your report based on values of a variable, you must use PROC SORT to sort your data
+     before using the PRINT procedure to create reports from the data.
+  </p>
+
+  <p>The SORT procedure</p>
+
+  <ul>
+    <li>rearranges the observations in a SAS data set.</li>
+    <li>creates a new SAS data set that contains the rearranged observations.</li>
+    <li>replaces the original SAS data set by default.</li>
+    <li>can sort on multiple variables.</li>
+    <li>can sort in ascending or descending order.</li>
+    <li>does not generate printed output.</li>
+    <li>treats missing values as the smallest possible values.</li>
+  </ul>
+
+  <hr/>
+  <p><strong>General form, simple PROC SORT step:</strong></p> 
+  <p><strong>PROC SORT DATA</strong>=SAS-data-set &lt;<strong>OUT</strong>=SAS-data-set&gt;; <br/>
+     &nbsp;&nbsp; <strong>BY &lt;DESCENDING&gt;</strong> BY-variable(s); <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>the <strong>DATA=</strong> option specifies the data set to be read.</li>
+    <li>the <strong>OUT=</strong> option specifies the output data set that contains the data in sorted order.</li>
+    <li>BY-variable(s) in the required <strong>BY</strong> statement specifies one or more variables whose
+        values are used to sort the data.
+    </li>
+    <li>the <strong>DESCENDING</strong> option in the BY statement sorts observations in descending order. If
+        you have more than one variable in the BY statement, DESCENDING applies only to the
+        variable that immediately follows it.
+    </li>
+  </ul>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>If you don't use the OUT= option, PROC SORT <strong>permanently</strong> sorts the
+          data set that is specified in the DATA= option. If you need your data to
+          be sorted to produce output for only one SAS session, then you should
+          specify a temporary SAS data set as the output data set.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>In the following program, the PROC SORT step sorts the permanent SAS data set <strong>Clinic.Admit</strong>
+     by the values of the variable Age within the values of the variable Weight and creates the
+     temporary SAS data set <strong>Wgtadmit</strong>. Then the PROC PRINT step prints the <strong>Wgtadmit</strong> data set.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc sort data=clinic.admit out=work.wgtadmit;
+     by weight age;
+  run;
+  proc print data=work.wgtadmit;
+     var age height weight fee;
+     where age>30;
+  run;</pre>
+  </div>
+  
+
+  <p>The report displays observations in ascending order of age within weight.</p>
+
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">work.wgtadmit(partial output)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Adding the DESCENDING option to the BY statement sorts observations in ascending order of
+     age within descending order of weight. Notice that DESCENDING applies only to the variable
+     <i>Weight</i>.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc sort data=clinic.admit out=work.wgtadmit;
+     by descending weight age;
+  run;
+  proc print data=work.wgtadmit;
+     var age height weight fee;
+     where age>30;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">work.wgtadmit(partial output)</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>12480</td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Generating Column Totals</h2>
+
+  <p>To produce column totals for numeric variables, you can list the variables to be summed in a
+     <strong>SUM statement</strong> in your PROC PRINT step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, SUM statement:</strong></p>
+  <p><strong>SUM</strong> variable(s);</p>
+  <p>where <i>variable(s)</i> is one or more variable names, separated by blanks. You do not need to name
+     the variables in a VAR statement if you specify them in the SUM statement.
+  </p>
+  <hr/>
+
+  <p>The SUM statement in the following PROC PRINT step requests column totals for the variable
+     <i>BalanceDue</i>:
+  </p>
+
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.insure;
+     var name policy balancedue;
+     where pctinsured < 100;
+     sum balancedue;
+  run;</pre>
+  </div>
+
+  <p>Column totals appear at the end of the report in the same format as the values of the variables.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Name</th>
+      <th class="color-red">Policy</th>
+      <th class="color-red">BalanceDue</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Almers, C</td>
+      <td>95824</td>
+      <td>156.05</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Bonaventure, T</td>
+      <td>87795</td>
+      <td>9.48</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Johnson, R</td>
+      <td>39022</td>
+      <td>61.04</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>LaMance, K</td>
+      <td>63265</td>
+      <td>43.68</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Jones, M</td>
+      <td>92478</td>
+      <td>52.42</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Reberson, P</td>
+      <td>25530</td>
+      <td>207.41</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>King, E</td>
+      <td>18744</td>
+      <td>27.19</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Pitts, D</td>
+      <td>60976</td>
+      <td>310.82</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Eberhardt, S</td>
+      <td>81589</td>
+      <td>173.17</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>Peterson, V</td>
+      <td>75986</td>
+      <td>228.00</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>Quigley, M</td>
+      <td>97048</td>
+      <td>99.01</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>Cameron, L</td>
+      <td>42351</td>
+      <td>111.41</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>Takahashi, Y</td>
+      <td>54219</td>
+      <td>186.58</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>Derber, B</td>
+      <td>74653</td>
+      <td>236.11</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>Wilcox, E</td>
+      <td>94034</td>
+      <td>212.20</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>Warren, C</td>
+      <td>20347</td>
+      <td>164.44</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>2279.01</th>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Requesting Subtotals</h3>
+
+  <p>You might also want to subtotal numeric variables. To produce subtotals, add both a <strong>SUM
+     statement</strong> and a <strong>BY statement</strong> to your PROC PRINT step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, BY statement in the PRINT procedure:</strong></p>
+  <p><strong>BY</strong> &lt;DESCENDING&gt; BY-variable-1 <br/>
+     &lt;...&lt;DESCENDING&gt; &lt;BY-variable-n&gt;&gt; <br/>
+     &lt;NOTSORTED&gt;;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>BY-variable specifies a variable that the procedure uses to form BY groups. You can
+        specify more than one variable, separated by blanks.
+    </li>
+    <li>the <strong>DESCENDING</strong> option specifies that the data set is to be sorted in descending order
+        by the variable that immediately follows.
+    </li>
+    <li>the <strong>NOTSORTED</strong> option specifies that the observations are not necessarily sorted in
+        alphabetic or numeric order. If observations that have the same values for the BY variables
+        are not contiguous, then the procedure treats each contiguous set as a separate BY group.
+    </li>
+  </ul>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>If you do not use the NOTSORTED option in the BY statement, the
+          observations in the data set must either be sorted by all the variables
+          that you specify, or they must be indexed appropriately.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>The SUM statement in the following PROC PRINT step requests column totals for the variable
+     <i>Fee</i>, and the BY statement produces a subtotal for each value of <i>ActLevel</i>.
+  </p>
+
+
+  <div class="scrolling-div">
+  <pre>
+  proc sort data=clinic.admit out=work.activity;
+     by actlevel;
+  run;
+  proc print data=work.activity;
+     var age height weight fee;
+     where age>30;
+     sum fee;
+     by actlevel;
+  run;</pre>
+  </div>
+
+  <p>In the output, the BY variable name and value appear before each BY group. The BY variable
+     name and the subtotal appear at the end of each BY group.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">ActLevel=HIGH</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>ActLevel</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>549.10</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="5">ActLevel=LOW</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>ActLevel</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>673.90</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="5">ActLevel=MOD</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>ActLevel</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>848.60</th>
+    </tr>
+   <tr>
+      <th>&nbsp;</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>2071.60</th>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 7 Subtopic 2 -->
+  <h3 class="subtopic" id="topic7_subtopic2">Creating a Customized Layout with BY Groups and ID Variables</h3>
+
+  <p>In the previous example, you might have noticed the redundant information for the BY variable.
+     For example, in the partial PROC PRINT output below, the BY variable ActLevel is identified
+     both before the BY group and for the subtotal.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">ActLevel=HIGH</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>ActLevel</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>549.10</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>To show the BY variable heading only once, you can use an <strong>ID statement</strong> and a <strong>BY statement</strong>
+     together with the SUM statement. When an ID statement specifies the same variable as the BY
+     statement,
+  </p>
+
+  <ul>
+    <li>the <i>Obs</i> column is suppressed.</li>
+    <li>the ID/BY variable is printed in the left-most column.</li>
+    <li>each ID/BY value is printed only at the start of each BY group and on the line that
+        contains that group's subtotal.
+    </li>
+  </ul>
+
+  <h4>Example</h4>
+
+  <p>The ID, BY, and SUM statements work together to produce the output shown below. The ID
+     variable is listed only once for each BY group and once for each sum. The BY lines are
+     suppressed. Instead, the value of the ID variable, <i>ActLevel</i>, identifies each BY group.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc sort data=clinic.admit out=work.activity;
+     by actlevel;
+  run;
+  proc print data=work.activity;
+     var age height weight fee;
+     where age>30;
+     sum fee;
+     by actlevel;
+     id actlevel;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <th>HIGH</th>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>HIGH</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>549.10</td>
+    </tr>
+
+    <tr>
+      <th>LOW</th>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>LOW</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>673.90</th>
+    </tr>
+
+    <tr>
+      <th>MOD</th>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>MOD</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>848.60</th>
+    </tr>
+   <tr>
+      <th>&nbsp;</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>2071.60</th>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 7 Subtopic 3 -->
+  <h3 class="subtopic" id="topic7_subtopic3">Requesting Subtotals on Separate Pages</h3>
+
+  <p>As another enhancement to your PROC PRINT report, you can request that each BY group be
+     printed on a separate page by using the <strong>PAGEBY statement</strong>.  
+  </p>
+
+  <hr/>
+  <p><strong>General form, PAGEBY statement:</strong></p>
+  <p><strong>PAGEBY</strong> BY-variable;</p>
+  <p>where BY-variable identifies a variable that appears in the BY statement in the PROC PRINT
+     step. PROC PRINT begins printing a new page if the value of any of the variables in the BY
+     statement changes.
+  </p>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>The variable that is specified in the PAGEBY statement must also be
+           specified in the BY statement in the PROC PRINT step.
+      </td
+    </tr>
+  </table>
+  <hr/>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>The PAGEBY statement in the program below prints BY groups for the variable <i>ActLevel</i>
+     separately. The BY groups appear on separate pages in the output.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc sort data=clinic.admit out=work.activity;
+     by actlevel;
+  run;
+  proc print data=work.activity;
+     var age height weight fee;
+     where age>30;
+     sum fee;
+     by actlevel;
+     id actlevel;
+     pageby actlevel;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <th>HIGH</th>
+      <td>34</td>
+      <td>66</td>
+      <td>152</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>44</td>
+      <td>66</td>
+      <td>140</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>40</td>
+      <td>69</td>
+      <td>163</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>41</td>
+      <td>67</td>
+      <td>141</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>HIGH</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>549.10</th>
+    </tr>
+    <tr>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <th>LOW</th>
+      <td>31</td>
+      <td>61</td>
+      <td>123</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>51</td>
+      <td>71</td>
+      <td>158</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>34</td>
+      <td>73</td>
+      <td>154</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>49</td>
+      <td>64</td>
+      <td>172</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>60</td>
+      <td>71</td>
+      <td>191</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>LOW</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>673.90</th>
+    </tr>
+    <tr>
+      <th class="color-red">ActLevel</th>
+      <th class="color-red">Age</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Fee</th>
+    </tr>
+    <tr>
+      <th>MOD</th>
+      <td>43</td>
+      <td>63</td>
+      <td>137</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>32</td>
+      <td>67</td>
+      <td>151</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>35</td>
+      <td>70</td>
+      <td>173</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>47</td>
+      <td>72</td>
+      <td>173</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>43</td>
+      <td>65</td>
+      <td>123</td>
+      <td>124.80</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>54</td>
+      <td>71</td>
+      <td>183</td>
+      <td>149.75</td>
+    </tr>
+    <tr>
+      <th>MOD</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>848.60</th>
+    </tr>
+   <tr>
+      <th>&nbsp;</th>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <th>2071.60</th>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Double-Spacing Listing Output</h2>
+
+  <p>If you are generating SAS listing output, one way to control the layout is to double-space it. To
+     double-space, specify the DOUBLE option in the PROC PRINT statement.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.stress double;
+     var resthr maxhr rechr;
+     where tolerance='I';
+  run;</pre>
+  </div>
+
+  <table class="note-table">
+  <tr>
+    <th class="color-blue">Note</th>
+    <td>Double-spacing does not apply to HTML output.</td>
+  </tr>
+  </table>
+
+  <p class="color-red">SAS Output</p>
+
+  <div class="scrolling-div">
+  <pre>
+  OBS RestHR MaxHR RecHR
+    2     68   171   133
+    3     78   177   139
+    8     70   167   122
+   11     65   181   141
+   14     74   152   113
+   15     75   158   108
+   20     78   189   138
+  </pre>
+  </div>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Specifying Titles and Footnotes</h2>
+
+  <p>Now you've learned how to structure your PROC PRINT output. However, you might also want to
+     make your reports easy to interpret by
+  </p>
+
+  <ul>
+    <li>adding titles and footnotes.</li>
+    <li>replacing variable names with descriptive labels.</li>
+    <li>formatting variable values.</li>
+  </ul>
+
+  <p>Although this chapter focuses on PROC PRINT, you can apply these enhancements to most SAS
+     procedure output.
+  </p>
+
+  <!-- Topic 9 Subtopic 1 -->
+  <h3 class="subtopic" id="topic9_subtopic1">TITLE and FOOTNOTE Statements</h3>
+
+  <p>To make your report more meaningful and self-explanatory, you can specify up to 10 titles with
+     procedure output by using <strong>TITLE statements</strong> before the PROC step. Likewise, you can specify
+     up to 10 footnotes by using <strong>FOOTNOTE statements</strong> before the PROC step.
+  </p>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Because TITLE and FOOTNOTE statements are global statements, place
+          them before the PRINT procedure. Titles and footnotes are assigned as soon
+          as TITLE or FOOTNOTE statements are read; they apply to all subsequent
+          output.
+      </td>
+    </tr>
+  </table>
+
+  <hr/>
+  <p><strong>General form, TITLE and FOOTNOTE statements:</strong></p>
+  <p><strong>TITLE</strong>&lt;n&gt; 'text';  <br/>
+     <strong>FOOTNOTE</strong>&lt;n&gt; 'text'; <br/>
+  </p>
+  <p>where</p>
+  <ul>
+    <li>n is a number from 1 to 10 that specifies the title or footnote line</li>
+    <li>'text' is the actual title or footnote to be displayed.</li>
+  </ul>
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>Be sure to match quotation marks that enclose the title or footnote text.
+      </td>
+    </tr>
+  </table>
+  <hr/>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The maximum title or footnote length depends on your operating environment and
+          on the value of the LINESIZE= option. <br/><br/>
+          The keyword <i>title</i> is equivalent to title1. Likewise, the keyword <i>footnote</i> is
+          equivalent to footnote1. <br/><br/>
+          If you don't specify a title, the default title is <strong>The SAS System</strong>. No footnote is
+          printed unless you specify one.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <h4>Examples: Titles</h4>
+
+  <p>The two TITLE statements below, specified for lines 1 and 3, define titles for the PROC PRINT
+     output.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  title1 'Heart Rates for Patients with';
+  title3 'Increased Stress Tolerance Levels';
+  proc print data=clinic.stress;
+     var resthr maxhr rechr;
+     where tolerance='I';
+  run;</pre>
+  </div>
+
+  <p>In <strong>HTML output</strong>, title lines appear consecutively, without extra spacing to indicate skipped title
+     numbers.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="4">Heart Rates for Patients with Increased Stress Tolerance Levels</th>
+    </tr>
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>65</td>
+      <td>181</td>
+      <td>141</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>74</td>
+      <td>152</td>
+      <td>113</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>75</td>
+      <td>158</td>
+      <td>108</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>78</td>
+      <td>189</td>
+      <td>138</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>In <strong>SAS listing output</strong>, title line 2 is blank, as shown below. Titles are centered by default.</p>
+
+  <div class="scrolling-div">
+  <pre>
+    Heart Rates for Patients with
+
+  Increased Stress Tolerance Levels
+
+       OBS RestHR MaxHR RecHR
+         2     68   171   133
+         3     78   177   139
+         8     70   167   122
+        11     65   181   141
+        14     74   152   113
+        15     75   158   108
+        20     78   189   138</pre>
+  </div>
+
+  <h4>Examples: Footnotes</h4>
+
+  <p>The two FOOTNOTE statements below, specified for lines 1 and 3, define footnotes for the
+     PROC PRINT output.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  footnote1 'Data from Treadmill Tests';
+  footnote3 '1st Quarter Admissions';
+  proc print data=clinic.stress;
+     var resthr maxhr rechr;
+     where tolerance='I';
+  run;</pre>
+  </div>
+
+  <p>Footnotes appear at the bottom of each page of procedure output. Notice that footnote lines are
+     "pushed up" from the bottom. The FOOTNOTE statement that has the largest number appears on
+     the bottom line.
+  </p>
+
+  <p>In <strong>HTML output</strong>, footnote lines simply appear consecutively, without extra spacing to indicate
+     skipped footnote numbers.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">RestHR</th>
+      <th class="color-red">MaxHR</th>
+      <th class="color-red">RecHR</th>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>68</td>
+      <td>171</td>
+      <td>133</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>78</td>
+      <td>177</td>
+      <td>139</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>70</td>
+      <td>167</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>65</td>
+      <td>181</td>
+      <td>141</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>74</td>
+      <td>152</td>
+      <td>113</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>75</td>
+      <td>158</td>
+      <td>108</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>78</td>
+      <td>189</td>
+      <td>138</td>
+    </tr>
+    <tr>
+      <th colspan="4">Data from Treadmill Tests 1st Quarter Admissions</th>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>In <strong>SAS listing output</strong>, footnote line 2 is blank, as shown below. Footnotes are centered by
+     default.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+    OBS RestHR MaxHR RecHR
+      2     68   171   133
+      3     78   177   139
+      8     70   167   122
+     11     65   181   141
+     14     74   152   113
+     15     75   158   108
+     20     78   189   138
+
+   Data from Treadmill Tests
+
+    1st Quarter Admissions</pre>
+  </div>
+
+  <!-- Topic 9 Subtopic 2 -->
+  <h3 class="subtopic" id="topic9_subtopic2">Modifying and Canceling Titles and Footnotes</h3>
+
+  <p>TITLE and FOOTNOTE statements are <strong>global statements</strong>. That is, after you define a title or
+     footnote, it remains in effect until you modify it, cancel it, or end your SAS session.
+  </p>
+
+  <p>For example, the footnotes that are assigned in the PROC PRINT step below also appear in the
+     output from the PROC TABULATE step.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  footnote1 'Data from Treadmill Tests';
+  footnote3 '1st Quarter Admissions';
+  proc print data=clinic.stress;
+     var resthr maxhr rechr;
+     where tolerance='I';
+  run;
+  proc tabulate data=clinic.stress;
+     where tolerance='I';
+     var resthr maxhr;
+     table mean*(resthr maxhr);
+  run;</pre>
+  </div>
+
+  <p>Re-defining a title or footnote line cancels any higher-numbered title or footnote line, in that order.
+     In the example below, defining a title for line 2 in the second report automatically cancels title line
+     3.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  title3 'Participation in Exercise Therapy';
+  proc print data=clinic.therapy;
+     var swim walkjogrun aerclass;
+  run;
+  title2 'Report for March';
+  proc print data=clinic.therapy;
+  run;</pre>
+  </div>
+
+  <p>To cancel all previous titles or footnotes, specify a null TITLE or FOOTNOTE statement (a TITLE
+     or FOOTNOTE statement with no number or text) or a TITLE1 or FOOTNOTE1 statement with no
+     text. This will also cancel the default title <strong>The SAS System</strong>.
+  </p>
+
+  <p>For example, in the program below, the null TITLE1 statement cancels all titles that are in effect
+     before either PROC step executes. The null FOOTNOTE statement cancels all footnotes that are
+     in effect after the PROC PRINT step executes. The PROC TABULATE output appears without a
+     footnote.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  title1;
+  footnote1 'Data from Treadmill Tests';
+  footnote3 '1st Quarter Admissions';
+  proc print data=clinic.stress;
+     var resthr maxhr rechr;
+     where tolerance='I';
+  run;
+  footnote;
+  proc tabulate data=clinic.stress;
+     var timemin timesec;
+  table max*(timemin timesec);
+  run;</pre>
+  </div>
+
+  <!-- Topic 10 -->
+  <h2 class="topic" id="topic10">Assigning Descriptive Labels</h2>
+
+  <!-- Topic 10 Subtopic 1 -->
+  <h3 class="subtopic" id="topic10_subtopic1">Temporarily Assigning Labels to Variables</h3>
+
+  <p>You can also enhance your PROC PRINT report by labeling columns with more descriptive text.
+     To label columns, you use
+  </p>
+
+  <ul>
+    <li>the <strong>LABEL statement</strong> to assign a descriptive label to a variable.</li>
+    <li>the <strong>LABEL option</strong> in the PROC PRINT statement to specify that the labels be displayed.</li>
+  </ul>
+ 
+  <hr/>
+  <p><strong>General form, LABEL statement:</strong></p>
+  <p><strong>LABEL</strong> variable1='label1' <br/>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; variable2='label2' <br/>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ... ;</p>
+  <p>Labels can be up to 256 characters long. Enclose the label in quotation marks.</p>
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The LABEL statement applies only to the PROC step in which it appears.
+      </td>
+    </tr>
+  </table>  
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>In the PROC PRINT step below, the variable name <i>WalkJogRun</i> is displayed with the label
+     <strong>Walk/Jog/Run</strong>. Note the LABEL option in the PROC PRINT statement.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.therapy label;
+     label walkjogrun='Walk/Jog/Run';
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Obs</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">AerClass</th>
+      <th class="color-red">Walk/Jog/Run</th>
+      <th class="color-red">Swim</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>JAN1999</td>
+      <td>56</td>
+      <td>78</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>FEB1999</td>
+      <td>32</td>
+      <td>109</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>MAR1999</td>
+      <td>35</td>
+      <td>106</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>APR1999</td>
+      <td>47</td>
+      <td>115</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>MAY1999</td>
+      <td>55</td>
+      <td>121</td>
+      <td>31</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>JUN1999</td>
+      <td>61</td>
+      <td>114</td>
+      <td>67</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>JUL1999</td>
+      <td>67</td>
+      <td>102</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>AUG1999</td>
+      <td>64</td>
+      <td>76</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>SEP1999</td>
+      <td>78</td>
+      <td>77</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>OCT1999</td>
+      <td>81</td>
+      <td>62</td>
+      <td>47</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>NOV1999</td>
+      <td>84</td>
+      <td>31</td>
+      <td>52</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>DEC1999</td>
+      <td>2</td>
+      <td>44</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>JAN2000</td>
+      <td>37</td>
+      <td>91</td>
+      <td>83</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>FEB2000</td>
+      <td>41</td>
+      <td>102</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>MAR2000</td>
+      <td>52</td>
+      <td>98</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>APR2000</td>
+      <td>61</td>
+      <td>118</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>MAY2000</td>
+      <td>49</td>
+      <td>88</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>JUN2000</td>
+      <td>24</td>
+      <td>101</td>
+      <td>54</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>JUL2000</td>
+      <td>45</td>
+      <td>91</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>AUG2000</td>
+      <td>63</td>
+      <td>65</td>
+      <td>53</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>SEP2000</td>
+      <td>60</td>
+      <td>49</td>
+      <td>68</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>OCT2000</td>
+      <td>78</td>
+      <td>70</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>NOV2000</td>
+      <td>82</td>
+      <td>44</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>DEC2000</td>
+      <td>93</td>
+      <td>57</td>
+      <td>47</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Using Single or Multiple LABEL Statements</h4>
+ 
+  <p>You can assign labels in separate LABEL statements...</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.admit label;
+     var age height;
+     label age='Age of Patient';
+     label height='Height in Inches';
+  run;</pre>
+  </div>
+
+  <p>...or you can assign any number of labels in a single LABEL statement.</p>
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.admit label;
+     var actlevel height weight;
+     label actlevel='Activity Level'
+     height='Height in Inches'
+     weight='Weight in Pounds';
+  run;</pre>
+  </div>
+
+  <!-- Topic 11 -->
+  <h2 class="topic" id="topic11">Formatting Data Values</h2>
+
+  <!-- Topic 11 Subtopic 1 -->
+  <h3 class="subtopic" id="topic11_subtopic1">Temporarily Assigning Formats to Variables</h3>
+
+  <p>In your SAS reports, formats control how the data values are displayed. To make data values
+     more understandable when they are displayed in your procedure output, you can use the
+     FORMAT statement, which associates formats with variables.
+  </p>
+
+  <p>Formats affect only how the data values appear in output, not the actual data values as they are
+     stored in the SAS data set.
+  </p>
+
+  <hr/>
+  <p><strong>General form, FORMAT statement:</strong></p>
+  <p><strong>FORMAT</strong> variable(s) format-name;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable(s)</i> is the name of one or more variables whose values are to be written according
+        to a particular pattern.
+    </li>
+    <li><i>format-name</i> specifies a SAS format or a user-defined format that is used to write out the
+        values.
+    </li>
+  </ul>
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>The FORMAT statement applies only to the PROC step in which it
+          appears.
+      </td>
+    </tr>
+  </table>  
+  <hr/>
+
+  <p>You can use a separate FORMAT statement for each variable, or you can format several
+     variables (using either the same format or different formats) in a single FORMAT statement.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">This FORMAT Statement</th>
+      <th class="color-red">Associates</th>
+      <th class="color-red">To display Values as</th>
+    </tr>
+    <tr>
+      <td>format date mmddyy8.;</td>
+      <td>the format MMDDYY8. with the variable Date</td>
+      <td>06/05/03</td>
+    </tr>
+    <tr>
+      <td>format net comma5.0 gross comma8.2;</td>
+      <td>the format COMMA5.0 with the variable
+          Net and the format COMMA8.2 with the
+          variable Gross</td>
+      <td>1,234 5,678.90</td>
+    </tr>
+    <tr>
+      <td>format net gross dollar9.2;</td>
+      <td>the format DOLLAR9.2 with both
+          variables, Net and Gross
+      </td>
+      <td>$1,234.00 $5,678.90</td>
+    </tr>
+  </table>
+  </div> 
+  <br/>
+
+  <p>For example, the FORMAT statement below writes values of the variable Fee using dollar signs,
+     commas, and no decimal places:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=clinic.admit;
+     var actlevel fee;
+     where actlevel='HIGH';
+     format fee dollar4.;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th class="color-red">Obs</th>
+     <th class="color-red">ActLevel</th>
+     <th class="color-red">Fee</th>
+   </tr>
+   <tr> 
+     <td>1</td>
+     <td>HIGH</td>
+     <td>$85</td>
+   </tr>
+   <tr> 
+     <td>2</td>
+     <td>HIGH</td>
+     <td>$125</td>
+   </tr>
+   <tr> 
+     <td>6</td>
+     <td>HIGH</td>
+     <td>$125</td>
+   </tr>
+   <tr> 
+     <td>11</td>
+     <td>HIGH</td>
+     <td>$150</td>
+   </tr>
+   <tr> 
+     <td>14</td>
+     <td>HIGH</td>
+     <td>$125</td>
+   </tr>
+   <tr> 
+     <td>18</td>
+     <td>HIGH</td>
+     <td>$85</td>
+   </tr>
+   <tr> 
+     <td>20</td>
+     <td>HIGH</td>
+     <td>$150</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 11 Subtopic 2 -->
+  <h3 class="subtopic" id="topic11_subtopic2">Specifying SAS Formats</h3>
+
+  <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th class="color-red">Format</th>
+     <th class="color-red">Specifies These Values</th>
+     <th class="color-red">Example</th>
+   </tr>
+   <tr> 
+     <td>COMMAw.d</td>
+     <td>that contain commas and decimal places</td>
+     <td>comma8.2</td>
+   </tr>
+   <tr> 
+     <td>DOLLARw.d</td>
+     <td>that contain dollar signs, commas, and decimal places</td>
+     <td>dollar6.2</td>
+   </tr>
+   <tr> 
+     <td>MMDDYYw.</td>
+     <td>as date values of the form 09/12/97 (MMDDYY8.) or
+         09/12/1997 (MMDDYY10.)
+     </td>
+     <td>mmddyy10.</td>
+   </tr>
+   <tr> 
+     <td>w.</td>
+     <td>rounded to the nearest integer in w spaces</td>
+     <td>7.</td>
+   </tr>
+   <tr> 
+     <td>w.d</td>
+     <td>rounded to d decimal places in w spaces</td>
+     <td>8.2</td>
+   </tr>
+   <tr> 
+     <td>$w.</td>
+     <td>as character values in w spaces</td>
+     <td>$12.</td>
+   </tr>
+   <tr> 
+     <td>DATEw.</td>
+     <td>as date values of the form 16OCT99 (DATE7.) or
+         16OCT1999 (DATE9.)
+     </td>
+     <td>date9.</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Field Widths</h4>
+
+  <p>All SAS formats specify the total field width (w) that is used for displaying the values in the output.
+     For example, suppose the longest value for the variable Net is a four-digit number, such as 5400.
+     To specify the COMMAw.d format for Net, you specify a field width of 5 or more. You must count
+     the comma, because it occupies a position in the output, as shown in the table below.
+  </p>
+
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td>When you use a SAS format, be sure to specify a field width (w) that is
+          wide enough for the largest possible value. Otherwise, values might not be
+          displayed properly.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th>Stored Value</th>
+     <td>5400</td>
+   </tr>
+   <tr>
+     <th>Desired Format</th>
+     <td>COMMAw.d</td>
+   </tr>
+   <tr>
+     <th>Displayed Value</th>
+     <td>5,400</td>
+   </tr>
+   <tr>
+     <th>Positions Displayed in Output</th>
+     <td>5</td>
+   </tr>
+   <tr>
+     <th>FORMAT statement</th>
+     <td>format net comma5.0;</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Decimal Places</h4>
+
+  <p>For numeric variables you can also specify the number of decimal places (d), if any, to be
+     displayed in the output. Numbers are rounded to the specified number of decimal places.
+  </p>
+
+  <p>Writing the whole number 2030 as 2,030.00 requires eight print positions, including two decimal
+     places and the decimal point.
+  </p>
+
+ <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th>Stored Value</th>
+     <td>2030</td>
+   </tr>
+   <tr>
+     <th>Desired Format</th>
+     <td>COMMAw.d</td>
+   </tr>
+   <tr>
+     <th>Displayed Value</th>
+     <td>2,030.00</td>
+   </tr>
+   <tr>
+     <th>Positions Displayed in Output</th>
+     <td>8</td>
+   </tr>
+   <tr>
+     <th>FORMAT statement</th>
+     <td>format qtr3tax comma8.2;</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Formatting 15374 with a dollar sign, commas, and two decimal places requires 10 print positions.</p>
+
+ <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th>Stored Value</th>
+     <td>15374</td>
+   </tr>
+   <tr>
+     <th>Desired Format</th>
+     <td>DOLLARw.d</td>
+   </tr>
+   <tr>
+     <th>Displayed Value</th>
+     <td>$15,374.00</td>
+   </tr>
+   <tr>
+     <th>Positions Displayed in Output</th>
+     <td>10</td>
+   </tr>
+   <tr>
+     <th>FORMAT statement</th>
+     <td>format totsales dollar10.2;</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Examples</h4>
+
+  <p>This table shows you how data values are displayed when different format, field width, and
+     decimal place specifications are used.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th class="color-red">Stored Value</th>
+     <th class="color-red">Format</th>
+     <th class="color-red">Displayed Value</th>
+   </tr>
+   <tr>
+     <td>38245.3975</td>
+     <td>COMMA12.2</td>
+     <td>38,245.40</td>
+   </tr>
+   <tr>
+     <td>38245.3975</td>
+     <td>12.2</td>
+     <td>38245.40</td>
+   </tr>
+   <tr>
+     <td>38245.3975</td>
+     <td>DOLLAR12.2</td>
+     <td>$38,245.40</td>
+   </tr>
+   <tr>
+     <td>38245.3975</td>
+     <td>DOLLAR9.2</td>
+     <td>$38245.40</td>
+   </tr>
+   <tr>
+     <td>38245.3975</td>
+     <td>DOLLAR8.2</td>
+     <td>38245.40</td>
+   </tr>
+   <tr>
+     <td>0</td>
+     <td>MMDDYY8.</td>
+     <td>01/01/60</td>
+   </tr>
+   <tr>
+     <td>0</td>
+     <td>MMDDYY10.</td>
+     <td>01/01/1960</td>
+   </tr>
+   <tr>
+     <td>0</td>
+     <td>DATE7.</td>
+     <td>01JAN60</td>
+   </tr>
+   <tr>
+     <td>0</td>
+     <td>DATE7.</td>
+     <td>01JAN60</td>
+   </tr>
+   <tr>
+     <td>0</td>
+     <td>DATE9.</td>
+     <td>01JAN1960</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>If a format is too small, the following message is written to the
+          SAS log: "NOTE: At least one W.D format was too small for the
+          number to be printed. The decimal may be shifted by the 'BEST'
+          format."
+      </td>
+    </tr>
+  </table>  
+  <br/>
+
+  <!-- Topic 12 -->
+  <h2 class="topic" id="topic12">Using Permanently Assigned Labels and Formats</h2>
+
+  <p>You have seen how to <strong>temporarily</strong> assign labels and formats to variables. When you use a
+     LABEL or FORMAT statement within a PROC PRINT step, the label or format applies only to the
+     output from that step.
+  </p>
+
+  <p>However, in your PROC PRINT steps, you can also take advantage of <strong>permanently</strong> assigned
+     labels or formats. Permanent labels and formats can be assigned in the DATA step. These labels
+     and formats are saved with the data set, and they can later be used by procedures that reference
+     the data set.
+  </p>
+  
+  <p>For example, the DATA step below creates <strong>Flights.March</strong> and defines a format and label for the
+     variable Date. Because the LABEL and FORMAT statements are inside the DATA step, they are
+     written to the <strong>Flights.March</strong> data set and are available to the subsequent PRINT procedure.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  data flights.march;
+     set flights.mar01;
+     label date='Departure Date';
+     format date date9.;
+  run;
+  proc print data=flights.march label;
+  run;</pre>
+  </div>
+
+
+  <div class="scrolling-div">
+  <table border="1">
+   <tr>
+     <th class="color-red" colspan="4">Partial Listing</th>
+   </tr>
+   <tr>
+     <th class="color-red">Obs</th>
+     <th class="color-red">Departure Date</th>
+     <th class="color-red">Dest</th>
+     <th class="color-red">Boarded</th>
+   </tr>
+   <tr>
+     <td>1</td>
+     <td>01MAR2000</td>
+     <td>LON</td>
+     <td>198</td>
+   </tr>
+   <tr>
+     <td>2</td>
+     <td>01MAR2000</td>
+     <td>PAR</td>
+     <td>207</td>
+   </tr>
+   <tr>
+     <td>3</td>
+     <td>01MAR2000</td>
+     <td>LON</td>
+     <td>205</td>
+   </tr>
+   <tr>
+     <td>4</td>
+     <td>01MAR2000</td>
+     <td>COP</td>
+     <td>138</td>
+   </tr>
+   <tr>
+     <td>5</td>
+     <td>01MAR2000</td>
+     <td>MUN</td>
+     <td>147</td>
+   </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Notice that the PROC PRINT statement still requires the LABEL option in order to display the
+     permanent labels. Many other SAS procedures display permanently assigned labels and formats
+     without additional statements or options.
+  </p>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can learn more about permanently assigning labels and formats in the
+          Chapter, Creating and Managing Variables.
+      </td>
+    </tr>
+  </table>  
+  <br/>
+
+  <!-- Topic 13 -->
+  <h2 class="topic" id="topic13">Additional Features</h2>
+
+  <p>When you create list reports, you can use several other features to enhance your procedure
+     output. For example, you can
+  </p>
+
+  <ul>
+    <li>control where text strings split in labels by using the SPLIT= option.
+        <div class="scrolling-div">
+        <pre>
+        proc print data=reps split='*';
+           var salesrep type unitsold net commission;
+           label salesrep='Sales*Representative';
+        run;</pre>
+        </div>
+    </li>
+    <li>create your own formats, which are particularly useful for formatting character values.
+        <div class="scrolling-div">
+        <pre>
+        proc format;
+           value $repfmt
+           'TFB'='Bynum'
+           'MDC'='Crowley'
+           'WKK'='King';
+        proc print data=vcrsales;
+           var salesrep type unitsold;
+           format salesrep $repfmt.;
+        run;</pre>
+        </div> 
+    </li>
+  </ul>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>You can learn more about user-defined formats in the Chapter, Creating and
+          Applying User-Defined Formats.
+      </td>
+    </tr>
+  </table>  
+  <br/>
+
+  <!-- Topic 14 -->
+  <h2 class="topic" id="topic14">Summary</h2>
+
+  <!-- Topic 14 Subtopic 1 -->
+  <h3 class="subtopic" id="topic14_subtopic1">Text Summary</h3>
+
+  <br/>
+
+  <h4>Creating a Basic Report</h4>
+  <p>To list the information in a SAS data set, you can use <strong>PROC PRINT</strong>. You use the PROC PRINT
+     statement to invoke the PRINT procedure and to specify the data set that you are listing. Include
+     the DATA= option to specify the data set that you are using. By default, PROC PRINT displays all
+     observations and variables in the data set, includes a column for observation numbers on the far
+     left, and displays variables in the order in which they occur in the data set. If you use a LABEL
+     statement with PROC PRINT, you must specify the LABEL option or the SPLIT= option in the
+     PROC PRINT statement.
+  </p>
+  <p>To refine a basic report, you can</p>
+  <ul>
+    <li>select which variables and observations are processed.</li>
+    <li>sort the data.</li>
+    <li>generate column totals for numeric variables.</li>
+  </ul>
+  <br/>
+
+  <h4>Selecting Variables</h4>
+  <p>You can select variables and control the order in which they appear by using a <strong>VAR statement</strong> in
+     your PROC PRINT step. To remove the Obs column, you can specify the <strong>NOOBS option</strong> in the
+     PROC PRINT statement. As an alternative, you can replace the Obs column with one or more
+     variables by using the <strong>ID statement</strong>.
+  </p>
+  <br/>
+
+  <h4>Selecting Observations</h4>
+  <p>The <strong>WHERE statement</strong> enables you to select observations that meet a particular condition in the
+     SAS data set. You use <strong>comparison operators</strong> to express a condition in the WHERE statement.
+     You can also use the CONTAINS operator to express a condition in the WHERE statement. To
+     specify a condition based on the value of a character variable, you must enclose the value in
+     quotation marks, and you must write the value with lowercase and uppercase letters exactly as it
+     appears in the data set. You can also use WHERE statements to select a subset of observations
+     based on multiple conditions. To link a sequence of expressions to compound expressions, you
+     use logical operators. When you test for multiple values of the same variable, you specify the
+     variable name in each expression. You can use the <strong>IN operator</strong> as a convenient alternative. To
+     control how compound expressions are evaluated, you can use parentheses.
+  </p>
+  <br/>
+
+  <h4>Sorting Data</h4>
+  <p>To display your data in sorted order, you use <strong>PROC SORT</strong> to sort your data before using PROC
+     PRINT to create reports. By default, PROC SORT sorts the data set that is specified in the
+     DATA= option and overwrites this data set with the sorted data set. If you do not want your
+     original data to be sorted permanently, you must create an output data set that contains the data
+     in sorted order. The OUT= option in the PROC SORT statement specifies an output data set. If
+     you need sorted data to produce output for only one SAS session, you should specify a
+     temporary SAS data set as the output data set. The BY statement, which is required with PROC
+     SORT, specifies the variable(s) whose values are used to sort the data.
+  </p>
+  <br/>
+
+  <h4>Generating Column Totals</h4>
+  <p>To total the values of numeric variables, use the <strong>SUM statement</strong> in the PROC PRINT step. You
+     do not need to specify the variables in a VAR statement if you specify them in the SUM
+     statement. Column totals appear at the end of the report in the same format as the values of the
+     variables. To produce subtotals, add both the SUM statement and the <strong>BY statement</strong> to your 
+     PROC PRINT step. To show <strong>BY variable headings</strong> only once, use an ID and BY statement
+     together with the SUM statement. As another enhancement to your report, you can request that
+     each BY group be printed on a separate page by using the <strong>PAGEBY statement</strong>.
+  </p>
+  <br/>
+
+  <h4>Double-Spacing Output</h4>
+  <p>To double-space your SAS listing output, you can specify the <strong>DOUBLE option</strong> in the PROC
+     PRINT statement.
+  </p>
+  <br/>
+
+  <h4>Specifying Titles</h4>
+  <p>To make your report more meaningful and self-explanatory, you can specify up to 10 titles with
+     procedure output by using <strong>TITLE statements</strong> anywhere within or preceding the PROC step. After
+     you define a title, it remains in effect until you modify it, cancel it, or end your SAS session.
+     Redefining a title line cancels any higher-numbered title lines. To cancel all previous titles, specify
+     a null TITLE statement (a TITLE statement with no number or text).
+  </p>
+  <br/>
+
+  <h4>Specifying Footnotes</h4>
+  <p>To add footnotes to your output, you can use the <strong>FOOTNOTE statement</strong>. Like TITLE statements,
+     FOOTNOTE statements are global. Footnotes appear at the bottom of each page of procedure
+     output, and footnote lines are "pushed up" from the bottom. The FOOTNOTE statement that has
+     the largest number appears on the bottom line. After you define a footnote, it remains in effect
+     until you modify it, cancel it, or end your SAS session. Re-defining a footnote line cancels any
+     higher- numbered footnote lines. To cancel all previous footnotes, specify a null FOOTNOTE
+     statement (a FOOTNOTE statement with no number or text).
+  </p>
+  <br/>
+
+  <h4>Assigning Descriptive Labels</h4>
+  <p>To label the columns in your report with more descriptive text, you use the <strong>LABEL statement</strong>,
+     which assigns a descriptive label to a variable. To display the labels that were assigned in a
+     LABEL statement, you must specify the <strong>LABEL option</strong> in the PROC PRINT statement.
+  </p>
+  <br/>
+
+  <h4>Formatting Data Values</h4>
+  <p>To make data values more understandable when they are displayed in your procedure output,
+     you can use the <strong>FORMAT statement</strong>, which associates formats with variables. The FORMAT
+     statement remains in effect only for the PROC step in which it appears. Formats affect only how
+     the data values appear in output, not the actual data values as they are stored in the SAS data
+     set. All SAS formats specify the total field width (w) that is used for displaying the values in the
+     output. For numeric variables you can also specify the number of decimal places (d), if any, to be
+     displayed in the output.
+  </p>
+  <br/>
+
+  <h4>Using Permanently Assigned Labels and Formats</h4>
+  <p>You can take advantage of permanently assigned labels or formats without adding LABEL or
+     FORMAT statements to your PROC step. Some SAS procedures require a LABEL option in order
+     to display permanent labels. Many other SAS procedures display permanently assigned labels
+     and formats within additional statements or options.
+  </p>
+  <br/>
+
+  <!-- Topic 14 Subtopic 2 -->
+  <h3 class="subtopic" id="topic14_subtopic2">Points to Remember</h3>  
+
+  <ul>
+    <li>VAR, WHERE, and SUM statements remain in effect only for the PROC step in which
+        they appear.
+    </li>
+    <li>If you don't use the OUT= option, PROC SORT permanently sorts the data set that is
+        specified in the DATA= option.
+    </li>
+    <li>TITLE and FOOTNOTE statements remain in effect until you modify them, cancel them,
+        or end your SAS session.
+    </li>
+    <li>Be sure to match the quotation marks that enclose the text in TITLE, FOOTNOTE, and
+        LABEL statements.
+    </li>
+    <li>To display labels in PRINT procedure output, remember to add the LABEL option to the
+        PROC PRINT statement.
+    </li>
+    <li>To permanently assign labels or formats to data set variables, place the LABEL or
+        FORMAT statement inside the DATA step.
+    </li>
+  </ul>
+
+</div><!-- end of div content -->

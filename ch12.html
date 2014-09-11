@@ -54,7 +54,7 @@
      formats and labels.
   </p>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can also <strong>merge, concatenate</strong>, or <strong>interleave</strong> two or more data sets. For
@@ -113,12 +113,14 @@
      assigned. The SET statement below reads the permanent SAS data set <strong>Research.CLTrials</strong>.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   libname lab23 'c:\drug\allergy\labtests';
   libname research 'c:\drug\allergy';
   data lab23.drug1h;
      setresearch.cltrials;
   run;</pre>
+  </div>
 
   <p>The DATA step above reads all observations and variables from the existing data set into the new
      data set. When you submit this DATA step, the following messages appear in the log, confirming
@@ -147,6 +149,7 @@
      chapters.
   </p>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red">To Do This</th>
@@ -200,6 +203,7 @@
       </td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <h4>Example</h4>
@@ -208,6 +212,7 @@
      variables, and creates new variables.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   data lab23.drug1h(drop=placebo uric);
      set research.cltrials(drop=triglyc);
@@ -223,6 +228,7 @@
      label retest='Perform Cholesterol Test 2?';
      format enddate mmddyy10.;
   run;</pre>
+  </div>
 
   <h4>Where to Specify the DROP= and KEEP= Data Set Options</h4>
 
@@ -239,22 +245,26 @@
         In the DATA step shown below, the DROP= option in the SET statement prevents the
         variables <i>Triglycerides</i> and <i>UricAcid</i> from being read. These variables won't appear
         in the <strong>Lab23.Drug1H</strong> data set.
+        <div class="scrolling-dev">
         <pre>
         data lab23.drug1h(drop=placebo);
            set research.cltrials(drop=triglycerides uricacid);
            if placebo='YES';
         run;</pre>
+        </div>
     </li>
     <li>If you <strong>do</strong> need to process a variable in the original data set (in a subsetting IF statement,
         for example), you must specify the variable in the DROP= option in the DATA statement.
         Otherwise, the statement that is using the variable for processing causes an error. <br/><br/>
         This DATA step uses the variable <i>Placebo</i> to select observations. To drop <i>Placebo</i> from
         the new data set, the DROP= option must appear in the DATA statement.
+        <div class="scrolling-dev">
         <pre>
         data lab23.drug1h(drop=placebo);
            set research.cltrials(drop=triglycerides uricacid);
            if placebo='YES';
         run;</pre>
+        </div>
     </li>
   </ul>
 
@@ -280,11 +290,13 @@
      statement in the DATA step to group observations for processing.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   data temp;
      set salary;
      by dept;
   run;</pre>
+  </div>
 
   <p>When you use the BY statement with the SET statement,</p>
   <ul>
@@ -295,6 +307,7 @@
         <strong>FIRST.variable</strong>, where variable is the name of the BY variable, and the other is
         named <strong>LAST.variable</strong>. Their values are either 1 or 0. <i>FIRST.variable</i> and
         <i>LAST.variable</i> identify the first and last observation in each BY group.
+        <div class="scrolling-dev">
         <table border="1">
           <tr>
             <th class="color-red">This variable</th>
@@ -313,6 +326,7 @@
             </td>
           </tr>
         </table>
+        </div>
     </li>
   </ul>
   <br/>
@@ -329,6 +343,7 @@
      <i>Dept</i>.
   </p>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Company.USA (Partial Listing)</th>
@@ -369,12 +384,14 @@
       <td>2192.25</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The following program computes the annual payroll by department. Notice that the variable name
      <i>Dept</i> has been appended to <i>FIRST.</i> and <i>LAST.</i>
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   proc sort data=company.usa out=work.temp;
      by dept;
@@ -388,12 +405,14 @@
     payroll+yearly;
     if last.dept;
   run;</pre>
+  </div>
 
   <p>If you could look behind the scenes at the program data vector (PDV) as the <strong>Company.Budget</strong>
      data set is being created, you would see the following. Notice the values for <i>FIRST.Dept</i> and
      <i>LAST.Dept</i>.
   </p>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">Selected PDV Variables</th>
@@ -489,15 +508,20 @@
       <td>1</td>
     </tr>
   </table>
+  </div>
   <br/>
   
   <p>When you print the new data set, you can now list and sum the annual payroll by department.</p>
+
+  <div class="scrolling-dev">
   <pre>
   proc print data=company.budget noobs;
      sum payroll;
      format payroll dollar12.2;
   run;</pre>
+  </div>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">Dept Payroll</th>
@@ -531,6 +555,7 @@
       <th>$931,630.80</th>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 4 Subtopic 2 -->
@@ -552,6 +577,7 @@
      program, you specify two BY variables, <i>Manager</i> and <i>JobType</i>.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   proc sort data=company.usa out=work.temp2;
      by manager jobtype;
@@ -564,12 +590,14 @@
      payroll+yearly;
      if last.jobtype;
   run;</pre>
+  </div>
 
   <p>If you could look at the PDV now, you would see the following. Notice that the values for
      <i>FIRST.JobType</i> and <i>LAST.JobType</i> change according to values of <i>FIRST.Manager</i> and
      <i>LAST.Manager</i>.
   </p>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="8">Selected PDV Variables</th>
@@ -741,12 +769,15 @@
       <td>1</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Now you can sum the annual payroll by job type for each manager. In the following output, the
      payroll for only two managers (Coxe and Delgado) is listed. Remember, neither the
      <i>FIRST.variable</i> nor the <i>LAST.variable</i> is stored in the new data set.
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   proc print data=company.budget2 noobs;;
      by manager;
@@ -755,8 +786,10 @@
      where manager in ('Coxe','Delgado');
      format payroll dollar12.2;
   run;</pre>
+  </div>
   <br/>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="2">Manager=Coxe</th>
@@ -805,6 +838,7 @@
       <th>$185,099.00</th>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 -->
@@ -840,12 +874,13 @@
      ObsNum to determine which observation to read from the data set <strong>Company.USA</strong>.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   data work.getobs5;
      obsnum=5;
      set company.usa(keep=manager payroll) point=obsnum;
-  run;
-  </pre>
+  run;</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 2 -->
   <h3 class="subtopic" id="topic5_subtopic2">Preventing Continuous Looping with the POINT= Option</h3>
@@ -855,11 +890,15 @@
      specified observations, SAS cannot read an end-of-file indicator as it would if the file were being
      read sequentially. So submitting the following program would cause <strong>continuous looping</strong>:
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   data work.getobs5(drop=obsnum);
      obsnum=5;
      set company.usa(keep=manager payroll) point=obsnum;
   run;</pre>
+  </div>
+
   <p>Because there is no end-of-file condition when you use direct access to read data, you must take
      either or both of the following precautions:
   </p>
@@ -880,14 +919,17 @@
   <hr/>
 
   <p>So if you add a STOP statement, your program no longer loops continuously.</p>
+
+  <div class="scrolling-dev">
   <pre>
   data work.getobs5(drop=obsnum);
      obsnum=5;
      set company.usa(keep=manager payroll) point=obsnum;
      stop;
   run;</pre>
+  </div>
 
-  <p>But your program doesn’t write any observations to output, either. Remember from Chapter,
+  <p>But your program doesn't write any observations to output, either. Remember from Chapter,
      <strong>Understanding DATA Step Processing</strong>, that the DATA step writes observations to output at the
      end of the DATA step. However, in this program, the STOP statement immediately stops
      processing before the end of the DATA step.
@@ -919,6 +961,7 @@
      observation 5.
   </p>
 
+  <div class="scrolling-dev">
   <pre>
   data work.getobs5(drop=obsnum);
      obsnum=5;
@@ -928,7 +971,10 @@
   run;
   proc print data=work.getobs5 noobs;
   run;</pre>
+  </div>
 
+
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red">Manager</th>
@@ -939,6 +985,7 @@
       <td>45830</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Suppose your DATA statement contains two data set names, and you include an OUTPUT
@@ -948,11 +995,14 @@
      that the data set <strong>Empty</strong> is created but contains no observations, and the data set <strong>Full</strong> contains all
      of the observations from <strong>Company.Usa</strong>.
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   data empty full;
      set company.use;
      output full;
   run;</pre>
+  </div>
   <br/>
 
   <!-- Topic 5 Subtopic 4 -->
@@ -988,9 +1038,10 @@
      the data set.
   </p>
   <p>This variable is not added to the data set.</p>
-  <table>
+
+  <table class="warning-table">
     <tr>
-      <th class="color-red"></th>
+      <th class="color-red">Warning</th>
       <td>Do not specify END= with POINT=. POINT= reads only a specific
           observation, so the last observation in the data set is not encountered.
       </td>    
@@ -1003,6 +1054,8 @@
      following program, you produce a new data set that contains cumulative totals for each of the
      values of <i>TotalTime</i>.
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   data work.addtoend(drop=timemin timesec);
      set clinic.stress2(keep=timemin timesec);
@@ -1012,7 +1065,9 @@
   run;
   proc print data=work.addtoend noobs;
   run;</pre>
+  </div>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red">TotalMin</th>
@@ -1125,6 +1180,7 @@
       <td>16330</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>But what if you want only the <strong>final</strong> total (the last observation) in the new data set? The following
@@ -1132,6 +1188,8 @@
      specify END= in the SET statement and last wherever you need it in processing (here, in the
      subsetting IF statement).
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   data work.addtoend(drop=timemin timesec);
      set clinic.stress2(keep=timemin timesec)end=last;
@@ -1142,8 +1200,11 @@
   run;
   proc print data=work.addtoend noobs;
   run;</pre>
+  </div>
 
   <p>Now the new data set has one observation:</p>
+
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red">TotalMin</th>
@@ -1156,6 +1217,7 @@
       <td>16330</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 7 -->
@@ -1170,12 +1232,16 @@
      statement. In this example, the DATA step reads the data set <strong>Finance.Loans</strong>, creates the
      variable <i>Interest</i>, and creates the new data set <strong>Finance.DueJan</strong>.
   </p>
+
+  <div class="scrolling-dev">
   <pre>
   data finance.duejan;
      set finance.loans;
      Interest=amount*(rate/12);
   run;</pre>
+  </div>
 
+  <div class="scrolling-dev">
   <table border="1">
     <tr>
       <th class="color-red" colspan="5">SAS Data Set Finance.Loans</th>
@@ -1216,6 +1282,7 @@
       <td>308.52</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 7 Subtopic 1 -->
@@ -1281,7 +1348,7 @@
         statement, or that were created by a Sum statement. All other variable values, such as
         the values of the variable <i>Interest</i>, are set to missing. <br/>
         <img src="images/ch12_image10.png" class="diagram"/>
-        <table>
+        <table class="note-table">
           <tr>
             <th class="color-blue">Note</th>
             <td>When SAS reads <strong>raw data</strong>, the situation is different. In that case, SAS
@@ -1346,7 +1413,7 @@
   <h2 class="topic" id="topic9">Summary</h2>
 
   <!-- Topic 9 Subtopic 1 -->
-  <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+  <h3 class="subtopic" id="topic9_subtopic1">Text Summary</h3>
 
   <h4>Setting Up</h4>
   <p>Before you can create a new data set, you must assign a libref to the SAS data library that will
@@ -1392,7 +1459,7 @@
   <br/>
 
   <!-- Topic 9 Subtopic 2 -->
-  <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>
+  <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>
   <ul>
     <li>When you perform BY-group processing, the data sets that are listed in the SET
         statement must either be sorted by the values of the BY variable(s), or they must have an

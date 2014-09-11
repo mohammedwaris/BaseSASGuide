@@ -1,0 +1,3239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+     td,th{
+       padding: 3px;
+     }
+     .color-red{
+       color: red;
+     }
+     .color-blue{
+       color: blue;
+     }
+     .underline{ text-decoration: underline;}
+
+     .diagram{
+         max-width: 100%;
+     }
+     h4{
+       text-decoration: underline;
+     }
+ 
+</style>
+
+</head>
+<body>
+
+<div id="content">
+
+
+  <!-- Topic 1 -->
+  <h2 class="topic" id="topic1">Overview</h2>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
+
+  <p>List and summary reports are often created from SAS data. To produce a variety of reports using
+     a single report-writing tool, you can use PROC REPORT. In addition to creating list reports,
+     PROC REPORT enables you to
+  </p>
+  <ul>
+    <li>create custom reports.</li>
+    <li>request separate subtotals and grand totals.</li>
+    <li>calculate columns.</li>
+    <li>create and store report definitions.</li>
+  </ul>
+
+  <p>You can use PROC REPORT in three ways:</p>
+  <ul>
+    <li>in a windowing mode with a prompting facility that guides you as you build a report.</li>
+    <li>in a windowing mode without the prompting facility.</li>
+    <li>in a nonwindowing mode. In this case, you submit a series of statements with the PROC 
+        REPORT statement, just as you do in other SAS procedures
+    </li>
+  </ul>
+
+  <p>This chapter shows you how to use PROC REPORT by submitting SAS statements. Although
+     PROC REPORT enables you to create highly customized reports, we'll focus on basic statements
+     and will add a few enhancements. By the end of the chapter, you'll create a list report and a
+     summary report.
+  </p>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red" colspan="6">PROC REPORT List Report</th>
+      </tr>
+      <tr>
+        <th class="color-red">Flight Number</th>
+        <th class="color-red">Flight Origin</th>
+        <th class="color-red">Flight Destination</th>
+        <th class="color-red">Mail / Pounds</th>
+        <th class="color-red">Freight / Pounds</th>
+        <th class="color-red">Revenue</th>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>403</td>
+        <td>209</td>
+        <td>$150,634.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>345</td>
+        <td>243</td>
+        <td>$150,634.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>248</td>
+        <td>307</td>
+        <td>$193,930.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>391</td>
+        <td>395</td>
+        <td>$167,772.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>219</td>
+        <td>368</td>
+        <td>$183,106.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>389</td>
+        <td>479</td>
+        <td>$169,576.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>448</td>
+        <td>282</td>
+        <td>$143,561.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>403</td>
+        <td>209</td>
+        <td>$170,766.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>345</td>
+        <td>243</td>
+        <td>$129,560.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>248</td>
+        <td>307</td>
+        <td>$196,736.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>391</td>
+        <td>395</td>
+        <td>$125,344.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>219</td>
+        <td>368</td>
+        <td>$166,543.00</td>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>389</td>
+        <td>479</td>
+        <td>$129,745.00</td>
+      </tr>
+      <tr>
+        <th class="color-red" colspan="6">PROC REPORT Summary Report</th>
+      </tr>
+      <tr>
+        <th class="color-red">Flight Number</th>
+        <th class="color-red">Flight Origin</th>
+        <th class="color-red">Flight Destination</th>
+        <th class="color-red">Mail / Pounds</th>
+        <th class="color-red">Freight / Pounds</th>
+        <th class="color-red">Total Revenue</th>
+      </tr>
+      <tr>
+        <td>821</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>4,438</td>
+        <td>4,284</td>
+        <td>$2,077,907.00</td>
+      </tr>
+      <tr>
+        <td>271</td>
+        <td>LGA</td>
+        <td>PAR</td>
+        <td>5,050</td>
+        <td>4,421</td>
+        <td>$1,969,201.00</td>
+      </tr>
+      <tr>
+        <td>219</td>
+        <td>LGA</td>
+        <td>LON</td>
+        <td>2,700</td>
+        <td>2,513</td>
+        <td>$1,111,647.00</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 1 Subtopic 2 -->
+  <h3 class="subtopic" id="topic1_subtopic2">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>invoke the REPORT procedure and specify a windowing or nonwindowing environment.</li>
+    <li>select columns for your report.</li>
+    <li>define the usage for columns.</li>
+    <li>specify attributes, options, and justification for columns.</li>
+    <li>specify features of column headings, including split characters, underlining, and blank
+        lines.
+    </li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Creating a Default List Report</h2>
+
+  <p>Let's start by creating a list report. Suppose you want to create a listing of mail, freight, and
+     passenger revenue for flights between LaGuardia Airport and London or Paris.
+  </p>
+  <p>As with other SAS procedures, you first reference the library in which your data is stored, and
+     then you submit a basic PROC REPORT step.
+  </p>
+
+  <hr/>
+  <p>General form, basic PROC REPORT step:</p>
+  <p>PROC REPORT <DATA=SAS-data-set> <options>;
+     RUN;
+  </p>
+  <p>where</p>
+  <ul>
+    <li>SAS-data-set is the name of the SAS data set that is used for the report</li>
+    <li>options includes
+        <table>
+          <tr>
+             <th>SAS Windowing Environment</th>
+             <td> 
+                 <ul>
+                    <li>WINDOWS or WD, which invokes the procedure
+                        in a windowing mode. Your report appears in the
+                        REPORT window. This is the default for the SAS
+                        windowing environnment.
+                    </li>
+                    <li>NOWINDOWS or NOWD, which displays a listing
+                        of the report in the OUTPUT window.
+                    </li>
+                 </ul>
+             </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+               <table class="note-table">
+                  <tr>
+                    <th class="color-blue">Note</th>
+                    <td>If you specify HTML output in
+                        your SAS preferences, then
+                        the HTML output appears in
+                        addition to or instead of the
+                        OUTPUT window listing, as
+                        requested. Some PROC
+                        REPORT formatting options
+                        are not applicable to HTML
+                        output.
+                    </td>
+                  </tr>
+               </table>
+            </td>
+          </tr>
+          <tr>
+             <th>SAS Enterprise Guide</th>
+             <td>NOWINDOWS or NOWD, which displays a listing of the
+                 report in the results window. This is the default for
+                 Enterprise Guide.
+             </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+               <table class="note-table">
+                  <tr>
+                    <th class="color-blue">Note</th>
+                    <td>Some PROC REPORT formatting
+                        options are not applicable to HTML
+                        output.
+                    </td>
+                  </tr>
+               </table>
+            </td>
+          </tr>
+        </table>
+    </li>
+  </ul>  
+  <hr/>
+
+  <h4>Example</h4>
+  <p>In this program, PROC REPORT reads the <strong>Flights.Europe</strong> data set and creates a report in a
+     nonwindowing mode.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+  run;</pre>
+  </div>
+
+  <p>This is HTML output from the PROC REPORT step. Notice that by default</p>
+  <ul>
+    <li>all observations and variables in the data set are printed.</li>
+    <li>Variables appear in the order in which they occur in the data set.</li>
+  </ul>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Date</th>
+      <th class="color-red">Depart</th>
+      <th class="color-red">Orig</th>
+      <th class="color-red">Dest</th>
+      <th class="color-red">Miles</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Boarded</th>
+      <th class="color-red">Transferred</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>04MAR99</td>
+      <td>9:31</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>3442</td>
+      <td>403</td>
+      <td>209</td>
+      <td>167</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>04MAR99</td>
+      <td>11:40</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3856</td>
+      <td>492</td>
+      <td>308</td>
+      <td>146</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>05MAR99</td>
+      <td>12:19</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>3857</td>
+      <td>366</td>
+      <td>498</td>
+      <td>177</td>
+      <td>15</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Selecting Variables</h2>
+
+  <p>Now let's see how you can choose the data that you want to display.</p>
+
+  <p>To select and order the variables that appear in your list report, you can use the COLUMN
+     statement.
+  </p>
+ 
+  <hr/>
+  <p><strong>General form, COLUMN statement:</strong></p>
+  <p><strong>COLUMN</strong> variable(s);</p>
+  <p>where variable(s) is one or more variable names, separated by blanks.</p>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>The following COLUMN statement specifies that only the variables <i>Flight, Orig, Dest,
+     Mail, Freight</i>, and <i>Revenue</i> be printed, in that order.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     column flight orig dest mail freight revenue;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Orig</th>
+      <th class="color-red">Dest</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>156804</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>190098</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>193930</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>166470</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>167772</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>163248</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>183106</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>170766</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>169576</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>195468</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>296</td>
+      <td>414</td>
+      <td>187636</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>448</td>
+      <td>282</td>
+      <td>143561</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>352</td>
+      <td>351</td>
+      <td>123456</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>331</td>
+      <td>376</td>
+      <td>189065</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>395</td>
+      <td>217</td>
+      <td>196540</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>296</td>
+      <td>232</td>
+      <td>165456</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>170766</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>125632</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>485</td>
+      <td>267</td>
+      <td>197456</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>393</td>
+      <td>304</td>
+      <td>134561</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>340</td>
+      <td>311</td>
+      <td>125436</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>128972</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>388</td>
+      <td>298</td>
+      <td>162343</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>129560</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>421</td>
+      <td>356</td>
+      <td>134520</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>546</td>
+      <td>204</td>
+      <td>135632</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>391</td>
+      <td>423</td>
+      <td>107865</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>196736</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>253</td>
+      <td>205</td>
+      <td>153423</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>447</td>
+      <td>299</td>
+      <td>106753</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>415</td>
+      <td>367</td>
+      <td>128564</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>346</td>
+      <td>.</td>
+      <td>178543</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>125344</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>133345</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>356</td>
+      <td>547</td>
+      <td>122766</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>363</td>
+      <td>297</td>
+      <td>134523</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>317</td>
+      <td>421</td>
+      <td>100987</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>166543</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>126543</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>272</td>
+      <td>370</td>
+      <td>198744</td>
+    </tr>
+    <tr>
+      <td>387</td>
+      <td>LGA</td>
+      <td class="back-color-grey">CPH</td>
+      <td>336</td>
+      <td>377</td>
+      <td>109885</td>
+    </tr>
+    <tr>
+      <td>622</td>
+      <td>LGA</td>
+      <td class="back-color-grey">FRA</td>
+      <td>272</td>
+      <td>363</td>
+      <td>134459</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>129745</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>134976</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Selecting Observations</h2>
+
+  <p>You might also want to select rows for your report based on a condition. To select observations,
+     you can use the <strong>WHERE statement</strong>, just as you have learned to do with PROC PRINT.
+  </p>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>The following WHERE statement specifies that only observations that have the value LON or
+     PAR for the variable <i>Dest</i> be printed.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     column flight orig dest mail freight revenue;
+     where dest in ('LON','PAR');
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Orig</th>
+      <th class="color-red">Dest</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>156804</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>190098</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>193930</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>166470</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>167772</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>163248</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>183106</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>170766</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>169576</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>195468</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>448</td>
+      <td>282</td>
+      <td>143561</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>331</td>
+      <td>376</td>
+      <td>189065</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>170766</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>125632</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>485</td>
+      <td>267</td>
+      <td>197456</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>128972</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>388</td>
+      <td>298</td>
+      <td>162343</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>129560</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>421</td>
+      <td>356</td>
+      <td>134520</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>196736</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>253</td>
+      <td>205</td>
+      <td>153423</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>447</td>
+      <td>299</td>
+      <td>106753</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>125344</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>356</td>
+      <td>547</td>
+      <td>122766</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>166543</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>126543</td>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>272</td>
+      <td>370</td>
+      <td>198744</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td class="back-color-grey">LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>129745</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td class="back-color-grey">PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>134976</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 5 -->
+  <h2 class="topic" id="topic5">Defining Variables</h2>
+
+  <!-- Topic 5 Subtopic 1 -->
+  <h3 class="subtopic" id="topic5_subtopic1">Overview of Defining Variables</h3>
+
+  <p>In the output that you've seen in this chapter so far, you might have noticed that PROC REPORT
+     displays
+  </p>
+
+  <ul>
+    <li>each data value the way it is stored in the data set.</li>
+    <li>variable names as column headings in the report.</li>
+    <li>a default width for the report columns.</li>
+    <li>left-justified character values.</li>
+    <li>right-justified numeric values.</li>
+    <li>observations in the order in which they are stored in the data set.</li>
+  </ul>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="5">Partial PROC REPORT Output</th>
+    </tr>
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Orig Dest</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>156804</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>You can enhance the report by</p>
+  <ul>
+    <li>defining how each variable is used in the report.</li>
+    <li>assigning formats to variables.</li>
+    <li>specifying column headings and widths.</li>
+    <li>justifying the variable values and column headings within the report columns.</li>
+    <li>changing the order of the rows in the report.</li>
+  </ul>
+
+  <!-- Topic 5 Subtopic 2 -->
+  <h3 class="subtopic" id="topic5_subtopic2">Using DEFINE Statements</h3>
+
+  <p>To describe how to use and display variables in your report, you use one or more <strong>DEFINE
+     statements</strong>. You can list DEFINE statements in any order, and you can list options (usages,
+     attributes, and so on) in any order in a DEFINE statement.
+  </p>
+
+  <hr/>
+  <p><strong>General form, simple DEFINE statement:</strong></p>
+  <p><strong>DEFINE</strong> variable / &lt;usage&gt; &lt;attribute(s)&gt; &lt;option(s)&gt;
+     <justification> <'column-heading'> ;
+  </p>
+  <p>where</p>
+  <ul>
+    <li><i>variable</i> is the name of the variable that you want to define.</li>
+    <li><i>usage</i> specifies how to use the variable. Valid options are ACROSS, ANALYSIS,
+        COMPUTED, DISPLAY, GROUP, and ORDER.
+    </li>
+    <li><i>attribute(s)</i> specifies attributes for the variable, including FORMAT=, WIDTH=, and
+        SPACING=.
+    </li>
+    <li><i>option(s)</i> specifies formatting options, including DESCENDING, NOPRINT, NOZERO,
+        and PAGE.
+    </li>
+    <li><i>&lt;justification&gt;</i> specifies column justification (CENTER, LEFT, or RIGHT).</li>
+    <li><i>'column-heading'</i> specifies a label for the column heading.</li>
+  </ul>
+  <hr/>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>These DEFINE statements specify attributes, usages, options, justification, and column headings
+     for the variables Flight and Orig.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define flight/order descending 'Flight Number'
+            center width=6 spacing=5;
+     define orig/'Flight Origin' center width=6;
+  run;</pre>
+  </div>
+
+  <p>In this chapter, you'll look at each of these ways of defining variables.</p>
+
+  <!-- Topic 6 -->
+  <h2 class="topic" id="topic6">Defining Column Attributes</h2>
+
+  <p>You can easily change the appearance of your PROC REPORT output by specifying attributes for
+     variables. For example, you can select a format for data values, specify the column width, and
+     specify the spacing between columns.
+  </p>
+
+  <p>To enhance your PROC REPORT output, you'll use the following attributes.</p>
+
+  <div class="div-scroll-table">
+    <table border="1">
+      <tr>
+        <th class="color-red">Attribute</th>
+        <th class="color-red">Action</th>
+      </tr>
+        <td>FORMAT=format</td>
+        <td>Assigns a SAS format or a user-defined format to the item.</td>
+      <tr>
+      </tr>
+        <td>SPACING=horizontalpositions</td>
+        <td>Specifies how many blank characters to leave between the
+            selected column and the column immediately to its left. The default is 2.
+        </td>
+      <tr>
+      </tr>
+        <td>WIDTH=column-width</td>
+        <td>Specifies the width of the column. The default column width
+            is just large enough to handle the specified format.
+        </td>
+      <tr>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 6 Subtopic 1 -->
+  <h3 class="subtopic" id="topic6_subtopic1">Assigning Formats</h3>
+
+  <p>In previous chapters, you learned that formats determine how data values appear in SAS output.
+     If you do not specify a format for a variable within the PROC REPORT step, PROC REPORT
+     uses the format that is stored in the data set. If no format is stored in the data set, PROC
+     REPORT uses the default format for that variable type.
+  </p>
+
+  <p>To assign a format to a specific report column, use the <strong>FORMAT= attribute</strong> in the DEFINE
+     statement for that column. You can specify any appropriate SAS format or user-defined format.
+  </p>
+
+  <h4>Example</h4>
+
+  <p>The variable <i>Revenue</i> has no format assigned to it in the <strong>Flights.Europe</strong> data set. So in your
+     current report, revenue values appear as shown in the example belo
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">Partial PROC REPORT Output, HTML</th>
+    </tr>
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Orig Dest</th>
+      <th class="color-red">Dest</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>156804</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>190098</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>150634</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>193930</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>But suppose you want your revenue figures to be formatted with a dollar sign, commas, and two
+     decimal places, in a total width of 15 positions. To do this, you can assign the DOLLAR15.2
+     format to <i>Revenue</i>.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue/format=dollar15.2;
+  run;</pre>
+  </div>
+
+  <p>Here is part of the HTML output from the previous program.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">Partial PROC REPORT Output, HTML</th>
+    </tr>
+    <tr>
+      <th class="color-red">Flight</th>
+      <th class="color-red">Orig Dest</th>
+      <th class="color-red">Dest</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td class="back-color-grey">$150,634.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td class="back-color-grey">$156,804.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td class="back-color-grey">$190,098.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td class="back-color-grey">$150,634.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td class="back-color-grey">$193,930.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Notice that the format supplies the dollar sign, comma, decimal point, and decimal places.
+     However, because the HTML table column conforms to the width of its contents, assigning the
+     format does not increase the column width beyond the length of the data values.
+  </p>
+  <p>By contrast, the monospace SAS listing of the report does display the increased column width.</p>
+  
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+  <div class="scrolling-div">
+  <pre>
+  Fli Ori Des 
+  ght g   t   Mail Freight         Revenue
+  821 LGA LON  403     209     $150,634.00
+  271 LGA PAR  492     308     $156,804.00
+  271 LGA PAR  366     498     $190,098.00
+  821 LGA LON  345     243     $150,634.00
+  821 LGA LON  248     307     $193,930.00</pre>
+  </div>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-red">Note</th>
+      <td>You can also use FORMAT statements with PROC REPORT. However, the
+          DEFINE statement enables you to specify more than one column attribute at a
+          time. Also, you can use the FORMAT= attribute to define report columns (such as
+          statistics or computed variables) that are not data set variables.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 6 Subtopic 2 -->
+  <h3 class="subtopic" id="topic6_subtopic2">Specifying Column Widths</h3>
+
+  <p>In the previous example of SAS listing output, you might have noticed that several headings were
+     wrapped over two lines. (In HTML output, the longest cell value determines the column width, so
+     wrapping doesn't occur.)
+  </p>
+
+  <p>If a variable in the input data set doesn't have a format associated with it, then the default PROC
+     REPORT column width is
+  </p>
+  <ul>
+    <li>the <strong>variable's length</strong> for character variables.</li>
+    <li>9 for numeric variables.</li>
+  </ul>
+
+  <p>The character variables <i>Flight, Orig</i>, and <i>Dest</i> each have a length of 3, and no format is
+     associated with them. So 3 is their default column width.
+  </p>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Fli Ori Des 
+  ght g   t      Mail Freight         Revenue
+  821 LGA LON     403     209     $150,634.00
+  271 LGA PAR     492     308     $156,804.00
+  271 LGA PAR     366     498     $190,098.00
+  821 LGA LON     345     243     $150,634.00
+  821 LGA LON     248     307     $193,930.00</pre>
+  </div>
+
+  <p>To specify a width for columns in your report, use the <strong>WIDTH= attribute</strong> in the DEFINE
+     statement. You can specify values from 1 to the value of the LINESIZE= system option.
+  </p>  
+
+  <p>The WIDTH= attribute has no effect on HTML output.</p>  
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>To specify column widths that accommodate the column headings for <i>Flight, Orig</i>, and <i>Dest</i>,
+     you can use the following DEFINE statements in your PROC REPORT step:
+  </p>
+
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight/width=6;
+     define orig/width=4;
+     define dest/width=4;
+  run;</pre>
+  </div>
+
+  <p>Now the headings appear on one line.</p>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+  <div class="scrolling-div">
+  <pre>
+  Flight Orig Dest     Mail Freight           Revenue
+  821    LGA  LON       403     209       $150,634.00
+  271    LGA  PAR       492     308       $156,804.00
+  271    LGA  PAR       366     498       $190,098.00
+  821    LGA  LON       345     243       $150,634.00
+  821    LGA  LON       248     307       $193,930.00</pre>
+  </div>
+
+
+  <!-- Topic 6 Subtopic 3 -->
+  <h3 class="subtopic" id="topic6_subtopic3">Specifying Column Spacing</h3>
+
+  <p>Another way to enhance your PROC REPORT output is to specify <strong>column spacing</strong>, which is the
+     number of blank characters between the selected column and the column immediately to its left.
+     The default column spacing is 2. To specify a different column spacing, use the <strong>SPACING=
+     attribute</strong> in the DEFINE statement.
+  </p>
+
+  <p>The SPACING= attribute has no effect on HTML output.</p>
+
+  <h4>Example</h4>
+
+  <p>In the following PROC REPORT output, no spacing has been specified. <i>Orig</i> and <i>Dest</i> have
+     two blank characters preceding their columns.
+  </p>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Flight Orig Dest    Mail Freight        Revenue
+  821    LGA  LON      403     209    $150,634.00
+  271    LGA  PAR      492     308    $156,804.00
+  271    LGA  PAR      366     498    $190,098.00
+  821    LGA  LON      345     243    $150,634.00
+  821    LGA  LON      248     307    $193,930.00</pre>
+  </div>
+
+  <p>To specify five blank spaces before the column headings for <i>Orig</i> and <i>Dest</i>, you can use
+     DEFINE statements as shown below in your PROC REPORT step:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=6;
+     define orig / width=4 spacing=5;
+     define dest / width=4 spacing=5;
+  run;</pre>
+  </div>
+
+  <p>Now the two columns display the extra spacing.</p>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Flight   Orig   Dest   Mail Freight        Revenue
+  821      LGA    LON     403     209    $150,634.00
+  271      LGA    PAR     492     308    $156,804.00
+  271      LGA    PAR     366     498    $190,098.00
+  821      LGA    LON     345     243    $150,634.00
+  821      LGA    LON     248     307    $193,930.00</pre>
+  </div>
+
+
+  <!-- Topic 7 -->
+  <h2 class="topic" id="topic7">Defining Column Headings</h2>
+
+  <p>In addition to specifying column widths and spacing, you might want to change <strong>column
+     headings</strong>. To define a column heading, enclose the heading text in quotation marks in the
+     DEFINE statement.
+  </p>
+
+  <h4>Example</h4>
+
+  <p>Suppose you want to label <i>Flight</i> as <strong>Flight Number</strong>, <i>Orig</i> as <strong>Flight Origin</strong> and <i>Dest</i> as
+     <strong>Flight Destination</strong>. Add these column headings to the DEFINE statements, being sure to match
+     quotation marks. You can also change the WIDTH= specifications to accommodate the new
+     headings.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=13'Flight Number';
+     define orig / width=13 spacing=5 'Flight Origin';
+     define dest / width=18 spacing=5 'Flight Destination';
+  run;</pre>
+  </div>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+  <div class="scrolling-div">
+  <pre>
+  Flight Number     Flight Origin     Flight Destination
+  821               LGA               LON
+  271               LGA               PAR
+  271               LGA               PAR
+  821               LGA               LON
+  821               LGA               LON</pre>
+  </div>
+
+  <p>Here is HTML output from the same program.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">Partial PROC REPORT Output, HTML</th>
+    </tr>
+    <tr>
+      <th class="color-red">Flight Number</th>
+      <th class="color-red">Flight Origin</th>
+      <th class="color-red">Flight Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$156,804.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$190,098.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$193,930.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Now you have the column headings that you want. But the columns are so wide that you might
+     prefer to split the long column headings across two lines.
+  </p>
+
+  <!-- Topic 7 Subtopic 1 -->
+  <h3 class="subtopic" id="topic7_subtopic1">Splitting Column Headings across Multiple Lines</h3>
+
+  <p>To control how words break in column headings, you can use a <strong>split character</strong> in the column
+     label. When PROC REPORT encounters the split character in a column heading, it breaks the
+     heading and continues the heading on the next line. The split character itself does not appear in
+     the heading.
+  </p>
+
+  <p>To use a split character, you can do either of the following:</p>
+  <ul>
+    <li>Use the <strong>default slash</strong> (/) as the split character.</li>
+    <li>Define a split character by using the <strong>SPLIT= option</strong> in the PROC REPORT statement.</li>
+  </ul>
+
+  <h4>Example</h4>
+
+  <p>Suppose you want to break headings so that only one word appears on a line. Using the default
+     slash as the split character, you can submit this PROC REPORT step. Notice that the column
+     width has been reduced.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=6 'Flight/Number';
+     define orig / width=6 spacing=5 'Flight/Origin';
+     define dest / width=11 spacing=5 'Flight/Destination';
+  run;</pre>
+  </div>
+
+  <p>Or you can submit this program, which uses the SPLIT= option and produces exactly the same
+     output:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd split='*';
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=6 'Flight*Number';
+     define orig / width=6 spacing=5 'Flight*Origin';
+     define dest / width=11 spacing=5 'Flight*Destination';
+  run;</pre>
+  </div>
+
+  <p>Here are both types of output from both programs.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6">Partial PROC REPORT Output, HTML</th>
+    </tr>
+    <tr>
+      <th class="color-red">Flight<br/>Number</th>
+      <th class="color-red">Flight<br/>Origin</th>
+      <th class="color-red">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$156,804.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$190,098.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$193,930.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Flight Flight Flight
+  Number Origin Destination Mail Freight      Revenue
+  821    LGA    LON         403      209  $150,634.00
+  271    LGA    PAR         492      308  $156,804.00
+  271    LGA    PAR         366      498  $190,098.00
+  821    LGA    LON         345      243  $150,634.00
+  821    LGA    LON         248      307  $193,930.00</pre>
+  </div>
+  <br/>
+
+  <!-- Topic 8 -->
+  <h2 class="topic" id="topic8">Specifying Column Justification</h2>
+
+  <p>You might also want to specify <strong>justification</strong> for columns in your report. Remember that by default
+     in listing output, PROC REPORT left-justifies character variables and right-justifies numeric
+     variables. For each variable that you define, you can specify the justification option <strong>CENTER,
+     LEFT</strong>, or <strong>RIGHT</strong> in the DEFINE statement.
+  </p>
+
+  <p>Each option justifies both the formatted values of the report item within the column width and the
+     column headings over the values.
+  </p>
+
+  <h4>Example</h4>
+
+  <p>To center headings and values for <i>Flight, Orig</i>, and <i>Dest</i>, you can specify the CENTER
+     option in your DEFINE statements as shown below:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=6 'Flight/Number' center;
+     define orig / width=6 spacing=5 'Flight/Origin' center;
+     define dest / width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Flight Flight    Flight
+  Number Origin Destination Mail Freight Revenue
+  ----------------------------------------------
+   821    LGA       LON      403     209 $150,634.00
+   271    LGA       PAR      492     308 $156,804.00
+   271    LGA       PAR      366     498 $190,098.00
+   821    LGA       LON      345     243 $150,634.00
+   821    LGA       LON      248     307 $193,930.00</pre>
+  </div>
+  <br/>
+
+  <!-- Topic 9 -->
+  <h2 class="topic" id="topic9">Enhancing the Heading's Appearance</h2>
+
+  <p>To complete the job of enhancing headings in your list report, you can take advantage of two
+     useful options in the PROC REPORT statement:
+  </p>
+  <ul>
+    <li><strong>HEADLINE</strong>, which underlines all column headings and the spaces between them.</li>
+    <li><strong>HEADSKIP</strong>, which writes a blank line beneath all column headings or after the underline
+        if the HEADLINE option is used.
+    </li>
+  </ul>
+
+  <p>These options have no effect on HTML output.</p>
+
+  <h4>Example</h4>
+
+  <p>In this PROC REPORT step, the PROC REPORT statement specifies both HEADLINE and
+     HEADSKIP.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / width=6 'Flight/Number' center;
+     define orig / width=6 spacing=5 'Flight/Origin' center;
+     define dest / width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <p></p>
+  
+  <p class="color-red">Partial PROC REPORT Output, SAS Listing</p>
+
+  <div class="scrolling-div">
+  <pre>
+  Flight Flight    Flight
+  Number Origin Destination Mail Freight   Revenue
+
+  --------------------------------------------------
+
+  821     LGA       LON      403     209 $150,634.00
+  271     LGA       PAR      492     308 $156,804.00
+  271     LGA       PAR      366     498 $190,098.00
+  821     LGA       LON      345     243 $150,634.00
+  821     LGA       LON      248     307 $193,930.00</pre>
+  </div>
+
+  <!-- Topic 10 -->
+  <h2 class="topic" id="topic10">Defining Variable Usage</h2>
+
+  <p>So far, you've selected data for your list report and defined column attributes and headings. Next,
+     let's look at a more complex PROC REPORT feature: <strong>usage</strong> for variables in your report. You've
+     seen that you define variable usage in the DEFINE statement. Now you can see how each usage
+     affects the layout of your report and the values that the report contains.
+  </p>
+
+  <!-- Topic 10 Subtopic 1 -->
+  <h3 class="subtopic" id="topic10_subtopic1">How PROC REPORT Uses Variables</h3>
+
+  <p>PROC REPORT uses each variable in one of six ways (DISPLAY, ORDER, GROUP, ACROSS,
+     ANALYSIS, or COMPUTED). By default, PROC REPORT uses
+  </p>
+
+  <ul>
+    <li>character variables as <strong>display</strong> variables.</li>
+    <li>numeric variables as <strong>analysis</strong> variables, which are used to calculate the SUM statistic.</li>
+  </ul>
+
+  <p>Because you haven't explicitly defined any variable usages, your current list report contains only
+     display and analysis variables:
+  </p>
+  <ul>
+    <li>The character variables <i>Flight, Orig</i>, and <i>Dest</i> are display variables. Display
+        variables don't affect the order of rows in the report. A report that contains one or more
+        display variables has a detail row for each observation that is read from the data set. Each
+        detail row contains a value for each display variable.
+    </li>
+    <li>The numeric variables <i>Mail, Freight</i>, and <i>Revenue</i> are analysis variables. Analysis
+        variables are used to calculate a statistic (in this case, the default SUM).
+    </li>
+  </ul>
+
+  <p>In the illustration below, columns for display variables are shown in white. Columns for analysis
+     variables are shown in gray.
+  </p>
+
+  <p>Illustration of Partial PROC REPORT Output</p>
+
+  <img src="images/ch8_image1.png" class="diagram"/>
+
+  <!-- Topic 10 Subtopic 2 -->
+  <h3 class="subtopic" id="topic10_subtopic2">Using Order Variables</h3>
+
+  <p>How you use a variable in a report determines, among other things, the order of the rows in your
+     report.
+  </p>
+
+  <p>An order variable orders the detail rows in a report according to their formatted values. For
+     example, suppose you want to see values in your list report ordered by flight number. To use
+     Flight as an order variable, you specify the ORDER usage option in the DEFINE statement, as
+     shown below.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     colum n flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / order 'Flight/Number' width=6 center;
+     define orig / width=6 spacing=5 'Flight/Origin' center;
+     define dest / width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <p>In the ordered output shown below, notice that PROC REPORT displays only the first occurrence
+     of each value of an order variable in a set of rows that have the same value for all order variables.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" style="text-align:center;">Flight<br/>Number</th>
+      <th class="color-red" style="text-align:center;">Flight<br/>Origin</th>
+      <th class="color-red" style="text-align:center;">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td class="back-color-grey">219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>331</td>
+      <td>376</td>
+      <td>$189,065.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>485</td>
+      <td>267</td>
+      <td>$197,456.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>388</td>
+      <td>298</td>
+      <td>$162,343.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>421</td>
+      <td>356</td>
+      <td>$134,520.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>447</td>
+      <td>299</td>
+      <td>$106,753.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>356</td>
+      <td>547</td>
+      <td>$122,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>272</td>
+      <td>370</td>
+      <td>$198,744.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$156,804.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$190,098.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>$166,470.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>$163,248.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>$170,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>$195,468.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>352</td>
+      <td>351</td>
+      <td>$123,456.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$125,632.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$128,972.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>$153,423.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>$133,345.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>$126,543.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>$134,976.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$193,930.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>$167,772.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>$183,106.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>$169,576.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>448</td>
+      <td>282</td>
+      <td>$143,561.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$170,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$129,560.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$196,736.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>$125,344.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>$166,543.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>$129,745.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>By default, the order is ascending, but you can change it with the <strong>DESCENDING option</strong> in the
+     DEFINE statement
+  </p>
+ 
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / orderdescending 'Flight/Number' width=6 center;
+     define orig / width=6 spacing=5 'Flight/Origin' center;
+     define dest / width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <!-- Topic 10 Subtopic 3 -->
+  <h3 class="subtopic" id="topic10_subtopic3">Using Group Variables</h3>
+
+  <p></p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight Number</th>
+      <th class="color-red">Flight Origin</th>
+      <th class="color-red">Flight Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>2700</td>
+      <td>2513</td>
+      <td>$1,111,647.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>5050</td>
+      <td>4421</td>
+      <td>$1,969,201.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>4438</td>
+      <td>4284</td>
+      <td>$2,077,907.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>To summarize your data using PROC REPORT, you can define one or more <strong>group</strong> variables. A
+     group variable groups the detail rows in a report according to their formatted values. If a report
+     contains one or more group variables, then PROC REPORT consolidates into one row all
+     observations from the data set that have a unique combination of values for all group variables.
+  </p>
+
+  <p>To define a group variable, you specify the <strong>GROUP</strong> usage option in the DEFINE statement.</p>
+
+  <h4>Example</h4>
+
+  <p>If you submit the following PROC REPORT step, with <i>Flight</i> defined as a group variable, you
+     get the output shown below.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / group 'Flight/Number' width=6 center;
+     define orig / width=6 spacing=5 'Flight/Origin' center;
+    define dest / width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" style="text-align:center;">Flight<br/>Number</th>
+      <th class="color-red" style="text-align:center;">Flight<br/>Origin</th>
+      <th class="color-red" style="text-align:center;">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td class="back-color-grey">219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>331</td>
+      <td>376</td>
+      <td>$189,065.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>485</td>
+      <td>267</td>
+      <td>$197,456.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>388</td>
+      <td>298</td>
+      <td>$162,343.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>421</td>
+      <td>356</td>
+      <td>$134,520.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>447</td>
+      <td>299</td>
+      <td>$106,753.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>356</td>
+      <td>547</td>
+      <td>$122,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>272</td>
+      <td>370</td>
+      <td>$198,744.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$156,804.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$190,098.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>$166,470.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>$163,248.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>$170,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>$195,468.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>352</td>
+      <td>351</td>
+      <td>$123,456.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>492</td>
+      <td>308</td>
+      <td>$125,632.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>498</td>
+      <td>$128,972.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>353</td>
+      <td>205</td>
+      <td>$153,423.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>366</td>
+      <td>279</td>
+      <td>$133,345.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>357</td>
+      <td>282</td>
+      <td>$126,543.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>415</td>
+      <td>463</td>
+      <td>$134,976.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$150,634.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$193,930.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>$167,772.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>$183,106.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>$169,576.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>448</td>
+      <td>282</td>
+      <td>$143,561.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>403</td>
+      <td>209</td>
+      <td>$170,766.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>345</td>
+      <td>243</td>
+      <td>$129,560.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>248</td>
+      <td>307</td>
+      <td>$196,736.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>391</td>
+      <td>395</td>
+      <td>$125,344.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>219</td>
+      <td>368</td>
+      <td>$166,543.00</td>
+    </tr>
+    <tr>
+      <td class="back-color-grey">&nbsp;</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>389</td>
+      <td>479</td>
+      <td>$129,745.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>But this output looks exactly like the list output in which <i>Flight</i> was an order variable. What
+     happened?
+  </p>
+
+  <p>The problem with the preceding output is that your report contains display variables. As character
+     variables, <i>Orig</i> and <i>Dest</i> are defined as display variables by default.
+  </p>
+
+  <p>All of the variables in a summary report must be defined as <strong>group, analysis, across</strong>, or
+     <strong>computed</strong> variables. This is because PROC REPORT must be able to summarize all variables
+     across an observation in order to collapse observations. If PROC REPORT can't create groups, it
+     displays group variables as order variables.
+  </p>
+
+  <!-- Topic 10 Subtopic 4 -->
+  <h3 class="subtopic" id="topic10_subtopic4">Revising the Report</h3>
+
+  <p>To group data in your report, you need to define the character variables (<i>Flight, Orig</i>, and
+     <i>Dest</i>) as group variables, as shown below:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / group 'Flight/Number' width=6 center;
+     define orig / group width=6 spacing=5 'Flight/Origin' center;
+     define dest / group width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <p>Now PROC REPORT can create groups, and your summary report displays the total mail, freight,
+     and revenue by flight number. Remember that the default statistic for the analysis variables is
+     SUM.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight<br/>Number</th>
+      <th class="color-red">Flight<br/>Origin</th>
+      <th class="color-red">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>2700</td>
+      <td>2513</td>
+      <td>$1,111,647.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>5050</td>
+      <td>4421</td>
+      <td>$1,969,201.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>4438</td>
+      <td>4284</td>
+      <td>$2,077,907.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>The following table compares the effects of using order variables and group variables.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Effect on Report</th>
+      <th class="color-red">Flight<br/>Order</th>
+      <th class="color-red">Flight<br/>Group</th>
+    </tr>
+    <tr>
+      <td>Rows are ordered</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>Repetitious printing of values is suppressed</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>Rows that have the same values are collapsed</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>Type of report produced</td>
+      <td>list</td>
+      <td>summary</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 10 Subtopic 5 -->
+  <h3 class="subtopic" id="topic10_subtopic5">Specifying Statistics</h3>
+
+  <p>As you saw in the previous example, the default statistic for analysis variables is SUM. However,
+     you might want to display other statistics in your PROC REPORT output. To associate a statistic
+     with an analysis variable, specify the statistic as an attribute in the DEFINE statement.
+  </p>
+
+  <p>Here's the previous sample output, which displays the default statistic SUM for the three analysis
+     variables:
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight<br/>Number</th>
+      <th class="color-red">Flight<br/>Origin</th>
+      <th class="color-red">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>2700</td>
+      <td>2513</td>
+      <td class="back-color-grey">$1,111,647.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>5050</td>
+      <td>5050</td>
+      <td class="back-color-grey">$1,969,201.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>4438</td>
+      <td>4438</td>
+      <td class="back-color-grey">$2,077,907.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>By specifying <strong>MEAN</strong> in the DEFINE statement for Revenue, you can display the average
+     revenue for each flight number. The optional column heading <strong>Average Revenue</strong> clarifies that the
+     MEAN statistic is displayed.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight orig dest mail freight revenue;
+     define revenue / mean format=dollar15.2 'Average/Revenue';
+     define flight / group 'Flight/Number' width=6 center;
+     define orig / group width=6 spacing=5 'Flight/Origin' center;
+     define dest / group width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight<br/>Number</th>
+      <th class="color-red">Flight<br/>Origin</th>
+      <th class="color-red">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>2700</td>
+      <td>2513</td>
+      <td class="back-color-grey">$158,806.71</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>LGA</td>
+      <td>PAR</td>
+      <td>5050</td>
+      <td>4421</td>
+      <td class="back-color-grey">$151,477.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LGA</td>
+      <td>LON</td>
+      <td>4438</td>
+      <td>4284</td>
+      <td class="back-color-grey">$159,839.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>You can use the following statistics in PROC REPORT.</p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Statistic</th>
+      <th class="color-red">Definition</th>
+    </tr>
+    <tr>
+      <td>CSS</td>
+      <td>Corrected sum of squares</td>
+    </tr>
+    <tr>
+      <td>USS</td>
+      <td>Uncorrected sum of squares</td>
+    </tr>
+    <tr>
+      <td>CV</td>
+      <td>Coefficient of variation</td>
+    </tr>
+    <tr>
+      <td>MAX</td>
+      <td>Maximum value</td>
+    </tr>
+    <tr>
+      <td>MEAN</td>
+      <td>Average</td>
+    </tr>
+    <tr>
+      <td>MIN</td>
+      <td>Minimum value</td>
+    </tr>
+    <tr>
+      <td>N</td>
+      <td>Number of observations with nonmissing values</td>
+    </tr>
+    <tr>
+      <td>NMISS</td>
+      <td>Number of observations with missing values</td>
+    </tr>
+    <tr>
+      <td>RANGE</td>
+      <td>Range</td>
+    </tr>
+    <tr>
+      <td>STD</td>
+      <td>Standard deviation</td>
+    </tr>
+    <tr>
+      <td>STDERR</td>
+      <td>Standard error of the mean</td>
+    </tr>
+    <tr>
+      <td>SUM</td>
+      <td>Sum</td>
+    </tr>
+    <tr>
+      <td>SUMWGT</td>
+      <td>Sum of the Weight variable values</td>
+    </tr>
+    <tr>
+      <td>PCTN</td>
+      <td>Percentage of a cell or row frequency to a total frequency</td>
+    </tr>
+    <tr>
+      <td>PCTSUM</td>
+      <td>Percentage of a cell or row sum to a total sum</td>
+    </tr>
+    <tr>
+      <td>VAR</td>
+      <td>Variance</td>
+    </tr>
+    <tr>
+      <td>T</td>
+      <td>Student's t for testing the hypothesis that the population mean is 0</td>
+    </tr>
+    <tr>
+      <td>PRT</td>
+      <td>Probability of a greater absolute value of student's t</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 10 Subtopic 6 -->
+  <h3 class="subtopic" id="topic10_subtopic6">Using Across Variables</h3>
+
+  <p>So far, we've looked at display, analysis, order, and group variables. You can also define
+     variables as across variables, which are functionally similar to group variables. However, PROC
+     REPORT displays the groups that it creates for an across variable horizontally rather than
+     vertically.
+  </p>
+
+  <p>Let's look at an example of across variables to clarify this usage.</p>
+
+  <h4>Example</h4>
+
+  <p>The following program uses group variables to produce the output shown. The table shows
+     unique combinations of values of the group variables, and sums of each analysis variable for
+     each combination.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / group 'Flight/Number' width=6 center;
+     define dest / group width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+  <br/>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Flight<br/>Number</th>
+      <th class="color-red">Flight<br/>Destination</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>219</td>
+      <td>LON</td>
+      <td>2700</td>
+      <td>2513</td>
+      <td>$1,111,647.00</td>
+    </tr>
+    <tr>
+      <td>271</td>
+      <td>PAR</td>
+      <td>5050</td>
+      <td>4421</td>
+      <td>$1,969,201.00</td>
+    </tr>
+    <tr>
+      <td>821</td>
+      <td>LON</td>
+      <td>4438</td>
+      <td>4284</td>
+      <td>$2,077,907.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <p>Now let's suppose you change the group variables to <strong>across</strong> variables, as in this program.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc report data=flights.europe nowd headline headskip;
+     where dest in ('LON','PAR');
+     column flight dest mail freight revenue;
+     define revenue / format=dollar15.2;
+     define flight / across 'Flight/Number' width=6 center;
+     define dest / across width=11 spacing=5 'Flight/Destination' center;
+  run;</pre>
+  </div>
+
+  <p>In this case, for each across variable, the table cells contain a frequency count for each unique
+     value. For each analysis variable, the table cells represent the sum of all the variable's values.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="3">Flight Number</th>
+      <th class="color-red" colspan="2">Flight Destination</th>
+      <th class="color-red" colspan="3">&nbsp;</th>
+    </tr>
+    <tr>
+      <th class="color-red">219</th>
+      <th class="color-red">271</th>
+      <th class="color-red">821</th>
+      <th class="color-red">LON</th>
+      <th class="color-red">PAR</th>
+      <th class="color-red">Mail</th>
+      <th class="color-red">Freight</th>
+      <th class="color-red">Revenue</th>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>13</td>
+      <td>13</td>
+      <td>20</td>
+      <td>13</td>
+      <td>12188</td>
+      <td>11218</td>
+      <td>$5,158,755.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 10 Subtopic 7 -->
+  <h3 class="subtopic" id="topic10_subtopic7">Using Computed Variables</h3>
+
+  <p>The last type of variable usage is reserved for computed variables, which are numeric or
+     character variables that you define for the report. They are not in the input data set, and PROC
+     REPORT doesn't add them to the input data set. You can't change the usage of a computed
+     variable.
+  </p>
+
+  <p>In the nonwindowing environment, you add a computed variable as follows:</p>
+
+  <ol>
+    <li>Include the computed variable in the COLUMN statement.</li>
+    <li>Define the variable's usage as COMPUTED in the DEFINE statement.</li>
+    <li>Compute the value of the variable in a compute block that is associated</li>
+  </ol>
+
+  <table class="warning-table">
+    <tr>
+      <th class="color-red">Warning</th>
+      <td><strong>The position of a computed variable is important</strong>. PROC
+          REPORT assigns values to the columns in a row of a report from
+          left to right. Consequently, you can't base the calculation of a
+          computed variable on any variable that appears to its right in the
+          report.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <p>Let's see how you create a new variable for your report.</p>
+
+  <h4>Example</h4>
+
+  <p>Suppose you want to determine the number of empty seats for each flight. To do so, you can
+     compute the variable <i>EmptySeats</i> by subtracting the number of passengers deplaning
+     (<i>Deplaned</i>) from the plane's total seats (<i>Capacity</i>), assuming that the plane is full.
+  </p>
+
+  <p>In the following program, you</p>
+
+  <ul>
+    <li>specify <i>EmptySeats</i> in the COLUMN statement to the right of the variables that are
+        used in its calculation.
+    </li>
+    <li>define <i>EmptySeats</i> as a computed variable in a DEFINE statement.</li>
+    <li>begin a compute block by specifying <i>EmptySeats</i> in a COMPUTE statement.</li>
+    <li>use DATA step statements in the compute block to calculate the values of <i>EmptySeats</i>.
+        Notice that when you refer to an analysis variable, you use a compound name that
+        identifies both the original variable and the statistic that PROC REPORT now calculates from
+        it. The compound name has the form variable-name.statistic.
+    </li>
+    <li>close the compute block with an ENDCOMP statement.
+       <div class="scrolling-div">
+       <pre>
+        proc report data=flights.europe nowd;
+           where dest in ('LON','PAR');
+           column flight capacity deplaned emptyseats;
+           define flight / width=6;
+           define emptyseats/computed 'Empty Seats';
+           compute emptyseats;
+              emptyseats=capacity.sum-deplaned.sum;
+           endcomp;
+        run;</pre>
+       </div>
+       <p>The program creates the following output.</p>
+       <div class="scrolling-div">
+       <table border="1">
+         <tr>
+           <th class="color-red">Flight</th>
+           <th class="color-red">Capacity</th>
+           <th class="color-red">Deplaned</th>
+           <th class="color-red">Empty<br/>Seats</th>
+         </tr>
+         <tr>
+           <td>821</td>
+           <td>250</td>
+           <td>222</td>
+           <td>28</td>
+         </tr>
+         <tr>
+           <td>271</td>
+           <td>250</td>
+           <td>163</td>
+           <td>87</td>
+         </tr>
+         <tr>
+           <td>271</td>
+           <td>250</td>
+           <td>227</td>
+           <td>23</td>
+         </tr>
+         <tr>
+           <td>821</td>
+           <td>250</td>
+           <td>222</td>
+           <td>28</td>
+         </tr>
+         <tr>
+           <td>821</td>
+           <td>250</td>
+           <td>158</td>
+           <td>92</td>
+         </tr>
+       </table>
+       </div>
+    </li>
+  </ul>
+
+
+  <!-- Topic 11 -->
+  <h2 class="topic" id="topic11">Summary</h2>
+
+  <!-- Topic 11 Subtopic 1 -->
+  <h3 class="subtopic" id="topic11_subtopic1">Text Summary</h3>
+
+  <br/>
+
+  <h4>Creating a Default List Report</h4>
+  <p>To create a default list report, you submit a basic PROC REPORT step. You can specify options
+     to invoke the procedure in either a windowing or nonwindowing mode. By default, all observations
+     and variables in the data set are printed, and variables appear in the order in which they occur in
+     the data set.
+  </p>
+  <br/>
+
+  <h4>Selecting Variables</h4>
+  <p>To select and order the variables that appear in your list report, you can use the <strong>COLUMN
+     statement</strong>.
+  </p>
+  <br/>
+
+  <h4>Selecting Observations</h4>
+  <p>To select rows for your report, you can use the <strong>WHERE statement</strong> as you do with many other
+     SAS procedures.
+  </p>
+  <br/>
+
+  <h4>Defining Variables</h4>
+  <p>You can enhance your report by defining how each variable is used in the report. To describe
+     how to use and display variables in your report, you use one or more <strong>DEFINE statements</strong>.
+  </p>
+  <br/>
+
+  <h4>Defining Column Attributes</h4>
+  <p>To assign a format to a specific report column, use the <strong>FORMAT= attribute</strong> in the DEFINE
+     statement for that column. To specify a width for columns in your report, use the <strong>WIDTH=
+     attribute</strong> in the DEFINE statement. To specify a different column spacing, use the <strong>SPACING=
+     attribute</strong> in the DEFINE statement. To define a column heading, enclose the heading text in
+     quotation marks in the DEFINE statement. To control how words break in column headings, you
+     can use a split character in the column label. For each variable that you define, you can specify
+     the justification option CENTER, LEFT, or RIGHT in the DEFINE statement.
+  </p>
+  <br/>
+
+  <h4>Enhancing the Heading's Appearance</h4>
+  <p>To enhance headings in your report, you can use the <strong>HEADLINE option</strong>, which underlines all
+     column headings and the spaces between them, and the <strong>HEADSKIP option</strong>, which writes a
+     blank line before the data values. These options have no effect on HTML output.
+  </p>
+  <br/>
+
+  <h4>Defining Variable Usage</h4>
+  <p>PROC REPORT uses each variable in one of six ways (DISPLAY, ORDER, GROUP, ACROSS,
+     ANALYSIS, or COMPUTED). By default, PROC REPORT uses character variables as display
+     variables, and it uses numeric variables as analysis variables, which are used to calculate the
+     SUM statistic. You can define usage for variables in the DEFINE statement.
+  </p>
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="2">Variable Usage in PROC REPORT</th>
+    </tr>
+    <tr>
+      <th>Display variables</th>
+      <td>do not affect the order of rows in the report. A report that contains
+          one or more display variables has a detail row for each observation
+          in the data set. Each detail row contains a value for each display
+          variable. By default, PROC REPORT treats all character variables
+          as display variables.
+      </td>
+    </tr>
+    <tr>
+      <th>Order variables</th>
+      <td>order the detail rows in a report according to their formatted values.</td>
+    </tr>
+    <tr>
+      <th>Group variables</th>
+      <td>order the detail rows in a report according to their formatted values.
+          If a report contains one or more group variables, PROC REPORT
+          tries to consolidate into one row all observations from the data set
+          that have a unique combination of values for all group variables.
+      </td>
+    </tr>
+    <tr>
+      <th>Across variables</th>
+      <td>are functionally similar to group variables; however, PROC REPORT
+          displays the groups that it creates for an across variable horizontally rather
+          than vertically.
+      </td>
+    </tr>
+    <tr>
+      <th>Analysis variables</th>
+      <td>are used to calculate a statistic. By default, PROC REPORT uses
+          numeric variables as analysis variables, which are used to calculate the SUM
+          statistic.
+      </td>
+    </tr>
+    <tr>
+      <th>Computed variables</th>
+      <td>are variables that you define for the report. They are not in the data
+          set. You cannot change the usage of a computed variable.
+          Computed variables can be either numeric or character variables.
+      </td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <h4>Specifying Statistics</h4>
+  <p>To associate a statistic with an analysis variable, specify the statistic as an attribute in the
+     DEFINE statement.
+  </p>
+  <br/>
+
+  <!-- Topic 11 Subtopic 2 -->
+  <h3 class="subtopic" id="topic11_subtopic2">Points to Remember</h3>
+
+  <ul>
+    <li>You can use PROC REPORT in either a windowing or nonwindowing mode.</li>
+    <li>You can use FORMAT statements with PROC REPORT, but the DEFINE statement
+        enables you to specify more than one column attribute at a time.
+    </li>
+    <li>For HTML output, the FORMAT= option cannot increase cell width beyond the width of
+        cell values. The WIDTH= and SPACING= attributes, along with the HEADSKIP and
+        HEADLINE options, have no effect on HTML output.
+    </li>
+    <li>You can use the default slash as the split character, or you can specify a split character
+        using the SPLIT= option in the PROC REPORT statement.
+    </li>
+    <li>By default, PROC REPORT uses character variables as display variables and numeric
+        variables as analysis variables, which are used to calculate the SUM statistic.
+    </li>
+    <li>All of the variables in a summary report must be defined as group, analysis, across, or
+        computed variables. If PROC REPORT can't create groups, it displays group variables as
+        order variables.
+    </li>
+    <li>You can't change the usage of a computed variable.</li>
+    <li>The position of a computed variable is important. You can't base the calculation of a
+        computed variable on any variable that appears to its right in the report.
+    </li>
+  </ul>
+
+</div> <!-- end of div content -->
+</body>
+</html>

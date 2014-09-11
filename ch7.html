@@ -76,6 +76,7 @@
      and they are not easily interpreted.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -141,6 +142,7 @@
       <td>28180.00</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can display more descriptive values for these variables. Here is how a report that contains
@@ -148,6 +150,7 @@
      here.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -213,6 +216,7 @@
       <td>28180.00</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>However, you can use the <strong>FORMAT</strong> procedure to define your own formats for displaying values
@@ -257,10 +261,12 @@
      use the word Library as the libref when creating your own permanent formats.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   libname library 'c:\sas\formats\lib';
   libname library 'c:\data\setup\library';
   libname library 'c:\sales\ancillary\libset';</pre>
+  </div>
 
   <p>When you associate a permanent format with a variable in a subsequent DATA or PROC step,
      you use the Library libref to reference the location of the format catalog.
@@ -270,11 +276,14 @@
      catalog called <strong>Library.Formats</strong>.
   </p>
 
+
+  <div class="scrolling-div">
   <pre>
   libname library 'c:\sas\formats\lib';
   proc format library=library;
      ... ;
   run;</pre>
+  </div>
 
   <p>In the program above, the catalog <strong>Library.Formats</strong> is located in the SAS data library
      <strong>C:\Sas\Formats\Lib</strong>, which is referenced by the libref <strong>Library</strong>.
@@ -323,6 +332,7 @@
      descriptive labels that will later be assigned to the variable <i>JobTitle</i>:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
      value jobfmt
@@ -332,6 +342,7 @@
            112='technical writer'
            113='senior technical writer';
   run;</pre>
+  </div>
 
   <p>The VALUE range specifies</p>
   <ul>
@@ -350,6 +361,7 @@
      character values as text labels.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value $grade
@@ -358,12 +370,14 @@
              'F'='Poor'
              'I','U'='See Instructor';
   run;</pre>
+  </div>
 
   <p>When the specified values are <strong>numeric values</strong>, they are not enclosed in quotation marks, and
      the format's name should not begin with a dollar sign ($). The VALUE statement that defines the
      format JOBFMT assigns labels to numeric values.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value jobfmt
@@ -373,6 +387,7 @@
              112='technical writer'
              113='senior technical writer';
   run;</pre>
+  </div>
 
   <!-- Topic 4 Subtopic 1 -->
   <h3 class="subtopic" id="topic4_subtopic1">Specifying Value Ranges</h3>
@@ -383,6 +398,7 @@
      19.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value agefmt
@@ -391,6 +407,7 @@
              20-&lt;65='adult'
              65-100='senior citizen';
   run;</pre>
+  </div>
 
   <p>You can also use the keywords <strong>LOW</strong> and <strong>HIGH</strong> to specify the lower and upper limits of a
      variable's value range. The keyword LOW does not include missing numeric values. The keyword
@@ -398,6 +415,8 @@
      addressed in a range.
   </p>
 
+
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value agefmt
@@ -407,8 +426,9 @@
              65-high='senior citizen'
              other='unknown';
   run;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>If applied to a character format, the keyword LOW includes missing character
@@ -434,6 +454,7 @@
      step. In this example, each VALUE statement defines a different format.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value jobfmt
@@ -448,6 +469,7 @@
              'U'='Undecided'
              'NOP'='No opinion';
   run;</pre>
+  </div>
 
   <p>The SAS log prints notes informing you that the formats have been created.</p>
 
@@ -470,6 +492,7 @@
      can be used with PROC PRINT for more legible output.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">(Without Format)</th>
@@ -567,6 +590,7 @@
       <td>35099.50</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>The next section shows how to apply your formats to variables.</p>
@@ -582,6 +606,7 @@
      in the directory <strong>C:\Sas\Formats\Lib</strong> in the Windows environment.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   libname library 'c:\sas\formats\lib';
   proc format lib=library;
@@ -592,14 +617,17 @@
              112='technical writer'
              113='senior technical writer';
   run;</pre>
+  </div>
 
   <p>To use the JOBFMT format in a subsequent SAS session, you must assign the libref <strong>Library</strong>
      again.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   libname library 'c:\sas\formats\lib';
   data ... ;</pre>
+  </div>
 
   <p>SAS searches for the format JOBFMT in two libraries, in this order:</p>
   <ul>
@@ -608,7 +636,8 @@
   </ul>
   
   <p>SAS uses the first instance of a specified format that it finds.</p>
-  <table>
+
+  <table class="info-table">
     <tr>
       <th class="color-blue">Info</th>
       <td>You can delete formats by using PROC CATALOG or the SAS Explorer
@@ -625,6 +654,7 @@
      statement</strong>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.empinfo;
      infile empdata;
@@ -632,8 +662,9 @@
            @19 Salary comma9.;
      format salary comma9.2 jobtitle jobfmt.;
   run;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Don't worry about @ pointer controls in programs in this chapter (as in
@@ -653,10 +684,14 @@
   <p>When you submit the PRINT procedure, the output for <strong>Perm.Empinfo</strong> now shows commas in the
      values for <i>Salary</i>, and it shows descriptive labels in place of the values for <i>JobTitle</i>.
   </p>
+  <div class="scrolling-div">
   <pre>
   proc print data=perm.empinfo;
   run;</pre>
+  </div>
 
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -722,12 +757,14 @@
       <td class="back-color-grey">28,180.00</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>When associating a format with a variable, remember to</p>
   <ul>
     <li>use the <strong>same format name</strong> in the FORMAT statement that you specified in the VALUE statement.</li>
     <li>place <strong>a period</strong> at the end of the format name when it is used in the FORMAT statement.
+        <div class="scrolling-div">
         <pre>
         libname library 'c:\sas\formats\lib';
         proc format lib=library;
@@ -747,6 +784,7 @@
                  @19 Salary comma9.;
            format salary comma9.2 jobtitle jobfmt.;
         run;</pre>
+        </div>
     </li>
   </ul>
 
@@ -760,6 +798,7 @@
      statement are printed as they appear in the SAS data set, as shown in the following example:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc format lib=library;
        value jobfmt
@@ -769,7 +808,9 @@
   run;
   proc print data=perm.empinfo;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -835,6 +876,7 @@
       <td>28,180.00</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 Subtopic 3 -->
@@ -846,15 +888,18 @@
      their values.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   libname library 'c:\sas\formats\lib';
   proc format library=library fmtlib;
   run;</pre>
+  </div>
 
   <p>When you submit this PROC step, a description of each format in your permanent catalog is
      displayed as output.
   </p>
   
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Output</th>
@@ -893,6 +938,7 @@
       <td>senior technical writer</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>In addition to the name, range, and label, the format description includes the</p>
@@ -908,6 +954,7 @@
 
   <!-- Topic 6 Subtopic 1 -->
   <h3 class="subtopic" id="topic6_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>Invoking PROC FORMAT</h4>
   <p>The <strong>FORMAT</strong> procedure enables you to substitute descriptive text values for the values of

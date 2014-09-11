@@ -41,6 +41,8 @@
      and time expressions. After you read date and time values, you can also perform calculations
      with them.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
@@ -50,6 +52,7 @@
      RoomCharge=days*roomrate;
      Total=roomcharge+equipcost;
   run;</pre>
+  </div>
 
   <img src="images/ch19_image1.png" class="diagram"/>
   
@@ -76,7 +79,7 @@
      for the date January 2, 2000, to a single SAS date value:
   </p>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -147,7 +150,7 @@
      be read using the appropriate SAS date informat.
   </p>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Date Expression</th>
@@ -171,6 +174,7 @@
     </tr>
   </table>
   </div>
+  <br/>
 
   <!-- Page 504 -->
 
@@ -190,12 +194,14 @@
   <hr/>
   
   <p>For example, the following INPUT statement uses two informats:</p>
+  <div class="scrolling-div">
   <pre>input @15 Style $3. @21 Price 5.2;</pre>
+  </div>
   <p>The $w. character informat ($3.) reads values, starting at column 15 of the raw data, into the
      variable <i>Style</i>. The <i>w.d</i> numeric informat (5.2) reads values, starting at column 21, into the
      variable <i>Price</i>.
   </p>
-  <p>Now let’s look at some specific informats that you can use.</p>
+  <p>Now let's look at some specific informats that you can use.</p>
   
   <!-- Topic 4 Subtopic 3 -->
   <h3 class="subtopic" id="topic4_subtopic3">MMDDYYw. Informat</h3>
@@ -219,7 +225,7 @@
      using the MMDDYYw. informat:
   </p>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Date Expression</th>
@@ -243,11 +249,13 @@
     </tr>
   </table>
   </div>
+  <br/>
 
   <!-- Page 505 -->
 
   <!-- Topic 4 Subtopic 4 -->
   <h3 class="subtopic" id="topic4_subtopic4">DATEw. Informat</h3>
+
   <p>The DATEw. informat reads date values in the form 30May2000.</p>
   <hr/>
   <p><strong>General form, values that are read with the DATEw. informat:</strong></p>
@@ -255,12 +263,17 @@
   <p>where</p>
   <ul>
     <li><i>dd</i> is an integer from 01 to 31, representing the day</li>
-    <li><i>mmm</i> is the first three letters of the month’s name</li>
+    <li><i>mmm</i> is the first three letters of the month's name</li>
     <li><i>yy</i> or <i>yyyy</i> is an integer that represents the year</li>
   </ul>
   <hr/>
 
-  <p></p>
+  <p>You can place blanks or other special characters between the day, month, and year, as long as
+     you increase the width of the informat to include these delimiters. Here are some date
+     expressions that you can read using the DATEw. informat:
+  </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Date Expression</th>
@@ -279,6 +292,8 @@
       <th>DATE11.</th>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <h3 class="subtopic" id="topic4_subtopic5">TIMEw. Informat</h3>
   <p>The TIMEw. informat reads values in the form <i>hh:mm:ss.ss</i>.</p>
@@ -293,7 +308,11 @@
   </ul>
   <hr/>
 
-  <p></p>
+  <p>If you do not enter a value for ss.ss, a value of zero is assumed. Here are some examples of time
+     expressions that you can read using the TIMEw. informat:
+  </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Time Expression</th>
@@ -312,8 +331,10 @@
       <th>TIME5.</th>
     </tr>
   </table>
+  </div>
   <br/>
-  <table>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Notice the last example. The field is only 4 columns
@@ -328,6 +349,7 @@
       </td>
     </tr>
   </table>
+  <br/>
 
   <!-- Page 506 -->
 
@@ -353,6 +375,8 @@
   <p>Here are some examples of the DATETIMEw. informat. Note that in the time value, you must use
      delimiters to separate the values for hour, minutes, and seconds.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Date and Time Expression</th>
@@ -371,15 +395,19 @@
       <td>DATETIME15.</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 4 Subtopic 7 -->
   <h3 class="subtopic" id="topic4_subtopic7">YEARCUTOFF= SAS System Option</h3>
+
   <p>Recall from Chapter, <strong>Referencing Files and Setting Options</strong>, that the value of the
      YEARCUTOFF= system option affects only <strong>two-digit year values</strong>. A date value that contains a
      four-digit year value will be interpreted correctly even if it does not fall within the 100-year span
      set by the YEARCUTOFF= system option
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -397,12 +425,15 @@
       <td>17Mar1783</td>
     </tr>
   </table>
+  </div>
   <br/>
+
   <p>However, if you specify an inappropriate field width, you will receive incorrect results. Notice that
      the date expression in the table below contains a four-digit year value. The informat specifies a <strong>w</strong>
      value that is too small to read the entire value, so the last two digits of the year are truncated.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -415,9 +446,11 @@
       <td>17Mar1917</td>
     </tr>
   </table>
+  </div>
   <br/>
+
   <p>Another problem arises if you use the wrong informat to read a date or time expression. The SAS
-     log displays an invalid data message, and the variable’s values are set to missing.
+     log displays an invalid data message, and the variable's values are set to missing.
   </p>
   <img src="images/ch19_image5.png" class="diagram"/>
   <br/><br/>
@@ -439,10 +472,10 @@
     </li>
     <li>specify the proper informat for reading a date value</li>
     <li>specify the correct field width so that the entire date value is read</li>
-    <table>
+    <table class="note-table">
       <tr>
          <th class="color-blue">Note</th>
-         <td>Later in this chapter, you’ll learn how to work with data values that contain
+         <td>Later in this chapter, you'll learn how to work with data values that contain
              delimiters
          </td>
       </tr>
@@ -450,13 +483,15 @@
   </ul>
 
   <h2 class="topic" id="topic5">Using Dates and Times in Calculations</h2>
+
   <h3 class="subtopic" id="topic5_subtopic1">Introduction</h3>
-  <p>In this chapter so far, you’ve learned how date and time informats read common date and time
+
+  <p>In this chapter so far, you've learned how date and time informats read common date and time
      expressions in specific forms. Now you will see how converting date and time expressions to
      numeric SAS date values can be useful, particularly for determining time intervals or performing
      calculations.
   </p>
-  <p>Suppose you work in the billing department of a small community hospital. It’s your job to create a
+  <p>Suppose you work in the billing department of a small community hospital. It's your job to create a
      SAS data set from the raw data file that is referenced by the fileref <strong>Aprdata</strong>. A portion of the raw
      data file below shows data values that represent each patient's
   </p>
@@ -469,8 +504,8 @@
   </ul>
   <img src="images/ch19_image6.png" class="diagram"/>
 
-  <h3>Example</h3>
-  <table>
+  <h4>Example</h4>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>The following example is shown with the YEARCUTOFF= system option.
@@ -479,23 +514,29 @@
       </td>
     </tr>
   </table>
+  <br/>
 
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
      infile aprdata;
      input LastName $8.</pre>
+  </div>
 
   <p>Notice that the values in the second and third fields are in the form mmddyy. To complete the
      INPUT statement, add instructions to read the values for RoomRate (third field) and EquipCost
      (fourth field), and add a semicolon.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
      infile aprdata;
      input LastName $8. @10 DateIn mmddyy8. +1 DateOut
            mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;</pre>
+  </div>
 
   <p>Now that the INPUT statement is complete, calculate how many days each patient was
      hospitalized. Because <i>DateIn</i> and <i>DateOut</i> are numeric variables, you can simply subtract to
@@ -503,6 +544,7 @@
      first and last days), you must add 1 to the difference. Call this new variable <i>Days</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
@@ -510,8 +552,11 @@
      input LastName $8. @10 DateIn mmddyy8. +1 DateOut
            mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
      Days=dateout-datein+1;</pre>
+  </div>
 
   <p>You can calculate a total room charge by multiplying the variable values for <i>Days</i> and <i>RoomRate</i>.</p>
+
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
@@ -520,11 +565,14 @@
            mmddyy8. +1 RoomRate 6. @35 EquipCost 6.;
      Days=dateout-datein+1;
      RoomCharge=days*roomrate;</pre>
+  </div>
 
   <p>Calculating the total cost for each patient is easy. Create a variable named <i>Total</i> whose value is
      the sum of <i>RoomCharge</i> and <i>EquipCost</i>. Then add a PROC PRINT step and a RUN statement
      to view the new data.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
@@ -537,8 +585,10 @@
   run;
   proc print data=perm.aprbills;
   run;</pre>
+  </div>
 
-  <table>
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red">Obs</th>
       <th class="color-red">LastName</th>
@@ -617,14 +667,18 @@
       <td>1346.28</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <p>If the values for <i>DateIn</i> and <i>DateOut</i> look odd to you, remember that these are SAS date
-     values. Applying a format such as MMDDYY8. displays them as they appeared in <strong>Aprdata</strong>. You’ll
+     values. Applying a format such as MMDDYY8. displays them as they appeared in <strong>Aprdata</strong>. You'll
      work with some other date and time formats later in this chapter.
   </p>
-  <p>Follow the execution of the program that you’ve written. When the DATA step executes, the
+  <p>Follow the execution of the program that you've written. When the DATA step executes, the
      values for <i>DateIn</i> and <i>DateOut</i> are converted to SAS date values.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options yearcutoff=1920;
   data perm.aprbills;
@@ -635,6 +689,7 @@
      RoomCharge=days*roomrate;
      Total=roomcharge+equipcost;
      run;</pre>
+  </div>
      <img src="images/ch19_image7.png" class="diagram" />
      <br/>
      <img src="images/ch19_image8.png" class="diagram" />
@@ -642,6 +697,8 @@
      <p>After the rest of the INPUT statement executes, the value for Days is created by subtracting the
         SAS date value for <i>DateIn</i> from the value for <i>DateOut</i> and then adding 1.
      </p>
+
+    <div class="scrolling-div">
      <pre>
      options yearcutoff=1920;
      data perm.aprbills;
@@ -652,10 +709,14 @@
         RoomCharge=days*roomrate;
         Total=roomcharge+equipcost;
      run;</pre>
+     </div>
+
      <img src="images/ch19_image9.png" class="diagram" />
      <p>The value for <i>RoomCharge</i> is calculated next. <i>RoomCharge</i> is the product of <i>Days</i> and
         <i>RoomRate</i>.
      </p>
+
+     <div class="scrolling-div">
      <pre>
      options yearcutoff=1920;
      data perm.aprbills;
@@ -666,11 +727,15 @@
         RoomCharge=days*roomrate;
         Total=roomcharge+equipcost;
      run;</pre>
+     </div>
+
      <img src="images/ch19_image10.png" class="diagram" />
      <br/>
      <img src="images/ch19_image11.png" class="diagram" />
 
      <p>The value for <i>Total</i> is the final calculation. <i>Total</i> is the sum of EquipCost and RoomCharge.</p>
+
+     <div class="scrolling-div"> 
      <pre>
      options yearcutoff=1920;
      data perm.aprbills;
@@ -681,6 +746,7 @@
         RoomCharge=days*roomrate;
         Total=roomcharge+equipcost;
      run;</pre>
+     </div>
      <img src="images/ch19_image12.png" class="diagram" />
      <br/>
      <img src="images/ch19_image13.png" class="diagram" />
@@ -702,7 +768,7 @@
          <li><i>dd</i> is an integer between 01 and 31, representing the day</li>
          <li><i>yy</i> or <i>yyyy</i> is an integer that represents the year</li>
      </ul>
-     <table>
+     <table class="note-table">
         <tr>
            <th class="color-blue">Note</th>
            <td>If the w value is too small to write the complete day of the week and month,
@@ -711,12 +777,14 @@
      </table>
      <hr/>
 
+     <div class="scrolling-div">
      <pre>
      proc print data=perm.aprbills;
      format datein dateout weekdate17.;
      run;</pre>
+     </div>
 
-
+    <div class="scrolling-div">
      <table border="1">
         <tr>
           <th class="color-red">Obs</th>
@@ -796,8 +864,11 @@
           <td>1346.28</td>
         </tr>
      </table>
+     </div>
+     <br/>
 
      <p>You can vary the results by changing the w value in the format.</p>
+     <div class="scrolling-div">
      <table border="1">
        <tr>
          <th class="color-red">FORMAT Statement</th>
@@ -820,7 +891,9 @@
           <td>Monday, April 5, 1999</td>
        </tr>
      </table>
+     </div>
      <br/><br/>
+
      <!-- Topic 6 Subtopic 2 -->
      <h3 class="subtopic" id="topic6_subtopic2">The WORDDATEw. Format</h3>
      <p>The WORDDATEw. format is similar to the WEEKDATEw. format, but it does not display the day
@@ -835,7 +908,7 @@
        <li><i>dd</i> is an integer between 01 and 31, representing the day</li>
        <li><i>yyyy</i> is an integer that represents the yea</li>
      </ul>
-     <table>
+     <table class="note-table">
        <tr>
          <th class="color-blue">Note</th>
          <td>If the w value is too small to write the complete month, SAS abbreviates as
@@ -844,11 +917,15 @@
        </tr>
      </table>
      <hr/>
+
+    <div class="scrolling-div">
      <pre>
      proc print data=perm.aprbills;
      format datein dateout worddate12.;
      run;</pre>
+     </div>
 
+     <div class="scrolling-div">
      <table border="1">
         <tr>
           <th class="color-red">Obs</th>
@@ -928,8 +1005,11 @@
           <td>1346.28</td>
         </tr>
      </table>
+     </div>
      <br/>
-     <p></p>
+
+     <p>You can vary the results by changing the w value in the format.</p>
+     <div class="scrolling-div">
      <table border="1">
        <tr>
          <th class="color-red">FORMAT Statement</th>
@@ -948,11 +1028,14 @@
          <td>April 15, 1999</td>
        </tr>
      </table>
+     </div>
 
      <br/>
      <p>Remember that you can permanently assign a format to variable values by including a FORMAT
         statement in the DATA step.
      </p>
+
+     <div class="scrolling-div">
      <pre>
      options yearcutoff=1920;
      data work.aprbills;
@@ -966,17 +1049,20 @@
      run;
      proc print data=work.aprbills;
      run;</pre>
+     </div>
 
      <!-- Topic 7 -->
      <h2 class="topic" id="topic7">Summary</h2>
 
      <!-- Topic 7 Subtopic 1 -->
      <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+     <br/>
 
      <h4>How SAS Stores Date and Time Values</h4>
      <p>SAS stores date values as numeric <strong>SAS date values</strong>, which are the number of days from
         January 1, 1960. <strong>SAS time values</strong> are the number of seconds since midnight.
      </p>
+     <br/>
 
      <h4>Reading Dates and Times with Informats</h4>
      <p>Use SAS informats to read date and time expressions and convert them to SAS date and time
@@ -995,12 +1081,14 @@
         option. The default value of YEARCUTOFF= is 1920. You can check or reset the value of this
         option in your SAS session to use a different 100-year span for date informats.
      </p>
+     <br/>
 
      <h4>Using Dates and Times in Calculations</h4> 
      <p>Date and time values can be used in calculations like other numeric values. In addition to tracking
         time intervals, SAS date and time values can be used with SAS functions and with complex
         calculations.
      </p>
+     <br/>
 
 
      <h4>Using Date and Time Formats</h4> 
@@ -1009,6 +1097,7 @@
         in the form day-of-week, month-name dd, yy (or yyyy). You can use the <strong>WORDDATEw.</strong> format to
         write date values in the form month-name dd, yyyy.
      </p>
+     <br/>
 
      <!-- Topic 7 Subtopic 2 -->
      <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>

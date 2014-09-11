@@ -109,12 +109,16 @@
   <p>The LIBNAME statement below assigns the libref Clinic to the SAS data library
      <strong>D:\Users\Qtr\Reports</strong> in the Windows environment.
   </p>
+
+  <div class="scrolling-div">
   <pre>libname clinic 'd:\users\qtr\reports';</pre>
+  </div>
 
   <p>The table below gives examples of physical names for SAS data libraries in various operating
      environments.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th class="color-red">Environment</th>
@@ -141,8 +145,10 @@
         <td>april.fitness.sasdata</td>
      </tr>
   </table>
+  </div>
+  <br/>
 
-  <table>
+  <table class="note-table">
     <tr>
        <th class="color-blue">Note</th>
        <td>The code examples in this exam guide are shown in the Windows
@@ -153,6 +159,7 @@
        </td>
     </tr>
   </table>
+  <br/>
 
   <p>You can use multiple LIBNAME statements to assign as many librefs as needed.</p>
 
@@ -162,11 +169,14 @@
      assigned successfully.
   </p>
   <p class="color-red">SAS Log</p>
+
+  <div class="scrolling-div">
   <pre>17 libname clinic 'd:\users\qtr\reports';
 
 NOTE: Libref CLINIC was successfully assigned as follows:
       Engine: V9
       Physical Name: d:\users\qtr\reports</pre>
+  </div>
 
 
   <!-- Topic 2 Subtopic 4 -->
@@ -197,9 +207,12 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>For example, in order for the PRINT procedure to read <strong>Clinic.Admit</strong>, you specify the two-level
      name of the file as follows:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc print data=clinic.admit;
   run;</pre>
+  </div>
 
   <!-- Topic 2 Subtopic 6 -->
   <h3 class="subtopic" id="topic2_subtopic6">Other Formats</h3>
@@ -218,6 +231,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>A SAS engine is a set of internal instructions that SAS uses for writing to and reading from files in
      a SAS library.
   </p>
+  <br/>
 
   <h4>Specifying Engines</h4>
   <p>To indicate which engine to use, you specify the engine name in the LIBNAME statement, as
@@ -237,28 +251,57 @@ NOTE: Libref CLINIC was successfully assigned as follows:
          specification of the physical name of the library differs by operating environment
      </li>
   </ul>
-  </hr/>
+  <hr/>
+  <br/>
 
   <h4>Interface Library Engines</h4>
   <p>Interface library engines support read-only access to BMDP, OSIRIS, and SPSS files. With these
      engines, the physical filename that is associated with a libref is an actual filename, not a SAS
      library. This is an exception to the rules for librefs.
   </p>
-  <table>
+ 
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Engine</th>
+      <th class="color-red">Description</th>
+    </tr>
+    <tr>
+      <td>BMDP</td>
+      <td>allows read-only access to BMDP files</td>
+    </tr>
+    <tr>
+      <td>OSIRIS</td>
+      <td>allows read-only access to OSIRIS files</td>
+    </tr>
+    <tr>
+      <td>SPSS</td>
+      <td>allows read-only access to SPSS files</td>
+    </tr>
   </table>
+  </div>
+  <br/>
+
   <p>For example, the LIBNAME statement below specifies the libref <strong>Rptdata</strong> and the engine <strong>SPSS</strong>
      for the file <strong>G:\Myspss.dat</strong> in the Windows operating environment.
   </p>
+
+  <div class="scrolling-div">
   <pre>libname rptdata spss 'g:\myspss.dat';</pre>
+  </div>
+
   <p>For more information about interface library engines, see the SAS documentation for your
      operating environment.
   </p>
-  
+  <br/>
+
   <h4>SAS/ACCESS Engines</h4>
   <p>If your site licenses SAS/ACCESS software, then you can use the LIBNAME statement to access
      data that is stored in a DBMS file. The types of data that you can access depend on your
      operating environment and on which SAS/ACCESS products you have licensed.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Relational Databases</th>
@@ -306,6 +349,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>&nbsp;</td>
     </tr>
   </table>
+  </div>
 
   <!-- Topic 3 -->
   <h2 class="topic" id="topic3">Viewing the Contents of SAS Libraries</h2>
@@ -338,12 +382,18 @@ NOTE: Libref CLINIC was successfully assigned as follows:
 
   <h4>Example</h4>
   <p>To view the contents of the Mylib library, submit the following PROC CONTENTS step:</p>
+
+  <div class="scrolling-div">
   <pre>
   proc contents data=mylib._all_ nods;
   run;</pre>
+  </div>
+
   <p>The output from this step lists only the names, types, sizes, and modification dates for the SAS
      files in the Mylib library.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th colspan="2" class="color-blue" style="text-align:center;">----- Directory -----</th>
@@ -365,7 +415,11 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>C:\WINNT\Profiles\Personal\My SAS Files\V8</td>
     </tr>
   </table>
+  </div>
+
   <br/><br/>
+
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th class="color-red">#</th>
@@ -424,16 +478,24 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>04MAY2000:13:59:19</td>
      </tr>
   </table>
+  </div>
+
   <br/>
+
   <p>To view the descriptor information for the Mylib.Admit data set, you can submit the following
      PROC CONTENTS step:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc contents data=mylib.admit;
   run;</pre>
+  </div>
 
   <p>The output from this step lists information for <strong>Mylib.Admit</strong>, including an alphabetic list of the
      variables in the data set.</p>
+
+  <div class="scrolling-div">
   <table border="1">
      <tr>
        <th>Data Set Name</th>
@@ -484,8 +546,11 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>&nbsp;</td>
      </tr>
   </table>
+  </div>
+
   <br/><br/>
-  
+
+  <div class="scrolling-div">  
   <table border="1">
      <tr>
         <th class="color-red" colspan="2">Engine/Host Dependent Information</th>
@@ -527,9 +592,11 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>XP_PRO</td>
      </tr>
   </table>
+  </div>
 
   <br/<br/>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th colspan="5" class="color-red">Alphabetic List of Variables and Attributes</th>
@@ -605,6 +672,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>&nbsp;</td>
     </tr>
   </table>
+  </div>
 
   <!-- Topic 3 Subtopic 2-->
   <h3 class="subtopic" id="topic3_subtopic2">The DATASETS Procedure</h3>
@@ -636,12 +704,15 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>For example, the following PROC steps produce essentially the same output (with minor
      formatting differences):
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc datasets;
      contents data=sasuser._all_ nods;
   quit;
   proc contents data=sasuser._all_ nods;
   run;</pre>
+  </div>
 
   <p>The major difference between the CONTENTS procedure and the CONTENTS statement in
      PROC DATASETS is the default for libref in the DATA= option. For PROC CONTENTS, the
@@ -650,7 +721,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      requires a QUIT statement rather than a RUN statement.
   </p>
 
-  <table>
+  <table class="note-table">
      <tr>
         <th class="color-blue">Note</th>
         <td>In addition to the CONTENTS statement, PROC DATASETS also uses several
@@ -660,6 +731,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         </td>
      </tr>
   </table>
+  <br/>
 
   <h4>Viewing Descriptor Information for a SAS Data Set</h4>
   <p>As with PROC CONTENTS, you can also use PROC DATASETS to display the descriptor
@@ -673,6 +745,8 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>For example, either of these programs creates output that includes the list of variables shown
      below:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc datasets;
      contents data=sasuser.admit varnum;
@@ -680,7 +754,9 @@ NOTE: Libref CLINIC was successfully assigned as follows:
 
   proc contents data=sasuser.admit varnum;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th colspan="5" class="color-red">Variables in Creation Order</th>
@@ -756,6 +832,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>7.2</td>
      </tr>
   </table>
+  </div>
 
   <!-- Topic 4 -->
   <h2 class="topic" id="topic4">Setting SAS System Options</h2>
@@ -783,7 +860,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
     <li>page size (the number of lines per printed page of output)</li>
     <li>the display of page numbers</li>
     <li>the display of date and time
-        <table>
+        <table class="note-table">
            <tr>
               <th class="color-blue">Note</th>
               <td>The above options do not affect the appearance of HTML output.</td>
@@ -802,7 +879,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      is good programming practice to place OPTIONS statements outside of DATA or PROC steps so
      that your programs are easier to read and debug.
   </p>
-  <table>
+  <table class="note-table">
            <tr>
               <th class="color-blue">Note</th>
               <td>Because the OPTIONS statement is global, the settings remain in effect until
@@ -823,11 +900,17 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>By default, page numbers and dates appear with output. The following OPTIONS statement
      suppresses the printing of both page numbers and the date and time in listing output.
   </p>
+
+  <div class="scrolling-div">
   <pre>options nonumber nodate;</pre>
+  </div>
+
   <p>In the following example, page numbers and the current date are not displayed in the PROC
      PRINT output. Page numbers are not displayed in the PROC FREQ output, either, but the date
      does appear at the top of the page that contains the PROC FREQ report.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options nonumber nodate;
   proc print data=clinic.admit;
@@ -839,8 +922,11 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      where fastgluc>=300;
      tables sex;
   run;</pre>
+  </div>
 
   <hr/>
+
+  <div class="scrolling-div">
   <table>
      <tr>
         <td colspan="6" style="text-align:center;">The SAS Sytem</td>
@@ -985,8 +1071,10 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>183</td>
      </tr>
   </table>
+  </div>
   <hr/>
 
+  <div class="scrolling-div">
   <table>
      <tr>
         <td colspan="5" style="text-align:center;">The SAS System</td>
@@ -1019,6 +1107,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>100.0</td>
      </tr>
   </table>
+  </div>
   <hr/>
 
   <h4>Example: PAGENO= Option</h4>
@@ -1029,12 +1118,16 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>In the following example, the output pages are numbered sequentially throughout the SAS
      session, beginning with number 3.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options nodate pageno=3;
   proc print data=hrd.funddrv;
   run;</pre>
+  </div>
   
   <hr/>
+  <div class="scrolling-div">
   <table>
      <tr>
         <td colspan="5" style="text-align:center">The SAS System</td>
@@ -1140,6 +1233,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>18</td>
      </tr>
   </table>
+  </div>
   <hr/>
 
   <h4>Example: PAGESIZE= Option</h4>
@@ -1147,12 +1241,16 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      example, each page of the output that the PRINT procedure produces contains 15 lines (including
      those used by the title, date, and so on).
   <p>
+
+  <div class="scrolling-div">
   <pre>
   options pageno=1 pagesize=15;
   proc print data=clinic.admit;
   run;</pre>
+  </div>
 
   <hr/>
+  <div class="scrolling-div">
   <table>
      <tr>
         <td colspan="5" style="text-align:center;">The SAS System</td>
@@ -1253,6 +1351,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>27</td>
      </tr>
   </table>
+  </div>
   <hr/>
 
   <h4>Example: LINESIZE= Option</h4>
@@ -1262,13 +1361,17 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>In the following example, the observations are longer than 64 characters, so the observations
      continue on a subsequent page.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options pageno=1 linesize=64;
   proc print data=flights.europe;
   run;</pre>
+  </div>
 
   <hr/>
 
+  <div class="scrolling-div">
   <table>
     <tr>
        <td colspan="9" style="text-align:center;">The SAS System</td>
@@ -1417,7 +1520,11 @@ NOTE: Libref CLINIC was successfully assigned as follows:
       <td>159</td>
     </tr>
   </table>
+  </div>
+
   <hr/>
+
+  <div class="scrolling-div">
   <table>
      <tr>
          <td colspan="6" style="text-align:center">The SAS System</td>
@@ -1532,6 +1639,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
         <td>170766</td>
      </tr>
   </table>
+  </div>
   <hr/>
 
   <!-- Topic 4 Subtopic 2 -->
@@ -1547,7 +1655,10 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      value to ensure that you are properly interpreting two-digit years in data lines.
   </p>
   <p>As with other system options, you specify the YEARCUTOFF= option in the OPTIONS statement:</p>
+
+  <div class="scrolling-div">
   <pre>options yearcutoff=1925;</pre>
+  </div>
 
   <h4>How the YEARCUTOFF= Option Works</h4>
   <p>When a two-digit year value is read, SAS interprets it based on a 100-year span that starts with
@@ -1555,6 +1666,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   </p>
   <img src="images/ch2_image5.png" style="diagram-style"/>  
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -1577,15 +1689,21 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>15Apr1995</td>
     </tr>
   </table>
+  </div>
 
   <p>However, you can override the default and change the value of YEARCUTOFF= to the first year
      of another 100-year span. For example, if you specify YEARCUTOFF=1950, then the 100-year
      span will be from 1950 to 2049.
   </p>
+
+  <div class="scrolling-div">
   <pre>options yearcutoff=1950;</pre>
+  </div>
+
   <p>Using YEARCUTOFF=1950, dates are interpreted as shown below:</p>
   <img src="images/ch2_image6.png" style="diagram-style"/> 
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Date Expression</th>
@@ -1608,13 +1726,14 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>15Apr1995</td>
     </tr>
   </table>
+  </div>
  
   <h4>How Four-Digit Year Values Are Handled</h4>
   <p>Remember, the value of the YEARCUTOFF= system option affects only two-digit year values. A
      date value that contains a four-digit year value will be interpreted correctly even if it does not fall
      within the 100-year span set by the YEARCUTOFF= system option.
   </p>
-  <table>
+  <table class="note-table">
      <tr>
         <th class="color-blue">Note</th>
         <td>You can learn more about reading date values in Chapter, Reading Date
@@ -1645,7 +1764,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      FIRSTOBS=1. The default value for OBS= is MAX, which is the largest signed, four-byte integer
      that is representable in your operating environment.
   </p>
-  <table>
+  <table class="warning-table">
      <tr>
         <th class="color-red">Warning</th>
         <td>Each of these options applies to every input data set that is used in a
@@ -1660,11 +1779,17 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      the 10th observation of the data set first and reads through the last observation (for a total of 11
      observations).
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options firstobs=10;
   proc print data=sasuser.heart;
   run;</pre>
+  </div>
+
   <p>The PROC PRINT step produces the following output:</p>
+
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th class="color-red">Obs</td> 
@@ -1799,15 +1924,23 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>97</td>
      </tr>
   </table>
+  </div>
+  <br/>
 
   <p>If you specify OBS=10 instead, SAS reads through the 10th observation, in this case for a total of
      10 observations. (Notice that FIRSTOBS= has been reset to the default value.)
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options firstobs=1 obs=10;
   proc print data=sasuser.heart;
   run;</pre>
+  </div>
+
   <p>Now the PROC PRINT step produces this output:</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Obs</th>
@@ -1931,16 +2064,24 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>90</td>
     </tr>
   </table>
+  </div>
   <br/>
+
   <p>Combining FIRSTOBS= and OBS= processes observations in the middle of the data set. For
      example, the following program processes only observations 10 through 15, for a total of 6
      observations:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options firstobs=10 obs=15;
   proc print data=sasuser.heart;
   run;</pre>
+  </div>
+
   <p>Here is the output:</p>
+
+  <div class="scrolling-div">
     <table border="1">
      <tr>
         <th class="color-red">Obs</td> 
@@ -2020,11 +2161,17 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        <td>377</td>
      </tr>
   </table>
+  </div>
+  <br/>
 
   <p>To reset the number of the last observation to process, you can specify OBS=MAX in the
      OPTIONS statement.
   </p>
+ 
+  <div class="scrolling-div">
   <pre>options obs=max;</pre>
+  </div>
+
   <p>This instructs any subsequent SAS programs in the SAS session to process through the last
      observation in the data set being read.
   </p>
@@ -2044,7 +2191,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   </p>
 
   
-  <table>
+  <table class="note-table">
      <tr>
         <th class="color-blue">Note</th>
         <td>A FIRSTOBS= or OBS= specification from a data set option overrides the
@@ -2057,17 +2204,25 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>As shown in the last example, this program processes only observations 10 through 15, for a total
      of 6 observations:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options firstobs=10 obs=15;
   proc print data=sasuser.heart;
   run;</pre>
+  </div>
+
   <p>You can create the same output by specifying FIRSTOBS= and OBS= as data set options. The
      data set options override the system options for this instance only.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   options firstobs=10 obs=15;
   proc print data=sasuser.heart(firstobs=4 obs=20);
   run;</pre>
+  </div>
+
   <p>To specify FIRSTOBS= or OBS= for this program only, you could omit the OPTIONS statement
      altogether and simply use the data set options.
   </p>
@@ -2091,9 +2246,13 @@ NOTE: Libref CLINIC was successfully assigned as follows:
 
   <h3>Example</h3>
   <p>To list all SAS system options, their settings, and a description, submit the following code:</p>
+
+  <div class="scrolling-div">
   <pre>
   proc options;
   run;</pre>
+  </div>
+
   <p>The log lists the options and their settings:</p>
   <p class="color-red">Partial Log</p>
   <hr/>
@@ -2124,10 +2283,14 @@ NOTE: Libref CLINIC was successfully assigned as follows:
   <p>To list the value of one particular system option, use the OPTION= option in the PROC OPTIONS
      statement as shown below:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc options option=yearcutoff;
   run;</pre>
-  <table>
+  </div>
+
+  <table class="note-table">
      <tr>
         <th class="color-blue">Note</th>
         <td>If a SAS system option uses an equal sign, such as YEARCUTOFF=, you do
@@ -2152,6 +2315,8 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      information written to the SAS log, and much more. Here are some additional system options that
      you are likely to use with SAS procedures:
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
      <th class="color-red">Option</th>
@@ -2202,7 +2367,9 @@ NOTE: Libref CLINIC was successfully assigned as follows:
        </td>
     </tr>
   </table>
+  </div>
   <br/>
+
   <p>You can also use programming statements to control the result format of each item of procedure
      output individually. For more information, see Chapter, Producing HTML Output.
   </p>
@@ -2212,6 +2379,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
 
   <!-- Topic 7 Subtopic 1 -->
   <h3 class="subtopic" id="topic7_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>Referencing Files in SAS Libraries</h4>
   <p>To reference a SAS file, you assign a libref (library reference) to the SAS library in which the file
@@ -2229,6 +2397,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      files by using the appropriate <strong>engine</strong> for that file type. For some file types, you need to tell SAS
      which engine to use. For others, SAS automatically chooses the appropriate engine.
   </p>  
+  <br/>
 
   <h4>Viewing the Contents of SAS Libraries</h4>
   <p>To list the contents of a library, use the <strong>CONTENTS procedure</strong>. Append a period and the _ALL_
@@ -2236,6 +2405,7 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      detailed information about the files. As an alternative to PROC CONTENTS, you can use <strong>PROC
      DATASETS</strong>.
   </p>
+  <br/>
 
   <h4>Setting SAS System Options</h4>
   <p>For your listing output, you can also control the appearance of your output by setting system
@@ -2253,11 +2423,13 @@ NOTE: Libref CLINIC was successfully assigned as follows:
      <strong>YEARCUTOFF= option</strong> to ensure that you are properly interpreting two-digit years in your SAS
      program. This option specifies which 100-year span is used to interpret two-digit year values.
   </p>
+  <br/>
 
   <h4>Viewing SAS System Options</h4>
   <p>You can use the <strong>OPTIONS procedure</strong> to display the value of one or more SAS system options.
      The output of this procedure is included in the log.
   </p>
+  <br/>
 
   <!-- Topic 7 Subtopic 2 -->
   <h3 class="subtopic" id="topic7_subtopic2">Points to Remember</h3>

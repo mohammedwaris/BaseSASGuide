@@ -73,9 +73,12 @@
   <p>You can use column input to read the values for <i>Item, IDnum, InStock</i>, and <i>BackOrd</i> from
      the raw data file that is referenced by the fileref <strong>Invent</strong>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   input Item $ 1-13 IDnum $ 15-19 InStock 21-22
         BackOrd 24-25;</pre>
+  </div>
 
   <img src="images/ch17_image3.png" class="diagram" />
   <p>Notice that the INPUT statement lists the variables with their corresponding column locations in
@@ -85,14 +88,18 @@
   <p>For example, you could have read the values for <i>InStock</i> and <i>BackOrd</i> before the values for
      <i>Item</i> and <i>IDnum</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   input InStock 21-22 BackOrd 24-25 Item $ 1-13
         IDnum $ 15-19;</pre>
+  </div>
 
   <p>When you print a report that is based on this data set, by default, the variables will be listed in the
      order in which they were created.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">InStock</th>
@@ -149,6 +156,8 @@
       <td>LS930</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 2 Subtopic 1 -->
   <h3 class="subtopic" id="topic2_subtopic2">Column Input Features</h3>
@@ -278,18 +287,31 @@
   <p>Let's use the @n pointer control to locate variable values in the external file Empdata. As you
      can see, the values for LastName begin in column 1. We could start with the @1 pointer control.
   </p>
+
+  <div class="scrolling-div">
   <pre>input @1 LastName $7.</pre>
+  </div>
+
   <p>However, the default column pointer location is column 1, so you do not need to use a column
      pointer control to read the first field.
   </p>
+
+  <div class="scrolling-div">
   <pre>input LastName $7.</pre>
+  </div>
+
   <img src="images/ch17_image10.png" class="diagram" />
   <p>Next, the values for FirstName begin in column 9. To point to column 9, use an @ sign and the
      column number in the INPUT statement:
   </p>
+
+  <div class="scrolling-div">
   <pre>input LastName $7. @9 FirstName $5.</pre>
+  </div>
+
   <img src="images/ch17_image11.png" class="diagram" />
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The $7. and $5. informats are explained later in this chapter.</td>
@@ -303,27 +325,41 @@
      forward or backward when reading a record.
   </p>
   <p>In this INPUT statement, the value for <i>FirstName</i> is read first, starting in column 9.</p>
+
+  <div class="scrolling-div">
   <pre>input @9 FirstName $5.</pre>
+  </div>
+
   <img src="images/ch17_image12.png" class="diagram" />  
   <p>Now let's read the values for <i>LastName</i>, which begin in the first column. Here you must use the
      @n pointer control to move the pointer back to column 1.
   </p>
+
+  <div class="scrolling-div">
   <pre>input @9 FirstName $5. @1 LastName $7.</pre>
+  </div>
+
   <img src="images/ch17_image13.png" class="diagram" />  
 
   <p>The rest of the INPUT statement specifies the column locations of the raw data value for
      <i>JobTitle</i> and <i>Salary</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   input @9 FirstName $5. @1 LastName $7. @15 JobTitle 3.
         @19 Salary comma9.;</pre>
+  </div>
+
   <img src="images/ch17_image14.png" class="diagram" />  
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The $5., $7., 3., and comma9. informats are explained later in this chapter</td>
     </tr>
   </table>
+  <br/>
 
  
   <!-- Topic 5 Subtpic 4 -->
@@ -348,7 +384,11 @@
      the +n pointer control is column 1. Because the values for LastName begin in column 1, a
      column pointer control is not needed.
   </p>
+
+  <div class="scrolling-div">
   <pre>input LastName $7.</pre>
+  </div>
+
   <img src="images/ch17_image15.png" class="diagram" />
   <p>With formatted input, the column pointer control moves to the first column following the field that
      was just read. In this example, after <i>LastName</i> is read, the pointer moves to column 8.
@@ -358,35 +398,52 @@
   <p>To start reading <i>FirstName</i>, which begins in column 9, you move the column pointer control
      ahead 1 column with +1.
   </p>
+
+  <div class="scrolling-div">
   <pre>input LastName $7. +1 FirstName $5.</pre>
+  </div>
+
   <img src="images/ch17_image17.png" class="diagram" />
 
   <p>After reading <i>FirstName</i>, the column pointer moves to column 14. Now you want to skip over
      the values for <i>JobTitle</i> and read the values for <i>Salary</i>, which begin in column 19. Move the
      column pointer ahead 5 columns from column 14.
   </p>
+
+  <div class="scrolling-div">
   <pre>input LastName $7. +1 FirstName $5. +5 Salary comma9.</pre>
+  </div>
+
+
   <img src="images/ch17_image18.png" class="diagram" />
 
   <p>The last field to be read contains the values for JobTitle. You can use the @n column pointer
      control to return to column 15.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   input LastName $7. +1 FirstName $5. +5 Salary comma9.
         @15 JobTitle 3.;</pre>
+  </div>
+
   <img src="images/ch17_image19.png" class="diagram" />
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>The $7., $5., comma9., and 3. informats are explained later in this chapter</td>
     </tr>
   </table>
-  <table>
+  <br/>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can use the notation +(-n) to move the +n pointer control backward</td>
     </tr>
   </table>
+  <br/>
 
   <!-- Topic 6 -->
   <h2 class="topic" id="topic6">Using Informats</h2>
@@ -398,6 +455,8 @@
   <p>An informat is an instruction that tells SAS how to read raw data. SAS provides many informats
      for reading standard and nonstandard data values. Here is a small sample.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <td>PERCENTw.d</td>
@@ -425,6 +484,8 @@
       <td>w.d</td>
     </tr>
   </table>
+  </div>
+
   <br/><br/>
   <p>Note that</p>
   <ul>
@@ -443,7 +504,11 @@
   <p>In the example below, the $ indicates that FirstName is a character variable, the 5 indicates a
      field width of five columns, and a period ends the informat.
   </p>
+
+  <div class="scrolling-div">
   <pre>input @9 FirstName $5.;</pre>
+  </div>
+
   <img src="images/ch17_image20.png" class="diagram" />  
 
   <!-- Topic 6 Subtopic 2-->
@@ -458,6 +523,8 @@
      decimal point. Therefore, the w. informat requires a field width of only 7 to correctly read the raw
      data value.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Raw Data Value</th>
@@ -468,6 +535,8 @@
        <td colspan="3" style="text-align:center">34.0008 -> 7.-> 34.0008</td>
     </tr>
   </table>
+  </div>
+
   <p>In the example that is shown below, the values for <i>JobTitle</i> in columns 15-17 contain only
      numbers. Remember that standard numeric data values can contain only numbers, decimal
      points, scientific notation, and plus and minus signs.
@@ -476,18 +545,26 @@
   <p>A d value is not necessary to read the values for JobTitle. Simply move the column pointer
      control forward 7 spaces to column 15, name the variable, and specify a field width of 3.
   </p>
+
+  <div class="scrolling-div">
   <pre>input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.;</pre>
-  <img src="images/ch17_image21.png" class="diagram" />    
-  <table border="0">
+  </div>
+
+  <img src="images/ch17_image21.png" class="diagram" /> 
+   
+  <div class="scrolling-div">
+  <table class="warning-table">
     <tr>
        <th class="color-red">Warning</th>
        <td>Remember to specify the period in the informat name. For example, if you
            omit the period in the following INPUT statement, SAS assigns a length of
            3 to JobTitle instead of reading JobTitle with the 3. informat.
-           <pre>input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3;</pre>
+           <pre>input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3;</pre> 
        </td>
     </tr> 
   </table>
+ </div>
+  <br/>
 
   <!-- Topic 6 Subtopic 3-->
   <h3 class="subtopic" id="topic6_subtopic3">Reading Nonstandard Numeric Data</h3>
@@ -534,27 +611,37 @@
   <p>The values for <i>Salary</i> begin in column 19, so use the @n or +n pointer control to point to
      column 19, and then name the variable.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.empinfo;
      infile empdata;
      input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
      @19 Salary</pre>
+  </div>
+
   <img src="images/ch17_image22.png" class="diagram" /> 
 
   <p>Now add the COMMAw.d informat and specify the field width. The values end in column 27, so
      the field width is 9 columns. Add a RUN statement to complete the DATA step.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.empinfo;
      infile empdata;
      input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
            @19 Salary comma9.;
   run;</pre>
+  </div>
+
   <img src="images/ch17_image23.png" class="diagram" />   
 
   <p>If you use PROC PRINT to display the data set, the commas are removed from the values for
      <i>Salary</i> in the resulting output.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.empinfo;
      infile empdata;
@@ -563,8 +650,9 @@
   run;
   proc print data=perm.empinfo;
   run;</pre>
+  </div>
  
-
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -623,6 +711,7 @@
       <td>25309.00</td>
     </tr>
   </table>
+  </div>
 
   <p>Thus, the COMMAw.d informat does more than simply read the raw data values. It removes
      special characters such as commas from numeric data and stores only numeric values in a SAS
@@ -634,13 +723,16 @@
 
   <p>Let's place our INPUT statement in a DATA step and submit it for processing. Remember that
      after the DATA step is submitted, it is compiled and then executed.
-  </p>   
+  </p> 
+
+  <div class="scrolling-div">  
   <pre>
   data perm.empinfo;
      infile empdata;
      input @9 FirstName $5. @1 LastName $7. +7 JobTitle 3.
            @19 Salary comma9.;
   run;</pre>
+  </div>
 
   <p>During the compile phase, the character variables in the program data vector are defined with the
      exact length that is specified by the informat. But notice that the lengths that are defined for
@@ -660,14 +752,20 @@
   <p>In the following example, the values for JobTitle would contain embedded blanks, thus
      creating invalid numeric values.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.empinfo;
      infile empdata;
      input @9 FirstName $5. @1 LastName $7.
            +7 JobTitle 8. @19 Salary comma8.;
-  run;</pre>  
+  run;</pre> 
+  </div>
+ 
   <img src="images/ch17_image25.png" class="diagram" /> 
-  <table>
+
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Remember that the w value of the informat represents the width of the field in
@@ -677,6 +775,7 @@
       </td>
     </tr>
   </table>  
+  <br/>
 
   <!-- Topic 7 -->
   <h2 class="topic" id="topic7">Record Formats</h2>
@@ -713,10 +812,14 @@
      <i>Receipts</i>. In the third record, the input pointer encounters an end-of-record marker before the
      8th column.
   </p>
+
+  <div class="scrolling-div">
   <pre>input Dept $ 1-11 @13 Receipts comma8.;</pre>
-  <table>
+  </div>
+
+  <table class="note-table">
     <tr>
-      <th class="color-blue"></th>
+      <th class="color-blue">Note</th>
       <td>The asterisk symbolizes the end-of-record marker and is not part of the data</td>
     </tr>
   </table>
@@ -732,13 +835,18 @@
      you can avoid problems by using the PAD option in the INFILE statement.The PAD option pads
      each record with blanks so that all data lines have the same length.
   </p>
+
+  <div class="scrolling-div">
   <pre>infile receipts pad;</pre>
+  </div>
+
   <img src="images/ch17_image30.png" class="diagram" /> 
   <p>The examples in this chapter have not required the PAD option. However, when you use column
      input or formatted input to read fixed-field data in variable-length records, remember to determine
      whether or not you need to use the PAD option.
   </p>
-  <table>
+
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>The PAD option is useful only when missing data occurs at the end of a
@@ -748,6 +856,7 @@
     </tr>
   </table>
   <br/>
+
   <p>The default value of the maximum record length is determined by your operating environment. If
      you get unexpected results when reading many variables, you might need to change the
      maximum record length by specifying the <strong>LRECL=option</strong> in the INFILE statement. For more

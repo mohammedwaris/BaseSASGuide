@@ -40,6 +40,2923 @@
   <!-- Topic 1 Subtopic 1 -->
   <h3 class="subtopic" id="topic1_subtopic1">Introduction</h3>
 
+  <p>As you have seen, one of the many features of PROC REPORT is the ability to summarize large
+     amounts of data by producing descriptive statistics. However, there are SAS procedures that are
+     designed specifically to produce various types of descriptive statistics and to display them in
+     meaningful reports. The type of descriptive statistics that you need and the SAS procedure that
+     you should use depend on whether you need to summarize continuous data values or discrete
+     data values.
+  </p>
+
+  <p>If the data values that you want to describe are continuous numeric values (for example, people's
+     ages), then you can use the MEANS procedure or the SUMMARY procedure to calculate
+     statistics such as the mean, sum, minimum, and maximum.
+  </p>
+
+  <div class="scrolling-div">
+   <table border="1">
+     <tr>
+       <th class="color-red">Variable</th>
+       <th class="color-red">N</th>
+       <th class="color-red">Mean</th>
+       <th class="color-red">Std Dev</th>
+       <th class="color-red">Minimum</th>
+       <th class="color-red">Maximum</th>
+     </tr>
+     <tr>
+       <td>Age</td>
+       <td>20</td>
+       <td>47</td>
+       <td>13</td>
+       <td>15</td>
+       <td>63</td>
+     </tr>
+     <tr>
+       <td>Height</td>
+       <td>20</td>
+       <td>67</td>
+       <td>4</td>
+       <td>61</td>
+       <td>75</td>
+     </tr>
+     <tr>
+       <td>Weight</td>
+       <td>20</td>
+       <td>175</td>
+       <td>36</td>
+       <td>102</td>
+       <td>240</td>
+     </tr>
+     <tr>
+       <td>Pulse</td>
+       <td>20</td>
+       <td>75</td>
+       <td>8</td>
+       <td>65</td>
+       <td>100</td>
+     </tr>
+     <tr>
+       <td>FastGluc</td>
+       <td>20</td>
+       <td>299</td>
+       <td>126</td>
+       <td>152</td>
+       <td>568</td>
+     </tr>
+     <tr>
+       <td>PostGluc</td>
+       <td>20</td>
+       <td>299</td>
+       <td>126</td>
+       <td>152</td>
+       <td>568</td>
+     </tr>
+   </table>
+  </div>
+  <br/>
+
+  <p>If the data values that you want to describe are discrete (for example, the color of people's eyes),
+     then you can use the FREQ procedure to show the distribution of these values, such as
+     percentages and counts.
+  </p>
+
+  <div class="scrolling-div">
+   <table border="1">
+     <tr>
+       <th class="color-red">Eye Color</th>
+       <th class="color-red">Frequency</th>
+       <th class="color-red">Percent</th>
+       <th class="color-red">Cumalative Frequency</th>
+       <th class="color-red">Cumalative Percent</th>
+     </tr>
+     <tr>
+       <td>Brown</td>
+       <td>92</td>
+       <td>58.60</td>
+       <td>92</td>
+       <td>58.60</td>
+     </tr>
+     <tr>
+       <td>Blue</td>
+       <td>65</td>
+       <td>41.40</td>
+       <td>157</td>
+       <td>100.00</td>
+     </tr>
+   </table>
+  </div>
+  <br/>
+
+  <p>This chapter shows you how to use the MEANS, SUMMARY, and FREQ procedures to describe
+     your data.
+  </p>
+
+  <!-- Topic 1 Subtopic 1 -->
+  <h3 class="subtopic" id="topic1_subtopic1">Objectives</h3>
+
+  <p>In this chapter, you learn to</p>
+  <ul>
+    <li>determine the n-count, mean, standard deviation, minimum, and maximum of numeric
+        variables using the MEANS procedure.
+    </li>
+    <li>control the number of decimal places used in PROC MEANS output.</li>
+    <li>specify the variables for which to produce statistics.</li>
+    <li>use the SUMMARY procedure to produce the same results as the MEANS procedure.</li>
+    <li>describe the difference between the SUMMARY and MEANS procedures.</li>
+    <li>create one-way frequency tables for categorical data using the FREQ procedure.</li>
+    <li>create two-way and n-way crossed frequency tables.</li>
+    <li>control the layout and complexity of crossed frequency tables.</li>
+  </ul>
+
+  <!-- Topic 2 -->
+  <h2 class="topic" id="topic2">Computing Statistics for Numeric Variables</h2>
+
+  <!-- Topic 2 Subtopic 1 -->
+  <h3 class="subtopic" id="topic2_subtopic1">Computing Statistics Using PROC MEANS</h3>
+
+  <p>Descriptive statistics such as the mean, minimum, and maximum can provide useful information
+     about numeric data. The MEANS procedure provides these and other data summarization tools,
+     as well as helpful options for controlling your output.
+  </p>
+
+  <p>The MEANS procedure can include many statements and options for specifying needed statistics.
+     For simplicity, let's consider the procedure in its basic form.
+  </p>
+
+  <hr/>
+  <p><strong>General form, basic MEANS procedure:</strong></p>
+  <p><strong>PROC MEANS &lt;DATA</strong>=SAS-data-set&gt; <br/>
+     &lt;statistic-keyword(s)&gt; &lt;option(s)&gt;; <br/>
+     <strong>RUN</strong>;</p>
+  <p>where</p>
+  <ul>
+    <li><i>SAS-data-set</i> is the name of the data set to be used.</li>
+    <li><i>statistic-keyword(s)</i> specifies the statistics to compute.</li>
+    <li><i>option(s)</i> controls the content, analysis, and appearance of output.</li>
+  </ul>
+  <hr/>
+
+  <p>In its simplest form, PROC MEANS prints the n-count (number of nonmissing values), the mean,
+     the standard deviation, and the minimum and maximum values of every numeric variable in a
+     data set.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=perm.survey;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Variable</th>
+        <th class="color-red">N</th>
+        <th class="color-red">Mean</th>
+        <th class="color-red">Std Dev</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>
+      </tr>
+      <tr>
+        <td>Item1</td>
+        <td>4</td>
+        <td>3.7500000</td>
+        <td>1.2583057</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item2</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.6329932</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item3</td>
+        <td>4</td>
+        <td>4.2500000</td>
+        <td>0.5000000</td>
+        <td>4.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item4</td>
+        <td>4</td>
+        <td>3.5000000</td>
+        <td>1.2909944</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item5</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.6329932</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item6</td>
+        <td>4</td>
+        <td>3.7500000</td>
+        <td>1.2583057</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item7</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.8257419</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item8</td>
+        <td>4</td>
+        <td>2.7500000</td>
+        <td>1.5000000</td>
+        <td>1.0000000</td>
+        <td>4.0000000</td>
+      </tr>
+      <tr>
+        <td>Item9</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.4142136</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item10</td>
+        <td>4</td>
+        <td>3.2500000</td>
+        <td>1.2583057</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item11</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.8257419</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item12</td>
+        <td>4</td>
+        <td>2.7500000</td>
+        <td>0.5000000</td>
+        <td>2.0000000</td>
+        <td>3.0000000</td>
+      </tr>
+      <tr>
+        <td>Item13</td>
+        <td>4</td>
+        <td>2.7500000</td>
+        <td>1.5000000</td>
+        <td>1.0000000</td>
+        <td>4.0000000</td>
+      </tr>
+      <tr>
+        <td>Item14</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.4142136</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item15</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.6329932</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item16</td>
+        <td>4</td>
+        <td>2.5000000</td>
+        <td>1.9148542</td>
+        <td>1.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+      <tr>
+        <td>Item17</td>
+        <td>4</td>
+        <td>3.0000000</td>
+        <td>1.1547005</td>
+        <td>2.0000000</td>
+        <td>4.0000000</td>
+      </tr>
+      <tr>
+        <td>Item18</td>
+        <td>4</td>
+        <td>3.2500000</td>
+        <td>1.2583057</td>
+        <td>2.0000000</td>
+        <td>5.0000000</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Topic 2 Subtopic 2 -->
+  <h3 class="subtopic" id="topic2_subtopic2">Specifying Statistics</h3>
+
+  <p>The default statistics that the MEANS procedure produces (n-count, mean, standard deviation,
+     minimum, and maximum) are not always the ones that you need. You might prefer to limit output
+     to the mean of the values. Or you might need to compute a different statistic, such as the median
+     or range of the values.
+  </p>
+
+  <p>To specify statistics, include statistic keywords as options in the PROC MEANS statement. When
+     you specify a statistic in the PROC MEANS statement, default statistics are not produced. For
+     example, to see the median and range of Perm.Survey numeric values, add the MEDIAN and
+     RANGE keywords as options.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=perm.survey median range;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+       <tr>  
+         <th class="color-red">Variable</th>
+         <th class="color-red">Median</th>
+         <th class="color-red">Range</th>
+       </tr>
+       <tr>
+         <td>Item1</td>
+         <td>4.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item2</td>
+         <td>3.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item3</td>
+         <td>4.0000000</td>
+         <td>1.0000000</td>
+       </tr>
+       <tr>
+         <td>Item4</td>
+         <td>3.5000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item5</td>
+         <td>3.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item6</td>
+         <td>4.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item7</td>
+         <td>3.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item8</td>
+         <td>3.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item9</td>
+         <td>2.5000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item10</td>
+         <td>3.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item11</td>
+         <td>3.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item12</td>
+         <td>3.0000000</td>
+         <td>1.0000000</td>
+       </tr>
+       <tr>
+         <td>Item13</td>
+         <td>3.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item14</td>
+         <td>2.5000000</td>
+         <td>3.0000000</td>
+       </tr>
+       <tr>
+         <td>Item15</td>
+         <td>3.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item16</td>
+         <td>2.0000000</td>
+         <td>4.0000000</td>
+       </tr>
+       <tr>
+         <td>Item17</td>
+         <td>3.0000000</td>
+         <td>2.0000000</td>
+       </tr>
+       <tr>
+         <td>Item18</td>
+         <td>3.0000000</td>
+         <td>3.0000000</td>
+       </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>The following keywords can be used with PROC MEANS to compute statistics:</p>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+         <th class="color-red" colspan="2">Descriptive Statistics</th>
+      </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>CLM</td>
+        <td>Two-sided confidence limit for the mean</td>
+      </tr>
+      <tr>
+        <td>CSS</td>
+        <td>Corrected sum of squares</td>
+      </tr>
+      <tr>
+        <td>CV</td>
+        <td>Coefficient of variation</td>
+      </tr>
+      <tr>
+        <td>KURTOSIS / KURT</td>
+        <td>Kurtosis</td>
+      </tr>
+      <tr>
+        <td>LCLM</td>
+        <td>One-sided confidence limit below the mean</td>
+      </tr>
+      <tr>
+        <td>MAX</td>
+        <td>Maximum value</td>
+      </tr>
+      <tr>
+        <td>MEAN</td>
+        <td>Average</td>
+      </tr>
+      <tr>
+        <td>MIN</td>
+        <td>Minimum value</td>
+      </tr>
+      <tr>
+        <td>N</td>
+        <td>Number of observations with non-missing values</td>
+      </tr>
+      <tr>
+        <td>NMISS</td>
+        <td>Number of observations with missing values</td>
+      </tr>
+      <tr>
+        <td>RANGE</td>
+        <td>Range</td>
+      </tr>
+      <tr>
+        <td>SKEWNESS / SKEW</td>
+        <td>Skewness</td>
+      </tr>
+      <tr>
+        <td>STDDEV / STD</td>
+        <td>Standard deviation</td>
+      </tr>
+      <tr>
+        <td>STDERR / STDMEAN</td>
+        <td>Standard error of the mean</td>
+      </tr>
+      <tr>
+        <td>SUM</td>
+        <td>Sum</td>
+      </tr>
+      <tr>
+        <td>SUMWGT</td>
+        <td>Sum of the Weight variable values</td>
+      </tr>
+      <tr>
+        <td>UCLM</td>
+        <td>One-sided confidence limit above the mean</td>
+      </tr>
+      <tr>
+        <td>USS</td>
+        <td>Uncorrected sum of squares</td>
+      </tr>
+      <tr>
+        <td>VAR</td>
+        <td>Variance</td>
+      </tr>
+      <tr>
+        <th class="color-red" colspan="2">Quantile Statistics</th>
+     </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>P5</td>
+        <td>5th percentile</td>
+      </tr>
+      <tr>
+        <td>P10</td>
+        <td>10th percentile</td>
+      </tr>
+      <tr>
+        <td>Q1 / P25</td>
+        <td>Lower quartile or 25th percentile</td>
+      </tr>
+      <tr>
+        <td>Q3 / P75</td>
+        <td>Upper quartile or 75th percentile</td>
+      </tr>
+      <tr>
+        <td>P90</td>
+        <td>90th percentile</td>
+      </tr>
+      <tr>
+        <td>P95</td>
+        <td>95th percentile</td>
+      </tr>
+      <tr>
+        <td>P99</td>
+        <td>99th percentile</td>
+      </tr>
+      <tr>
+        <td>QRANGE</td>
+        <td>Difference between upper and lower quartiles: Q3-Q1</td>
+      </tr>
+      <tr>
+        <th class="color-red" colspan="2">Hypothesis Testing</th>
+     </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>PROBT</td>
+        <td>Probability of a greater absolute value for the t value</td>
+      </tr>
+      <tr>
+        <td>T</td>
+        <td>Student's t for testing the hypothesis that the population mean is 0</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 2 Subtopic 3 -->
+  <h3 class="subtopic" id="topic2_subtopic3">Limiting Decimal Places</h3>
+
+  <p>By default, PROC MEANS output uses the BEST. format to display values in the report. As the
+     following example shows, this can result in unnecessary decimal places, making your output
+     difficult to read.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=clinic.diabetes min max;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Variable</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>        
+      </tr>
+      <tr> 
+         <td>Age</td>
+         <td>15.0000000</td>
+         <td>63.0000000</td>
+      </tr>
+      <tr> 
+         <td>Height</td>
+         <td>61.0000000</td>
+         <td>75.0000000</td>
+      </tr>
+      <tr> 
+         <td>Weight</td>
+         <td>102.0000000</td>
+         <td>240.0000000</td>
+      </tr>
+      <tr> 
+         <td>Pulse</td>
+         <td>65.0000000</td>
+         <td>100.0000000</td>
+      </tr>
+      <tr> 
+         <td>FastGluc</td>
+         <td>152.0000000</td>
+         <td>568.000000</td>
+      </tr>
+      <tr> 
+         <td>PostGluc</td>
+         <td>206.0000000</td>
+         <td>625.0000000</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>To limit decimal places, use the <strong>MAXDEC</strong>= option in the PROC MEANS statement, and set it
+     equal to the length that you prefer.
+  </p>
+
+  <hr/>
+  <p><strong>General form, PROC MEANS statement with MAXDEC= option:</strong></p>
+  <p><strong>PROC MEANS</strong> &lt;<strong>DATA</strong>=SAS-data-set&gt; <br/>
+      &lt;statistic-keyword(s)&gt; <strong>MAXDEC</strong>=n;
+  </p>
+  <p>where n specifies the maximum number of decimal places.</p>
+  <hr/>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=clinic.diabetes min max maxdec=0;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Variable</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>        
+      </tr>
+      <tr> 
+         <td>Age</td>
+         <td>15</td>
+         <td>63</td>
+      </tr>
+      <tr> 
+         <td>Height</td>
+         <td>61</td>
+         <td>75</td>
+      </tr>
+      <tr> 
+         <td>Weight</td>
+         <td>102</td>
+         <td>240</td>
+      </tr>
+      <tr> 
+         <td>Pulse</td>
+         <td>65</td>
+         <td>100</td>
+      </tr>
+      <tr> 
+         <td>FastGluc</td>
+         <td>152</td>
+         <td>568</td>
+      </tr>
+      <tr> 
+         <td>PostGluc</td>
+         <td>206</td>
+         <td>625</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 2 Subtopic 4 -->
+  <h3 class="subtopic" id="topic2_subtopic4">Specifying Variables in PROC MEANS</h3>
+
+  <p>By default, the MEANS procedure generates statistics for every numeric variable in a data set,
+     although you'll typically want to focus on only a few variables, particularly if the data set is large. It
+     also makes sense to exclude certain types of variables. The values of employee identification
+     numbers, for example, are unlikely to yield useful statistics.
+  </p>
+
+  <p>To specify the variables that PROC MEANS analyzes, add a <strong>VAR statement</strong> and list the variable
+     names.
+  </p>
+
+  <hr/>
+  <p><strong>General form, VAR statement:</strong></p>
+  <p><strong>VAR</strong> variable(s);</p>
+  <p>where variable(s) lists numeric variables for which to calculate statistics.</p>
+  <hr/>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=clinic.diabetes min max maxdec=0;
+     var age height weight;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Variable</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>        
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td>151</td>
+        <td>63</td>
+      </tr>
+      <tr>
+        <td>Height</td>
+        <td>61</td>
+        <td>75</td>
+      </tr>
+      <tr>
+        <td>Weight</td>
+        <td>102</td>
+        <td>240</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>In addition to listing variables separately, you can use a numbered range of variables.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=perm.survey mean stderr maxdec=2;
+     var item1-item5;
+  run;</pre>
+  </div>
+
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Variable</th>
+        <th class="color-red">Mean</th>
+        <th class="color-red">Std Error</th>        
+      </tr>
+      <tr>
+        <td>Item1</td>
+        <td>3.75</td>
+        <td>0.63</td>
+      </tr>
+      <tr>
+        <td>Item2</td>
+        <td>3.00</td>
+        <td>0.82</td>
+      </tr>
+      <tr>
+        <td>Item3</td>
+        <td>4.25</td>
+        <td>0.25</td>
+      </tr>
+      <tr>
+        <td>Item4</td>
+        <td>3.50</td>
+        <td>0.65</td>
+      </tr>
+      <tr>
+        <td>Item5</td>
+        <td>3.00</td>
+        <td>0.82</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 2 Subtopic 5 -->
+  <h3 class="subtopic" id="topic2_subtopic5">Group Processing Using the CLASS Statement</h3>
+
+  <p>You will often want statistics for grouped observations, instead of for observations as a whole. For
+     example, census numbers are more useful when grouped by region than when viewed as a
+     national total. To produce separate analyses of grouped observations, add a <strong>CLASS statement</strong>
+     to the MEANS procedure.
+  </p>
+
+  <hr/>
+  <p><strong>General form, CLASS statement:</strong></p>
+  <p><strong>CLASS</strong> variable(s);</p>
+  <p>where variable(s) specifies category variables for group processing.</p>
+  <hr/>
+
+  <p>PROC MEANS does not generate statistics for CLASS variables, because their values are used
+     only to categorize data. CLASS variables can be either character or numeric, but they should
+     contain a limited number of discrete values that represent meaningful groupings.
+  </p>
+
+  <p>The output of the program shown below is categorized by values of the variables <i>Survive</i> and
+     <i>Sex</i>. The order of the variables in the CLASS statement determines their order in the output
+     table.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=clinic.heart maxdec=1;
+     var arterial heart cardiac urinary;
+     class survive sex;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Survive</th>
+        <th class="color-red">Sex</th>
+        <th class="color-red">NObs</th>
+        <th class="color-red">Variable</th>
+        <th class="color-red">N</th>
+        <th class="color-red">Mean</th>
+        <th class="color-red">Std Dev</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>
+      </tr>
+      <tr>
+        <td class="back-color-grey">DIED</td>
+        <td class="back-color-grey">1</td>
+        <td>4</td>
+        <td>Arterial <br/>
+            Heat <br/>
+            Cardiac <br/>
+            Urinary 
+        </td>
+        <td>4 <br/>
+            4 <br/>
+            4 <br/>
+            4 
+        </td>
+        <td>92.5 <br/>
+            111.0 <br/>
+            176.8 <br/>
+            98.0 
+        </td>
+        <td>10.5 <br/>
+            53.4 <br/>
+            75.2 <br/>
+            186.1
+        </td>
+        <td>83.0 <br/>
+            54.0 <br/>
+            95.0 <br/>
+            0.0
+        </td>
+        <td>103.0 <br/>
+            183.0 <br/>
+            260.0 <br/>
+            377.0
+        </td>
+      </tr>        
+      <tr>
+        <td>&nbsp;</td>
+        <td class="back-color-grey">2</td>
+        <td>6</td>
+        <td>Arterial <br/>
+            Heat <br/>
+            Cardiac <br/>
+            Urinary
+
+        </td>
+        <td>6 <br/>
+            6 <br/>
+            6 <br/>
+            6
+        </td>
+        <td>94.2 <br/>
+            103.7 <br/>
+            318.3 <br/>
+            100.3
+        </td>
+        <td>27.3 <br/>
+            16.7 <br/>
+            102.6 <br/>
+            155.7
+        </td>
+        <td>72.0 <br/>
+            81.0 <br/>
+            156.0 <br/>
+            0.0
+        </td>
+        <td>145.0 <br/>
+            130.0 <br/>
+            424.0 <br/>
+            405.0
+        </td>
+      </tr>        
+      <tr>
+        <td class="back-color-grey">SURV</td>
+        <td class="back-color-grey">1</td>
+        <td>5</td>
+        <td>Arterial <br/>
+            Heat <br/>
+            Cardiac <br/>
+            Urinary
+        </td>
+        <td>5 <br/>
+            5 <br/>
+            5 <br/>
+            5
+        </td>
+        <td>77.2 <br/>
+            109.0 <br/>
+            298.0 <br/>
+            100.8       
+        </td>
+        <td>12.2 <br/>
+            32.0 <br/>
+            139.8 <br/>
+            60.2
+        </td>
+        <td>61.0 <br/>
+            77.0 <br/>
+            66.0 <br/>
+            44.0
+        </td>
+        <td>88.0 <br/>
+            149.0 <br/>
+            410.0 <br/>
+            200.0 <br/>
+        </td>
+      </tr>        
+      <tr>
+        <td>&nbsp;</td>
+        <td class="back-color-grey">2</td>
+        <td>5</td>
+        <td>Arterial <br/>
+            Heat <br/>
+            Cardiac <br/>
+            Urinary
+        </td>
+        <td>5 <br/>
+            5 <br/>
+            5 <br/>
+            5
+        </td>
+        <td>78.8 <br/>
+            100.0 <br/>
+            330.2 <br/>
+            111.2
+        </td>
+        <td>6.8 <br/>
+            13.4 <br/>
+            87.0 <br/>
+            152.4
+        </td>
+        <td>72.0 <br/>
+            84.0 <br/>
+            256.0 <br/>
+            12.0
+        </td>
+        <td>87.0 <br/>
+            111.0 <br/>
+            471.0 <br/>
+            377.0
+        </td>
+      </tr>        
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 2 Subtopic 6 -->
+  <h3 class="subtopic" id="topic2_subtopic6">Group Processing Using the BY Statement</h3>
+
+  <p>Like the CLASS statement, the <strong>BY statement</strong> specifies variables to use for categorizing
+     observations.
+  </p>
+
+  <hr/>
+  <p><strong>General form, BY statement:</strong></p>
+  <p><strong>BY</strong> variable(s);</p>
+  <p>where variable(s) specifies category variables for group processing.</p>
+  <hr/>
+
+  <p>But BY and CLASS processing differ in two key ways:</p>
+  <ol>
+    <li>Unlike CLASS processing, BY processing requires that your data already be sorted or
+        indexed in the order of the BY variables. Unless data set observations are already
+        sorted, you will need to run the SORT procedure before using PROC MEANS with any
+        BY group.
+        <table class="warning-table">
+          <tr>
+            <td class="color-red">Warning</td>
+            <td>Be careful when sorting data sets to enable group processing. If
+                you don't specify an output data set by using the OUT= option, then
+                PROC SORT will overwrite your initial data set with the newly
+                sorted observations.
+            </td>
+          </tr>
+        </table>
+    </li>
+    <li>BY group results have a layout that is different from the layout of CLASS group results.
+        Note that the BY statement in the program below creates four small tables; a CLASS
+        statement would produce a single large table.
+        <div class="scrolling-div">
+        <pre>
+        proc sort data=clinic.heart out=work.heartsort;
+           by survive sex;
+        run;
+        proc means data=work.heartsort maxdec=1;
+           var arterial heart cardiac urinary;
+           by survive sex;
+        run;</pre>
+        </div>
+        <div class="scrolling-div">
+          <table border="1"> 
+            <tr>
+              <th class="color-red" colspan="6">Survive=DIED Sex=1</th>
+            </tr>
+            <tr>
+              <th class="color-red">Variable</th>
+              <th class="color-red">N</th>
+              <th class="color-red">Mean</th>
+              <th class="color-red">Std Dev</th>
+              <th class="color-red">Minimum</th>
+              <th class="color-red">Maximum</th>
+            </tr>
+            <tr>
+              <td>Arterial</td>
+              <td>4</td>
+              <td>92.5</td>
+              <td>10.5</td>
+              <td>83.0</td>
+              <td>103.0</td>
+            </tr>
+            <tr>
+              <td>Heart</td>
+              <td>4</td>
+              <td>111.0</td>
+              <td>53.4</td>
+              <td>54.0</td>
+              <td>183.0</td>
+            </tr>
+            <tr>
+              <td>cardiac</td>
+              <td>4</td>
+              <td>176.8</td>
+              <td>75.2</td>
+              <td>95.0</td>
+              <td>260.0</td>
+            </tr>
+            <tr>
+              <td>Urinary</td>
+              <td>4</td>
+              <td>98.0</td>
+              <td>186.1</td>
+              <td>0.0</td>
+              <td>377.0</td>
+            </tr>
+
+
+            <tr>
+              <th class="color-red" colspan="6">Survive=DIED Sex=2</th>
+            </tr>
+            <tr>
+              <th class="color-red">Variable</th>
+              <th class="color-red">N</th>
+              <th class="color-red">Mean</th>
+              <th class="color-red">Std Dev</th>
+              <th class="color-red">Minimum</th>
+              <th class="color-red">Maximum</th>
+            </tr>
+            <tr>
+              <td>Arterial</td>
+              <td>6</td>
+              <td>94.2</td>
+              <td>27.3</td>
+              <td>72.0</td>
+              <td>145.0</td>
+            </tr>
+            <tr>
+              <td>Heart</td>
+              <td>6</td>
+              <td>103.7</td>
+              <td>16.7</td>
+              <td>81.0</td>
+              <td>130.0</td>
+            </tr>
+            <tr>
+              <td>cardiac</td>
+              <td>6</td>
+              <td>318.3</td>
+              <td>102.6</td>
+              <td>156.0</td>
+              <td>424.0</td>
+            </tr>
+            <tr>
+              <td>Urinary</td>
+              <td>6</td>
+              <td>100.3</td>
+              <td>155.7</td>
+              <td>0.0</td>
+              <td>405.0</td>
+            </tr>
+
+            <tr>
+              <th class="color-red" colspan="6">Survive=SURV Sex=1</th>
+            </tr>
+            <tr>
+              <th class="color-red">Variable</th>
+              <th class="color-red">N</th>
+              <th class="color-red">Mean</th>
+              <th class="color-red">Std Dev</th>
+              <th class="color-red">Minimum</th>
+              <th class="color-red">Maximum</th>
+            </tr>
+            <tr>
+              <td>Arterial</td>
+              <td>5</td>
+              <td>77.2</td>
+              <td>12.2</td>
+              <td>61.0</td>
+              <td>88.0</td>
+            </tr>
+            <tr>
+              <td>Heart</td>
+              <td>5</td>
+              <td>109.0</td>
+              <td>32.0</td>
+              <td>77.0</td>
+              <td>149.0</td>
+            </tr>
+            <tr>
+              <td>Cardiac</td>
+              <td>5</td>
+              <td>298.0</td>
+              <td>139.8</td>
+              <td>66.0</td>
+              <td>410.0</td>
+            </tr>
+            <tr>
+              <td>Urinary</td>
+              <td>5</td>
+              <td>100.8</td>
+              <td>60.2</td>
+              <td>44.0</td>
+              <td>200.0</td>
+            </tr>
+
+            <tr>
+              <th class="color-red" colspan="6">Survive=SURV Sex=2</th>
+            </tr>
+            <tr>
+              <th class="color-red">Variable</th>
+              <th class="color-red">N</th>
+              <th class="color-red">Mean</th>
+              <th class="color-red">Std Dev</th>
+              <th class="color-red">Minimum</th>
+              <th class="color-red">Maximum</th>
+            </tr>
+            <tr>
+              <td>Arterial</td>
+              <td>5</td>
+              <td>78.8</td>
+              <td>6.8</td>
+              <td>72.0</td>
+              <td>87.0</td>
+            </tr>
+            <tr>
+              <td>Heart</td>
+              <td>5</td>
+              <td>100.0</td>
+              <td>13.4</td>
+              <td>84.0</td>
+              <td>111.0</td>
+            </tr>
+            <tr>
+              <td>cardiac</td>
+              <td>5</td>
+              <td>330.2</td>
+              <td>87.0</td>
+              <td>256.0</td>
+              <td>471.0</td>
+            </tr>
+            <tr>
+              <td>Urinary</td>
+              <td>5</td>
+              <td>111.2</td>
+              <td>152.4</td>
+              <td>12.0</td>
+              <td>377.0</td>
+            </tr>
+          </table>
+        </div>
+        <br/>
+        <table class="info-table"> 
+          <tr>
+            <th class="color-blue">Info</th>
+            <td>Because it doesn't require a sorting step, the CLASS statement is easier to use
+                than the BY statement. However, BY-group processing can be more efficient
+                when you are categorizing data that includes many variables.
+            </td>
+          </tr>
+        </table>
+    </li>
+  </ol>
+
+  <!-- Topic 2 Subtopic 7 -->
+  <h3 class="subtopic" id="topic2_subtopic7">Creating a Summarized Data Set Using PROC MEANS</h3>
+
+  <p>You might want to create an output SAS data set that contains only the summarized variable. You
+     can do this by using the OUTPUT statement in PROC MEANS.
+  </p>
+  
+  <hr/>
+  <p><strong>General form, OUTPUT statement:</strong></p>  
+  <p><strong>OUTPUT</strong> OUT=SAS-data-set &lt;statistic-keyword=variable-name(s)&gt;;</p>
+  <p>where</p>
+  <ul>
+    <li>SAS-data-set specifies the name of the output data set</li>
+    <li>statistic-keyword= specifies the summary statistic to be written out</li>
+    <li>variable-name(s) specifies the names of the variables that will be created to contain the
+        values of the summary statistic. These variables correspond to the analysis variables that
+        are listed in the VAR statement.
+    </li>
+  </ul>
+  <hr/>
+
+  <p>When you use the OUTPUT statement without specifying the statistic-keyword= option, the
+     summary statistics N, MEAN, STD, MIN, and MAX are produced for all of the numeric variables
+     or for all of the variables that are listed in a VAR statement.
+  </p>
+  <br/>
+
+  <h4>Specifying the statistic-keyword= Option</h4>
+
+  <p>To specify which statistics to produce in the output data set, you must specify the keyword for the
+     statistic and then list all of the variables. The variables must be listed in the <strong>same order</strong> as in the
+     VAR statement. You can specify more than one statistic in the OUTPUT statement.
+  </p>
+
+  <p>The following program creates a typical PROC MEANS report and also creates a summarized
+     output data set that includes only the MEAN and MIN statistics:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc means data=clinic.diabetes;
+     var age height weight;
+     class sex;
+     output out=work.sum_gender
+        mean=AvgAge AvgHeight AvgWeight
+        min=MinAge MinHeight MinWeight;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1"> 
+      <tr>
+        <th class="color-red">Sex</th>
+        <th class="color-red">NObs</th>
+        <th class="color-red">Variable</th>
+        <th class="color-red">N</th>
+        <th class="color-red">Mean</th>
+        <th class="color-red">Std Dev</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>
+      </tr>
+      <tr>
+        <td>F</tD>
+        <td>11</tD>
+        <td>Age</tD>
+        <td>11</tD>
+        <td>48.9090909</tD>
+        <td>13.3075508</tD>
+        <td>16.0000000</tD>
+        <td>63.0000000</tD>
+      </tr>
+      <tr>
+        <td>&nbsp;</tD>
+        <td>&nbsp;</tD>
+        <td>Height</tD>
+        <td>11</tD>
+        <td>63.9090909</tD>
+        <td>2.1191765</tD>
+        <td>61.0000000</tD>
+        <td>68.0000000</tD>
+      </tr>
+      <tr>
+        <td>&nbsp;</tD>
+        <td>&nbsp;</tD>
+        <td>Weight</tD>
+        <td>11</tD>
+        <td>150.4545455</tD>
+        <td>18.4464828</tD>
+        <td>102.0000000</tD>
+        <td>168.0000000</tD>
+      </tr>
+      <tr>
+        <td>M</tD>
+        <td>9</tD>
+        <td>Age</tD>
+        <td>9</tD>
+        <td>44.0000000</tD>
+        <td>12.3895117</tD>
+        <td>15.0000000</tD>
+        <td>54.0000000</tD>
+      </tr>
+      <tr>
+        <td>&nbsp;</tD>
+        <td>&nbsp;</tD>
+        <td>Height</tD>
+        <td>9</tD>
+        <td>70.6666667</tD>
+        <td>2.6457513</tD>
+        <td>66.0000000</tD>
+        <td>75.0000000</tD>
+      </tr>
+      <tr>
+        <td>&nbsp;</tD>
+        <td>&nbsp;</tD>
+        <td>Weight</tD>
+        <td>9</tD>
+        <td>204.2222222</tD>
+        <td>30.2893454</tD>
+        <td>140.0000000</tD>
+        <td>240.0000000</tD>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>To see the contents of the output data set, submit the following PROC PRINT step:</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc print data=work.sum_gender;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Obs</th>
+        <th class="color-red">Sex</th>
+        <th class="color-red">_TYPE_</th>
+        <th class="color-red">_FREQ_</th>
+        <th class="color-red">AvgAge</th>
+        <th class="color-red">AvgHeight</th>
+        <th class="color-red">AvgWeight</th>
+        <th class="color-red">MinAge</th>
+        <th class="color-red">MinHeight</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>&nbsp;</td>
+        <td>0</td>
+        <td>20</td>
+        <td>46.7000</td>
+        <td>66.9500</td>
+        <td>174.650</td>
+        <td>15</td>
+        <td>61</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>F</td>
+        <td>1</td>
+        <td>11</td>
+        <td>48.9091</td>
+        <td>63.9091</td>
+        <td>150.455</td>
+        <td>16</td>
+        <td>61</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>M</td>
+        <td>1</td>
+        <td>9</td>
+        <td>44.0000</td>
+        <td>70.6667</td>
+        <td>204.222</td>
+        <td>15</td>
+        <td>66</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <div class="scrolling-div">
+  <table class="note-table">
+    <tr>
+      <th classs="color-blue">Note</th>
+      <td>You can use the NOPRINT option in the PROC MEANS statement to prevent the default re
+          from being created. For example, the following program creates only the output data set:
+          <div class="scrolling-div">
+          <pre>
+          proc means data=clinic.diabetes noprint;
+             var age height weight;
+             class sex;
+             output out=work.sum_gender
+                mean=AvgAge AvgHeight AvgWeight;
+          run;</pre>
+          </div>
+      </td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>In addition to the variables that you specify, the procedure adds the _TYPE_
+          and _FREQ_ variables to the output data set. When no statistic keywords are
+          specified, PROC MEANS also adds the variable _STAT_. For more
+          information about these variables, see the SAS documentation for the MEANS
+          procedure.
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 2 Subtopic 8 -->
+  <h3 class="subtopic" id="topic2_subtopic8">Creating a Summarized Data Set Using PROC SUMMARY</h3>
+ 
+  <p>You can also create a summarized output data set by using the SUMMARY procedure. When you
+     use PROC SUMMARY, you use the same code to produce the output data set that you would
+     use with PROC MEANS.
+  </p>
+
+  <p>The difference between the two procedures is that PROC MEANS produces a report by default
+     (remember that you can use the NOPRINT option to suppress the default report). By contrast, to
+     produce a report in PROC SUMMARY, you must include a PRINT option in the PROC
+     SUMMARY statement.
+   </p>
+
+  <h4>Example</h4>
+
+  <p>The following example creates an output data set but does not create a report:</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc summary data=clinic.diabetes;
+     var age height weight;
+     class sex;
+     output out=work.sum_gender
+        mean=AvgAge AvgHeight AvgWeight;
+  run;</pre>
+  </div>
+
+  <p>If you placed a PRINT option in the PROC SUMMARY statement above, this program would
+     produce the same report as if you replaced the word SUMMARY with MEANS:
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc summary data=clinic.diabetes print;
+     var age height weight;
+     class sex;
+     output out=work.sum_gender
+        mean=AvgAge AvgHeight AvgWeight;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Sex</th>
+        <th class="color-red">NObs</th>
+        <th class="color-red">Variable</th>
+        <th class="color-red">N</th>
+        <th class="color-red">Mean</th>
+        <th class="color-red">Std Dev</th>
+        <th class="color-red">Minimum</th>
+        <th class="color-red">Maximum</th>
+      </tr>
+      <tr>
+        <td rowspan="3">F</td>
+        <td rowspan="3">11</td>
+        <td>11</td>
+        <td>Age</td>
+        <td>48.9090909</td>
+        <td>13.3075508</td>
+        <td>16.0000000</td>
+        <td>63.0000000</td>
+      </tr>
+      <tr>
+        <td>Height</td>
+        <td>11</td>
+        <td>63.9090909</td>
+        <td>2.1191765</td>
+        <td>61.0000000</td>
+        <td>68.0000000</td>
+      </tr>
+      <tr>
+       <td>Weight</td>
+       <td>11</td>
+       <td>150.4545455</td>
+       <td>18.4464828</td>
+       <td>102.0000000</td>
+       <td>168.0000000</td>
+      </tr>
+      <tr>
+        <td rowspan="3">M</td>
+        <td rowspan="3">9</td>
+        <td>Age</td>
+        <td>9</td>
+        <td>44.0000000</td>
+        <td>12.3895117</td>
+        <td>15.0000000</td>
+        <td>54.0000000</td>
+      </tr>
+      <tr>
+        <td>Height</td>
+        <td>9</td>
+        <td>70.6666667</td>
+        <td>2.6457513</td>
+        <td>66.0000000</td>
+        <td>75.0000000</td>
+      </tr>
+      <tr>
+        <td>Weight</td>
+        <td>9</td>
+        <td>204.2222222</td>
+        <td>30.2893454</td>
+        <td>140.0000000</td>
+        <td>240.0000000</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+   <!-- Topic 3 -->
+  <h2 class="topic" id="topic3">Producing Frequency Tables</h2>
+
+  <!-- Topic 3 Subtopic 1 -->
+  <h3 class="subtopic" id="topic3_subtopic1">Producing Frequency Tables Using PROC FREQ</h3>
+
+  <p>The FREQ procedure is a descriptive procedure as well as a statistical procedure. It produces
+     oneway and n-way frequency tables, and it concisely describes your data by reporting the
+     distribution of variable values. You can use the FREQ procedure to create crosstabulation tables
+     that summarize data for two or more categorical variables by showing the number of observations
+     for each combination of variable values.
+  </p>
+
+  <p>The FREQ procedure can include many statements and options for controlling frequency output.
+     For simplicity, let's consider the procedure in its basic form.
+  </p>
+
+  <hr/>
+  <p><strong>General form, basic FREQ procedure:</strong></p>
+  <p><strong>PROC FREQ</strong> &lt;DATA=SAS-data-set&gt;; <br/>
+     <strong>RUN</strong>;
+  </p>
+  <p>where SAS-data-set is the name of the data set to be used.</p>
+  <hr/>
+
+  <p>By default, PROC FREQ creates a one-way table with the <strong>frequency, percent, cumulative
+     frequency</strong>, and <strong>cumulative percent</strong> of every value of all variables in a data set.
+  </p>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr> 
+        <th class="color-red">Variable</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr>
+        <th>Value</th>
+        <td>Number of observations with the value</td>
+        <td>Frequency of the value divided by the total number of observations</td>
+        <td>Sum of the frequency counts of the value and all other values listed above it in the table</td>
+        <td>Cumulative frequency of the value divided by the total number of observations</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>For example, the following FREQ procedure creates a frequency table for each variable in the
+     data set <strong>Parts.Widgets</strong>. All the unique values are shown for <i>ItemName, LotSize</i>, and <i>Region</i>.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc freq data=parts.widgets;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">ItemName</th>
+      <th class="color-red">Frequency</th>
+      <th class="color-red">Percent</th>
+      <th class="color-red">Cumulative Frequency</th>
+      <th class="color-red">Cumulative Percent</th>
+    </tr>
+    <tr>
+      <td>Bolt</td>
+      <td>2930</td>
+      <td>34.52</td>
+      <td>2930</td>
+      <td>34.52</td>
+    </tr>
+    <tr>
+      <td>Locknut</td>
+      <td>3106</td>
+      <td>36.60</td>
+      <td>6036</td>
+      <td>71.12</td>
+    </tr>
+    <tr>
+      <td>Washer</td>
+      <td>2451</td>
+      <td>28.88</td>
+      <td>8487</td>
+      <td>100.00</td>
+    </tr>
+
+    <tr>
+      <th class="color-red">LotSize</th>
+      <th class="color-red">Frequency</th>
+      <th class="color-red">Percent</th>
+      <th class="color-red">Cumulative Frequency</th>
+      <th class="color-red">Cumulative Percent</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4256</td>
+      <td>50.15</td>
+      <td>4256</td>
+      <td>50.15</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1009</td>
+      <td>11.89</td>
+      <td>5265</td>
+      <td>62.04</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>3222</td>
+      <td>37.96</td>
+      <td>8487</td>
+      <td>100.00</td>
+    </tr>
+
+    <tr>
+      <th class="color-red">Region</th>
+      <th class="color-red">Frequency</th>
+      <th class="color-red">Percent</th>
+      <th class="color-red">Cumulative Frequency</th>
+      <th class="color-red">Cumulative Percent</th>
+    </tr>
+    <tr>
+      <td>East</td>
+      <td>2848</td>
+      <td>33.56</td>
+      <td>2848</td>
+      <td>33.56</td>
+    </tr>
+    <tr>
+      <td>North</td>
+      <td>1355</td>
+      <td>15.97</td>
+      <td>4203</td>
+      <td>49.53</td>
+    </tr>
+    <tr>
+      <td>South</td>
+      <td>1706</td>
+      <td>20.10</td>
+      <td>5909</td>
+      <td>69.63</td>
+    </tr>
+    <tr>
+      <td>West</td>
+      <td>2578</td>
+      <td>30.38</td>
+      <td>8487</td>
+      <td>100.00</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 Subtopic 2 -->
+  <h3 class="subtopic" id="topic3_subtopic2">Specifying Variables in PROC FREQ</h3>
+
+  <p>By default, the FREQ procedure creates frequency tables for every variable in your data set. But
+     this isn't always what you want. A variable that has continuous numeric values- such as
+     <i>DateTime</i>- can result in a lengthy and meaningless table. Likewise, a variable that has a unique
+     value for each observation- such as <i>FullName</i>- is unsuitable for PROC FREQ processing.
+     Frequency distributions work best with variables whose values can be described as categorical,
+     and whose values are best summarized by counts rather than by averages.
+  </p>
+  <p>To specify the variables to be processed by the FREQ procedure, include a <strong>TABLES statement</strong>.</p>
+
+  <hr/>
+  <p><strong>General form, TABLES statement:</strong></p>
+  <p><strong>TABLES</strong> variable(s);</p>
+  <p>where variable(s) lists the variables to include.</p>
+  <hr/>
+
+  <h4>Example</h4>
+
+  <p>The order in which the variables appear in the TABLES statement determines the order in which
+     they are listed in the PROC FREQ report.
+  </p>
+  
+
+  <p>Consider the SAS data set <strong>Finance.Loans</strong>. The variables <i>Rate</i> and <i>Months</i> are best described
+     as categorical values, so they are the best choices for frequency tables.
+  </p>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red">Account</th>
+      <th class="color-red">Amount</th>
+      <th class="color-red">Rate</th>
+      <th class="color-red">Months</th>
+      <th class="color-red">Payment</th>
+    </tr>
+    <tr>
+     <td>101-1092</td>
+     <td>$22,000</td>
+     <td class="back-color-grey">10.00%</td>
+     <td class="back-color-grey">60</td>
+     <td>$467.43</td>
+    </tr>
+    <tr>
+     <td>101-1731</td>
+     <td>$114,000</td>
+     <td class="back-color-grey">9.50%</td>
+     <td class="back-color-grey">360</td>
+     <td>$958.57</td>
+    </tr>
+    <tr>
+     <td>101-1289</td>
+     <td>$10,000</td>
+     <td class="back-color-grey">10.50%</td>
+     <td class="back-color-grey">36</td>
+     <td>$325.02</td>
+    </tr>
+    <tr>
+     <td>101-3144</td>
+     <td>$3,500</td>
+     <td class="back-color-grey">10.50%</td>
+     <td class="back-color-grey">12</td>
+     <td>$308.52</td>
+    </tr>
+    <tr>
+     <td>103-1135</td>
+     <td>$8,700</td>
+     <td class="back-color-grey">10.50%</td>
+     <td class="back-color-grey">24</td>
+     <td>$403.47</td>
+    </tr>
+    <tr>
+     <td>103-1994</td>
+     <td>$18,500</td>
+     <td class="back-color-grey">10.50%</td>
+     <td class="back-color-grey">60</td>
+     <td>$393.07</td>
+    </tr>
+    <tr>
+     <td>103-2335</td>
+     <td>$5,000</td>
+     <td class="back-color-grey">10.50%</td>
+     <td class="back-color-grey">48</td>
+     <td>$128.02</td>
+    </tr>
+    <tr>
+     <td>103-3864</td>
+     <td>$87,500</td>
+     <td class="back-color-grey">9.50%</td>
+     <td class="back-color-grey">360</td>
+     <td>$735.75</td>
+    </tr>
+    <tr>
+     <td>103-3891</td>
+     <td>30,000</td>
+     <td class="back-color-grey">9.75%</td>
+     <td class="back-color-grey">360</td>
+     <td>$257.75</td>
+    </tr>
+  </table>
+  </div>
+  <br/>
+
+  <div class="scrolling-div">
+  <pre>
+  proc freq data=finance.loans;
+     tables rate months;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Rate</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr> 
+        <th>9.50%</th>
+        <td>2</td>
+        <td>22.22</td>
+        <td>2</td>
+        <td>22.22</td>
+      </tr>
+      <tr> 
+        <th>9.75%</th>
+        <td>1</td>
+        <td>11.11</td>
+        <td>3</td>
+        <td>33.33</td>
+      </tr>
+      <tr> 
+        <th>10.00%</th>
+        <td>2</td>
+        <td>22.22</td>
+        <td>5</td>
+        <td>55.56</td>
+      </tr>
+      <tr> 
+        <th>10.50%</th>
+        <td>4</td>
+        <td>44.44</td>
+        <td>9</td>
+        <td>100.00</td>
+      </tr>
+
+
+      <tr>
+        <th class="color-red">Months</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr> 
+        <th>12</th>
+        <td>1</td>
+        <td>11.11</td>
+        <td>1</td>
+        <td>11.11</td>
+      </tr>
+      <tr> 
+        <th>24</th>
+        <td>1</td>
+        <td>11.11</td>
+        <td>2</td>
+        <td>22.22</td>
+      </tr>
+      <tr> 
+        <th>36</th>
+        <td>1</td>
+        <td>11.11</td>
+        <td>3</td>
+        <td>33.33</td>
+      </tr>
+      <tr> 
+        <th>48</th>
+        <td>1</td>
+        <td>11.11</td>
+        <td>4</td>
+        <td>44.44</td>
+      </tr>
+      <tr> 
+        <th>60</th>
+        <td>2</td>
+        <td>22.22</td>
+        <td>6</td>
+        <td>66.67</td>
+      </tr>
+      <tr> 
+        <th>360</th>
+        <td>3</td>
+        <td>33.33</td>
+        <td>9</td>
+        <td>100.00</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <p>In addition to listing variables separately, you can use a numbered range of variables.</p>
+
+
+  <div class="scrolling-div">
+  <pre>
+  proc freq data=perm.survey;
+     tables item1-item3;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+      <tr>
+        <th class="color-red">Item1</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr> 
+        <td>2</td>
+        <td>1</td>
+        <td>25.00</td>
+        <td>1</td>
+        <td>25.00</td>
+      </tr>
+      <tr> 
+        <td>4</td>
+        <td>2</td>
+        <td>50.00</td>
+        <td>3</td>
+        <td>75.00</td>
+      </tr>
+      <tr> 
+        <td>5</td>
+        <td>1</td>
+        <td>25.00</td>
+        <td>4</td>
+        <td>100.00</td>
+      </tr>
+
+      <tr>
+        <th class="color-red">Item2</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr> 
+        <td>1</td>
+        <td>1</td>
+        <td>25.00</td>
+        <td>1</td>
+        <td>25.00</td>
+      </tr>
+      <tr> 
+        <td>3</td>
+        <td>2</td>
+        <td>50.00</td>
+        <td>3</td>
+        <td>75.00</td>
+      </tr>
+      <tr> 
+        <td>5</td>
+        <td>1</td>
+        <td>25.00</td>
+        <td>4</td>
+        <td>100.00</td>
+      </tr>
+
+      <tr>
+        <th class="color-red">Item3</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumulative Frequency</th>
+        <th class="color-red">Cumulative Percent</th>
+      </tr>
+      <tr> 
+        <td>4</td>
+        <td>3</td>
+        <td>75.00</td>
+        <td>3</td>
+        <td>75.00</td>
+      </tr>
+      <tr> 
+        <td>5</td>
+        <td>1</td>
+        <td>25.00</td>
+        <td>4</td>
+        <td>100.00</td>
+      </tr>
+  </table>
+  </div>
+  <br/>
+
+  <table class="note-table">
+    <tr>
+      <th class="color-blue">Note</th>
+      <td>Adding the NOCUM option to your TABLES statement
+          suppresses the display of cumulative frequencies and
+          cumulative percentages in one-way frequency tables and in list
+          output. The syntax for the NOCUM option is shown below. <br/><br/>
+          TABLES variable(s) / NOCUM;
+      </td>
+    </tr>
+  </table>
+  <br/>
+
+  <!-- Topic 3 Subtopic 3 -->
+  <h3 class="subtopic" id="topic3_subtopic3">Creating Two-Way Tables</h3>
+
+  <p>So far, you have used the FREQ procedure to create one-way frequency tables. The table results
+     show total frequency counts for the values within the data set. However, it is often helpful to
+     <strong>crosstabulate</strong> frequencies with the values of other variables. For example, census data is
+     typically crosstabulated with a variable that represents geographical regions.
+  </p>
+ 
+  <p>The simplest crosstabulation is a <strong>two-way</strong> table. To create a two-way table, join two variables
+     with an asterisk (*) in the TABLES statement of a PROC FREQ step.
+  </p>
+
+  <hr/>
+  <p><strong>General form, TABLES statement for crosstabulation:</strong></p>
+  <p><strong>TABLES</strong> variable-1*variable-2 &lt;* ... variable-n&gt;;</p>
+  <p>where</p>
+  <ul>
+    <li><i>variable-1</i> specifies table rows.</li>
+    <li><i>variable-2</i> specifies table columns.</li>
+    <li><i>variable-n</i> specifies a multi-way table.</li>
+  </ul>
+  <hr/>
+
+  <p>When crosstabulations are specified, PROC FREQ produces tables with cells that contain</p>
+  <ul>
+    <li>cell frequency.</li>
+    <li>cell percentage of total frequency.</li>
+    <li>cell percentage of row frequency.</li>
+    <li>cell percentage of column frequency.</li>
+  </ul>
+
+  <p>For example, the following program creates the two-way table shown on the following page.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc format;
+      value wtfmt low-139='< 140'
+                  140-180='140-180'
+                  181-high='> 180';
+      value htfmt low-64='< 5''5"'
+                  65-70='5''5-10"'
+                  71-high='> 5''10"';
+  run;
+  proc freq data=clinic.diabetes;
+     tables weight*height;
+     format weight wtfmt. height htfmt.;
+  run;</pre>
+  </div>
+
+  <img src="images/ch9_image1.png" class="diagram"/>
+
+  <p>Note that the first variable, <i>Weight</i>, forms the table rows, and the second variable, <i>Height</i>,
+     forms the columns; reversing the order of the variables in the TABLES statement would reverse
+     their positions in the table. Note also that the statistics are listed in the legend box.
+  </p>
+
+  <!-- Topic 3 Subtopic 4 -->
+  <h3 class="subtopic" id="topic3_subtopic4">Creating N-Way Tables</h3>
+
+  <p>For a frequency analysis of more than two variables, use PROC FREQ to create <strong>n-way</strong>
+     crosstabulation tables. A series of two-way tables is produced, with a table for each level of the
+     other variables.
+  </p>
+
+  <p>For example, suppose you want to add the variable Sex to your crosstabulation of <i>Weight</i> and
+     <i>Height</i> in the data set <strong>Clinic.Diabetes</strong>. Add Sex to the TABLES statement, joined to the other
+     variables with an asterisk (*).
+  </p>
+
+  <div class="scrolling-div">
+  <pre>tables sex*weight*height;</pre>
+  </div>
+
+  <br/>
+
+  <h4>Determining the Table Layout</h4>
+
+  <p>The order of the variables is important. In n-way tables, the last two variables of the TABLES
+     statement become the two-way rows and columns. Variables that precede the last two variables
+     in the TABLES statement stratify the crosstabulation tables.
+  </p>
+
+  <img src="images/ch9_image2.png" class="diagram"/>
+
+  <p>Notice the structure of the output that is produced by the program shown below. Two
+     crosstabulation tables, one for each value of <i>Sex</i>, are produced.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc format;
+     value wtfmt low-139='< 140'
+                 140-180='140-180'
+                 181-high='> 180';
+      value htfmt low-64='< 5''5"'
+                  65-70='5''5-10"'
+                  71-high='> 5''10"';
+  run;
+  proc freq data=clinic.diabetes;
+     tables sex*weight*height;
+     format weight wtfmt. height htfmt.;
+  run;</pre>
+  </div>
+
+  <img src="images/ch9_image3.png" class="diagram"/>
+  <br/>
+  <img src="images/ch9_image4.png" class="diagram"/>
+
+  <!-- Topic 3 Subtopic 5 -->
+  <h3 class="subtopic" id="topic3_subtopic5">Changing the Table Format</h3>
+
+  <p>Beginning in SAS 9, adding the <strong>CROSSLIST</strong> option to your TABLES statement displays
+     crosstabulation tables in ODS column format. This option creates a table that has a table
+     definition that you can customize by using the TEMPLATE procedure.
+  </p>
+
+  <p>Notice the structure of the output that is produced by the program shown below.</p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc format;
+     value wtfmt low-139='< 140'
+                 140-180='140-180'
+                 181-high='> 180';
+     value htfmt low-64='< 5''5"'
+                 65-70='5''5-10"'
+                 71-high='> 5''10"';
+  run;
+  proc freq data=clinic.diabetes;
+     tables sex*weight*height/crosslist;
+     format weight wtfmt. height htfmt.;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+  <table border="1">
+    <tr>
+      <th class="color-red" colspan="6" style="text-align:center;">Table of Weight by Height</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="6" style="text-align:center;">Controlling for Sex= F</th>
+    </tr>
+    <tr>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Frequency</th>
+      <th class="color-red">Percent</th>
+      <th class="color-red">Row Percent</th>
+      <th class="color-red">Column Percent</th>
+    </tr>
+    <tr>
+      <th>&lt; 140</th>
+      <th>&lt; 5'5"</th>
+      <td>2</td>
+      <td>18.18</td>
+      <td>100.00</td>
+      <td>28.57</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>2</td>
+      <td>18.18</td>
+      <td>100.00</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>140-180</th>
+      <th>&lt; 5'5"</th>
+      <td>5</td>
+      <td>45.45</td>
+      <td>55.56</td>
+      <td>71,43</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>4</td>
+      <td>36.36</td>
+      <td>44.44</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>9</td>
+      <td>81.82</td>
+      <td>100.00</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&gt; 180</th>
+      <th>&lt; 5'5"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&lt; 5'5"</th>
+      <td>7</td>
+      <td>63.64</td>
+      <td>&nbsp;</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>4</td>
+      <td>36.36</td>
+      <td>&nbsp;</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt; 5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>&nbsp;</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <th>11</th>
+      <td>100.00</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th class="color-red" colspan="6" style="text-align:center;">Table of Weight by Height</th>
+    </tr>
+    <tr>
+      <th class="color-red" colspan="6" style="text-align:center;">Controlling for Sex= M</th>
+    </tr>
+    <tr>
+      <th class="color-red">Weight</th>
+      <th class="color-red">Height</th>
+      <th class="color-red">Frequency</th>
+      <th class="color-red">Percent</th>
+      <th class="color-red">Row Percent</th>
+      <th class="color-red">Column Percent</th>
+    </tr>
+
+    <tr>
+      <th>&lt; 140</th>
+      <th>&lt; 5'5"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>.</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>140-180</th>
+      <th>&lt; 5'5"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>.</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>1</td>
+      <td>11.11</td>
+      <td>100.00</td>
+      <td>25.00</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>1</td>
+      <td>11.11</td>
+      <td>100.00</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&gt; 180</th>
+      <th>&lt; 5'5"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>3</td>
+      <td>3.33</td>
+      <td>37.50</td>
+      <td>75.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>5</td>
+      <td>55.56</td>
+      <td>62.50</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>8</td>
+      <td>88.89</td>
+      <td>100.00</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <th>&lt; 5'5"</th>
+      <td>0</td>
+      <td>0.00</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>5'5-10"</th>
+      <td>4</td>
+      <td>44.44</td>
+      <td>&nbsp;</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&gt;5'10"</th>
+      <td>5</td>
+      <td>55.56</td>
+      <td>&nbsp;</td>
+      <td>100.00</td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Total</th>
+      <td>9</td>
+      <td>100.00</td>
+      <td>&nbsp;&nbsp;</td>
+      <td></td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- Topic 3 Subtopic 6 -->
+  <h3 class="subtopic" id="topic3_subtopic6">Creating Tables in List Formats</h3>
+
+  <p>When three or more variables are specified, the multiple levels of <i>n-way</i> tables can produce
+     considerable output. Such bulky, often complex crosstabulations are often easier to read as a
+     continuous list. Although this eliminates row and column frequencies and percents, the results are
+     compact and clear.
+  </p>
+
+  <p>To generate list output for crosstabulations, add a slash (/) and the <strong>LIST option</strong> to the TABLES
+     statement in your PROC FREQ step.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>TABLES variable-1*variable-2 &lt;* ... variable-n&gt; / LIST;</pre>
+  </div>
+  <br/>
+
+  <h4>Example</h4>
+  
+  <p>Adding the LIST option to our Clinic.Diabetes program puts the program's frequencies in a
+     simple, short table.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc format;
+     value wtfmt low-139='< 140'
+                 140-180='140-180'
+                 181-high='> 180';
+     value htfmt low-64='< 5''5"'
+                 65-70='5''5-10"'
+                 71-high='> 5''10"';
+  run;
+  proc freq data=clinic.diabetes;
+     tables sex*weight*height / list;
+     format weight wtfmt. height htfmt.;
+  run;</pre>
+  </div>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+        <th class="color-red">Sex</th>
+        <th class="color-red">Weight</th>
+        <th class="color-red">Height</th>
+        <th class="color-red">Frequency</th>
+        <th class="color-red">Percent</th>
+        <th class="color-red">Cumalative Frequency</th>
+        <th class="color-red">Cumalative Percent</th>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>&lt; 140</td>
+        <td>&lt; 5'5"</td>
+        <td>2</td>
+        <td>10.00</td>
+        <td>2</td>
+        <td>10.00</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>140-180</td>
+        <td>&lt; 5'5"</td>
+        <td>5</td>
+        <td>25.00</td>
+        <td>7</td>
+        <td>35.00</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>140-180</td>
+        <td>5'5"-10"</td>
+        <td>4</td>
+        <td>20.00</td>
+        <td>11</td>
+        <td>55.00</td>
+      </tr>
+      <tr>
+        <td>M</td>
+        <td>140-180</td>
+        <td>5'5-10"</td>
+        <td>1</td>
+        <td>5.00</td>
+        <td>12</td>
+        <td>60.00</td>
+      </tr>
+      <tr>
+        <td>M</td>
+        <td>&gt; 180</td>
+        <td>5'5-10"</td>
+        <td>3</td>
+        <td>15.00</td>
+        <td>15</td>
+        <td>75.00</td>
+      </tr>
+      <tr>
+        <td>M</td>
+        <td>&gt; 180</td>
+        <td>&gt; 5'10"</td>
+        <td>5</td>
+        <td>25.00</td>
+        <td>20</td>
+        <td>100.00</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+  <!-- Topic 3 Subtopic 7 -->
+  <h3 class="subtopic" id="topic3_subtopic7">Suppressing Table Information</h3>
+
+  <p>Another way to control the format of crosstabulation tables is to limit the output of the FREQ
+     procedure to a <strong>few specific statistics</strong>. Remember that when crosstabulations are run, PROC
+     FREQ produces tables with cells that contain
+  </p>
+  <ul>
+    <li>cell frequency.</li>
+    <li>cell percentage of total frequency.</li>
+    <li>cell percentage of row frequency.</li>
+    <li>cell percentage of column frequency.</li>
+  </ul>
+
+  <p>You can use options to suppress any of these statistics. To control the depth of crosstabulation
+     results, add a slash (/) and any combination of the following options to the TABLES statement:
+  </p>
+  <ul>
+    <li><strong>NOFREQ</strong> suppresses cell frequencies.</li>
+    <li><strong>NOPERCENT</strong> suppresses cell percentages.</li>
+    <li><strong>NOROW</strong> supresses row percentages.</li>
+    <li><strong>NOCOL</strong> suppresses column percentages.</li>
+  </ul>
+  <br/>
+
+  <h4>Example</h4>
+
+  <p>Suppose you want to use only the percentages of <i>Sex</i> and <i>Weight</i> combinations in the data set
+     <strong>Clinic.Diabetes</strong>. To block frequency counts and row and column percentages, add the NOFREQ,
+     NOROW, and NOCOL options to your program's TABLES statement.
+  </p>
+
+  <div class="scrolling-div">
+  <pre>
+  proc format;
+     value wtfmt low-139='< 140'
+                 140-180='140-180'
+                 181-high='> 180';
+  run;
+  proc freq data=clinic.diabetes;
+     tables sex*weight / nofreq norow nocol;
+     format weight wtfmt.;
+  run;</pre>
+  </div>
+
+  <img src="images/ch9_image5.png" class="diagram"/>
+
+  <p>Notice that Percent is the only statistic that remains in the table's legend box.</p>
+
+  <!-- Topic 4 -->
+  <h2 class="topic" id="topic4">Summary</h2>
+
+  <!-- Topic 4 Subtopic 1 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Text Summary</h3>
+
+  <br/>
+
+  <h4>Purpose of PROC MEANS</h4>
+  <p>The MEANS procedure provides an easy way to compute descriptive statistics. Descriptive
+     statistics such as the mean, minimum, and maximum provide useful information about numeric
+     data.
+  </p>
+  <br/>
+
+  <h4>Specifying Statistics</h4>
+  <p>By default, PROC MEANS computes the n-count (the number of nonmissing values), the mean,
+     the standard deviation, and the minimum and maximum values for variables. To specify statistics,
+     list their keywords in the PROC MEANS statement.
+  </p>
+
+  <div class="scrolling-div">
+    <table border="1">
+      <tr>
+         <th class="color-red" colspan="2">Descriptive Statistics</th>
+      </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>CLM</td>
+        <td>Two-sided confidence limit for the mean</td>
+      </tr>
+      <tr>
+        <td>CSS</td>
+        <td>Corrected sum of squares</td>
+      </tr>
+      <tr>
+        <td>CV</td>
+        <td>Coefficient of variation</td>
+      </tr>
+      <tr>
+        <td>KURTOSIS / KURT</td>
+        <td>Kurtosis</td>
+      </tr>
+      <tr>
+        <td>LCLM</td>
+        <td>One-sided confidence limit below the mean</td>
+      </tr>
+      <tr>
+        <td>MAX</td>
+        <td>Maximum value</td>
+      </tr>
+      <tr>
+        <td>MEAN</td>
+        <td>Average</td>
+      </tr>
+      <tr>
+        <td>MIN</td>
+        <td>Minimum value</td>
+      </tr>
+      <tr>
+        <td>N</td>
+        <td>Number of observations with non-missing values</td>
+      </tr>
+      <tr>
+        <td>NMISS</td>
+        <td>Number of observations with missing values</td>
+      </tr>
+      <tr>
+        <td>RANGE</td>
+        <td>Range</td>
+      </tr>
+      <tr>
+        <td>SKEWNESS / SKEW</td>
+        <td>Skewness</td>
+      </tr>
+      <tr>
+        <td>STDDEV / STD</td>
+        <td>Standard deviation</td>
+      </tr>
+      <tr>
+        <td>STDERR / STDMEAN</td>
+        <td>Standard error of the mean</td>
+      </tr>
+      <tr>
+        <td>SUM</td>
+        <td>Sum</td>
+      </tr>
+      <tr>
+        <td>SUMWGT</td>
+        <td>Sum of the Weight variable values</td>
+      </tr>
+      <tr>
+        <td>UCLM</td>
+        <td>One-sided confidence limit above the mean</td>
+      </tr>
+      <tr>
+        <td>USS</td>
+        <td>Uncorrected sum of squares</td>
+      </tr>
+      <tr>
+        <td>VAR</td>
+        <td>Variance</td>
+      </tr>
+      <tr>
+        <th class="color-red" colspan="2">Quantile Statistics</th>
+     </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>MEDIAN / P50</td>
+        <td>Median or 50th percentile</td>
+      </tr>
+      <tr>
+        <td>P1</td>
+        <td>1st percentile</td>
+      </tr>
+        <td>P5</td>
+        <td>5th percentile</td>
+      </tr>
+      <tr>
+        <td>P10</td>
+        <td>10th percentile</td>
+      </tr>
+      <tr>
+        <td>Q1 / P25</td>
+        <td>Lower quartile or 25th percentile</td>
+      </tr>
+      <tr>
+        <td>Q3 / P75</td>
+        <td>Upper quartile or 75th percentile</td>
+      </tr>
+      <tr>
+        <td>P90</td>
+        <td>90th percentile</td>
+      </tr>
+      <tr>
+        <td>P95</td>
+        <td>95th percentile</td>
+      </tr>
+      <tr>
+        <td>P99</td>
+        <td>99th percentile</td>
+      </tr>
+      <tr>
+        <td>QRANGE</td>
+        <td>Difference between upper and lower quartiles: Q3-Q1</td>
+      </tr>
+      <tr>
+        <th class="color-red" colspan="2">Hypothesis Testing</th>
+     </tr>
+      <tr>
+         <th class="color-red">Keyword</th>
+         <th class="color-red">Description</th>
+      </tr>
+      <tr>
+        <td>PROBT</td>
+        <td>Probability of a greater absolute value for the t value</td>
+      </tr>
+      <tr>
+        <td>T</td>
+        <td>Student's t for testing the hypothesis that the population mean is 0</td>
+      </tr>
+    </table>
+  </div>
+  <br/>
+
+
+  <h4>Limiting Decimal Places</h4>
+  <p>Because PROC MEANS uses the BEST. format by default, procedure output can contain
+     unnecessary decimal places. To limit decimal places, use the <strong>MAXDEC= option</strong> and set it equal
+     to the length that you prefer.
+  </p>
+  <br/>
+
+  <h4>Specifying Variables in PROC MEANS</h4>
+  <p>By default, PROC MEANS computes statistics for all numeric variables. To specify the variables
+     to include in PROC MEANS output, list them in a VAR statement.
+  </p>
+  <br/>
+
+  <h4>Group Processing Using the CLASS Statement</h4>
+  <p>Include a <strong>CLASS statement</strong>, specifying variable names, in order to group PROC MEANS output
+     by variable values. Statistics are not computed for the CLASS variables.
+  </p>
+  <br/>
+
+  <h4>Group Processing Using the BY Statement</h4>
+  <p>Include a <strong>BY statement</strong>, specifying variable names, in order to group PROC MEANS output by
+     variable values. Your data must be sorted according to those variables. Statistics are not
+     computed for the BY variables.
+  </p>
+  <br/>
+
+  <h4>Creating a Summarized Data Set Using PROC MEANS</h4>
+  <p>You can create an output SAS data set that contains summarized variables by using the
+     <strong>OUTPUT statement</strong> in <strong>PROC MEANS</strong>. When you use the OUTPUT statement without specifying
+     the statistic-keyword= option, the summary statistics N, MEAN, STD, MIN, and MAX are
+     produced for all of the numeric variables or for all of the variables that are listed in a VAR
+     statement.
+  </p>
+  <br/>
+
+  <h4>Creating a Summarized Data Set Using PROC SUMMARY</h4>
+  <p>You can also create a summarized output data set by using <strong>PROC SUMMARY</strong>. The PROC
+     SUMMARY code for producing an output data set is exactly the same as the code for producing
+     an output data set with PROC MEANS. The difference between the two procedures is that PROC
+     MEANS produces a report by default, whereas PROC SUMMARY produces an output data set by
+     default.
+  </p>
+  <br/>
+
+  <h4>The FREQ Procedure</h4>
+  <p>The <strong>FREQ procedure</strong> is a descriptive procedure as well as a statistical procedure that produces
+     oneway and n-way frequency tables. It concisely describes your data by reporting the distribution
+     of variable values.
+  </p>
+  <br/>
+
+  <h4>Specifying Variables</h4>
+  <p>By default, the FREQ procedure creates frequency tables for every variable in your data set. To
+     specify the variables to analyze, include them in a <strong>TABLES statement</strong>.
+  </p>
+  <br/>
+
+  <h4>Creating Two-Way Tables</h4>
+  <p>When a TABLES statement contains two variables joined by an asterisk (*), PROC FREQ
+     produces crosstabulation tables. The resulting table displays values for
+  </p>
+  <ul>
+    <li>cell frequency.</li>
+    <li>cell percentage of total frequency</li>
+    <li>cell percentage of row frequency.</li>
+    <li>cell percentage of column frequency.</li>
+  </ul>
+  <br/>
+
+  <h4>Creating N-Way Tables</h4>
+  <p>Crosstabulations can include more than two variables. When three or more variables are joined in
+     a TABLES statement, the result is a series of two-way tables that are grouped by the values of
+     the first two variables that are listed. You can use the CROSSLIST option to format your tables in
+     ODS column format.
+  </p>
+  <br/>
+
+  <h4>Creating Tables in List Format</h4>
+  <p>To reduce the bulk of n-way table output, add a slash (/) and the <strong>LIST option</strong> to the end of the
+     TABLES statement. PROC FREQ then prints compact, multicolumn lists instead of a series of
+     tables.
+  </p>
+  <br/>
+
+  <h4>Suppressing Table Information</h4>
+  <p>You can suppress the display of specific statistics by adding a slash (/) and one or more options
+     to the TABLES statement:
+  </p>
+  <ul>
+    <li><strong>NOFREQ</strong> suppresses cell frequencies.</li>
+    <li><strong>NOPERCENT</strong> suppresses cell percentages.</li>
+    <li><strong>NOROW</strong> suppresses row percentages.</li>
+    <li><strong>NOCOL</strong> suppresses column percentages.</li>
+  </ul>
+  <br/>
+
+  <!-- Topic 4 Subtopic 2 -->
+  <h3 class="subtopic" id="topic4_subtopic1">Points to Remember</h3>
+
+  <ul>
+    <li>In PROC MEANS, use a VAR statement to limit output to relevant variables. Exclude
+        statistics for nominal variables such as <i>ID</i> or <i>ProductCode</i>.
+    </li>
+    <li>By default, PROC MEANS prints the full width of each numeric variable. Use the
+        MAXDEC= option to limit decimal places and to improve legibility.
+    </li>
+    <li>Data must be sorted for BY-group processing. You might need to run PROC SORT
+        before using PROC MEANS with a BY statement.
+    </li>
+    <li>PROC MEANS and PROC SUMMARY produce the same results; however, the default
+        output is different. PROC MEANS produces a report, whereas PROC SUMMARY produces
+        an output data set.
+    </li>
+    <li>If you do not include a TABLES statement, PROC FREQ produces statistics for every
+        variable in the data set.
+    </li>
+    <li>Variables that have continuous numeric values can create a large amount of output. Use
+        a TABLES statement to exclude such variables, or group their values by applying a
+        FORMAT statement.
+    </li>
+  </ul>
+
+
+
+
+  
+
+
+  
+  
+
+  
+  
+
 
 
 

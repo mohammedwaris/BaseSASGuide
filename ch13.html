@@ -45,6 +45,7 @@
      the following:
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Method of Combining</th>
@@ -92,9 +93,10 @@
       <td><img src="images/ch13_image4.png" class="diagram"/></td>
     </tr>
   </table>
+  </div>
   <br/>
 
-  <table>
+  <table class="note-table">
     <tr>
        <th class="color-blue">Note</th>
        <td>You can also use PROC SQL to
@@ -147,7 +149,8 @@
     <li><i>output-SAS-data-set</i> names the data set to be created</li>
     <li><i>SAS-data-set-1</i> and <i>SAS-data-set-2</i> specify the data sets to be read.</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can specify any number of data sets in the SET statement.</td>
@@ -177,16 +180,19 @@
 
   <p>Let's look at a simple case of one-to-one reading.</p>
 
+  <div class="scrolling-div">
   <pre>
   data one2one;
      set c;
      set d;
   run;</pre>
+  </div>
 
   <img src="images/ch13_image5.png" class="diagram"/>
 
   <ol>
     <li>The first SET statement reads one observation from data set C.
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">Num</th>
@@ -199,9 +205,11 @@
              <td>&nbsp;</td>
           </tr>
         </table>
+        </div>
     </li>
     <li>Then the second SET statement reads one observation from data set D. The value for
         Num in data set D overwrites the value for Num in data set C.
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">Num</th>
@@ -214,8 +222,10 @@
              <td>B1</td>
           </tr>
         </table>
+        </div>
     </li>
     <li>Next, the first SET statement reads the second observation from data set C. 
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">Num</th>
@@ -233,11 +243,13 @@
              <td>&nbsp;</td>
           </tr>
         </table>
+        </div>
     </li>
     <li>Finally, the second SET statement reads the second observation from data set D,
         overwriting the value for Num in data set C. Because this is the last observation in the
         smallest data set, processing stops. The DATA step does not read the third observation in
         data set C.
+        <div class="scrolling-div">
         <table border="1">
           <tr>
             <th class="color-red">Num</th>
@@ -255,6 +267,7 @@
              <td>B2</td>
           </tr>
         </table>
+        </div>
     </li>
   </ol>
   <br/>
@@ -274,6 +287,7 @@
      <strong>Clinic.Measure</strong> contains 6 observations.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Clinic.Patients</th>
@@ -339,8 +353,10 @@
       <td>56</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Clinic.Measure</th>
@@ -388,23 +404,28 @@
       <td>157</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>To subset observations from the first data set and combine them with observations from the
      second data set, you can submit the following program:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.one2one;
      set clinic.patients;
      if age<60;
      set clinic.measure;
   run;</pre>
+  </div>
 
   <p>The resulting data set, <strong>Clinic.One2one</strong>, contains 6 observations (the number of observations
      read from the smallest data set, here <strong>Clinic.Measure</strong>). The last observation in <strong>Clinic.Patients</strong> is
      not read.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="6">SAS Data Set Clinic.One2one</th>
@@ -466,6 +487,8 @@
       <td>157</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 3 -->
   <h2 class="topic" id="topic3">Concatenating</h2>
@@ -485,7 +508,8 @@
     <li>output-SAS-data-set names the data set to be created</li>
     <li>SAS-data-set-1 and SAS-data-set-2 specify the data sets to be read.</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can specify any number of data sets in the SET statement</td>
@@ -502,10 +526,12 @@
      all of the variables and observations from all of the input data sets.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data concat;
     set a b;
   run;</pre>
+  </div>
 
   <img src="images/ch13_image6.png" class="diagram"/>
 
@@ -531,15 +557,18 @@
      <strong>Clinic.Therapy2000</strong>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.concat;
      set clinic.therapy1999 clinic.therapy2000;
   run;</pre>
+  </div>
 
   <p>The listing of <strong>Clinic.Concat</strong> follows. The first 12 observations were read from
      <strong>Clinic.Therapy1999</strong>, and the last 12 observations were read from <strong>Clinic.Therapy2000</strong>.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="6">SAS Data Set Clinic.Concat</th>
@@ -745,6 +774,7 @@
       <td>47</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 4 -->
@@ -771,7 +801,8 @@
     <li><i>SAS-data-set-1</i> and <i>SAS-data-set-2</i> specify the data sets to be read</li>
     <li><i>variable(s)</i> specifies one or more variables that are used to interleave observations</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can specify any number of data sets in the SET statement. Each input
@@ -791,11 +822,13 @@
      the input data sets, and it contains the total number of observations from all input data sets.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data interlv;
      set c d;
      by num;
   run;</pre>
+  </div>
 
   <img src="images/ch13_image7.png" class="diagram"/>
   <br/>
@@ -805,15 +838,20 @@
   <p>The following DATA step creates Clinic.Interlv by interleaving <strong>Clinic.Therapy1999</strong> and
      <strong>Clinic.Therapy2000 </strong>:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.interlv;
      set clinic.therapy1999 clinic.therapy2000;
      by month;
   run;</pre>
+  </div>
+
   <p>Below is the listing of Clinic.Interlv. Notice that, unlike the previous example, observations are
      interleaved by month instead of being concatenated.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr> 
       <th class="color-red" colspan="6">SAS Data Set Clinic.Interlv</th>
@@ -1019,6 +1057,7 @@
       <td>47</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 -->
@@ -1053,7 +1092,8 @@
         only to the variable that immediately follows it.
     </li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr> 
       <th class="color-blue">Note</th>
       <td>Each input data set in the MERGE statement must be sorted in order of the
@@ -1062,7 +1102,9 @@
       </td>
     </tr>
   </table>
-  <table>
+  <br/>
+
+  <table class="note-table">
     <tr> 
       <th class="color-blue">Note</th>
       <td>You cannot use the DESCENDING option with indexed data sets because
@@ -1079,11 +1121,14 @@
      data set to see whether the BY values match, then writes the combined observation to the new
      data set.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data merged;
      merge a b;
      by num;
   run;</pre>
+  </div>
 
   <img src="images/ch13_image8.png" class="diagram"/>
 
@@ -1097,7 +1142,8 @@
   </p>
 
   <img src="images/ch13_image9.png" class="diagram"/>
-  <table>
+
+  <table class="note-table">
     <tr> 
       <th class="color-blue">Note</th>
       <td>In match-merging, often one data set contains unique values for the samenamed
@@ -1110,13 +1156,17 @@
 
   <h4>Example: Merging Data Sets That Are Sorted in Ascending Order</h4>
   <p>Suppose you have sorted the data sets <strong>Clinic.Demog</strong> and <strong>Clinic.Visit</strong> as follows:</p>
+
+  <div class="scrolling-div">
   <pre>
   proc sort data=clinic.demog;
      by id;
   run;
   proc print data=clinic.demog;
   run;</pre>
+  </div>
   
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1168,15 +1218,20 @@
       <td>11/11/57</td>
     </tr>
   </table>
+  </div>
   <br/>
 
+  <div class="scrolling-div">
   <pre>
   proc sort data=clinic.visit;
      by id;
   run;
   proc print data=clinic.visit;
   run;</pre>
+  </div>
   
+
+  <div class="scrolling-div">
   <table border="1">
      <tr>
        <th class="color-red">Obs</th>
@@ -1287,11 +1342,14 @@
        <td>05/22/98</td>
      </tr>
   </table>
+  </div>
   <br/>
 
   <p>You can then submit this DATA step to create <strong>Clinic.Merged</strong> by merging <strong>Clinic.Demog</strong> and
      <strong>Clinic.Visit</strong> according to values of the variable <i>ID</i>:
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.merged;
      merge clinic.demog clinic.visit;
@@ -1299,11 +1357,13 @@
   run;
   proc print data=clinic.merged;
   run;</pre>
+  </div>
 
   <p>Notice that all observations, including unmatched observations and observations that have
      missing data, are written to the output data set.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1449,6 +1509,7 @@
       <td>182</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <h4>Example: Sorting and Merging Data Sets in Descending Order</h4>
@@ -1458,6 +1519,7 @@
      following program:
   </p>
 
+  <div class="scrolling-div">
   <pre>
   proc sort data=clinic.demog;
      by descending id;
@@ -1471,6 +1533,7 @@
   run;
   proc print data=clinic.merged;
   run;</pre>
+  </div>
 
   <p>Notice that you specify the DESCENDING option in the BY statements in both the PROC SORT
      steps and the DATA step. If you omit the DESCENDING option in the DATA step, you generate
@@ -1478,6 +1541,7 @@
   </p>
   <p>Now the data sets are merged in descending order of the BY variable <i>ID</i>.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1623,6 +1687,7 @@
       <td>200</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 6 -->
@@ -1774,6 +1839,7 @@
      with the date of the clinic visit.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.merged;
      merge clinic.demog clinic.visit;
@@ -1781,6 +1847,7 @@
   run;
      proc print data=clinic.merged;
   run;</pre>
+  </div>
 
   <p>The following output shows the effects of overwriting the values of a variable in the
      <strong>Clinic.Merged</strong> data set. In most observations, the date is now the date of the clinic visit. In
@@ -1788,6 +1855,7 @@
      value and did not contribute to the observation.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1933,6 +2001,7 @@
       <td>182</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>You now have a data set with values for Date that mean two different things: date of birth and
@@ -1953,7 +2022,8 @@
     <li><i>old-variable-name</i> specifies the variable to be renamed</li>
     <li><i>new-variable-name</i> specifies the new name for the variable</li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>You can rename any number of variables in each occurrence of the
@@ -1969,6 +2039,7 @@
      <i>BirthDate</i>, and it renames the variable <i>Date</i> in <strong>Clinic.Visit</strong> to <i>VisitDate</i>.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.merged;
      merge clinic.demog(rename=(date=BirthDate))
@@ -1977,9 +2048,11 @@
   run;
   proc print data=clinic.merged;
   run;</pre>
+  </div>
 
   <p>The following output shows the effect of the RENAME= option.</p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -2138,6 +2211,7 @@
       <td>05/22/98</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 8 -->
@@ -2190,6 +2264,8 @@
      current observation; otherwise, it is set to 0. Likewise, the value of <i>invisit</i> depends on whether
      <strong>Clinic.Visit</strong> contributes to an observation or not.  
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.merged;
      merge clinic.demog(in=indemog)
@@ -2197,7 +2273,9 @@
                         rename=(date=BirthDate));
      by id;
   run;</pre>
-  <table>
+  </div>
+
+  <table class="note-table">
     <tr>
       <th class="color-red">Note</th> 
       <td>When you specify multiple data set options for a given data set, enclose them
@@ -2220,6 +2298,7 @@
      the observation is deleted.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.merged;
      merge clinic.demog(in=indemog
@@ -2231,11 +2310,13 @@
   run;
   proc print data=clinic.merged;
   run;</pre>
+  </div>
 
   <p>In previous examples, <strong>Clinic.Merged</strong> contained 12 observations. In the output below, notice that
      only 10 observations met the condition in the IF expression.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -2370,8 +2451,10 @@
       <td>04/16/98</td>
     </tr>
   </table>
+  </div>
   <br/>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>SAS evaluates the expression within an IF statement to produce a result that is either
@@ -2398,6 +2481,8 @@
      except <i>Weight</i> from <strong>Clinic.Visit</strong>. It then excludes the variable <i>ID</i> from <strong>Clinic.Merged</strong> after the
      merge processing is complete.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.merged(drop=id);
      merge clinic.demog(in=indemog
@@ -2409,7 +2494,9 @@
   run;
   proc print data=clinic.merged;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -2522,6 +2609,7 @@
       <td>04/16/98</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 9 Subtopic 1-->
@@ -2536,18 +2624,24 @@
   <ul>
     <li>If you <strong>don't</strong> process certain variables and you don't want them to appear in the new data
         set, then specify them in the DROP= option in the <strong>MERGE statement</strong>. <br/>
+
+        <div class="scrolling-div">
         <pre>
         merge clinic.demog(in=indemog
                            rename=(date=BirthDate))
               clinic.visit(drop=weight in=invisit
                            rename=(date=VisitDate));
         </pre>
+        </div>
     </li>
     <li>If you <strong>do</strong> need to process a variable in the original data set (in a subsetting IF statement,
         for example), then you must specify the variable in the DROP= option in the <strong>DATA
         statement</strong>. Otherwise, the statement that uses the variable for processing causes an
         error.<br/>
+
+        <div class="scrolling-div">
         <pre>data clinic.merged(drop=id);</pre>
+        </div>
     </li>
   </ul>
   <p>When used in the DATA statement, the DROP= option simply drops the variables from the new
@@ -2580,12 +2674,16 @@
           <li>You use the MERGE statement instead of multiple SET statements.</li>
           <li>The DATA step reads all observations from all data sets.</li>
         </ul>
+ 
+        <div class="scrolling-div">
         <pre>
         data work.onemerge;
            merge clinic.demog clinic.visit;
         run;</pre>
+        </div>
     </li>
     <li>You can perform a <strong>conditional merge</strong>, using DO loops or other conditional statements:
+        <div class="scrolling-div">
         <pre>
         data work.combine;
            set sales.pounds;
@@ -2594,7 +2692,8 @@
            end;
            Dollars=(sales*1000)*rate;
         run;</pre>
-        <table>
+        </div>
+        <table class="note-table">
           <tr>
              <th class="color-blue">Note</th>
              <td>You can learn about DO loops in Chapter, <strong>Generating Data with DO Loops</strong>.</td>
@@ -2602,6 +2701,7 @@
         </table>
     </li>
     <li>You can read the same data set in more than one SET statement:
+       <div class="scrolling-div">
         <pre>
         data work.combine(drop=totpay);
            if _n_=1 then do until(last);
@@ -2610,7 +2710,7 @@
            set sales.budget;
            Percent=payroll/totpay;
         run;</pre>
-        
+        </div>
     </li>
   </ul>
   <br/>
@@ -2620,6 +2720,7 @@
 
   <!-- Topic 11 Subtopic 1-->
   <h3 class="subtopic" id="topic11_subtopic1">Text Summary</h3> 
+  <br/>
 
   <h4>One-to-One Reading</h4>
   <br/>

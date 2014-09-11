@@ -115,19 +115,31 @@
      below, you simply list the variable names in the same order as the corresponding raw data fields.
      Remember to distinguish character variables from numeric variables.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   input Gender $ Age Bankcard FreqBank Deptcard
         FreqDept;</pre>
+  </div>
 
   <!-- Topic 3 Subtopic 1 -->
   <h3 class="subtopic" id="topic3_subtopic1">Processing List Input</h3>
-  <p></p>
+
+  <p>It's important to remember that list input causes SAS to scan the input lines for values rather than
+     reading from specific columns. When the INPUT statement is submitted for processing, the input
+     pointer is positioned at column 1 of the raw data file, as shown below.
+  </p>
+
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit;
      input Gender $ Age Bankcard FreqBank Deptcard
            FreqDept;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image5.png" class="diagram"/>  
 
   <p>SAS reads the first field until it encounters a blank space. The blank space indicates the end of
@@ -149,10 +161,14 @@
   <p>When the DATA step has finished executing, you can display the data set with the PRINT
      procedure. The code below produces the output that follows.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   proc print data=perm.survey;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="7">(Partial Output)</th>
@@ -230,8 +246,9 @@
       <td>1</td>
     </tr>
   </table>
-
+  </div>
   <br/>
+
   <!-- Topic 3 Subtopic 2 -->
   <h3 class="subtopic" id="topic3_subtopic2">Working with Delimiters</h3>
   <p>Most free-format data fields are clearly separated by blanks and are easy to imagine as variables
@@ -254,8 +271,10 @@
     <li>character-variable specifies a character variable whose value becomes the delimiter</li>
   </ul>
 
-  <h3>Example</h3>
+  <h4>Example</h4>
   <p>The following program creates the output shown below.</p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dlm=',';
@@ -264,6 +283,9 @@
   run;
   proc print data=perm.survey;
   run;</pre>
+  </div>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -365,8 +387,10 @@
        <td>0</td>
     </tr>
   </table>
+  </div>
   <br/>
-  <table>
+
+  <table class="warning-table">
     <tr>
        <th class="color-red">Warning</th>
        <td>The field delimiter must not be a character that occurs in a data
@@ -379,6 +403,8 @@
   <img src="images/ch18_image10.png" class="diagram"/>  
   <p></p>
   <img src="images/ch18_image11.png" class="diagram"/>  
+
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th class="color-red" colspan="3">SAS Data Set</th>
@@ -404,7 +430,10 @@
         <td>21</td>
      </tr>
   </table>
-  <table>
+  </div>
+  <br/>
+
+  <table class="note-table">
     <tr>
        <th class="color-blue">Note</th>
        <td>Later in this chapter, you'll learn how to work with data values that contain
@@ -412,6 +441,7 @@
        </td>
     </tr>
   </table>
+  
 
 
   <!-- Topic 3 Subtopic 3 -->
@@ -424,7 +454,9 @@
      them the names Ques1, Ques2, Ques3, and so on. You can also specify a range in the VAR
      statement in the PROC PRINT step to list a range of specific variables.
   </p>
-  <img src="images/ch18_image12.png" class="diagram"/>  
+  <img src="images/ch18_image12.png" class="diagram"/> 
+
+  <div class="scrolling-div"> 
   <pre>
   data survey.phone;
      infile survey;
@@ -433,7 +465,9 @@
   proc print data=survey.phone;
   var ques1-ques3;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Obs</th>
@@ -472,18 +506,23 @@
       <td>29</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <p>If you are specifying a range of character variables, both the variable list and the $ sign must be
      enclosed in parentheses.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data survey.stores;
      infile stordata;
      input Age (Store1-Store3) ($);
   run;
   proc print data=survey.stores;</pre>
+  </div>
 
-  <table>
+  <table class="warning-table">
     <tr>
        <th class="color-red">Warning</th>
        <td>You can also specify a range of variables using formatted input. If you
@@ -493,12 +532,15 @@
        </td>
     </tr>
   </table>
+  <br/>
 
+  <div class="scrolling-div">
   <pre>
   data test.scores;
      infile group3;
      input Age (Score1-Score4) (6.);
   run;</pre>
+  </div>
 
   <!-- Topic 3 Subtopic 4 -->
   <h3 class="subtopic" id="topic3_subtopic4">Limitations of List Input</h3>
@@ -514,7 +556,8 @@
         character
     </li>
   </ul>
-  <table>
+
+  <table class="note-table">
     <tr>
        <th class="color-blue">Note</th>
        <td>There are ways to work around these limitations using modified list input,
@@ -543,6 +586,7 @@
      <i>Deptcard</i> and <i>FreqDept</i> are set to missing.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit missover;
@@ -551,7 +595,9 @@
   run;
   proc print data=perm.survey;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -617,7 +663,10 @@
        <td>0</td>
     </tr>
   </table>
-  <table>
+  </div>
+  <br/>
+
+  <table class="warning-table">
     <tr>
        <th class="color-red">Warning</th>
        <td>The MISSOVER option works only for missing values that occur
@@ -629,6 +678,7 @@
   <!-- Topic 4 Subtopic 2 -->
 
   <h3 class="subtopic" id="topic4_subtopic2">Reading Missing Values at the Beginning or Middle of a Record</h3>
+
   <p>Remember that the MISSOVER option works only for missing values that occur at the end of the
      record. A different method is required when you are using list input to read raw data that contains
      missing values at the beginning or middle of a record. Let's look at what happens when a missing
@@ -640,6 +690,8 @@
      statement tells SAS to read six data values from each record. However, the first record contains
      only five values.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dlm=',';
@@ -648,6 +700,8 @@
   run;
   proc print data=perm.survey;
   run;</pre>
+  </div>
+
   <p>The two commas in the first record are interpreted as one delimiter. The incorrect value (1) is
      read for <i>Age</i>. The program continues to read subsequent incorrect values for <i>Bankcard</i> (8),
      <i>FreqBank</i> (0), and <i>Deptcard</i> (0). The program then attempts to read the character filed
@@ -658,6 +712,7 @@
      from the second in the raw data file are not included.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -705,8 +760,10 @@
        <td>7</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
-  <h3>The DSD Option</h3>
+  <h4>The DSD Option</h4>
   <p>You can use the DSD option in the INFILE statement to correctly read the raw data. The DSD
      option changes how SAS treats delimiters when list input is used. Specifically, the DSD option
   </p>
@@ -719,6 +776,8 @@
      comma and treats the two consecutive delimiters as a missing value. Therefore, the data is read
      correctly.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dsd;
@@ -727,8 +786,12 @@
   run;
   proc print data=perm.survey;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image15.png" class="diagram"/>
   <br/><br/>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -785,12 +848,16 @@
        <td>7</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
-  <h3>The DLM= Option</h3>
+  <h4>The DLM= Option</h4>
   <p>If the data uses multiple delimiters or a single delimiter other than a comma, then simply specify
      the delimiter value(s) with the DLM= option. In the following example, an asterisk (*) is used as a
      delimiter. However, the data is still read correctly because of the DSD option.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dsd dlm='*';
@@ -798,10 +865,13 @@
      Deptcard FreqDept;
   run;
   proc print data=perm.survey;
-  run;
-  </pre>
+  run;</pre>
+  </div>
+
   <img src="images/ch18_image16.png" class="diagram"/>
   <br/><br/>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -858,10 +928,14 @@
        <td>7</td>
     </tr>
   </table>
+  </div>
+  <br/>
  
   <p>The DSD option can also be used to read raw data when there is a missing value at the
      beginning of a record, as long as a delimiter precedes the first value in the record.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dsd;
@@ -870,9 +944,13 @@
   run;
   proc print data=perm.survey;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image17.png" class="diagram"/>
   <br/><br/>
- <table border="1">
+
+  <div class="scrolling-div">
+  <table border="1">
     <tr>
       <th class="color-red">Obs</th>
       <th class="color-red">Gender</th>
@@ -928,15 +1006,20 @@
        <td>7</td>
     </tr>
   </table>
+  </div>
   <br/>
+
   <p>You can also use the DSD and DLM= options to read fields that are delimited by blanks.</p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.survey;
      infile credit dsd dlm=' ';
      input Gender $ Age Bankcard FreqBank
            Deptcard FreqDept;</pre>
+  </div>
 
-  <table>
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Later in this chapter, you'll learn how to use the DSD option to remove
@@ -958,6 +1041,8 @@
   <p>The longer character values are truncated when they are written to the program data vector.</p>
   <img src="images/ch18_image19.png" class="diagram"/>
   <p>PROC PRINT output shows the truncated values for <i>City</i>.</p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.growth;
      infile citydata;
@@ -965,7 +1050,9 @@
   run;
   proc print data=perm.growth;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1040,6 +1127,8 @@
       <td>275741</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 5 Subtopic 1 -->
   <h3 class="subtopic" id="topic5_subtopic1">The LENGTH Statement</h3>
@@ -1048,6 +1137,8 @@
      both the length and type of the variable <i>City</i>. A length of 12 has been assigned to accommodate
      PHILADELPHIA, which is the longest value for <i>City</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.growth;
      infile citydata;
@@ -1056,12 +1147,16 @@
   run;
   proc print data=perm.growth;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image20.png" class="diagram"/>
   <br/>
   <p>Using this method, you do not need to specify <i>City</i>'s type in the INPUT statement. However,
      leaving the $ in the INPUT statement will not produce an error. Your output should now display
      the complete values for <i>City</i>.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Obs</th>
@@ -1136,8 +1231,10 @@
        <td>275741</td>
     </tr>
   </table>
+  </div>
   <br/>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-blue">Note</th>
       <td>Because variable attributes are defined when the variable is first
@@ -1182,7 +1279,11 @@
      or more single embedded blanks. The value is read until <strong>two or more consecutive blanks</strong> are
      encountered. The & modifier precedes a specified informat if one is used.
   </p>
+
+  <div class="scrolling-div">
   <pre>input Rank City &;</pre>
+  </div>
+
   <p>In the raw data file shown below, each value of <i>City</i> is followed by two consecutive blanks.
      There are two ways that you can use list input to read the values of <i>City</i>.
   </p>
@@ -1200,7 +1301,8 @@
      determines the variable's length and should be large enough to accommodate the longest value.
   </p>
   <img src="images/ch18_image23.png" class="diagram"/>
-  <table>
+
+  <table class="note-table">
     <tr>
        <th class="color-blue">Note</th>
        <td>Remember that you must use <strong>two consecutive blanks</strong> as delimiters when
@@ -1226,11 +1328,15 @@
      COMMAw.d informat, as shown in the program below. Notice that the COMMAw.d informat does
      not specify a w value.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.cityrank;
      infile topten;
      input Rank City & $12.
            Pop86 : comma.;</pre>
+  </div>
+
   <p>Remember that list input reads each value until the next blank is detected. The default length of
      numeric variables is 8, so you don't need to specify a w value to indicate the length of a numeric
      variable.
@@ -1246,24 +1352,32 @@
      w value of 12 does not determine the number of columns that are read. This is different from the
      function of informats in the formatted input style.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.cityrank;
      infile topten;
      input Rank City & $12.
            Pop86 : comma.;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image25.png" class="diagram"/>
   <br/><br/>
   <p>The & modifier indicates that the values for City should be read until two consecutive blanks are
      encountered. Therefore, the value NEW YORK is read from column 4 to column 11, a total of only
      8 columns. When blanks are encountered in both columns 12 and 13, the value NEW YORK is written to the program data vector.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.cityrank;
      infile topten;
      input Rank City & $12.
            Pop86 : comma.;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image26.png" class="diagram"/>
   <br/>
   <img src="images/ch18_image27.png" class="diagram"/>
@@ -1272,12 +1386,16 @@
      The COMMAw.d informat removes the commas, and the value is written to the program data
      vector.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.cityrank;
      infile topten;
      input Rank City & $12.
            Pop86 : comma.;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image28.png" class="diagram"/>
   <br/>
   <img src="images/ch18_image29.png" class="diagram"/>
@@ -1285,6 +1403,7 @@
      correctly in the data set.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
        <th class="color-red">Rank</th>
@@ -1342,6 +1461,8 @@
        <td>894070</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 6 Subtopic 4 -->
   <h3 class="subtopic" id="topic6_subtopic4">Comparing Formatted Input and Modified List Input</h3>
@@ -1354,7 +1475,11 @@
      columns that are read. Here, the raw data values are read until two consecutive blanks are
      encountered.
   </p>
+
+  <div class="scrolling-div">
   <pre>input City & $12.;</pre>
+  </div>
+
   <img src="images/ch18_image31.png" class="diagram"/>
 
   <!-- Topic 7 -->
@@ -1381,13 +1506,17 @@
   <p>The following program creates the raw data file Findat, using the SAS data set Perm.Finance.
      The DATEw. format is used to write the value of <i>Date</i> in the form <i>DDMMYYYY</i>.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set perm.finance;
      file 'c:\data\findat';
      put ssn name salary date : date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Finance</th>
@@ -1441,17 +1570,25 @@
       <td>11/22/95</td>
     </tr>
   </table>
+  </div>
+  <br/>
+
   <img src="images/ch18_image32.png" class="diagram"/>
 
   <!-- Topic 7 Subtopic 1 -->
   <h3 class="subtopic" id="topic7_subtopic1">Specifying a Delimiter</h3>
   <p>You can use the DLM= option with a FILE statement to create a character-delimited raw data file.</p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set perm.finance;
      file 'c:\data\findat2' dlm=',';
      put ssn name salary date : date9.;
   run;</pre>
+  </div>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Finance</th>
@@ -1505,9 +1642,13 @@
       <td>11/22/95</td>
     </tr>
   </table>
+  </div>
+  <br/>
+
   <img src="images/ch18_image33.png" class="diagram"/>
   <br/><br/>
-  <table>
+
+  <table class="note-table">
     <tr>
       <th class="color-red">Note</th>
       <td>For creating a simple raw data file, an alternative to the DATA step is the
@@ -1537,13 +1678,17 @@
   <p>If you used the following program, the resulting raw data file would contain five fields rather than
      four.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set perm.finance;
      file 'c:\data\findat2' dlm=',';
      put ssn name salary : comma6. date date9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="4">SAS Data Set Finance</th>
@@ -1597,17 +1742,24 @@
       <td>11/22/95</td>
     </tr>
   </table>
+  </div>
+  <br/>
+
   <img src="images/ch18_image34.png" class="diagram"/>
   <p>You can use the DSD option in the FILE statement to specify that data values containing commas
      should be enclosed in quotation marks. Remember that the DSD option uses a comma as a
      delimiter, so a DLM= option isn't necessary here.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data _null_;
      set perm.finance;
      file 'c:\data\findat2' dsd;
      put ssn name salary : comma. date : date9.;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image35.png" class="diagram"/>
 
   <!-- Topic 7 Subtopic 3 -->
@@ -1617,6 +1769,8 @@
      commas within the values for <i>Salary</i> as valid characters and removes the quotation
      marks from the character strings before the value is stored.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data work.finance2;
      infile findat2 dsd;
@@ -1627,8 +1781,12 @@
   proc print data=work.finance2;
      format date date9.;
   run;</pre>
+  </div>
+
   <img src="images/ch18_image36.png" class="diagram"/>
   <br/><br/>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1687,12 +1845,16 @@
        <td>22NOV1995</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 8 -->
   <h3 class="topic" id="topic8">Mixing Input Styles</h3>
   <p>Evaluating your raw data and choosing the most appropriate input style is a very important task.
      You have already worked with three input styles for reading raw data.
   </p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Inpt Style</th>
@@ -1713,6 +1875,8 @@
       </td>
     </tr>
   </table>
+  </div>
+
   <br/><br/>
   <p>With some file layouts, you might need to mix input styles in the same INPUT statement in order
      to read the data correctly.
@@ -1737,6 +1901,7 @@
     </li>
   </ul>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Field Description</th>
@@ -1781,8 +1946,12 @@
       <td>list</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <p>The INPUT statement to read the data should look like this:</p>
+
+  <div class="scrolling-div">
   <pre>
   data perm.mixed;
      infile rawdata;
@@ -1791,8 +1960,11 @@
   run;
   proc print data=perm.mixed;
   run;</pre>
+  </div>
 
-  <p></p>
+  <p>When you submit the PRINT procedure, the output displays values for each variable.</p>
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -1835,6 +2007,8 @@
       <td>2956</td>
     </tr>
   </table>
+  </div>
+  <br/>
 
   <!-- Topic 8 Subtopic 1 -->
   <h3 class="subtopic" id="topic8_subtopic1">Additional Features</h3>
@@ -1845,6 +2019,8 @@
      the PUT statement. It's a good idea to include a blank space as the last character in the string to
      avoid spacing problems.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   filename totaldat 'c:\records\junsales';
   data _null_;
@@ -1853,7 +2029,9 @@
      put 'Sales for salesrep ' salesrep
          'totaled ' sales : dollar9.;
   run;</pre>
+  </div>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red" colspan="3">SAS Data Set Work.Totals</th>
@@ -1884,19 +2062,23 @@
       <td>$13,674</td>
     </tr>
   </table>
+  </div>
+  <br/>
+
   <img src="images/ch18_image38.png" class="diagram"/>
-  </table>
 
   <!-- Topic 9 -->
   <h2 class="topic" id="topic9">Summary</h2>
 
   <!-- Topic 9 Subtopic 1-->
   <h3 class="subtopic" id="topic9_subtopic1">Text Summary</h3>
+  <br/>
 
   <h4>Free-Format Data</h4>
   <p>External files can contain raw data that is <strong>free format</strong>; that is, the data is not arranged in fixed
      fields. The fields can be separated by blanks or by some other delimiter, such as commas.
   </p>
+  <br/>
 
   <h4>Using List Input</h4>
   <p>Free-format data can easily be read with <strong>list input</strong> because you do not need to specify column
@@ -1912,6 +2094,7 @@
      especially useful if your data contains similar variables, such as the answers to a questionnaire.
   </p>
   <p>In its simplest form, list input places several limitations on the types of data that can be read.</p>
+  <br/>
 
   <h4>Reading Missing Values</h4>
   <p>If your data contains missing values at the end of a record, you can use the INFILE statement
@@ -1929,6 +2112,7 @@
   <p>The DSD option can also be used to read raw data when there is a missing value at the
      beginning of a record, as long as a delimiter precedes the first value in the record.
   </p>
+  <br/>
 
   <h4>Specifying the Length of Character Values</h4>
   <p>You can specify the length of character variables by using the LENGTH statement. The
@@ -1942,6 +2126,7 @@
   <p>When you use the LENGTH statement, you do not need to specify the variable type again in the
      INPUT statement.
   </p>
+  <br/>
 
   <h4>Modifying List Input</h4>
   <p><strong>Modified list input</strong> can be used to read values that contain embedded blanks and nonstandard
@@ -1956,6 +2141,7 @@
     </li>
   </ul>
   <p>Remember that informats work differently in modified list input than they do in formatted input.</p>
+  <br/>
   
   <h4>Creating Free-Format Data</h4>
   <p>You can create a raw data file using <strong>list output</strong>. With list output, you simply list the names of the
@@ -1967,11 +2153,13 @@
      enclosed in quotation marks. You can also use the DSD option to read values that contain
      delimiters within a quoted string.
   </p>
+  <br/>
 
   <h4>Mixing Input Styles</h4>
   <p>With some file layouts, you might need to mix input styles in the same INPUT statement in order
      to read the data correctly.
   </p>
+  <br/>
 
   <!-- Topic 9 Subtopic 2 -->
   <h3 class="subtopic" id="topic9_subtopic2">Points to Remember</h3>

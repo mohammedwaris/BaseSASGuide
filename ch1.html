@@ -70,13 +70,15 @@
   <p>
      You can use SAS programs to access, manage, analyze, or present your data. Let's begin by
      looking at a simple SAS program.
-
+  
+     <div class="scrolling-div">
      <pre>
      data clinic.admit2;
        set clinic.admit;
      run;
      proc print data = clinic.admit2;
      run;</pre>
+     </div>
      
      This program creates a new SAS data set  from an existing SAS data set and then print a listing 
      of the new data set. A SAS data set is a data file that is formatted in a way that SAS can understand.
@@ -87,12 +89,16 @@
   <!-- Topic 2 Subtopic 1 -->
   <h3 class="subtopic" id="topic2_subtopic1">Components of SAS Programs</h3>
   <p>our sample SAS program contains two steps: a <b>DATA step</b> and a <b>PROC step</b>.</p>
+
+  <div class="scrolling-div">
   <pre>
     data clinic.admit2;
       set clinic.admit;
     run;
     proc print data = clinic.admit2;
     run;</pre>
+  </div>
+
   <p>These two types of steps, alone or combined, form most SAS programs.</p>
 
   <table>
@@ -158,7 +164,7 @@
     <b>(3)</b> a RUN statement, <b>(4)</b> a PROC PRINT statement and <b>(5)</b> another RUN statement.
   </p>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Statements</th>
@@ -221,6 +227,8 @@
     SAS stops reading statements and executes the previous step in the program. In our sample program, 
     each step ends with a RUN statement.
   </p>
+
+  <div class="scrolling-div">
   <pre>
      data clinic.admit2;
         set clinic.admit;
@@ -228,6 +236,7 @@
      proc print data = clinic.admit2;
      run;
   </pre>
+  </div>
 
   <table class="note-table">
     <tr>
@@ -249,6 +258,7 @@
 
   <p class="color-red">SAS Log  </p>
 
+  <div class="scrolling-div">
   <pre>
   1   data clinic.admit2;
   2      set clinic.admit;
@@ -261,19 +271,21 @@
   4   proc print data = clinic.admit2;
   5   run;
 
-  NOTE: The PROCEDURE PRINT used 0.2 seconds.
-  </pre>
+  NOTE: The PROCEDURE PRINT used 0.2 seconds.</pre>
+  </div>
 
   <!-- Topic 2 Subtopic 6 -->
   <h3 class="subtopic" id="topic2_subtopic6">Results of Processing</h3>
   <p>Suppose you submit the sample program below.</p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.admit2;
      set clinic.admit;
   run;
   proc print data = clinic.admit2;
-  run;
-  </pre>
+  run;</pre>
+  </div>
 
   <p>When the program is processed, it</p>
   <ul>
@@ -281,7 +293,7 @@
     <li>creates the following HTML report of the SAS data set Clinic.Admit2:</li>
   </ul>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
      <tr>
        <th class="color-red">Obs</th>
@@ -412,13 +424,14 @@
   <ul>
     <li>
         SAS programs often invoke procedures that create output in the form of a report, as is the case with the TABULATE procedure.
+        <div class="scrolling-div">
         <pre>
   proc tabulate data = clinic.admit;
   class sex;
   var height weight;
   table sex*(height weight), mean;
-  run;
-        </pre>
+  run;</pre>
+        </div>
         <table border="1">
            <tr>
              <th>&nbsp;</th>
@@ -451,16 +464,18 @@
     </li>
     <li>
       Other SAS programs perform tasks such as sorting and managing data, which have no visible results except for <b>messages in the log</b>. (All SAS programs produe log messages, but some SAS programs produce only log messages)
+      <div class="scrolling-div">
       <pre>
   proc copy in = clinic out = work;
   select admit;
-  run;
-      </pre>       
+  run;</pre>       
+      </div>
     </li>
   </ul>
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   6   proc copy in = clinic out = work;
   7   select admit;
@@ -473,8 +488,8 @@
         variables.
   NOTE: PROCEDURE COPY used (TOTAL process time):
         real time   0.13 seconds
-        cpu time    0.08 seconds
-  </pre>
+        cpu time    0.08 seconds</pre>
+  </div>
 
   <table class="note-table">
     <tr>
@@ -509,7 +524,7 @@
     The table below summarizes the implementation of SAS libraries in various operating environments.
   </p>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
      <tr>
         <th class="color-red">Environment</th>
@@ -695,6 +710,8 @@
      set <strong>Clinic.Insure</strong>, which contains insurance information for patients who are admitted to a
      wellness clinic. (It's a good idea to give your data set a name that is descriptive of the contents.)
   </p>
+
+  <div class="scrolling-div">
   <pre>
   Data Set Name:      CLINIC.INSURE
   Member Type:        DATA
@@ -703,8 +720,8 @@
   Observations:       21
   Variables:          7
   Indexes:            0
-  Observation Length: 64
-  </pre>
+  Observation Length: 64</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 3 -->
   <h3 class="subtopic" id="topic5_subtopic3">Data Portion</h3>
@@ -739,13 +756,15 @@
      data set <strong>Clinic.Insure</strong>. Let's look at the <strong>name</strong>, <strong>type</strong>, and <strong>length</strong> variable attributes. You'll learn
      about the format, informat, and label attributes later in this chapter.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   Variable Type Length Format    Informat Label
 
   Policy   Num  8                         Policy Number
   Total    Num  8      DOLLAR8.2 COMMA10. Total Balance
-  Name     Char 20                        Patient Name
-  </pre>
+  Name     Char 20                        Patient Name</pre>
+  </div>
 
   <!-- Page 18 -->
 
@@ -780,7 +799,7 @@
     <li>For numeric variables such as Age, a <strong>period</strong> represents a missing value</li>
   </ul>
 
-  <div class="div-scroll-content">
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th>Name</th>

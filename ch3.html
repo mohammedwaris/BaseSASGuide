@@ -77,6 +77,8 @@
     <li>include a RUN statement after every DATA step or PROC step.</li>
   </ul>
 
+
+  <div class="scrolling-div">
   <pre>
   data work.bankacct;
      infile records;
@@ -88,6 +90,7 @@
   proc means mean;
      var deposit withdrawal;
   run;</pre>
+  </div>
 
   <!-- Topic 3 -->
   <h2 class="topic" id="topic3">Interpreting Error Messages</h2>
@@ -135,6 +138,7 @@
      misspelled in the PROC PRINT statement.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -142,6 +146,7 @@
   proc prin data=clinic.admitfee;
      var id name actlevel fee;
   run;</pre>
+  </div>
 
   <p>When the program is submitted, messages in the SAS log indicate that the procedure PRIN was
      not found and that SAS stopped processing the PRINT step due to errors. No output is produced
@@ -150,7 +155,7 @@
 
   <img src="images/ch3_image3.png" class="diagram"/>
 
-  <table>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>Problems with your statements or data might not be evident when you look
@@ -168,6 +173,8 @@
      simple errors, such as the spelling error in the following program, by typing over the incorrect text,
      deleting text, or inserting text.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -175,10 +182,13 @@
   proc prin data=clinic.admitfee;
      var id name actlevel fee;
   run;</pre>
+  </div>
 
   <p>In the program below, the missing t has been inserted into the PRINT keyword that is specified in
      the PROC PRINT statement.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -186,6 +196,7 @@
   proc print data=clinic.admitfee;
      var id name actlevel fee;
   run;</pre>
+  </div>
 
   <!-- Topic 4 Subtopic 1 -->
   <h3 class="subtopic" id="topic4_subtopic1">Resubmitting a Revised Program</h3>
@@ -195,6 +206,7 @@
      did not produce output. This time, the PRINT procedure executes and produces output.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Obs</th>
@@ -351,11 +363,14 @@
       <td>149.75</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <p>Remember to check the SAS log again to verify that your program ran correctly.</p>
   <p class="color-red">SAS Log</p>
   
+
+  <div class="scrolling-div">
   <pre>
   54 data clinic.: admitfee;
   55 set clinic.admit;
@@ -374,6 +389,7 @@
   NOTE: PROCEDURE PRINT used;
         real time 1.78 seconds
         cpu time 0.03 seconds</pre>
+  </div>
 
   <!-- Topic 5 -->
   <h2 class="topic" id="topic5">Resolving Common Problems</h2>
@@ -392,6 +408,8 @@
   </p>
   <p>The table below lists these problems and their symptoms.</p>
 
+
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Problem</th>
@@ -414,6 +432,7 @@
       <td>log message indicating that an option is invalid or not recognized</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 5 Subtopic 1 -->
@@ -432,17 +451,24 @@
      the beginning of a new step, nor is there a following RUN statement to indicate the end of the
      step.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
   run;
   proc print data=clinic.admitfee;
      var id name actlevel fee;</pre>
+  </div>
+
   <br/>
 
   <h4>Resolving the Problem</h4>
   <p>To correct the error, submit a RUN statement to complete the PROC step.</p>
+
+  <div class="scrolling-div">
   <pre>run;</pre>
+  </div>
 
   <!-- Topic 5 Subtopic 2 -->
   <h3 class="subtopic" id="topic5_subtopic2">Missing Semicolon</h3>
@@ -450,6 +476,8 @@
   <p>One of the most common errors is the omission of a semicolon at the end of a statement. The
      program below is missing a semicolon at the end of the PROC PRINT statement.
   </p>
+
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -457,6 +485,7 @@
   proc print data=clinic.admitfee
      var id name actlevel fee;
   run;</pre>
+  </div>
 
   <p>When you omit a semicolon, SAS reads the statement that lacks the semicolon, plus the following
      statement, as one long statement. The SAS log then lists errors that relate to the combined
@@ -465,6 +494,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   1832 proc print data: =clinic.admitfee
   1833 var id name actlevel fee;
@@ -483,6 +513,7 @@
   NOTE: PROCEDURE PRINT used:
         real time 0.35 seconds
         cpu time 0.03 seconds</pre>
+  </div>
   <br/>
 
 
@@ -508,6 +539,7 @@
      SAS to misinterpret the statements in your program.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -516,6 +548,7 @@
   proc print data=clinic.admitfee;
      var id name actlevel fee;
   run;</pre>
+  </div>
 
   <p>When you have unbalanced quotation marks, SAS is often unable to detect the end of the
      statement in which the error occurs. When the program above is submitted, SAS is unable to
@@ -534,6 +567,8 @@
   </ul>
 
   <p class="color-red">SAS Log (PROC PRINT Running)</p>
+
+  <div class="scrolling-div">
   <pre>
   93 proc print data=clinic.admitfee;
   94 var id name actlevel fee;
@@ -542,13 +577,14 @@
   WARNING: The TITLE statement is ambiguous due to
   invalid options or unquoted text.
   97 run;</pre>
+  </div>
   <br/>
 
   <p>Simply adding a quotation mark and resubmitting your program usually does not solve the
      problem. SAS still considers the quotation marks to be unbalanced.
   </p>
 
-  <table>
+  <table class="warning-table">
     <tr>
       <th class="color-red">Warning</th>
       <td>If you do not resolve this problem when it occurs, it is likely that any
@@ -559,7 +595,7 @@
   </table>
   <br/>
 
-  <h4></h4>
+  <h4>Resolving the Problem</h4>
 
   <table>
     <tr>
@@ -578,6 +614,7 @@
     </tr>
   </table>
   <br/><br/>
+
   <table>
     <tr>
       <th class="color-blue">SAS Windowing Environment</th>
@@ -605,6 +642,8 @@
   <br/>
 
   <p class="color-red">SAS Log</p>
+
+  <div class="scrolling-div">
   <pre>
   98 *';: run;
 
@@ -626,6 +665,7 @@
   NOTE: PROCEDURE PRINT used (Total process time):
         real time 0.16 seconds
         cpu time 0.15 seconds</pre>
+  </div>
 
 
   <!-- Topic 5 Subtopic 4 -->
@@ -636,6 +676,7 @@
      PRINT statement.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   data clinic.admitfee;
      set clinic.admit;
@@ -643,6 +684,7 @@
   proc print data=clinic.admitfee keylabel;
      label actlevel='Activity Level';
   run;</pre>
+  </div>
 
   <p>When a SAS statement that contains an invalid option is submitted, a message appears in the
      SAS log indicating that there is a syntax error. The message lists the options that are valid in the
@@ -651,6 +693,7 @@
 
   <p class="color-red">SAS Log</p>
 
+  <div class="scrolling-div">
   <pre>
   12 proc print data: =clinic.admitfee keylabel;
 
@@ -669,6 +712,7 @@
   NOTE: PROCEDURE PRINT used:
         real time 0.23 seconds
         cpu time 0.04 seconds</pre>
+  </div>
 
   <br/>
 
@@ -691,16 +735,23 @@
      comment statement begins and ends with a comment symbol. There are two forms of comment
      statements:
   </p>
+
+  <div class="scrolling-div">
   <pre>*text;</pre>
+  </div>
 
   <p>or</p>
+
+  <div class="scrolling-div">
   <pre>/*text*/</pre>
+  </div>
 
   <p>SAS ignores text in comments during processing.</p>
   <p>The following program shows some of the ways comments can be used to describe a SAS
      program.
   </p>
 
+  <div class="scrolling-div">
   <pre>
   /* Read national sales data for vans */
   /* from an external raw data file */
@@ -712,6 +763,7 @@
   /* Print the entire data set */
   proc print data=perm.vansales;
   run;</pre>
+  </div>
 
   <!-- Topic 6 Subtopic 2 -->
   <h3 class="subtopic" id="topic6_subtopic2">SAS System Options</h3>
@@ -721,6 +773,7 @@
      use the OPTIONS statement to specify these options.
   </p>
 
+  <div class="scrolling-div">
   <table border="1">
     <tr>
       <th class="color-red">Options</th>
@@ -742,6 +795,7 @@
       <td>Controls whether SAS writes source statements to the SAS log. SOURCE is the default.</td>
     </tr>
   </table>
+  </div>
   <br/>
 
   <!-- Topic 7 -->
