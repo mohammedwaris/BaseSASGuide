@@ -89,27 +89,24 @@ function checkIfAlreadyUnlocked(){
 
 function unlockAllChapters(){
 	//alert('unlocked.');
-	//unlockFeatures();
-	if(getPlatform() == 'android'){
+	unlockFeatures();
+	/*if(getPlatform() == 'android'){
 		//this is a android device
 		inappbilling.buy(function(){
 							// success
 							alert("Thanks for purchasing, All chapters are unlocked now.");
 							unlockFeatures();
-							/*unlockAllChaptersStatus = 1;
-							$('#unlock-all-chapters-button').addClass('display-none');
-						    for(i=1;i<=21;i++) {
-						       $("#chapter" + i + "-topics ul").removeClass('subtopic-grey');
-						    }*/
+							
 						}, function(){
 							//fail
 							//alert("buy fail");
 						}, "all_chapters");
+						
 	}else if(getPlatform() == 'ios'){
 		//this is a ios device
 	}else if(getPlatform() == 'unknown'){
 		alert('Error: Cannot initiate a purchase now');
-	}
+	}*/
 }
 
 function getPlatform(){
@@ -154,6 +151,7 @@ $(document).ready(function(){
 
 function loadChapters(){
 	$('#page-data').html(chapters_page_data);
+	$('body').animate({scrollTop: chapters_page_scroll_pos + 'px'}, 500);
 	$('#index-button').addClass('display-none');
 	currentPage = 'chapters';
 	updateHeaderContent();
@@ -163,19 +161,21 @@ function loadPage(ch, topic, subtopic){
 
   if(ch == 'ch1'){
      chapters_page_data = $('#page-data').html();
+	 chapters_page_scroll_pos = $('body').scrollTop();
 	 currentPage = ch;
 	 $('#index-button').removeClass('display-none');
 	 updateHeaderContent();
      $('#page-data').load(ch + '.html' + ' #content', {}, function(){
         if(subtopic == ''){
-           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'});
+           $('body').animate({scrollTop: ($('#'+topic).offset().top - 100) + 'px'}, 500);
         }else{
-           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top) - 100 + 'px'});
+           $('body').animate({scrollTop: ($('#'+topic + '_' + subtopic).offset().top) - 100 + 'px'}, 500);
         }
      });
   }else{
 	 if(unlockAllChaptersStatus == 1){ //user has purchased all chapters
      	chapters_page_data = $('#page-data').html();
+		chapters_page_scroll_pos = $('body').scrollTop();
 	 	currentPage = ch;
 	 	$('#index-button').removeClass('display-none');
 	 	updateHeaderContent();
