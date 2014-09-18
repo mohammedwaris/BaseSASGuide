@@ -22,13 +22,14 @@ function onDeviceReady(){
 	    for(i=1;i<=21;i++) {
 	       $("#chapter" + i + "-topics").addClass('display-none');
 	    }
+		unlockFeatures();
 	});
 	currentPage = 'chapters';
 	
 	document.addEventListener('backbutton', onBackButtonPressed, false);
 	
 	
-	initializeInAppBilling();
+	//initializeInAppBilling();
 		
 	
 }
@@ -124,7 +125,7 @@ function getPlatform(){
 	}else{
 		outPlatform = 'unknown';
 	}*/
-	outPlatform = 'android';
+	outPlatform = 'ios';
 	
 	return outPlatform;
 }
@@ -201,8 +202,10 @@ function loadPage(ch, topic, subtopic){
 
 function unlockFeatures(){
 	unlockAllChaptersStatus = 1;
+	//alert(unlockAllChaptersStatus);
 	$('#unlock-all-chapters-button').addClass('display-none');
     for(i=1;i<=21;i++) {
+		//alert("#chapter" + i + "-topics ul");
        $("#chapter" + i + "-topics ul").removeClass('subtopic-grey');
     }
 }
@@ -435,8 +438,8 @@ body{
 
 <script type="text/javascript">
 
-/*
 
+/*
 onDeviceReady();
 
 window.inappbilling = {};
@@ -449,7 +452,7 @@ inappbilling.getPurchases = function(success, fail){
 								//data = [{productId:"all_chapters"}]
 								success(data);
 							}
-	*/
+*/
 					
 </script>
 
